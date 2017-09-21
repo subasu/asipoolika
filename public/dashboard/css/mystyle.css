@@ -1,0 +1,48 @@
+#thisYear {display: none;}
+.photoLi {font-size:18px;margin-top:7px;}
+#uploadUserImageDiv {display: none}
+.btn-deal {
+    color: #ffffff;
+    background-color: #9416B3;
+    border-color: #710B8A;
+}
+
+.btn-deal:hover,
+.btn-deal:focus,
+.btn-deal:active,
+.btn-deal.active,
+.open .dropdown-toggle.btn-deal {
+    color: #ffffff;
+    background-color: #5D21AD;
+    border-color: #710B8A;
+}
+
+.btn-deal:active,
+.btn-deal.active,
+.open .dropdown-toggle.btn-deal {
+    background-image: none;
+}
+
+.btn-deal.disabled,
+.btn-deal[disabled],
+fieldset[disabled] .btn-deal,
+.btn-deal.disabled:hover,
+.btn-deal[disabled]:hover,
+fieldset[disabled] .btn-deal:hover,
+.btn-deal.disabled:focus,
+.btn-deal[disabled]:focus,
+fieldset[disabled] .btn-deal:focus,
+.btn-deal.disabled:active,
+.btn-deal[disabled]:active,
+fieldset[disabled] .btn-deal:active,
+.btn-deal.disabled.active,
+.btn-deal[disabled].active,
+fieldset[disabled] .btn-deal.active {
+    background-color: #9416B3;
+    border-color: #710B8A;
+}
+
+.btn-deal .badge {
+    color: #9416B3;
+    background-color: #ffffff;
+}
