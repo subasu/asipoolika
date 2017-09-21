@@ -63,4 +63,23 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Unit');
     }
 
+
+    //shiri relation of request_records  and users
+    public function requestRecord()
+    {
+        return $this->hasMany('App\Models\RequestRecord','refuse_user_id');
+    }
+
+    //shiri relation of request and user
+    public function request2()
+    {
+        return $this->hasMany('App\Models\Request2');
+    }
+
+    //rayat:This function use for manage users page
+    public function User()
+    {
+        return $this->belongsTo('App\User','supervisor_id');
+    }
+
 }
