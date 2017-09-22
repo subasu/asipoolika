@@ -1,4 +1,4 @@
-@extends('layouts.adminLayout1')
+@extends('layouts.adminLayout')
 @section('content')
         <!-- page content -->
 <div class="right_col" role="main">

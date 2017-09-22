@@ -27,6 +27,7 @@ class SupplyController extends Controller
     {
         $pageTitle = 'درخواست های خدمت';
         $requests  = Request2::where([['request_type_id',2],['active',0]])->get();
+        dd($requests);
         return view ('admin.recentlyAddedService', compact('pageTitle','requests'));
     }
 

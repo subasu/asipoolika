@@ -24,6 +24,9 @@ Route::group(['prefix'=>'user'],function() {
         'roles'=>['author','admin']
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
+
+    Route::get('/serviceRequest','RequestController@serviceRequestGet');
+    Route::post('sendService','RequestController@sendService');
 });
 
 Route::group(['prefix'=>'systemManager'],function() {
@@ -44,7 +47,7 @@ Route::group(['prefix'=>'admin'],function() {
     Route::get('serviceShowDetails/{id}','SupplyController@serviceShowDetails'); //96/6/26
     Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
     Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');   //96/6/27
-    Route::get('showToCreditManager','CreditManagerController@showToCreditManager');
+    Route::get('showToCreditManager','CertificateController@showToCreditManager');
     // Route::get('kiayanfar','RequestController@kiyanfar');
 
     //rayat - users manage:

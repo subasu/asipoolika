@@ -1,4 +1,4 @@
-@extends('layouts.adminLayout1')
+@extends('layouts.adminLayout')
 @section('content')
     <input type="hidden" value="{{$user_id=\Illuminate\Support\Facades\Auth::user()->id}}">
     <div class="clearfix"></div>

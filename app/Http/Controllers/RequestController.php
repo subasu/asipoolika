@@ -60,4 +60,64 @@ class RequestController extends Controller
             return response()->json('is zero');
 
     }
+    /*  shiri
+      below function is related to register service request
+  */
+    public function serviceRequestGet()
+    {
+        $pageTitle = 'درخواست خدمت';
+        return view('user.serviceRequest' ,compact('pageTitle'));
+    }
+
+    public function sendService(ServiceRequestValidation $request)
+    {
+
+        $requestType = RequestType::where('title','درخواست خدمت')->value('id');
+        if(!$request->ajax())
+        {
+            abort(403);
+        }
+        $len = count($request->count);
+        //dd($len);
+        if($len !=0)
+        {
+            $requestId = DB::table('requests')->insertGetId
+            ([
+                'request_type_id' => $requestType,
+                'user_id'        => Auth::user()->id,
+                'request_qty'    => $len,
+                'created_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+            ]);
+
+            if($requestId)
+            {
+
+                $i= 0;
+                while ($len > 0)
+                {
+                    $q=DB::table('request_records')->insert
+                    ([
+                        'title'=>trim($request->title[$i]),
+                        'code'=>mt_rand(1000,5000),
+                        'count'=>trim($request->count[$i]),
+                        //'unit_count'=>$request->unit_count[$i],
+                        'step'=>1,
+                        'request_id'=>$requestId,
+                        'description'=>trim($request->description[$i])
+                    ]);
+                    $i++;
+                    $len--;
+                }
+                if($q)
+                {
+                    return response ('اطلاعات شما با موفقیت ثبت گردید');
+                }else
+                {
+                    return response ('در ثبت اطلاعات مشکلی وجود دارد.لطفا با واحد پشتیبانی تماس بگیرید');
+                }
+
+            }
+        }
+
+    }
 }

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- Meta, title, CSS, favicons, etc. -->
 <meta charset="utf-8">
@@ -84,7 +83,6 @@
 
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-
                     <div class="menu_section">
                         <h3>کاربر عمومی</h3>
                         <ul class="nav side-menu">
@@ -662,7 +660,6 @@
                     }
                 });
     });
-
 </script>
 
 <script>
@@ -687,8 +684,6 @@
                 console.log(errors);
             }
         });
-        $('#areas').find('option').remove().end().append('<option value="">...</option>');
-        set_mapCenter();
     });
 </script>
 </body>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- Meta, title, CSS, favicons, etc. -->
 <meta charset="utf-8">
@@ -95,100 +94,111 @@
                     <div class="menu_section">
                         <h3>کاربر عمومی</h3>
                         <ul class="nav side-menu">
-                            <li><a><i class="fa fa-home"></i> داشبورد <span></span></a>
+                            //system manager menu
+                            <li><a><i class="fa fa-home"></i> مدیر سیستم<span></span></a>
                             </li>
-                            <li><a><i class="fa fa-edit"></i>مدیریت درخواست ها <span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-edit"></i> مدیریت امضاء ها<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="form.html">درخواست کالا</a>
+                                    <li><a href="{{url('systemManager/signatures')}}"> لیست امضاء ها</a>
                                     </li>
-                                    <li><a href="form.html">درخواست خدمت</a>
+                                    <li><a href="{{url('systemManager/add_signature')}}">درج امضاء جدید </a>
                                     </li>
-                                    <li><a href="form.html">درخواست های انجام شده</a>
+                                </ul>
+                            </li>
+                            //End system manager menu <br>
+                            //Admin menu
+                            <li><a><i class="fa fa-edit"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="{{url('/admin/')}}"> درخواست های جدید</a></li>
+                                    <li><a href="{{url('/admin/')}}"> تاییده شده ها</a>
+                                    <li><a href="{{url('/admin/')}}"> رد شده ها</a></li>
+                                    <li><a href="{{url('/admin/')}}"> در حال پیگیری</a></li>
+                                    <li><a href="{{url('/admin/')}}">انجام شده</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-edit"></i> مدیریت درخواست خدمت<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="{{url('/admin/')}}"> درخواست های جدید</a></li>
+                                    <li><a href="{{url('/admin/')}}"> تاییده شده ها</a>
+                                    <li><a href="{{url('/admin/')}}"> رد شده ها</a></li>
+                                    <li><a href="{{url('/admin/')}}"> در حال پیگیری</a></li>
+                                    <li><a href="{{url('/admin/')}}">انجام شده</a>
                                     </li>
                                 </ul>
                             </li>
 							{{-- Rayat Start --}}
                             <li><a><i class="fa fa-user"></i> مدیریت کاربران <span  class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{URL::asset('admin/usersManage')}}">مدیریت کاربران</a>
+                                    <li><a href="{{url('admin/usersManage')}}">مدیریت کاربران</a>
                                     </li>
-                                    <li><a href="{{URL::asset('admin/usersCreate')}}">درج کاربر جدید</a>
+                                    <li><a href="{{url('admin/usersCreate')}}">درج کاربر جدید</a>
                                     </li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-th-list"></i> مدیریت واحدها <span  class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{URL::asset('admin/unitsManage')}}">مدیریت واحد ها</a>
+                                    <li><a href="{{url('admin/unitsManage')}}">مدیریت واحد ها</a>
                                     </li>
-                                    <li><a href="{{URL::asset('admin/unitsCreate')}}">درج واحد جدید</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            {{-- Rayat End --}}
-                            <li><a><i class="fa fa-th-list"></i>واحد جدید<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="general_elements.html">ارسال درخواست خدمت</a>
+                                    <li><a href="{{url('admin/unitsCreate')}}">درج واحد جدید</a>
                                     </li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-user"></i>کاربر جدید<span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-envelope"></i> مدیریت تیکت ها <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="tables.html">ارسال درخواست تشریفات</a>
+                                    <li><a href="{{url('admin/unitsCreate')}}"> تیکت های جدید</a>
+                                    </li>
+                                    <li><a href="{{url('admin/unitsCreate')}}">بسته شده ها</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="">صندوق پیام</a>
+                                    </li>
+                                    <li><a href="">پیام های ارسالی</a>
+                                    </li>
+                                    <li><a href="">پیام های دریافتی</a>
+                                    </li>
+                                    <li><a href="">سطل زباله پیام ها</a>
                                     </li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-cogs"></i>تنظیمات<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="tables.html">ارسال درخواست تشریفات</a>
-                                    </li>
-                                </ul>
                             </li>
-                            <li><a><i class="fa fa-envelope"></i> مدیریت تیکت ها <span
-                                            class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="chartjs.html">ارسال تیکت</a>
-                                    </li>
-                                    <li><a href="chartjs.html">تیکت های ارسال شده</a>
-                                    </li>
-                                </ul>
-                            </li>
+                            //End Admin menu <br>
+                            //User menu
 
                             {{-- user dashboard menu --}}
                             <li><a><i class="fa fa-dropbox "></i> درخواست کالا <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="form.html">ارسال درخواست کالا</a>
+                                    <li><a href="{{url('user/productRequest')}}">ارسال درخواست کالا</a>
                                     </li>
-                                    <li><a href="form.html">پیگیری درخواست کالا</a>
+                                    <li><a href="">پیگیری درخواست کالا</a>
                                     </li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-edit"></i>درخواست خدمت <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="general_elements.html">ارسال درخواست خدمت</a>
+                                    <li><a href="{{url('user/serviceRequest')}}">ارسال درخواست خدمت</a>
                                     </li>
-                                    <li><a href="{{URL::asset('serviceCheck')}}">پیگیری درخواست خدمت</a>
+                                    <li><a href="{{url('serviceCheck')}}">پیگیری درخواست خدمت</a>
                                     </li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-file"></i> درخواست تشریفات <span
-                                            class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="tables.html">ارسال درخواست تشریفات</a>
+                                    <li><a href="">صندوق پیام</a>
                                     </li>
-                                    <li><a href="tables.html">پیگیری درخواست تشریفات</a>
+                                    <li><a href="">پیام های ارسالی</a>
                                     </li>
-                                </ul>
-                            </li>
-                            <li><a><i class="fa fa-envelope"></i> مدیریت تیکت ها <span
-                                            class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="chartjs.html">ارسال تیکت</a>
+                                    <li><a href="">پیام های دریافتی</a>
                                     </li>
-                                    <li><a href="chartjs.html">تیکت های ارسال شده</a>
+                                    <li><a href="">سطل زباله پیام ها</a>
                                     </li>
                                 </ul>
                             </li>
-							
+                            //End User menu
                             {{-- end user dashboard menu --}}
                         </ul>
                     </div>
@@ -576,5 +586,125 @@
 </script>
 <!-- /datepicker -->
 <!-- /footer content -->
+<script>
+    function unit_count() {
+        $.ajax({
+            url: "{{ url('/unit_count') }}",
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                var html;
+                $.each(response.unit_counts, function (index, value) {
+                    html += '<option value="' + value + '">' + value['title'] + '</option>';
+                });
+                $("#unit_count").html(html);
+            },
+            error: function (error) {
+                var errors = error.responseJSON;
+                console.log(errors);
+            }
+        });
+    }
+    var record_count = 0;
+    function unit_count_each_record(select_id) {
+        $.ajax({
+            url: "{{ url('/unit_count') }}",
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                var html;
+                $.each(response.unit_counts, function (index, value) {
+//                   html += '<option value="' + value + '">' +  value['title'] + '</option>';
+                    html += '<option value="' + value + '">' + value['title'] + '</option>';
+                });
+                $("#" + select_id).html(html);
+            },
+            error: function (error) {
+                var errors = error.responseJSON;
+                console.log(errors);
+            }
+        });
+    }
+</script>
+<script>
+    $('#save_request').click(function(){
+        swal({
+                    title: "آیا از ثبت درخواست مطمئن هستید؟",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "	#5cb85c",
+                    cancelButtonText: "خیر ، منصرف شدم",
+                    confirmButtonText: "بله ثبت شود",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        //serialize() send all form input values
+                        var formData = $('#product').serialize();
+//                        console.log(formData);
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            url: "{{ url('user/productRequest') }}",
+                            type: 'POST',
+                            dataType: 'json',
+                            data: formData,
+                            success: function (response) {
+                                swal('درخواست ثبت شد','درخواست به لیست درخواست های شما اضافه شد','success');
+                            },
+                            error: function (error) {
+                                if (error.status === 422) {
+                                    $errors = error.responseJSON; //this will get the errors response data.
+                                    //show them somewhere in the markup
+                                    //e.g
+                                    var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
+//
+                                    $.each($errors, function (key, value) {
+                                        errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                    });
+                                    errorsHtml += '</ul></div>';
+                                    $('fieldset').append(errorsHtml);
+                                    swal("خطاهای زیر را برطرف کنید !", '', "error");
+                                } else if (error.status === 500) {
+                                    alert('خطایی رخ داده لطفا بعد از مدت زمانی مجددا تلاش کنید');
+                                    console.log(error);
+                                }
+                            }
+                        });
+                    } else {
+                        swal("منصرف شدید", "درخواست ثبت نشد", "error");
+                    }
+                });
+    });
+</script>
+<script>
+    $("#unit_signature").change(function() {
+        var $this = $(this);
+        var id = $this.val();
+        $.ajax({
+            url: "{{ url('unit_signature') }}",
+            type: 'GET',
+            dataType: 'json',
+            data: {unit_id: id},
+            success: function(response) {
+                var html;
+                html += '<option value="">صاحب امضاء را انتخاب کنید</option>';
+                $.each(response.users, function(index, value) {
+                    html += '<option value="' + value['id'] + '">' +  value['title']+' '+value['name']+' '+value['family'] + '</option>';
+                });
+                $("#user_signature").html(html);
+            },
+            error: function(error) {
+                var errors = error.responseJSON;
+                console.log(errors);
+            }
+        });
+    });
+</script>
 </body>
 </html>
