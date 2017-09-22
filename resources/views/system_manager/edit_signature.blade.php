@@ -38,9 +38,9 @@
                             {{--<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback pull-right">--}}
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
                                 <select class="form-control" id="unit_signature" name="unit_signature">
-                                    <option readonly>انتخاب واحد</option>
+                                    <option>انتخاب واحد</option>
                                     @foreach($units as $unit)
-                                        <option value="{{$unit->id}}">{{$unit->title}}</option>
+                                        <option value="{{$unit->id}}" @if($unit->id==$signature_info[0]->unit_id) selected @endif>{{$unit->title}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -63,7 +63,7 @@
                                     <button type="button" class="btn btn-default image-preview-clear" style="display:none;">
                                         <span class="glyphicon glyphicon-remove"></span> پاک کردن
                                     </button>
-                                    <!-- image-preview-input -->
+                                        <!-- image-preview-input -->
                                     <div class="btn btn-default image-preview-input ">
                                         <span class="glyphicon glyphicon-folder-open"></span>
                                         <span class="image-preview-input-title">انتخاب تصویر امضاء</span>

@@ -55,7 +55,7 @@
                                            class="btn btn-round btn-default" data-toggle="tooltip" title="نمایش امضا">
                                             <span class="fa fa-search"></span>
                                         </a>
-                                        <a href="{{url('customer/editPropertyShow/')}}" type="button"
+                                        <a href="{{url('systemManager/edit_signature/'.$signature->id)}}" type="button"
                                            class="btn btn-round btn-success" data-toggle="tooltip" title="ویرایش امضاء">
                                             <span class="fa fa-pencil"></span>
                                         </a>

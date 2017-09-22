@@ -37,6 +37,10 @@ Route::group(['prefix'=>'systemManager'],function() {
         'uses'=>'SystemManagerController@getAddSignature',
         'as'=>'addSignature'
     ]);
+    Route::get('edit_signature/{id}',[
+        'uses'=>'SystemManagerController@getEditSignature',
+        'as'=>'editSignature'
+    ]);
     Route::post('/productRequest','RequestController@productRequestPost');
 });
 

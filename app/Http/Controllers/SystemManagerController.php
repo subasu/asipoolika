@@ -37,4 +37,11 @@ class SystemManagerController extends Controller
         $users=User::where('unit_id',$unit_id)->get();
         return response()->json(compact('users'));
     }
+    public function getEditSignature($id)
+    {
+        $signature_info=Signature::where('id',$id)->get();
+        $units=Unit::where('active',1)->get();
+//        dd($signature_info,$units);
+        return view('system_manager.edit_signature',compact('signature_info','units'));
+    }
 }
