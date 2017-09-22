@@ -154,13 +154,13 @@
                             </li>
                             <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="">صندوق پیام</a>
+                                    <li><a href="{{url('admin/')}}">پیام های دریافتی</a>
                                     </li>
-                                    <li><a href="">پیام های ارسالی</a>
+                                    <li><a href="{{url('admin/')}}">پیام های ارسالی</a>
                                     </li>
-                                    <li><a href="">پیام های دریافتی</a>
+                                    <li><a href="{{url('admin/')}}">پیام های دریافتی</a>
                                     </li>
-                                    <li><a href="">سطل زباله پیام ها</a>
+                                    <li><a href="{{url('admin/')}}">سطل زباله پیام ها</a>
                                     </li>
                                 </ul>
                             </li>
