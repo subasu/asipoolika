@@ -69,5 +69,5 @@
                 <div class="col-md-2 col-sm-2 col-xs-12"></div>
             </div>
         </div>
-    </div>
+  
 @endsection
