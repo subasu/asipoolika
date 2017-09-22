@@ -62,7 +62,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-</head><body class="nav-md" >
+</head>
+<body class="nav-md">
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col">
@@ -97,7 +98,8 @@
                             //system manager menu
                             <li><a><i class="fa fa-home"></i> مدیر سیستم<span></span></a>
                             </li>
-                            <li><a><i class="fa fa-edit"></i> مدیریت امضاء ها<span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-edit"></i> مدیریت امضاء ها<span
+                                            class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('systemManager/signatures')}}"> لیست امضاء ها</a>
                                     </li>
@@ -117,7 +119,8 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-edit"></i> مدیریت درخواست خدمت<span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-edit"></i> مدیریت درخواست خدمت<span
+                                            class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/')}}"> درخواست های جدید</a></li>
                                     <li><a href="{{url('/admin/')}}"> تاییده شده ها</a>
@@ -127,8 +130,9 @@
                                     </li>
                                 </ul>
                             </li>
-							{{-- Rayat Start --}}
-                            <li><a><i class="fa fa-user"></i> مدیریت کاربران <span  class="fa fa-chevron-down"></span></a>
+                            {{-- Rayat Start --}}
+                            <li><a><i class="fa fa-user"></i> مدیریت کاربران <span
+                                            class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/usersManage')}}">مدیریت کاربران</a>
                                     </li>
@@ -136,7 +140,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-th-list"></i> مدیریت واحدها <span  class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-th-list"></i> مدیریت واحدها <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/unitsManage')}}">مدیریت واحد ها</a>
                                     </li>
@@ -144,7 +148,8 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-envelope"></i> مدیریت تیکت ها <span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-envelope"></i> مدیریت تیکت ها <span
+                                            class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/unitsCreate')}}"> تیکت های جدید</a>
                                     </li>
@@ -204,22 +209,22 @@
                     </div>
                 </div>
                 <!-- /sidebar menu -->
-                <!-- /menu footer buttons -->
-                <div class="sidebar-footer hidden-small">
-                    <a data-toggle="tooltip" data-placement="top" title="تنظیمات">
-                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                    </a>
-                    <a data-toggle="tooltip" data-placement="top" title="بزرگ کردن صفحه">
-                        <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-                    </a>
-                    <a data-toggle="tooltip" data-placement="top" title="قفل کردن">
-                        <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-                    </a>
-                    <a data-toggle="tooltip" data-placement="top" title="خروج">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                    </a>
-                </div>
-                <!-- /menu footer buttons -->
+                {{--<!-- /menu footer buttons -->--}}
+                {{--<div class="sidebar-footer hidden-small">--}}
+                {{--<a data-toggle="tooltip" data-placement="top" title="تنظیمات">--}}
+                {{--<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>--}}
+                {{--</a>--}}
+                {{--<a data-toggle="tooltip" data-placement="top" title="بزرگ کردن صفحه">--}}
+                {{--<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>--}}
+                {{--</a>--}}
+                {{--<a data-toggle="tooltip" data-placement="top" title="قفل کردن">--}}
+                {{--<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>--}}
+                {{--</a>--}}
+                {{--<a data-toggle="tooltip" data-placement="top" title="خروج">--}}
+                {{--<span class="glyphicon glyphicon-off" aria-hidden="true"></span>--}}
+                {{--</a>--}}
+                {{--</div>--}}
+                {{--<!-- /menu footer buttons -->--}}
             </div>
         </div>
         <!-- top navigation -->
@@ -265,7 +270,8 @@
                                 <li>
                                     <a>
                       <span class="image">
-                                        <img src="{{URL::asset('public/dashboard/images/img.jpg')}}" alt="Profile Image"/>
+                                        <img src="{{URL::asset('public/dashboard/images/img.jpg')}}"
+                                             alt="Profile Image"/>
                                     </span>
                                         <span>
                                         <span>John Smith</span>
@@ -279,7 +285,8 @@
                                 <li>
                                     <a>
                       <span class="image">
-                                        <img src="{{URL::asset('public/dashboard/images/img.jpg')}}" alt="Profile Image"/>
+                                        <img src="{{URL::asset('public/dashboard/images/img.jpg')}}"
+                                             alt="Profile Image"/>
                                     </span>
                                         <span>
                                         <span>John Smith</span>
@@ -293,7 +300,8 @@
                                 <li>
                                     <a>
                       <span class="image">
-                                        <img src="{{URL::asset('public/dashboard/images/img.jpg')}}" alt="Profile Image"/>
+                                        <img src="{{URL::asset('public/dashboard/images/img.jpg')}}"
+                                             alt="Profile Image"/>
                                     </span>
                                         <span>
                                         <span>John Smith</span>
@@ -307,7 +315,8 @@
                                 <li>
                                     <a>
                       <span class="image">
-                                        <img src="{{URL::asset('public/dashboard/images/img.jpg')}}" alt="Profile Image"/>
+                                        <img src="{{URL::asset('public/dashboard/images/img.jpg')}}"
+                                             alt="Profile Image"/>
                                     </span>
                                         <span>
                                         <span>John Smith</span>
@@ -339,20 +348,22 @@
         <div class="right_col" role="main">
             <!-- top tiles -->
             <!-- /top tiles -->
-        @yield('content')
-        <!-- footer content -->
-            <footer>
-                <div class="copyright-info">
-                    <p class="pull-left">Supplies - All reserved By Artan Group <a href="https://colorlib.com"></a>
-                    </p>
-                </div>
-                <div class="clearfix"></div>
-            </footer>
-            <!-- /footer content -->
+            @yield('content')
         </div>
-        <!-- /page content -->
+        <!-- footer content -->
+        <footer>
+            <div class="copyright-info">
+                <p class="pull-right"> کلیه حقوق این پورتال متعلق به شبکه بهداشت خمینی شهر است<a
+                            href="https://colorlib.com"></a>
+                </p>
+            </div>
+            <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
     </div>
+    <!-- /page content -->
 </div>
+
 <div id="custom_notifications" class="custom-notifications dsp_none">
     <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group">
     </ul>
@@ -443,15 +454,15 @@
                 this.api().columns([0, 1, 3, 4]).every(function () {
                     var column = this;
                     var select = $('<select><option value=""></option></select>')
-                        .appendTo($(column.footer()).empty())
-                        .on('change', function () {
-                            var val = $.fn.dataTable.util.escapeRegex(
-                                $(this).val()
-                            );
-                            column
-                                .search(val ? '^' + val + '$' : '', true, false)
-                                .draw();
-                        });
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                );
+                                column
+                                        .search(val ? '^' + val + '$' : '', true, false)
+                                        .draw();
+                            });
                     column.data().unique().sort().each(function (d, j) {
                         select.append('<option value="' + d + '">' + d + '</option>')
                     });
@@ -484,10 +495,10 @@
     $(function () {
         function initToolbarBootstrapBindings() {
             var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
-                    'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
-                    'Times New Roman', 'Verdana'
-                ],
-                fontTarget = $('[title=Font]').siblings('.dropdown-menu');
+                        'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
+                        'Times New Roman', 'Verdana'
+                    ],
+                    fontTarget = $('[title=Font]').siblings('.dropdown-menu');
             $.each(fonts, function (idx, fontName) {
                 fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
             });
@@ -495,19 +506,19 @@
                 container: 'body'
             });
             $('.dropdown-menu input').click(function () {
-                return false;
-            })
-                .change(function () {
-                    $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
-                })
-                .keydown('esc', function () {
-                    this.value = '';
-                    $(this).change();
-                });
+                        return false;
+                    })
+                    .change(function () {
+                        $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
+                    })
+                    .keydown('esc', function () {
+                        this.value = '';
+                        $(this).change();
+                    });
 
             $('[data-role=magic-overlay]').each(function () {
                 var overlay = $(this),
-                    target = $(overlay.data('target'));
+                        target = $(overlay.data('target'));
                 overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
             });
             if ("onwebkitspeechchange" in document.createElement("input")) {
@@ -529,7 +540,7 @@
                 console.log("error uploading file", reason, detail);
             }
             $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
-                '<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
+                    '<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
         };
         initToolbarBootstrapBindings();
         $('#editor').wysiwyg({
@@ -545,14 +556,14 @@
 
     // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
     $('form')
-        .on('blur', 'input[required], input.optional, select.required', validator.checkField)
-        .on('change', 'select.required', validator.checkField)
-        .on('keypress', 'input[required][pattern]', validator.keypress);
+            .on('blur', 'input[required], input.optional, select.required', validator.checkField)
+            .on('change', 'select.required', validator.checkField)
+            .on('keypress', 'input[required][pattern]', validator.keypress);
 
     $('.multi.required')
-        .on('keyup blur', 'input', function () {
-            validator.checkField.apply($(this).siblings().last()[0]);
-        });
+            .on('keyup blur', 'input', function () {
+                validator.checkField.apply($(this).siblings().last()[0]);
+            });
 
     // bind the validation to the form submit event
     //$('#send').click('submit');//.prop('disabled', true);
@@ -627,7 +638,7 @@
     }
 </script>
 <script>
-    $('#save_request').click(function(){
+    $('#save_request').click(function () {
         swal({
                     title: "آیا از ثبت درخواست مطمئن هستید؟",
                     text: "",
@@ -639,7 +650,7 @@
                     closeOnConfirm: false,
                     closeOnCancel: false
                 },
-                function(isConfirm){
+                function (isConfirm) {
                     if (isConfirm) {
                         //serialize() send all form input values
                         var formData = $('#product').serialize();
@@ -655,7 +666,7 @@
                             dataType: 'json',
                             data: formData,
                             success: function (response) {
-                                swal('درخواست ثبت شد','درخواست به لیست درخواست های شما اضافه شد','success');
+                                swal('درخواست ثبت شد', 'درخواست به لیست درخواست های شما اضافه شد', 'success');
                             },
                             error: function (error) {
                                 if (error.status === 422) {
@@ -683,7 +694,7 @@
     });
 </script>
 <script>
-    $("#unit_signature").change(function() {
+    $("#unit_signature").change(function () {
         var $this = $(this);
         var id = $this.val();
         $.ajax({
@@ -691,15 +702,15 @@
             type: 'GET',
             dataType: 'json',
             data: {unit_id: id},
-            success: function(response) {
+            success: function (response) {
                 var html;
                 html += '<option value="">صاحب امضاء را انتخاب کنید</option>';
-                $.each(response.users, function(index, value) {
-                    html += '<option value="' + value['id'] + '">' +  value['title']+' '+value['name']+' '+value['family'] + '</option>';
+                $.each(response.users, function (index, value) {
+                    html += '<option value="' + value['id'] + '">' + value['title'] + ' ' + value['name'] + ' ' + value['family'] + '</option>';
                 });
                 $("#user_signature").html(html);
             },
-            error: function(error) {
+            error: function (error) {
                 var errors = error.responseJSON;
                 console.log(errors);
             }

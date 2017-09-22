@@ -24,7 +24,6 @@ Route::group(['prefix'=>'user'],function() {
         'roles'=>['author','admin']
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
-
     Route::get('/serviceRequest','RequestController@serviceRequestGet');
     Route::post('sendService','RequestController@sendService');
 });
