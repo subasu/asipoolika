@@ -2,15 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AcceptServiceRequestValidation;
-
-use App\Models\RequestRecord;
-use App\User;
 use Illuminate\Http\Request;
-use App\Models\Request2;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use SebastianBergmann\CodeCoverage\Report\Xml\Unit;
 
 class SupplyController extends Controller
 {
@@ -126,9 +118,9 @@ class SupplyController extends Controller
         }
 
     }
-	
-	
-	    //rayat//show user create form
+
+
+    //rayat//show user create form
     public function usersCreateGet()
     {
         $units = Unit::all();
@@ -291,17 +283,16 @@ class SupplyController extends Controller
         $id = $request->user_id;
         $res=User::where('id','=', $id)
             ->update([
-                    'title' => $request->title,
-                    'name' => $request->name,
-                    'family' => $request->family,
-                    'email' => $request->email,
-                    'cellphone' => $request->cellphone,
-                    'internal_phone' => $request->internal_phone,
-                    'unit_id' => $request->unit_id,
-                    'supervisor_id' => $request->supervisor_id,
-                    'description' => $request->description
-                ]);
+                'title' => $request->title,
+                'name' => $request->name,
+                'family' => $request->family,
+                'email' => $request->email,
+                'cellphone' => $request->cellphone,
+                'internal_phone' => $request->internal_phone,
+                'unit_id' => $request->unit_id,
+                'supervisor_id' => $request->supervisor_id,
+                'description' => $request->description
+            ]);
         return response()->json($res);
     }
-
 }
