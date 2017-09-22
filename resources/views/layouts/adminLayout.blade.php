@@ -8,7 +8,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title></title>
+<title>عنوان سایت</title>
 
 <!-- Bootstrap core CSS -->
 
@@ -63,15 +63,12 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
+<?php $user_info=\Illuminate\Support\Facades\Auth::user(); ?>
 <body class="nav-md">
 <div class="container body">
     <div class="main_container">
         <div class="col-md-3 left_col">
             <div class="left_col scroll-view">
-
-                <div class="navbar nav_title" style="border: 0;">
-                    <a href="index.html" class="site_title"><span>پنل مدیریتی </span></a>
-                </div>
                 <div class="clearfix"></div>
 
                 <!-- menu prile quick info -->
@@ -81,8 +78,8 @@
                              class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
-                        <span>آقای/خانم</span>
-                        <h2>عاطفه کیانفر</h2>
+                        <span>{{$user_info->title}}</span>
+                        <h2>{{$user_info->name}} {{$user_info->family}}</h2>
                     </div>
                 </div>
                 <!-- /menu prile quick info -->
@@ -240,22 +237,22 @@
                         <li class="">
                             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
                                aria-expanded="false">
-                                <img src="{{url('public/dashboard/images/img.jpg')}}" alt="">John Doe
+                                <img src="{{url('public/dashboard/images/img.jpg')}}" alt=""> {{$user_info->name}} {{$user_info->family}}
                                 <span class=" fa fa-angle-down"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-                                <li><a href="javascript:;"> Profile</a>
+                                <li><a href="javascript:;"> مشخصات کاربری من</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;"><i class="fa fa-info-circle" aria-hidden="true"></i>راهنما</a>
                                 </li>
                                 <li>
                                     <a href="javascript:;">
                                         <span class="badge bg-red pull-right">50%</span>
-                                        <span>Settings</span>
+                                        <span>تنظیمات</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="javascript:;">Help</a>
-                                </li>
-                                <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                <li><a href="{{url('/logout')}}"><i class="fa fa-sign-out pull-right"></i> خروج</a>
                                 </li>
                             </ul>
                         </li>
