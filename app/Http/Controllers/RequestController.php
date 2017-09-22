@@ -16,11 +16,13 @@ class RequestController extends Controller
         $this->middleware('auth');
     }
 
+    //Kianfar : return add product request view
     public function productRequestGet()
     {
         $pageTitle='درخواست کالا';
         return view('user.productRequest',compact('pageTitle','unit_counts'));
     }
+    //Kianfar :  add new request
     public function productRequestPost(Request $request)
     {
         if (!$request->ajax())

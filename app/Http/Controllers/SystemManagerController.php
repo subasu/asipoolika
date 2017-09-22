@@ -14,16 +14,19 @@ class SystemManagerController extends Controller
     {
         $this->middleware('auth');
     }
-    public function getSignature()
+    //Kianfar : return signature list view
+    public function getSignatures()
     {
         $signatures=Signature::all();
         return view('system_manager.signature',compact('signatures'));
     }
+    //Kianfar : return add new signature view
     public function getAddSignature()
     {
         $units=Unit::where('active',1)->get();
         return view('system_manager.add_signature',compact('units'));
     }
+    //Kianfar : load user's of the unit that has been selected in add signature view
     public function unit_user_list(Request $request)
     {
         if (!$request->ajax())
