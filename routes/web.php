@@ -28,7 +28,7 @@ Route::group(['prefix'=>'user'],function() {
 
 Route::group(['prefix'=>'systemManager'],function() {
     Route::get('/signatures',[
-        'uses'=>'SystemManagerController@getSignature',
+        'uses'=>'SystemManagerController@getSignatures',
         'as'=>'signature'
     ]);
     Route::get('add_signature',[
@@ -39,7 +39,31 @@ Route::group(['prefix'=>'systemManager'],function() {
 });
 
 Route::group(['prefix'=>'admin'],function() {
+//shiri
+    Route::get('recentlyAddedService','SupplyController@recentlyAddedService');  //96/6/25
+    Route::get('serviceShowDetails/{id}','SupplyController@serviceShowDetails'); //96/6/26
+    Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
+    Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');   //96/6/27
+    Route::get('showToCreditManager','CreditManagerController@showToCreditManager');
+    // Route::get('kiayanfar','RequestController@kiyanfar');
 
+    //rayat - users manage:
+    Route::get('usersManage', 'SupplyController@usersManageGet');
+    Route::get('usersCreate', 'SupplyController@usersCreateGet');
+    Route::post('usersCreate', 'SupplyController@usersCreatePost');
+    Route::post('statusUser', 'SupplyController@statusUser');
+    Route::get('usersUpdate/{id}', 'SupplyController@usersUpdateShow');
+    Route::post('usersUpdate', 'SupplyController@usersUpdate');
+
+    //rayat - units manage:
+    Route::get('unitsManage', 'SupplyController@unitsManageGet');
+    Route::get('unitsCreate', 'SupplyController@unitsCreateGet');
+    Route::post('unitsCreate', 'SupplyController@unitsCreatePost');
+    Route::get('units', 'SupplyController@unitsGet');
+    Route::post('statusUnit', 'SupplyController@statusUnit');
+    Route::get('unitsUpdate/{id}', 'SupplyController@unitsUpdateShow');
+    Route::post('unitsUpdate', 'SupplyController@unitsUpdate');
+    Route::post('usersSupervisor', 'SupplyController@usersSupervisor');
 });
 Route::get('unit_signature','SystemManagerController@unit_user_list');
 
