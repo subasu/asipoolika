@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AcceptServiceRequestValidation;
+use App\Models\Request2;
+use App\Models\RequestRecord;
+use App\User;
+use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SupplyController extends Controller
 {
