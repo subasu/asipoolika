@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Request extends Model
+class Request2 extends Model
 {
     protected  $table='requests';
     //shiri relation user
     public function user()
     {
-        return $this->blongsTo('App\User');
+        return $this->belongsTo('App\User');
     }
 
 
@@ -35,6 +35,6 @@ class Request extends Model
     //shiri relation of request and request_records
     public function requestRecord()
     {
-        return $this->hasMany('App\Models\RequestRecord');
+        return $this->hasMany('App\Models\RequestRecord','request_id');
     }
 }

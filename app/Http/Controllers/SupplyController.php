@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AcceptServiceRequestValidation;
-use App\Models\Request2;
+
 use App\Models\RequestRecord;
 use Illuminate\Http\Request;
+use App\Models\Request2;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
