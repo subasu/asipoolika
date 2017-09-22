@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AcceptServiceRequestValidation;
 
 use App\Models\RequestRecord;
+use App\User;
 use Illuminate\Http\Request;
 use App\Models\Request2;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use SebastianBergmann\CodeCoverage\Report\Xml\Unit;
 
 class SupplyController extends Controller
 {
