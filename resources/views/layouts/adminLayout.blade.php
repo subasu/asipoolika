@@ -119,7 +119,7 @@
                             <li><a><i class="fa fa-edit"></i> مدیریت درخواست خدمت<span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('/admin/')}}"> درخواست های جدید</a></li>
+                                    <li><a href="{{url('/admin/recentltyAddedService')}}"> درخواست های جدید</a></li>
                                     <li><a href="{{url('/admin/')}}"> تاییده شده ها</a>
                                     <li><a href="{{url('/admin/')}}"> رد شده ها</a></li>
                                     <li><a href="{{url('/admin/')}}"> در حال پیگیری</a></li>
@@ -412,6 +412,8 @@
 <script type="text/javascript" src="{{ URL::asset('public/dashboard/js/flot/jquery.flot.stack.js')}}"></script>
 <script type="text/javascript" src="{{ URL::asset('public/dashboard/js/flot/curvedLines.js')}}"></script>
 <script type="text/javascript" src="{{ URL::asset('public/dashboard/js/flot/jquery.flot.resize.js')}}"></script>
+{{--<script src="{{ URL::asset('public/js/kianfar.js')}}"></script>--}}
+
 {{--My Jqyert Code--}}
 <script type="text/javascript" src="{{ URL::asset('public/dashboard/js/myCode.js')}}"></script>
 <!-- Datatables-->
@@ -643,62 +645,7 @@
         });
     }
 </script>
-<script>
-    $('#save_request').click(function () {
-        swal({
-                    title: "آیا از ثبت درخواست مطمئن هستید؟",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "	#5cb85c",
-                    cancelButtonText: "خیر ، منصرف شدم",
-                    confirmButtonText: "بله ثبت شود",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        //serialize() send all form input values
-                        var formData = $('#product').serialize();
-//                        console.log(formData);
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                            }
-                        });
-                        $.ajax({
-                            url: "{{ url('user/productRequest') }}",
-                            type: 'POST',
-                            dataType: 'json',
-                            data: formData,
-                            success: function (response) {
-                                swal('درخواست ثبت شد', 'درخواست به لیست درخواست های شما اضافه شد', 'success');
-                            },
-                            error: function (error) {
-                                if (error.status === 422) {
-                                    $errors = error.responseJSON; //this will get the errors response data.
-                                    //show them somewhere in the markup
-                                    //e.g
-                                    var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
-//
-                                    $.each($errors, function (key, value) {
-                                        errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
-                                    });
-                                    errorsHtml += '</ul></div>';
-                                    $('fieldset').append(errorsHtml);
-                                    swal("خطاهای زیر را برطرف کنید !", '', "error");
-                                } else if (error.status === 500) {
-                                    alert('خطایی رخ داده لطفا بعد از مدت زمانی مجددا تلاش کنید');
-                                    console.log(error);
-                                }
-                            }
-                        });
-                    } else {
-                        swal("منصرف شدید", "درخواست ثبت نشد", "error");
-                    }
-                });
-    });
-</script>
+
 <script>
     $("#unit_signature").change(function () {
         var $this = $(this);
