@@ -113,5 +113,4 @@
                 {{--! end tables --}}
             </div>
         </div>
-    </div>
 @endsection
