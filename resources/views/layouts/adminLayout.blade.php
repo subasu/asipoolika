@@ -148,9 +148,9 @@
                             <li><a><i class="fa fa-address-card"></i> مدیریت کارت های کارگری<span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('admin/')}}">آپلود کارت کارگری</a>
+                                    <li><a href="{{url('admin/workerCardCreate')}}">آپلود کارت کارگری</a>
                                     </li>
-                                    <li><a href="{{url('admin/')}}">کارتهای کارگری صادر شده</a>
+                                    <li><a href="{{url('admin/exportedWorkersCard')}}">کارتهای کارگری صادر شده</a>
                                     </li>
                                 </ul>
                             </li>
@@ -433,6 +433,9 @@
 <script src="{{ URL::asset('public/dashboard/js/datatables/dataTables.responsive.min.js')}}"></script>
 <script src="{{ URL::asset('public/dashboard/js/datatables/responsive.bootstrap.min.js')}}"></script>
 <script src="{{ URL::asset('public/dashboard/js/datatables/dataTables.scroller.min.js')}}"></script>
+<link rel="stylesheet" href="{{URL::asset('public/css/persianDatepicker-default.css')}}" />
+
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#datatable').dataTable();
@@ -493,6 +496,7 @@
 <script src="{{URL::asset('public/dashboard/js/editor/bootstrap-wysiwyg.js')}}"></script>
 <script src="{{URL::asset('public/dashboard/js/editor/external/jquery.hotkeys.js')}}"></script>
 <script src="{{URL::asset('public/dashboard/js/editor/external/google-code-prettify/prettify.js')}}"></script>
+
 
 <!-- editor -->
 <script>
@@ -607,46 +611,46 @@
 </script>
 <!-- /datepicker -->
 <!-- /footer content -->
-<script>
-    function unit_count() {
-        $.ajax({
-            url: "{{ url('/unit_count') }}",
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                var html;
-                $.each(response.unit_counts, function (index, value) {
-                    html += '<option value="' + value + '">' + value['title'] + '</option>';
-                });
-                $("#unit_count").html(html);
-            },
-            error: function (error) {
-                var errors = error.responseJSON;
-                console.log(errors);
-            }
-        });
-    }
-    var record_count = 0;
-    function unit_count_each_record(select_id) {
-        $.ajax({
-            url: "{{ url('/unit_count') }}",
-            type: 'GET',
-            dataType: 'json',
-            success: function (response) {
-                var html;
-                $.each(response.unit_counts, function (index, value) {
-//                   html += '<option value="' + value + '">' +  value['title'] + '</option>';
-                    html += '<option value="' + value + '">' + value['title'] + '</option>';
-                });
-                $("#" + select_id).html(html);
-            },
-            error: function (error) {
-                var errors = error.responseJSON;
-                console.log(errors);
-            }
-        });
-    }
-</script>
+{{--<script>--}}
+    {{--function unit_count() {--}}
+        {{--$.ajax({--}}
+            {{--url: "{{ url('/unit_count') }}",--}}
+            {{--type: 'GET',--}}
+            {{--dataType: 'json',--}}
+            {{--success: function (response) {--}}
+                {{--var html;--}}
+                {{--$.each(response.unit_counts, function (index, value) {--}}
+                    {{--html += '<option value="' + value + '">' + value['title'] + '</option>';--}}
+                {{--});--}}
+                {{--$("#unit_count").html(html);--}}
+            {{--},--}}
+            {{--error: function (error) {--}}
+                {{--var errors = error.responseJSON;--}}
+                {{--console.log(errors);--}}
+            {{--}--}}
+        {{--});--}}
+    {{--}--}}
+    {{--var record_count = 0;--}}
+    {{--function unit_count_each_record(select_id) {--}}
+        {{--$.ajax({--}}
+            {{--url: "{{ url('/unit_count') }}",--}}
+            {{--type: 'GET',--}}
+            {{--dataType: 'json',--}}
+            {{--success: function (response) {--}}
+                {{--var html;--}}
+                {{--$.each(response.unit_counts, function (index, value) {--}}
+{{--//                   html += '<option value="' + value + '">' +  value['title'] + '</option>';--}}
+                    {{--html += '<option value="' + value + '">' + value['title'] + '</option>';--}}
+                {{--});--}}
+                {{--$("#" + select_id).html(html);--}}
+            {{--},--}}
+            {{--error: function (error) {--}}
+                {{--var errors = error.responseJSON;--}}
+                {{--console.log(errors);--}}
+            {{--}--}}
+        {{--});--}}
+    {{--}--}}
+{{--</script>--}}
 
 <script>
     $("#unit_signature").change(function () {

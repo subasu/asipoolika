@@ -35,6 +35,7 @@ $(function() {
         $('.image-preview-clear').hide();
         $('.image-preview-input input:file').val("");
         $(".image-preview-input-title").text("انتخاب تصویر امضاء");
+        $(".image-preview-input-title2").text("انتخاب کارت کارگری");
     });
     // Create the preview image
     $(".image-preview-input input:file").change(function (){
