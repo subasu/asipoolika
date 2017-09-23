@@ -72,7 +72,7 @@
                 <div class="col-md-3 col-sm-3 col-xs-12"></div>
             </div>
         </div>
-    </div>
+
     <script>
         $("#unit-send").click(function () {
             var formData = new FormData($('#unit-send-form')[0]);

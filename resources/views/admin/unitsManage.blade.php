@@ -60,7 +60,6 @@
                 </div>
             </div>
         </div>
-    </div>
     {{--edit unit's status by unit-id --}}
     <script>
         $(document).on('click', '.statusUnit', function () {

@@ -61,7 +61,6 @@
                 </div>
             </div>
         </div>
-    </div>
     {{--edit user's status by user-id --}}
 
     <script>

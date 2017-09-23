@@ -177,7 +177,7 @@
                 <div class="col-md-3 col-sm-3 col-xs-12"></div>
             </div>
         </div>
-    </div>
+
     {{--create user by AJAX and show result alert and redirect to usersList page --}}
     <script>
         $("#user-send").click(function () {
