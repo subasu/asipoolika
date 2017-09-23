@@ -95,7 +95,7 @@
                             //system manager menu
                             <li><a><i class="fa fa-home"></i> مدیر سیستم<span></span></a>
                             </li>
-                            <li><a><i class="fa fa-edit"></i> مدیریت امضاء ها<span
+                            <li><a><i class="fa fa-pencil-square-o"></i> مدیریت امضاء ها<span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('systemManager/signatures')}}"> لیست امضاء ها</a>
@@ -106,7 +106,7 @@
                             </li>
                             //End system manager menu <br>
                             //Admin menu
-                            <li><a><i class="fa fa-edit"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/')}}"> درخواست های جدید</a></li>
                                     <li><a href="{{url('/admin/')}}"> تاییده شده ها</a>
@@ -128,7 +128,7 @@
                                 </ul>
                             </li>
                             {{-- Rayat Start --}}
-                            <li><a><i class="fa fa-user"></i> مدیریت کاربران <span
+                            <li><a><i class="fa fa-users"></i> مدیریت کاربران <span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/usersManage')}}">مدیریت کاربران</a>
@@ -145,7 +145,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-user"></i> مدیریت کارت های کارگری<span
+                            <li><a><i class="fa fa-address-card"></i> مدیریت کارت های کارگری<span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/')}}">آپلود کارت کارگری</a>
@@ -154,7 +154,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-envelope"></i> مدیریت تیکت ها <span
+                            <li><a><i class="fa fa-envelope-open-o"></i> مدیریت تیکت ها <span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/unitsCreate')}}"> تیکت های جدید</a>
@@ -196,6 +196,8 @@
                                     <li><a href="{{url('serviceCheck')}}">پیگیری درخواست خدمت</a>
                                     </li>
                                 </ul>
+                            </li>
+                            <li><a><i class="fa fa-envelope-open-o"></i> ارسال تیکت<span></span></a>
                             </li>
                             <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
