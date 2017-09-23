@@ -69,12 +69,12 @@
                                         <input type="text" class="form-control" style="text-align:right;" id="date"
                                                name="date" placeholder="تاریخ">
                                     </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group ">
-                                        <button id="addWorkerCard" type="button" class="btn btn-success col-md-6 col-md-offset-6"> ثبت
 
+                                       <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                                           <button id="addWorkerCard" type="button" class="btn btn-success col-md-12"> ثبت کارت
+                                           </button>
+                                       </div>
 
-                                        </button>
-                                    </div>
                             </div>
                         </form>
 

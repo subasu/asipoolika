@@ -308,7 +308,8 @@ class SupplyController extends Controller
     */
     public function exportedWorkersCard()
     {
-        return view ('admin.exportedWorkersCard');
+        $pageTitle="لیست کارت های کارگری";
+        return view ('admin.exportedWorkersCard',compact('pageTitle'));
     }
 
     /* shiri
@@ -316,7 +317,8 @@ class SupplyController extends Controller
      * */
     public function workerCardCreate()
     {
-        return view ('admin.workerCardCreate');
+        $pageTitle="آپلود کارت کارگری";
+        return view ('admin.workerCardCreate',compact('pageTitle'));
     }
 
     /* shiri
@@ -359,7 +361,7 @@ class SupplyController extends Controller
     public function productRequestInfo($id)
     {
         $pageTitle='رکوردهای درخواست شماره '.$id;
-        $requestRecords=RequestRecord::where('request_id',$id)->get();
+        $requestRecords=RequestRecord::where([['request_id',$id],['price',0]])->get();
         return view ('admin.productRequestRecords',compact('pageTitle','requestRecords'));
     }
     public function serviceRequestManagement()
