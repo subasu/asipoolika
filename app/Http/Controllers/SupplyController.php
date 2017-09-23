@@ -7,8 +7,11 @@ use App\Models\Request2;
 use App\Models\RequestRecord;
 use App\User;
 use App\Models\Unit;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\DB;
 
 class SupplyController extends Controller
 {
@@ -301,5 +304,53 @@ class SupplyController extends Controller
                 'description' => $request->description
             ]);
         return response()->json($res);
+    }
+
+    /* shiri
+       below function is related to show exported workers card
+    */
+    public function exportedWorkersCard()
+    {
+        return view ('admin.exportedWorkersCard');
+    }
+
+    /* shiri
+       below function is related to show form of exporting new workers card....
+     * */
+    public function workerCardCreate()
+    {
+        return view ('admin.workerCardCreate');
+    }
+
+    /* shiri
+       below function is to insert workers card to data base....
+    */
+    public function addWorkerCard(Request $request)
+    {
+        //dd('hello');
+        if($request->hasFile('image'))
+        {
+            $date = new Carbon();
+            $date = $date->toDateString();
+            $file = $request->image;
+            $file->move(public_path(), $request->image->getClientOriginalName());
+            $path = public_path() . '\\' . $request->image->getClientOriginalName();
+            $image = file_get_contents($path);
+            File::delete($path);
+            $fileName = base64_encode($image);
+            DB::table('workers')->insert(
+                [
+                    'card' => $fileName,
+                    'user_id' => Auth::user()->id,
+                    'date'    => $request->date,
+                    'name'    => $request->name,
+                    'family'  => $request->family
+                ]
+            );
+            return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
+        }else
+            {
+                return response('لطفا فایل عکس کارگری خود را انتخاب نمایید ، سپس درخواست خود را وارد نمایید');
+            }
     }
 }
