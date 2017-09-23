@@ -13,7 +13,7 @@
 
 Route::get('/', 'TestController@home');
 Route::post('save', 'TestController@save');
-Route::get('unit_count','IndexController@unit_count');
+Route::get('/unit_count','IndexController@unit_count');
 
 Auth::routes();
 
