@@ -145,6 +145,15 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li><a><i class="fa fa-user"></i> مدیریت کارت های کارگری<span
+                                            class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="{{url('admin/')}}">آپلود کارت کارگری</a>
+                                    </li>
+                                    <li><a href="{{url('admin/')}}">کارتهای کارگری صادر شده</a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li><a><i class="fa fa-envelope"></i> مدیریت تیکت ها <span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
