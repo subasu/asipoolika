@@ -5,7 +5,7 @@
 @section('content')
     <div class="clearfix"></div>
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
             <div class="x_panel">
                 <div class="x_title">
                     <h2> فرم ایجاد واحد
@@ -19,19 +19,19 @@
                     <div class="clearfix"></div>
                 </div>
                 {{-- table --}}
-                <div class="col-md-3 col-sm-3 col-xs-12"></div>
-                <div class="col-md-6 col-sm-6 col-xs-12">
+
+                <div class="col-md-12 col-sm-6 col-xs-12">
                     <div class="x_content">
                         <form class="form-horizontal form-label-left" id="unit-send-form" method="POST">
                             {{ csrf_field() }}
                             <div class="item form-group" {{ $errors->has('title') ? ' has-error' : '' }}>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="col-md-9 col-sm-6 col-xs-12">
                                     <input id="title" class="form-control col-md-7 col-xs-12" name="title"
                                            placeholder=""
                                            required="required" type="text">
                                 </div>
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title"> عنوان <span
-                                            class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                            class="required" title="پر کردن این فیلد الزامی است"  style="color:red">*</span>
                                 </label>
                                 @if ($errors->has('title'))
                                     <span class="help-block">
@@ -40,7 +40,7 @@
                                 @endif
                             </div>
                             <div class="item form-group" {{ $errors->has('phone') ? ' has-error' : '' }}>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="col-md-9 col-sm-6 col-xs-12">
                                     <input type="phone" id="tel" name="phone" required="required"
                                            data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12">
                                 </div>
@@ -53,7 +53,7 @@
                                 @endif
                             </div>
                             <div class="item form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                <div class="col-md-9 col-sm-6 col-xs-12">
                                     <textarea id="description" required="required" name="description"
                                               class="form-control col-md-7 col-xs-12"></textarea>
                                 </div>
@@ -62,14 +62,14 @@
                             </div>
                             <div class="ln_solid"></div>
                             <div class="form-group">
-                                <div class="col-md-6 ">
-                                    <button id="unit-send" type="button" class="col-md-3 btn btn-primary">ثبت</button>
+                                <div class="col-md-12">
+                                    <button id="unit-send" type="button" class="col-md-9 btn btn-primary">ثبت</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-12"></div>
+
             </div>
         </div>
 
