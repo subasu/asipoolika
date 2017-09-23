@@ -51,19 +51,18 @@
                                 <th style="text-align: center ;">شناسه</th>
                                 <th style="text-align: center ;">نام واحد</th>
                                 <th style="text-align: center ;">درخواست دهنده</th>
-                                <th style="text-align: center ;">مشاهده جزییات</th>
+                                <th style="text-align: center ;"></th>
                             </tr>
                             </thead>
                             <tbody>
-
                                 {{ csrf_field() }}
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                                 @foreach($productRequests as $productRequest)
                                     <tr>
                                         <td class="col-md-1">{{$productRequest->id}}</td>
-                                        <td>{{$productRequest->user->unit->title}}</td>
+                                        <td> واحد {{$productRequest->user->unit->title}}</td>
                                         <td>{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
-                                        <td><a href="{{url('admin/productRequestInfo/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                        <td><a class="btn btn-info" href="{{url('admin/productRequestInfo/'.$productRequest->id)}}">مشاهده جزییات</a>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -72,6 +71,5 @@
                     </div>
                 </div>
             </div>
-        </div>
 
 @endsection

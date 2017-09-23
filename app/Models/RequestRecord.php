@@ -15,6 +15,6 @@ class RequestRecord extends Model
     //shiri relation of request_record and request
     public function request()
     {
-        return $this->blongsTo('App\Models\Request');
+        return $this->belongsTo('App\Models\Request2','request_id');
     }
 }

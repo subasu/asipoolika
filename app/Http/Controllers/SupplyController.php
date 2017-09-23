@@ -362,4 +362,10 @@ class SupplyController extends Controller
         $requestRecords=RequestRecord::where('request_id',$id)->get();
         return view ('admin.productRequestRecords',compact('pageTitle','requestRecords'));
     }
+    public function serviceRequestManagement()
+    {
+        $pageTitle='مدیریت درخواست خدمت';
+        $serviceRequests=Request2::where([['request_type_id',2],['active',0]])->get();
+        return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests'));
+    }
 }

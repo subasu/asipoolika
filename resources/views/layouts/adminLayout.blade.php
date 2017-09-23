@@ -119,7 +119,7 @@
                             <li><a><i class="fa fa-edit"></i> مدیریت درخواست خدمت<span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('/admin/recentltyAddedService')}}"> درخواست های جدید</a></li>
+                                    <li><a href="{{url('/admin/serviceRequestManagement')}}"> درخواست های جدید</a></li>
                                     <li><a href="{{url('/admin/')}}"> تاییده شده ها</a>
                                     <li><a href="{{url('/admin/')}}"> رد شده ها</a></li>
                                     <li><a href="{{url('/admin/')}}"> در حال پیگیری</a></li>
@@ -185,7 +185,7 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/productRequest')}}">ارسال درخواست کالا</a>
                                     </li>
-                                    <li><a href="">پیگیری درخواست کالا</a>
+                                    <li><a href="#">پیگیری درخواست کالا</a>
                                     </li>
                                 </ul>
                             </li>
@@ -201,13 +201,13 @@
                             </li>
                             <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="">صندوق پیام</a>
+                                    <li><a href="#">صندوق پیام</a>
                                     </li>
-                                    <li><a href="">پیام های ارسالی</a>
+                                    <li><a href="#">پیام های ارسالی</a>
                                     </li>
-                                    <li><a href="">پیام های دریافتی</a>
+                                    <li><a href="#">پیام های دریافتی</a>
                                     </li>
-                                    <li><a href="">سطل زباله پیام ها</a>
+                                    <li><a href="#">سطل زباله پیام ها</a>
                                     </li>
                                 </ul>
                             </li>

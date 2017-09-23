@@ -57,7 +57,7 @@
                             </thead>
 
                             <tbody>
-                            <form id="serviceDetailForm">
+                            {{--<form id="serviceDetailForm">--}}
                                 {{ csrf_field() }}
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                             @foreach($records as $record)
@@ -71,7 +71,7 @@
                                     <td><input id="refuseRequest" content="{{$record->id}}" name="{{$record->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن درخواست" /></td>
                                 </tr>
                             @endforeach()
-                            </form>
+                            {{--</form>--}}
                             </tbody>
                         </table>
                     </div>

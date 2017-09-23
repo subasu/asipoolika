@@ -29,8 +29,11 @@
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
-            <div class="x_title">
-                <h2>مشاهده جزییات درخواست ها</h2>
+            <div class="x_title" style="direction: rtl">
+                @if(!empty($requestRecords[0]))
+                    <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست کالای شماره :  {{$requestRecords[0]->request_id}} | ثبت شده توسط :   {{$requestRecords[0]->request->user->name}} {{$requestRecords[0]->request->user->family}} از واحد {{$requestRecords[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$requestRecords->count()}} رکورد</span></h2>
+                @endif
+                {{--<h2>لیست رکوردهای درخواست کالای شماره : {{$requestRecords[0]->request_id}}</h2>--}}
                 <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -39,20 +42,17 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div class="alert alert-info col-md-12 col-sm-12 col-xs-12" style="direction:rtl;font-size:17px;color:white;">
-
-            </div>
             <div class="x_content">
                 <table style="direction:rtl;text-align: center" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
+                        <th style="text-align: center ;">شماره</th>
                         <th style="text-align: center ;">عنوان درخواست</th>
                         <th style="text-align: center ;">مقدار</th>
                         <th style="text-align: center ;">توضیحات</th>
                         <th style="text-align: center ;">نرخ (به تومان)</th>
                         <th style="text-align: center ;">قیمت</th>
-                        <th style="text-align: center ;">پیگیری درخواست</th>
-                        <th style="text-align: center ;">رد کردن درخواست</th>
+                        <th style="text-align: center ;">عملیات</th>
                     </tr>
                     </thead>
 
@@ -62,13 +62,13 @@
                         <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                         @foreach($requestRecords as $requestRecord)
                             <tr>
+                                <td>{{$requestRecord->id}}</td>
                                 <td>{{$requestRecord->title}}</td>
                                 <td>{{$requestRecord->count}}</td>
                                 <td>{{$requestRecord->description}}</td>
                                 <td><input type="text" class="form-control" id="rate"  name="rate"/></td>
                                 <td><input type="text" class="form-control" id="price" name="price"/></td>
-                                <td><input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری درخواست" /></td>
-                                <td><input id="refuseRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن درخواست" /></td>
+                                <td><input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری درخواست" /> <input id="refuseRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن درخواست" /></td>
                             </tr>
                         @endforeach
                     {{--</form>--}}
