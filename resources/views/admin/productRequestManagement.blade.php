@@ -44,6 +44,7 @@
 
                     {{--</div>--}}
                     <div class="x_content">
+                        {{--<form id="serviceDetailForm">--}}
                         <table style="direction:rtl;text-align: center" id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                             <thead>
                             <tr>
@@ -54,7 +55,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <form id="serviceDetailForm">
+
                                 {{ csrf_field() }}
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                                 @foreach($productRequests as $productRequest)
@@ -62,12 +63,12 @@
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td>{{$productRequest->user->unit->title}}</td>
                                         <td>{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
-                                        <td><a href="{{url('admin/serviceShowDetails/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                        <td><a href="{{url('admin/productRequestInfo/'.$productRequest->id)}}">مشاهده جزییات</a>
                                     </tr>
                                 @endforeach
-                            </form>
                             </tbody>
                         </table>
+                        {{--</form>--}}
                     </div>
                 </div>
             </div>

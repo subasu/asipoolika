@@ -58,7 +58,6 @@ class SupplyController extends Controller
       */
     public function serviceShowDetails($id)
     {
-        //dd($id);
         $pageTitle = 'جزییات درخواست های خدمت';
         $records = RequestRecord::where([['request_id',$id],['step',1],['active',0],['refuse_user_id',null]])->get();
         return view ('admin.serviceShowDetails',compact('pageTitle','records'));
@@ -356,5 +355,11 @@ class SupplyController extends Controller
         $pageTitle='مدیریت درخواست کالا';
         $productRequests=Request2::where([['request_type_id',3],['active',0]])->get();
         return view ('admin.productRequestManagement', compact('pageTitle','productRequests'));
+    }
+    public function productRequestInfo($id)
+    {
+        $pageTitle='رکوردهای درخواست شماره '.$id;
+        $requestRecords=RequestRecord::where('request_id',$id)->get();
+        return view ('admin.productRequestRecords',compact('pageTitle','requestRecords'));
     }
 }

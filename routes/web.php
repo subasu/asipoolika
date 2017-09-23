@@ -48,6 +48,8 @@ Route::group(['prefix'=>'systemManager'],function() {
 Route::group(['prefix'=>'admin'],function() {
     //kianfar
     Route::get('/productRequestManagement','SupplyController@productRequestManagement');
+    Route::get('/productRequestInfo/{id}','SupplyController@productRequestInfo');
+
 //shiri
     Route::get('recentlyAddedService','SupplyController@recentlyAddedService');  //96/6/25
     Route::get('serviceShowDetails/{id}','SupplyController@serviceShowDetails'); //96/6/26

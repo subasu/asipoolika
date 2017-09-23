@@ -1,9 +1,5 @@
 @extends('layouts.adminLayout');
-@section('title')
-    درخواست خدمت
-@endsection
 @section('content')
-
 
     <!-- Modal -->
     <form>
@@ -29,8 +25,6 @@
         </div>
     </form>
 
-
-    @if(count($records))
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -84,21 +78,6 @@
                 </div>
             </div>
         </div>
-
-
-    @endif
-
-    @if(!count($records))
-        <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                    <div class="x_title" align="center">
-                        <h1>داده ای برای نمایش وجود ندارد</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif()
 
     <script>
 

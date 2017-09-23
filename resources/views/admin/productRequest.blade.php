@@ -1,7 +1,4 @@
-@extends('layouts.panelLayout');
-@section('title')
-    درخواست کالا
-@endsection
+@extends('layouts.adminLayout');
 @section('content')
     <div class="page-title">
         <div class="title_right">
@@ -16,7 +13,6 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2> فرم شماره 1
-
                     </h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
