@@ -255,7 +255,7 @@
                                 <li><a href="javascript:;"> مشخصات کاربری من</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:;"><i class="fa fa-info-circle" aria-hidden="true"></i>راهنما</a>
+                                    <a href="javascript:;">راهنما</a>
                                 </li>
                                 <li>
                                     <a href="javascript:;">
