@@ -30,10 +30,8 @@ class SupplyController extends Controller
     {
         $pageTitle = 'درخواست های خدمت';
         $requests  = Request2::where([['request_type_id',2],['active',0]])->get();
-        dd($requests);
         return view ('admin.recentlyAddedService', compact('pageTitle','requests'));
     }
-
 
 
 //
@@ -352,5 +350,11 @@ class SupplyController extends Controller
             {
                 return response('لطفا فایل عکس کارگری خود را انتخاب نمایید ، سپس درخواست خود را وارد نمایید');
             }
+    }
+    public function productRequestManagement()
+    {
+        $pageTitle='مدیریت درخواست کالا';
+        $productRequests=Request2::where([['request_type_id',3],['active',0]])->get();
+        return view ('admin.productRequestManagement', compact('pageTitle','productRequests'));
     }
 }

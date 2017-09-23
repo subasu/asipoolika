@@ -2,7 +2,7 @@
 @section('content')
 
 
-    <!-- Modal -->
+            <!-- Modal -->
     <form>
         {{csrf_field()}}
         <div id="commentModal" class="modal fade" role="dialog">
@@ -26,14 +26,12 @@
         </div>
     </form>
 
-
-    @if(count($requests))
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>درخواست های خدمت</h2>
+                        <h2>مدیریت درخواست های کالا تازه ثبت شده</h2>
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
                             </li>
@@ -42,30 +40,31 @@
                         </ul>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="alert alert-info col-md-12 col-sm-12 col-xs-12" style="direction:rtl;font-size:17px;color:white;">
+                    {{--<div class="alert alert-info col-md-12 col-sm-12 col-xs-12" style="direction:rtl;font-size:17px;color:white;">تعداد درخواست ها :  {{$productRequests->count()}} عدد--}}
 
-                    </div>
+                    {{--</div>--}}
                     <div class="x_content">
                         <table style="direction:rtl;text-align: center" id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                             <thead>
                             <tr>
+                                <th style="text-align: center ;">شناسه</th>
                                 <th style="text-align: center ;">نام واحد</th>
-                                <th style="text-align: center ;">نام و نام خانوادگی درخواست دهنده</th>
+                                <th style="text-align: center ;">درخواست دهنده</th>
                                 <th style="text-align: center ;">مشاهده جزییات</th>
                             </tr>
                             </thead>
-
                             <tbody>
                             <form id="serviceDetailForm">
                                 {{ csrf_field() }}
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
-                                @foreach($requests as $request)
+                                @foreach($productRequests as $productRequest)
                                     <tr>
-                                        <td>{{$request->user->unit->title}}</td>
-                                        <td>{{$request->user->name .chr(10). $request->user->family}}</td>
-                                        <td><a href="{{URL::asset('admin/serviceShowDetails')}}/{{$request->id}}">مشاهده جزییات</a>
+                                        <td class="col-md-1">{{$productRequest->id}}</td>
+                                        <td>{{$productRequest->user->unit->title}}</td>
+                                        <td>{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                        <td><a href="{{url('admin/serviceShowDetails/'.$productRequest->id)}}">مشاهده جزییات</a>
                                     </tr>
-                                @endforeach()
+                                @endforeach
                             </form>
                             </tbody>
                         </table>
@@ -74,19 +73,4 @@
             </div>
         </div>
 
-
-
-@endif
-
-@if(!count($requests))
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title" align="center">
-                    <h1>داده ای برای نمایش وجود ندارد</h1>
-                </div>
-            </div>
-        </div>
-    </div>
-@endif()
 @endsection
