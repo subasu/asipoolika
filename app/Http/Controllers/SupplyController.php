@@ -385,4 +385,11 @@ class SupplyController extends Controller
         $productRequests=Request2::where([['request_type_id',3],['active',0],['refuse_record_count','!=',0]])->get();
         return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
+    public function acceptProductRequestManagementGet()
+    {
+        $pageTitle='درخواست های تایید شده';
+        $pageName='acceptProductRequestManagement';
+        $productRequests=Request2::where([['request_type_id',3],['active',0],['refuse_record_count','!=',0]])->get();
+        return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
+    }
 }

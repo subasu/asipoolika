@@ -29,9 +29,11 @@
                 <div class="x_panel">
                     <div class="x_title">
                         @if($pageName=='productRequestManagement')
-                        <h2 style="color:#005ce6">مدیریت درخواست های کالا تازه ثبت شده</h2>
+                        <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت درخواست های کالا تازه ثبت شده</h2>
                         @elseif($pageName=='refusedProductRequestManagement')
                         <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های کالای رد شده</h2>
+                        @elseif($pageName=='acceptProductRequestManagement')
+                            <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های کالای تایید شده</h2>
                         @endif
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
@@ -54,12 +56,12 @@
                                 <th style="text-align: center ;">درخواست دهنده</th>
                                 @if(!empty($pageName))
                                     @if($pageName=='productRequestManagement')
-                                        <th style="text-align: center ;">رکوردهای فعال</th>
-                                        <th style="text-align: center ;">رکوردهای رد شده</th>
-                                        <th style="text-align: center ;">عملیات</th>
+                                        <th class="col-md-2" style="text-align: center ;">رکوردهای فعال</th>
+                                        <th class="col-md-2" style="text-align: center ;">رکوردهای رد شده</th>
+                                        <th class="col-md-1" style="text-align: center ;">عملیات</th>
                                     @elseif($pageName=='refusedProductRequestManagement')
-                                        <th style="text-align: center ;">رکوردهای رد شده</th>
-                                        <th style="text-align: center ;">عملیات</th>
+                                        <th class="col-md-2" style="text-align: center ;">رکوردهای رد شده</th>
+                                        {{--<th style="text-align: center ;">عملیات</th>--}}
                                     @endif
                                 @endif
                             </tr>
@@ -79,7 +81,7 @@
                                                 <td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
                                             @elseif($pageName=='refusedProductRequestManagement')
                                                 <td  class="danger">{{$productRequest->refuse_record_count}}</td>
-                                                <td>بررسی مجدد</td>
+                                                {{--<td>بررسی مجدد</td>--}}
                                             @endif
                                         @endif
                                     </tr>
