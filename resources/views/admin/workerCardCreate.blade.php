@@ -103,15 +103,7 @@
             var pic    = $('#pic').val();
 
             var formData = new FormData($('#dealForm')[0]);
-            swal({
-                title: "",
-                text: 'لطفا منتظر بمانید...',
-                type: "info",
-                showCancelButton: false,
-                showConfirmButton: false
-                //confirmButtonText: "بستن"
-            });
-
+            
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
