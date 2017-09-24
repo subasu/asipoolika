@@ -353,6 +353,10 @@ class SupplyController extends Controller
                 return response('لطفا فایل عکس کارگری خود را انتخاب نمایید ، سپس درخواست خود را وارد نمایید');
             }
     }
+    public function jalaliToGregorian($year, $month, $day)
+    {
+        return Verta::getGregorian($year, $month, $day);
+    }
     public function productRequestManagement()
     {
         $pageTitle='مدیریت درخواست کالا';
