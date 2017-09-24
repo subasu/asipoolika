@@ -42,7 +42,9 @@
                         <input type="hidden" id="token" value="{{ csrf_token() }}">
                         <thead>
                         <tr>
-                            <th style="text-align: center">نام و نام خانوادگی</th>
+                            <th style="text-align: center">شناسه</th>
+                            <th style="text-align: center">نام و نام خانودگی صادر کننده</th>
+                            <th style="text-align: center"> نام و نام خانوادگی کارگر</th>
                             <th style="text-align: center">تاریخ درج</th>
                             <th style="text-align: center">نمایش کارت</th>
                         </tr>
@@ -51,6 +53,12 @@
                         <tbody id="change">
                         @foreach($workers as $worker)
                             <tr class="unit">
+                                <td class="col-md-1">
+                                    {{$worker->id}}
+                                </td>
+                                <td id="adminName">
+                                    {{$worker->user->name.chr(10).$worker->user->family}}
+                                </td>
                                 <td>
                                     {{$worker->name.chr(10).$worker->family}}
                                 </td>
@@ -58,7 +66,7 @@
                                     {{$worker->date}}
                                 </td>
                                 <td class="statusUser" id="">
-                                    <img src="{{$worker->card}}" style="width: 100px; height: 100px;"/>
+                                    <a class="btn btn-success" href="{{URL::asset('admin/showWorkerCard')}}/{{$worker->id}}">نمایش کارت</a>
                                 </td>
 
                             </tr>
@@ -82,6 +90,8 @@
                 var date1=$('#date1').val();
                 var date2=$('#date2').val();
                 var token=$('#token').val();
+                var name =$('#adminName').text();
+               // alert(name);
 
 //            alert(date1);
 //            alert(date2);
@@ -151,8 +161,10 @@
 
                         console.log(response);
 
-                        var len=response.length;
-                        // alert ('this is array length'+len);
+//                        if(response){
+//                            var len = (response + '').length ;
+//                        }
+//                        alert(len);
                         if(len == '')
                         {
                             swal({
@@ -168,9 +180,11 @@
                                 $.each(response.data,function(key,value) {
                                     $('#change').append(
                                         "<tr   class='unit'>" +
+                                        "<td   id='date'>" + value.id+ "</td>" +
+                                        "<td   id='date'>" + name + "</td>" +
                                         "<td   id='date'>" + value.name + ' ' + value.family + "</td>" +
                                         "<td   id='time1'>" + value.date + "</td>" +
-                                        "<td   id='time2'><img src='" + value.card + "' style='height: 100px; width: 100px;'/></td>" +
+                                        "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("admin/showWorkerCard")}}/{{$worker->id}}'>نمایش عکس کارت</a></td>"+
                                         "</tr>");
 
                                 });
