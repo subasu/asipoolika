@@ -25,6 +25,8 @@ Route::group(['prefix'=>'user'],function() {
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
     Route::get('/serviceRequest','RequestController@serviceRequestGet');
+    Route::get('/ticketRequest','RequestController@ticketRequest');   //96/7/2
+    Route::get('/getUnits','RequestController@getUnits');             //96/7/2
     Route::post('sendService','RequestController@sendService');
 
 });
