@@ -122,4 +122,13 @@ class RequestController extends Controller
         }
 
     }
+
+    /* shiri
+       below function is related to ticket request
+    */
+    public function ticketRequest()
+    {
+        return view('user.ticketRequest');
+    }
+
 }

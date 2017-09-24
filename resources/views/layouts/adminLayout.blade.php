@@ -197,7 +197,14 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-envelope-open-o"></i> ارسال تیکت<span></span></a>
+                            <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>
+                                    </li>
+                                    <li><a href="">پیگیری تیکت</a>
+                                    </li>
+                                </ul>
+                            </li>
                             </li>
                             <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
