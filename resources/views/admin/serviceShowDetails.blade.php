@@ -1,9 +1,5 @@
 @extends('layouts.adminLayout');
-@section('title')
-    درخواست خدمت
-@endsection
 @section('content')
-
 
     <!-- Modal -->
     <form>
@@ -29,8 +25,6 @@
         </div>
     </form>
 
-
-    @if(count($records))
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -63,7 +57,7 @@
                             </thead>
 
                             <tbody>
-                            <form id="serviceDetailForm">
+                            {{--<form id="serviceDetailForm">--}}
                                 {{ csrf_field() }}
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                             @foreach($records as $record)
@@ -77,28 +71,13 @@
                                     <td><input id="refuseRequest" content="{{$record->id}}" name="{{$record->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن درخواست" /></td>
                                 </tr>
                             @endforeach()
-                            </form>
+                            {{--</form>--}}
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-
-
-    @endif
-
-    @if(!count($records))
-        <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                    <div class="x_title" align="center">
-                        <h1>داده ای برای نمایش وجود ندارد</h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif()
 
     <script>
 

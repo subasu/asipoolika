@@ -1,9 +1,5 @@
 @extends('layouts.adminLayout');
-@section('title')
-    کارت های صادر شده کارگران
-@endsection
 @section('content')
-
 
 
     <div class="clearfix"></div>
@@ -20,9 +16,6 @@
                         </li>
                     </ul>
                     <div class="clearfix"></div>
-                </div>
-                <div class="alert alert-info col-md-12 col-sm-12 col-xs-12"
-                     style="direction:rtl;font-size:17px;color:white;">
                 </div>
                 <div class=""  style="direction:rtl;font-size:17px;color:white;">
                     <label>جستجو بر اساس بازه تاریخ</label>
@@ -42,10 +35,7 @@
                             <th style="text-align: center">مشاهده عکس کارت</th>
                         </tr>
                         </thead>
-
                         <tbody>
-
-
                         </tbody>
                     </table>
                 </div>
