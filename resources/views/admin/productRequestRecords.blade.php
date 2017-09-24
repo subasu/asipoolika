@@ -60,9 +60,9 @@
                             <tr>
                                 <td>{{$requestRecord->id}}</td>
                                 <td>{{$requestRecord->title}}</td>
-                                <td>{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
-                                <td><input type="text" class="form-control" id="rate"  name="rate"/></td>
-                                <td><input type="text" class="form-control" id="price" name="price"/></td>
+                                <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
+                                <td><input type="text" class="form-control rate" id="rate"  name="rate"/></td>
+                                <td><input type="text" class="form-control price" id="price" name="price"/></td>
                                 <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>
                                 <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
@@ -258,4 +258,47 @@
     });
 
 </script>
+    <script>
+        $(document).ready(function(){
+            $('.rate').keypress(function(e){
+                if (this.value.length == 0 && e.which == 48 ){
+                    return false;
+                }
+            });
+            $('.rate').keyup(function(){
+                var rate=$(this).val();
+                var request_record_id=$('#count').attr('content');
+                alert(request_record_id);
+                if(rate.length>=4)
+                {
+                    $.ajax({
+                        url: "{{ url('price') }}",
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {rate: rate,request_record_id:request_record_id},
+                        success: function(response) {
+                            $('#sellPriceS').html(response.specificPrice);
+                        },
+                        error: function(error) {
+                            var errors = error.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                }
+                else
+                    $('#sellPriceS').html('عدد کامل وارد کنید');
+
+            });
+
+            function validateMaxLength()
+            {
+                var text = $(this).val();
+                var maxlength = $(this).data('maxlength');
+                if(maxlength > 0)
+                {
+                    $(this).val(text.substr(0, maxlength));
+                }
+            }
+        });
+    </script>
 @endsection

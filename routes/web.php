@@ -83,7 +83,7 @@ Route::group(['prefix'=>'admin'],function() {
     Route::post('usersSupervisor', 'SupplyController@usersSupervisor');
 });
 Route::get('unit_signature','SystemManagerController@unit_user_list');
-
+Route::get('price','IndexController@ajaxPrice');
 
 Route::get('/home', 'HomeController@index');
 

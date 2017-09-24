@@ -62,6 +62,10 @@
                                     @elseif($pageName=='refusedProductRequestManagement')
                                         <th class="col-md-2" style="text-align: center ;">رکوردهای رد شده</th>
                                         {{--<th style="text-align: center ;">عملیات</th>--}}
+                                    @elseif($pageName=='acceptProductRequestManagement')
+                                        <th class="col-md-2" style="text-align: center ;">رکوردهای فعال</th>
+                                        <th class="col-md-2" style="text-align: center ;">رکوردهای رد شده</th>
+                                        <th class="col-md-1" style="text-align: center ;">عملیات</th>
                                     @endif
                                 @endif
                             </tr>
@@ -82,6 +86,10 @@
                                             @elseif($pageName=='refusedProductRequestManagement')
                                                 <td  class="danger">{{$productRequest->refuse_record_count}}</td>
                                                 {{--<td>بررسی مجدد</td>--}}
+                                            @elseif($pageName=='acceptProductRequestManagement')
+                                                <td class="success">{{$productRequest->request_record_count}}</td>
+                                                <td class="danger">{{$productRequest->request_record_count_refused}}</td>
+                                                <td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
                                             @endif
                                         @endif
                                     </tr>
