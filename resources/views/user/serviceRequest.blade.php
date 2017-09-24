@@ -1,23 +1,10 @@
-@extends('layouts.adminLayout');
-@section('title')
-    درخواست خدمت
-@endsection
+@extends('layouts.adminLayout')
 @section('content')
     <div class="page-title">
         <div class="title_right">
             <h3>
-                درخواست خدمت
+                درخواست خرید خدمت
             </h3>
-        </div>
-        <div class="title_left">
-            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-left top_search">
-                <div class="input-group">
-                    <input type="text" class="form-control text-center" dir="rtl" placeholder="جستجو">
-                    <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">بگرد</button>
-                        </span>
-                </div>
-            </div>
         </div>
     </div>
     <div class="clearfix"></div>
@@ -48,14 +35,13 @@
                     <div class="clearfix"></div>
                 </div>
                 {{-- table --}}
-                <div class="col-md-2 col-sm-2 col-xs-12"></div>
-                <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="col-md-10 col-sm-8 col-xs-12 col-md-offset-1">
                     <div class="x_content">
                         <form class="form-horizontal form-label-left" novalidate >
                             <table class="table table-bordered mytable" dir="rtl">
                                 <thead>
                                 <tr>
-                                    <th>خدمت</th>
+                                    <th class="col-md-4">خدمت</th>
                                     <th>برآورد مقدار</th>
                                     <th>توضیحات</th>
                                 </tr>
@@ -73,7 +59,7 @@
                             <div class="form-group">
                                 <div class="col-md-8">
                                     <button id="add_to_list" type="button"
-                                            class="btn btn-primary col-md-6 col-md-offset-6"> به لیست اضافه شود
+                                            class="btn btn-primary col-md-7 col-md-offset-5"> به لیست اضافه شود
                                     </button>
                                 </div>
                             </div>
@@ -96,8 +82,7 @@
                     <div class="clearfix"></div>
                 </div>
 
-                <div class="col-md-2 col-sm-2 col-xs-12"></div>
-                <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="col-md-12 col-sm-8 col-xs-12">
                     <div class="x_content">
                         <form id="service" novalidate>
                             {{ csrf_field() }}
@@ -134,8 +119,6 @@
                 {{--! end tables --}}
             </div>
         </div>
-    </div>
-
 
     <script>
         /**
@@ -173,7 +156,7 @@
                     "<td><input style='padding-right:5px;' class='form-control required' type='text' id='title' name='title[]'  value=' " + $('#title').val() + " '></td>" +
                     "<td><input style='padding-right:5px;' class='form-control required' type='text' id='count' name='count[]'  value=' " + $('#count').val() + " '></td>" +
                     "<td><input id='description' name='description[]' class='form-control col-md-7 col-xs-12' placeholder=''    value='"+$('#description').val()+ "'  required='required' type='text' style='width: 400px;' /></td>"+
-                    "<td><a   type='button' class='btn remove_row' data-toggle='tooltip' title='حذف'><span class='fa fa-trash-o'></span></a></td>" +
+                    "<td><a type='button' class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف'><span class='fa fa-trash-o'></span></a></td>" +
                     "</tr>"
                 );
 

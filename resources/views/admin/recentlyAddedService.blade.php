@@ -1,7 +1,4 @@
 @extends('layouts.adminLayout');
-@section('title')
-    درخواست خدمت
-@endsection
 @section('content')
 
 

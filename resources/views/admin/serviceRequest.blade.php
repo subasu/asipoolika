@@ -1,12 +1,9 @@
-@extends('layouts.panelLayout');
-@section('title')
-    درخواست خدمت
-@endsection
+@extends('layouts.adminLayout');
 @section('content')
     <div class="page-title">
         <div class="title_right">
             <h3>
-                درخواست خدمت
+درخواست خرید خدمت
             </h3>
         </div>
     </div>

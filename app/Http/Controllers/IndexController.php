@@ -45,4 +45,11 @@ class IndexController extends Controller
 
         }
     }
+    public function ajaxPrice(Request $request)
+    {
+        $rate=$request->rate;
+        $priceCount=strlen($price);
+        $specificPrice=$this->holePrice($price,$priceCount);
+        return response()->json(compact('specificPrice'));
+    }
 }

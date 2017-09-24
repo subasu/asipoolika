@@ -26,6 +26,7 @@ Route::group(['prefix'=>'user'],function() {
     Route::post('/productRequest','RequestController@productRequestPost');
     Route::get('/serviceRequest','RequestController@serviceRequestGet');
     Route::post('sendService','RequestController@sendService');
+
 });
 
 Route::group(['prefix'=>'systemManager'],function() {
@@ -45,17 +46,29 @@ Route::group(['prefix'=>'systemManager'],function() {
 });
 
 Route::group(['prefix'=>'admin'],function() {
+    //kianfar
+    Route::get('/productRequestManagement','SupplyController@productRequestManagement');
+    Route::get('/productRequestRecords/{id}','SupplyController@productRequestRecords');
+    Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');
+
+    Route::get('/refusedProductRequestManagement','SupplyController@refusedProductRequestManagementGet');
+    Route::get('/acceptProductRequestManagement','SupplyController@acceptProductRequestManagementGet');
 //shiri
     Route::get('recentlyAddedService','SupplyController@recentlyAddedService');  //96/6/25
     Route::get('serviceShowDetails/{id}','SupplyController@serviceShowDetails'); //96/6/26
     Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
     Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');   //96/6/27
+
     Route::get('showToCreditManager','CertificateController@showToCreditManager');
     Route::get('workerCardCreate' ,'SupplyController@workerCardCreate');        //96/7/1
+
     Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');             //96/7/1
     Route::get('workerCardManage' ,'SupplyController@workerCardManage');        //96/7/2
     Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');          //96/7/2
     // Route::get('kiayanfar','RequestController@kiyanfar');
+
+    Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
+
 
     //rayat - users manage:
     Route::get('usersManage', 'SupplyController@usersManageGet');
@@ -76,7 +89,7 @@ Route::group(['prefix'=>'admin'],function() {
     Route::post('usersSupervisor', 'SupplyController@usersSupervisor');
 });
 Route::get('unit_signature','SystemManagerController@unit_user_list');
-
+Route::get('price','IndexController@ajaxPrice');
 
 Route::get('/home', 'HomeController@index');
 

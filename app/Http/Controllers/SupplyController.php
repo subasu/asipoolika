@@ -37,10 +37,8 @@ class SupplyController extends Controller
     {
         $pageTitle = 'درخواست های خدمت';
         $requests  = Request2::where([['request_type_id',2],['active',0]])->get();
-        dd($requests);
         return view ('admin.recentlyAddedService', compact('pageTitle','requests'));
     }
-
 
 
 //
@@ -67,7 +65,6 @@ class SupplyController extends Controller
       */
     public function serviceShowDetails($id)
     {
-        //dd($id);
         $pageTitle = 'جزییات درخواست های خدمت';
         $records = RequestRecord::where([['request_id',$id],['step',1],['active',0],['refuse_user_id',null]])->get();
         return view ('admin.serviceShowDetails',compact('pageTitle','records'));
@@ -121,17 +118,18 @@ class SupplyController extends Controller
         $array = array('why_not'=>$request->whyNot , 'step'=> 2 , 'refuse_user_id' => $refuseId);
         $requestRecord = new RequestRecord();
         $update = $requestRecord->where('id',$request->id)->update($array);
+//        return response()->json('hello');
         if($update)
         {
             $req = new Request2();
-            $req->where('id',$request->requestId)->increment('request_opt');
+            $req->where('id',$request->requestId)->increment('refuse_record_count');
             $requestOpt = $req->where('id',$request->requestId)->value('request_opt');
-            $requestQty = $req->where('id',$request->requestId)->value('request_Qty');
-            if($requestOpt === $requestQty)
-            {
-                $req->where('id',$request->requestId)->update(['active' => 1]);
-            }
-            return response('درخواست مربوطه با ثبت دلیل رد شد');
+//            $requestQty = $req->where('id',$request->requestId)->value('request_Qty');
+//            if($requestOpt === $requestQty)
+//            {
+//                $req->where('id',$request->requestId)->update(['active' => 1]);
+//            }
+//            return response('درخواست مربوطه با ثبت دلیل رد شد');
         }
 
     }
@@ -318,6 +316,7 @@ class SupplyController extends Controller
     */
     public function workerCardManage()
     {
+
         $userId = Auth::user()->id;
         $workers = Workers::where([['active',0],['user_id' , $userId]])->orderBy('date')->get();
         foreach ($workers as $worker) {
@@ -340,6 +339,10 @@ class SupplyController extends Controller
         $date = Verta::getJalali($year, $month, $day);
         $myDate = $date[0] . '/' . $date[1] . '/' . $date[2];
         return $myDate;
+
+        $pageTitle="لیست کارت های کارگری";
+        return view ('admin.exportedWorkersCard',compact('pageTitle'));
+
     }
 
     /* shiri
@@ -347,7 +350,8 @@ class SupplyController extends Controller
      * */
     public function workerCardCreate()
     {
-        return view ('admin.workerCardCreate');
+        $pageTitle="آپلود کارت کارگری";
+        return view ('admin.workerCardCreate',compact('pageTitle'));
     }
 
     /* shiri
@@ -390,20 +394,11 @@ class SupplyController extends Controller
             }
     }
 
-
-
-    /**************** as see blow this function gets year,month and day and return Gregorian date in array format...*****/
-
-    /**
-     * @param $year
-     * @param $month
-     * @param $day
-     * @return array
-     */
     public function jalaliToGregorian($year, $month, $day)
     {
         return Verta::getGregorian($year, $month, $day);
     }
+
 
     /*  shiri
         below function is related to search on date. Means that this function get 2 jalali date , first convert them to gregorian date then by
@@ -443,6 +438,52 @@ class SupplyController extends Controller
             $date->card = 'data:image/jpeg;base64,'.$date->card;
         }
         return response()->json(compact('data'));
+
+    public function productRequestManagement()
+    {
+        $pageTitle='مدیریت درخواست کالا';
+        $pageName='productRequestManagement';
+        $productRequests=Request2::where([['request_type_id',3],['active',0]])->get();
+        foreach($productRequests as $productRequest)
+        {
+            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null]])->count();
+            $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+        }
+
+        return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
+    }
+    public function productRequestRecords($id)
+    {
+        $pageTitle='رکوردهای درخواست شماره '.$id;
+        $requestRecords=RequestRecord::where([['request_id',$id],['price',0],['refuse_user_id',null]])->get();
+        return view ('admin.productRequestRecords',compact('pageTitle','requestRecords'));
+    }
+    public function serviceRequestManagement()
+    {
+        $pageTitle='مدیریت درخواست خدمت';
+        $serviceRequests=Request2::where([['request_type_id',2],['active',0]])->get();
+        return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests'));
+    }
+    public function refusedProductRequestManagementGet()
+    {
+        $pageTitle='درخواست های رد شده';
+        $pageName='refusedProductRequestManagement';
+        $productRequests=Request2::where([['request_type_id',3],['active',0],['refuse_record_count','!=',0]])->get();
+        return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
+    }
+    public function acceptProductRequestManagementGet()
+    {
+        //change it later
+        $pageTitle='درخواست های تایید شده';
+        $pageName='acceptProductRequestManagement';
+        $productRequests=Request2::where([['request_type_id',3],['active',0],['refuse_record_count','!=',0]])->get();
+        foreach($productRequests as $productRequest)
+        {
+            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null]])->count();
+            $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+        }
+        return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
+
     }
 
 }
