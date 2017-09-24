@@ -316,7 +316,7 @@ class SupplyController extends Controller
     */
     public function workerCardManage()
     {
-
+        $pageTitle='مدیریت کارت های کارگری';
         $userId = Auth::user()->id;
         $workers = Workers::where([['active',0],['user_id' , $userId]])->orderBy('date')->get();
         foreach ($workers as $worker) {
@@ -324,7 +324,7 @@ class SupplyController extends Controller
             $worker->card = 'data:image/jpeg;base64,'.$worker->card;
         }
         //dd($workers);
-        return view ('admin.workerCardManage',compact('workers'));
+        return view ('admin.workerCardManage',compact('workers','pageTitle'));
     }
 
     //below function is to convert to jalali

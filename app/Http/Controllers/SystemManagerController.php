@@ -17,14 +17,16 @@ class SystemManagerController extends Controller
     //Kianfar : return signature list view
     public function getSignatures()
     {
+        $pageTitle="مدیریت امضاها";
         $signatures=Signature::all();
-        return view('system_manager.signature',compact('signatures'));
+        return view('system_manager.signature',compact('signatures','pageTitle'));
     }
     //Kianfar : return add new signature view
     public function getAddSignature()
     {
+        $pageTitle="درج امضای جدید";
         $units=Unit::where('active',1)->get();
-        return view('system_manager.add_signature',compact('units'));
+        return view('system_manager.add_signature',compact('units','pageTitle'));
     }
     //Kianfar : load user's of the unit that has been selected in add signature view
     public function unit_user_list(Request $request)
