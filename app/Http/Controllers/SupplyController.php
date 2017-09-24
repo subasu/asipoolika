@@ -426,19 +426,17 @@ class SupplyController extends Controller
         }
         $gDate2 = $gDate2[0] . '-' . $gDate2[1] . '-' . $gDate2[2];
 
-        switch ($id)
-        {
+        switch ($id) {
             case 1 :
-                $data = Workers::whereBetween('date', [$gDate1, $gDate2])->where( [['active', 0] , ['user_id' , $userId]])->orderBy('date')->get();
+                $data = Workers::whereBetween('date', [$gDate1, $gDate2])->where([['active', 0], ['user_id', $userId]])->orderBy('date')->get();
                 break;
         }
-        foreach ($data as $date)
-        {
+        foreach ($data as $date) {
             $date->date = $this->toPersian($date->date);
-            $date->card = 'data:image/jpeg;base64,'.$date->card;
+            $date->card = 'data:image/jpeg;base64,' . $date->card;
         }
         return response()->json(compact('data'));
-
+    }
     public function productRequestManagement()
     {
         $pageTitle='مدیریت درخواست کالا';
