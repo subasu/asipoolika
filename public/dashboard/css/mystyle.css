@@ -20,3 +20,18 @@
 .image-preview-input-title {
     margin-left:2px;
 }
+.table tbody tr > td.success {
+    background-color: #5cb85c !important;
+    font-size:30px;
+    color:white;
+}
+.table tbody tr > td.success:a {
+    background-color: #5cb85c !important;
+    font-size:30px;
+    color:white;
+}
+.table tbody tr > td.danger {
+    background-color: #d9534f !important;
+    font-size:30px;
+    color:white;
+}

@@ -1,29 +1,26 @@
 @extends('layouts.adminLayout');
 @section('content')
-
-        <!-- Modal -->
-<form>
-    {{csrf_field()}}
-    <div id="commentModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" style="direction: rtl;">رد درخواست</h4>
-                </div>
-                <div class="modal-body">
-                    <h4 style="direction: rtl;">لطفا دلیل رد درخواست را بطور کامل تایپ کنید.</h4>
-                    <textarea class="form-control" id="whyNot" name="whyNot" placeholder=""></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button style="margin-left:40%; width: 30%;" type="button" class="btn btn-primary" id="sub" data-dismiss="modal">ثبت</button>
-                </div>
+<!-- Modal -->
+<div id="why_not_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" style="font-size: 20px;">&times;</button>
+                <h4 class="modal-title">رد رکورد درخواست</h4>
             </div>
-            <input type="hidden" id="token" value="{{ csrf_token() }}">
+            <div class="modal-body" style="text-align: right">
+                <label for="why_not" style="font-size: 20px;">دلیل خود برای رد این درخواست را بنویسید تا به اطلاع درخواست کننده برسد</label>
+                 <textarea id="why_not" style="text-align: right" maxlength="300" required="required" class="form-control" name="why_not" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="300" data-parsley-minlength-message="شما حداقل باید 20 کاراکتر وارد کنید"
+                           data-parsley-validation-threshold="10"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="why_not_btn" name="why_not_btn" class="btn btn-primary col-md-12">ثبت دلیل</button>
+            </div>
         </div>
+
     </div>
-</form>
+</div>
 
 <div class="clearfix"></div>
 <div class="row">
@@ -68,7 +65,8 @@
                                 <td><input type="text" class="form-control" id="price" name="price"/></td>
                                 <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>
-                                <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری" /> <input id="refuseRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن" /></td>
+                                <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
+                                <input id="refuseRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن" /></td>
                             </tr>
                         @endforeach
                     {{--</form>--}}
@@ -79,6 +77,7 @@
     </div>
 
 <script>
+
 
     /**
      * Created by Arash on 9/16/2017.
@@ -174,17 +173,14 @@
     });
 
 
-
-
     $(document).on('click','#refuseRequest',function(){
         var id = $(this).attr('content');
         var requestId = $(this).attr('name');
         var td = $(this);
         var DOM = $('#table');
-        $('#commentModal').modal('show');
-
-        $('#sub').click(function(){
-            var whyNot = $('#whyNot').val();
+        $('#why_not_modal').modal('show');
+        $('#why_not_btn').click(function(){
+            var whyNot = $('#why_not').val();
             var token = $('#token').val();
 
             $.ajaxSetup({

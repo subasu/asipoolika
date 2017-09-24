@@ -111,17 +111,18 @@ class SupplyController extends Controller
         $array = array('why_not'=>$request->whyNot , 'step'=> 2 , 'refuse_user_id' => $refuseId);
         $requestRecord = new RequestRecord();
         $update = $requestRecord->where('id',$request->id)->update($array);
+//        return response()->json('hello');
         if($update)
         {
             $req = new Request2();
-            $req->where('id',$request->requestId)->increment('request_opt');
+            $req->where('id',$request->requestId)->increment('refuse_record_count');
             $requestOpt = $req->where('id',$request->requestId)->value('request_opt');
-            $requestQty = $req->where('id',$request->requestId)->value('request_Qty');
-            if($requestOpt === $requestQty)
-            {
-                $req->where('id',$request->requestId)->update(['active' => 1]);
-            }
-            return response('درخواست مربوطه با ثبت دلیل رد شد');
+//            $requestQty = $req->where('id',$request->requestId)->value('request_Qty');
+//            if($requestOpt === $requestQty)
+//            {
+//                $req->where('id',$request->requestId)->update(['active' => 1]);
+//            }
+//            return response('درخواست مربوطه با ثبت دلیل رد شد');
         }
 
     }
@@ -355,13 +356,20 @@ class SupplyController extends Controller
     public function productRequestManagement()
     {
         $pageTitle='مدیریت درخواست کالا';
+        $pageName='productRequestManagement';
         $productRequests=Request2::where([['request_type_id',3],['active',0]])->get();
-        return view ('admin.productRequestManagement', compact('pageTitle','productRequests'));
+        foreach($productRequests as $productRequest)
+        {
+            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null]])->count();
+            $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+        }
+
+        return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
-    public function productRequestInfo($id)
+    public function productRequestRecords($id)
     {
         $pageTitle='رکوردهای درخواست شماره '.$id;
-        $requestRecords=RequestRecord::where([['request_id',$id],['price',0]])->get();
+        $requestRecords=RequestRecord::where([['request_id',$id],['price',0],['refuse_user_id',null]])->get();
         return view ('admin.productRequestRecords',compact('pageTitle','requestRecords'));
     }
     public function serviceRequestManagement()
@@ -369,5 +377,12 @@ class SupplyController extends Controller
         $pageTitle='مدیریت درخواست خدمت';
         $serviceRequests=Request2::where([['request_type_id',2],['active',0]])->get();
         return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests'));
+    }
+    public function refusedProductRequestManagementGet()
+    {
+        $pageTitle='درخواست های رد شده';
+        $pageName='refusedProductRequestManagement';
+        $productRequests=Request2::where([['request_type_id',3],['active',0],['refuse_record_count','!=',0]])->get();
+        return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
 }
