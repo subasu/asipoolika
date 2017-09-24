@@ -103,7 +103,7 @@
             var pic    = $('#pic').val();
 
             var formData = new FormData($('#dealForm')[0]);
-            
+
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -148,12 +148,13 @@
                         },
                         success:function(response)
                         {
-                            swal({
-                                title: "",
-                                text: response,
-                                type: "info",
-                                confirmButtonText: "بستن"
-                            });
+//                            swal({
+//                                title: "",
+//                                text: response,
+//                                type: "info",
+//                                confirmButtonText: "بستن"
+//                            });
+                            window.location.href = "workerCardManage";
                         },error:function(error)
                         {
                             swal({

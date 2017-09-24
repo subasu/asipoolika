@@ -150,7 +150,7 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/workerCardCreate')}}">آپلود کارت کارگری</a>
                                     </li>
-                                    <li><a href="{{url('admin/exportedWorkersCard')}}">کارتهای کارگری صادر شده</a>
+                                    <li><a href="{{url('admin/workerCardManage')}}">کارتهای کارگری صادر شده</a>
                                     </li>
                                 </ul>
                             </li>

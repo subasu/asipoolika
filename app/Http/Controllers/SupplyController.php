@@ -5,14 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AcceptServiceRequestValidation;
 use App\Models\Request2;
 use App\Models\RequestRecord;
+use App\Models\Workers;
 use App\User;
 use App\Models\Unit;
+
+
+
 use Carbon\Carbon;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+
+
 
 class SupplyController extends Controller
 {
@@ -310,9 +316,30 @@ class SupplyController extends Controller
     /* shiri
        below function is related to show exported workers card
     */
-    public function exportedWorkersCard()
+    public function workerCardManage()
     {
-        return view ('admin.exportedWorkersCard');
+        $userId = Auth::user()->id;
+        $workers = Workers::where([['active',0],['user_id' , $userId]])->orderBy('date')->get();
+        foreach ($workers as $worker) {
+            $worker->date = $this->toPersian($worker->date);
+            $worker->card = 'data:image/jpeg;base64,'.$worker->card;
+        }
+        //dd($workers);
+        return view ('admin.workerCardManage',compact('workers'));
+    }
+
+    //below function is to convert to jalali
+    public function toPersian($date)
+    {
+        $gDate = $date;
+        if ($date = explode('-', $gDate)) {
+            $year  = $date[0];
+            $month = $date[1];
+            $day   = $date[2];
+        }
+        $date = Verta::getJalali($year, $month, $day);
+        $myDate = $date[0] . '/' . $date[1] . '/' . $date[2];
+        return $myDate;
     }
 
     /* shiri
@@ -377,4 +404,45 @@ class SupplyController extends Controller
     {
         return Verta::getGregorian($year, $month, $day);
     }
+
+    /*  shiri
+        below function is related to search on date. Means that this function get 2 jalali date , first convert them to gregorian date then by
+        sql queries serch on date field and then return the result
+    */
+    public function searchOnDate(Request $request,$id)
+    {
+        $userId = Auth::user()->id;
+        $date1 = trim($request->date1);
+        if ($dat1 = explode('/', $date1)) {
+            $year = $dat1[0];
+            $month = $dat1[1];
+            $day = $dat1[2];
+            $gDate1 = $this->jalaliToGregorian($year, $month, $day);
+        }
+        $gDate1 = $gDate1[0] . '-' . $gDate1[1] . '-' . $gDate1[2];
+
+        /***** give second  jalali date and convert it to gregorian date *****/
+        $date2 = trim($request->date2);
+        if ($dat2 = explode('/', $date2)) {
+            $year = $dat2[0];
+            $month = $dat2[1];
+            $day = $dat2[2];
+            $gDate2 = $this->jalaliToGregorian($year, $month, $day);
+        }
+        $gDate2 = $gDate2[0] . '-' . $gDate2[1] . '-' . $gDate2[2];
+
+        switch ($id)
+        {
+            case 1 :
+                $data = Workers::whereBetween('date', [$gDate1, $gDate2])->where( [['active', 0] , ['user_id' , $userId]])->orderBy('date')->get();
+                break;
+        }
+        foreach ($data as $date)
+        {
+            $date->date = $this->toPersian($date->date);
+            $date->card = 'data:image/jpeg;base64,'.$date->card;
+        }
+        return response()->json(compact('data'));
+    }
+
 }

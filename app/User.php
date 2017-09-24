@@ -82,4 +82,10 @@ class User extends Authenticatable
         return $this->belongsTo('App\User','supervisor_id');
     }
 
+    //shiri: this function is related to relation of user and worker
+    public function worker()
+    {
+        return $this->hasMany('App\Models\Workers','user_id');
+    }
+
 }

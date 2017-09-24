@@ -51,9 +51,10 @@ Route::group(['prefix'=>'admin'],function() {
     Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
     Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');   //96/6/27
     Route::get('showToCreditManager','CertificateController@showToCreditManager');
-    Route::get('exportedWorkersCard' ,'SupplyController@exportedWorkersCard');   //96/7/1
     Route::get('workerCardCreate' ,'SupplyController@workerCardCreate');        //96/7/1
-    Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
+    Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');             //96/7/1
+    Route::get('workerCardManage' ,'SupplyController@workerCardManage');        //96/7/2
+    Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');          //96/7/2
     // Route::get('kiayanfar','RequestController@kiyanfar');
 
     //rayat - users manage:
