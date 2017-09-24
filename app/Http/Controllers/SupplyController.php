@@ -1,17 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
-
+//use Illuminate\Http\File;
 use App\Http\Requests\AcceptServiceRequestValidation;
 use App\Models\Request2;
 use App\Models\RequestRecord;
 use App\User;
 use App\Models\Unit;
 use Carbon\Carbon;
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\File;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class SupplyController extends Controller
 {
@@ -325,16 +326,24 @@ class SupplyController extends Controller
     /* shiri
        below function is to insert workers card to data base....
     */
+
     public function addWorkerCard(Request $request)
     {
         //dd('hello');
         if($request->hasFile('image'))
         {
-            $date = new Carbon();
-            $date = $date->toDateString();
+            $jDate = $request->date;
+            if ($date = explode('/', $jDate)) {
+                $year  = $date[0];
+                $month = $date[1];
+                $day   = $date[2];
+            }
+            $gDate = $this->jalaliToGregorian($year, $month, $day);
+            $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
             $file = $request->image;
             $file->move(public_path(), $request->image->getClientOriginalName());
             $path = public_path() . '\\' . $request->image->getClientOriginalName();
+            //dd($path);
             $image = file_get_contents($path);
             File::delete($path);
             $fileName = base64_encode($image);
@@ -342,7 +351,7 @@ class SupplyController extends Controller
                 [
                     'card' => $fileName,
                     'user_id' => Auth::user()->id,
-                    'date'    => $request->date,
+                    'date'    => $gDate1,
                     'name'    => $request->name,
                     'family'  => $request->family
                 ]
@@ -353,10 +362,12 @@ class SupplyController extends Controller
                 return response('لطفا فایل عکس کارگری خود را انتخاب نمایید ، سپس درخواست خود را وارد نمایید');
             }
     }
+
     public function jalaliToGregorian($year, $month, $day)
     {
         return Verta::getGregorian($year, $month, $day);
     }
+
     public function productRequestManagement()
     {
         $pageTitle='مدیریت درخواست کالا';
@@ -396,4 +407,5 @@ class SupplyController extends Controller
         $productRequests=Request2::where([['request_type_id',3],['active',0],['refuse_record_count','!=',0]])->get();
         return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
+
 }
