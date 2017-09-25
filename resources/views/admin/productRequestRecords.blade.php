@@ -63,9 +63,9 @@
                                 <td>{{$requestRecord->title}}</td>
                                 <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
                                 <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">
-                                <input type="hidden" class="price" value="2000" name="count">
+                                <input type="hidden" class="" value="2000" name="count">
                                 <td><input type="text" class="form-control rate" id="rate"  name="rate"/></td>
-                                <td><input type="text" class="form-control show_price" id="price" name="price"/></td>
+                                <td><input type="text" class="form-control price" id="price" name="price"/></td>
                                 <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>
                                 <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
@@ -292,4 +292,23 @@
             {{--}--}}
         {{--});--}}
     {{--</script>--}}
+    <script>
+        function formatNumber (num) {
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+        }
+    </script>
+    <script>
+        $(document).on('keyup','.rate',function () {
+           //alert('hello');
+            var rate = $('input.rate').val();
+            var count = $('input.count').val();
+            var price = rate * count;
+            $('#price').val(formatNumber(price));
+            //alert(rate * count);
+            //alert(count);
+        });
+
+
+
+    </script>
 @endsection
