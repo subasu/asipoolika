@@ -202,7 +202,8 @@ class SupplyController extends Controller
     //rayat//show user create form
     public function unitsCreateGet()
     {
-        return view('admin.unitsCreate');
+        $pageTitle='درج واحد جدید';
+        return view('admin.unitsCreate',compact('pageTitle'));
     }
 
     //rayat//create user
@@ -231,8 +232,9 @@ class SupplyController extends Controller
     //Rayat//show unit manage
     public function unitsManageGet()
     {
+        $pageTitle='مدیریت واحدها';
         $data = Unit::all();
-        return view('admin.unitsManage', compact('data'));
+        return view('admin.unitsManage', compact('data','pageTitle'));
     } //Rayat//show user manage
 
     public function usersManageGet()

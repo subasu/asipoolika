@@ -35,3 +35,5 @@
     font-size:30px;
     color:white;
 }
+input {direction: rtl;
+text-align: right}
