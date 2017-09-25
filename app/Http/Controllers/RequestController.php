@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SendTicketValidation;
 use App\Http\Requests\ServiceRequestValidation;
+use App\Models\Conversation;
 use App\Models\RequestType;
 use App\Models\Ticket;
 use App\Models\Unit;
@@ -251,5 +252,9 @@ class RequestController extends Controller
     public function ticketConversation($id)
     {
         //
+        $pageTitle = 'مشاهده جزییات تیکت ها';
+        $conversations = Conversation::where('ticket_id',$id)->get();
+        return view ('user.ticketConversation',compact('conversations','pageTitle'));
+
     }
 }

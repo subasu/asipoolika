@@ -3,6 +3,7 @@
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-2">
+            {{--@foreach($conversations as $conversation)--}}
             <div class="x_panel">
                 <div class="x_title">
                     <h2>  محتوای تیکت
@@ -16,19 +17,21 @@
                     <div class="clearfix"></div>
                 </div>
                 {{-- table --}}
+
                 <div class="col-md-12 col-sm-12 col-xs-12 ">
                     <div class="x_content" dir="rtl">
                             <div class="item form-group">
                                 <div class="col-md-9 col-sm-7 col-xs-12">
                                     <input id="title" class="form-control col-md-7 col-xs-10" name="title"
-                                           disabled type="text" style="margin-bottom: 1.5%;">
+                                           value="{{$conversation->ticket->title}}"      disabled type="text" style="margin-bottom: 1.5%;">
                                 </div>
                                 <label class="control-label col-md-3 col-sm-1 col-xs-2" for="unit_id"> واحد</label>
                         </div>
+
                             <div class="item form-group">
                                 <div class="col-md-9 col-sm-8 col-xs-12">
                                     <input id="title" class="form-control col-md-7 col-xs-10" name="title"
-                                          disabled type="text" style="margin-bottom: 1.5%;">
+                                           value="AAAAA"     disabled type="text" style="margin-bottom: 1.5%;">
                                 </div>
                                 <label class="control-label col-md-3 col-sm-1 col-xs-2 " for="title">عنوان تیکت</label>
                             </div>
@@ -39,10 +42,12 @@
                                 </div>
                                 <label class="control-label col-md-3 col-sm-1 col-xs-2" for="description">متن تیکت</label>
                             </div>
+
                     </div>
                 </div>
             </div>
         </div>
+        {{--@endforeach--}}
         <div class="col-md-8 col-sm-8 col-xs-12 col-md-offset-2">
             <div class="x_panel">
                 <div class="x_title">
@@ -102,4 +107,5 @@
                 </div>
             </div>
         </div>
+
 @endsection
