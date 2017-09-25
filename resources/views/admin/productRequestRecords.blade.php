@@ -28,6 +28,7 @@
         <div class="x_panel">
             <div class="x_title" style="direction: rtl">
                 @if(!empty($requestRecords[0]))
+                    <input type="hidden" value="{{$requestRecords[0]->id}}" name="request_id">
                     <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست کالای شماره :  {{$requestRecords[0]->request_id}} | ثبت شده توسط :   {{$requestRecords[0]->request->user->name}} {{$requestRecords[0]->request->user->family}} از واحد {{$requestRecords[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$requestRecords->count()}} رکورد</span></h2>
                 @endif
                 {{--<h2>لیست رکوردهای درخواست کالای شماره : {{$requestRecords[0]->request_id}}</h2>--}}
@@ -61,8 +62,10 @@
                                 <td>{{$requestRecord->id}}</td>
                                 <td>{{$requestRecord->title}}</td>
                                 <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
+                                <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">
+                                <input type="hidden" class="price" value="2000" name="count">
                                 <td><input type="text" class="form-control rate" id="rate"  name="rate"/></td>
-                                <td><input type="text" class="form-control price" id="price" name="price"/></td>
+                                <td><input type="text" class="form-control show_price" id="price" name="price"/></td>
                                 <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>
                                 <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
@@ -172,7 +175,6 @@
         }
     });
 
-
     $(document).on('click','#refuseRequest',function(){
         var id = $(this).attr('content');
         var requestId = $(this).attr('name');
@@ -258,47 +260,36 @@
     });
 
 </script>
-    <script>
-        $(document).ready(function(){
-            $('.rate').keypress(function(e){
-                if (this.value.length == 0 && e.which == 48 ){
-                    return false;
-                }
-            });
-            $('.rate').keyup(function(){
-                var rate=$(this).val();
-                var request_record_id=$('#count').attr('content');
-                alert(request_record_id);
-                if(rate.length>=4)
-                {
-                    $.ajax({
-                        url: "{{ url('price') }}",
-                        type: 'GET',
-                        dataType: 'json',
-                        data: {rate: rate,request_record_id:request_record_id},
-                        success: function(response) {
-                            $('#sellPriceS').html(response.specificPrice);
-                        },
-                        error: function(error) {
-                            var errors = error.responseJSON;
-                            console.log(errors);
-                        }
-                    });
-                }
-                else
-                    $('#sellPriceS').html('عدد کامل وارد کنید');
+ {{--<script>--}}
+        {{--$(document).ready(function(){--}}
+            {{--$('.rate').keypress(function(e){--}}
+                {{--if (this.value.length == 0 && e.which == 48 ){--}}
+                    {{--return false;--}}
+                {{--}--}}
+            {{--});--}}
+            {{--$('.rate').keyup(function(){--}}
+                {{--var rate=$(this).val();--}}
+                {{--var record_count=$('#count').attr('content');--}}
+                {{--var a=$(this).closest('tr').children('input.show_price').val();--}}
+                {{--alert(a);--}}
+                {{--if(rate.length>=4)--}}
+                {{--{--}}
+                    {{--var price=rate*record_count;--}}
+                    {{--$(this).closest('tr').children('input.price').val(price);--}}
+                {{--}--}}
+                {{--else--}}
+                    {{--$('#sellPriceS').html('عدد کامل وارد کنید');--}}
+            {{--});--}}
 
-            });
-
-            function validateMaxLength()
-            {
-                var text = $(this).val();
-                var maxlength = $(this).data('maxlength');
-                if(maxlength > 0)
-                {
-                    $(this).val(text.substr(0, maxlength));
-                }
-            }
-        });
-    </script>
+            {{--function validateMaxLength()--}}
+            {{--{--}}
+                {{--var text = $(this).val();--}}
+                {{--var maxlength = $(this).data('maxlength');--}}
+                {{--if(maxlength > 0)--}}
+                {{--{--}}
+                    {{--$(this).val(text.substr(0, maxlength));--}}
+                {{--}--}}
+            {{--}--}}
+        {{--});--}}
+    {{--</script>--}}
 @endsection

@@ -323,7 +323,6 @@ class SupplyController extends Controller
             $worker->date = $this->toPersian($worker->date);
             $worker->card = 'data:image/jpeg;base64,'.$worker->card;
         }
-        //dd($workers);
         return view ('admin.workerCardManage',compact('workers','pageTitle'));
     }
 
@@ -448,12 +447,12 @@ class SupplyController extends Controller
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
         }
 
-        return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
+        return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
     public function productRequestRecords($id)
     {
         $pageTitle='رکوردهای درخواست شماره '.$id;
-        $requestRecords=RequestRecord::where([['request_id',$id],['price',0],['refuse_user_id',null]])->get();
+        $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null]])->get();
         return view ('admin.productRequestRecords',compact('pageTitle','requestRecords'));
     }
     public function serviceRequestManagement()

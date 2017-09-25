@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RequestRecord;
 use App\Models\UnitCount;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
@@ -48,8 +49,8 @@ class IndexController extends Controller
     public function ajaxPrice(Request $request)
     {
         $rate=$request->rate;
-        $priceCount=strlen($price);
-        $specificPrice=$this->holePrice($price,$priceCount);
-        return response()->json(compact('specificPrice'));
+        $request_record_count=$request->record_count;
+        $price=$rate*$request_record_count;
+        return response()->json(compact('price'));
     }
 }
