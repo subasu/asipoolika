@@ -161,10 +161,8 @@
 
                         console.log(response);
 
-//                        if(response){
-//                            var len = (response + '').length ;
-//                        }
-//                        alert(len);
+                        var len = response.data.length;
+                        console.log(len);
                         if(len == '')
                         {
                             swal({
