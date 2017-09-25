@@ -128,7 +128,8 @@ class RequestController extends Controller
     */
     public function ticketRequest()
     {
-        return view('user.ticketRequest');
+        $pageTitle = 'درخواست ارسال تیکت';
+        return view('user.ticketRequest',compact('pageTitle'));
     }
 
 }
