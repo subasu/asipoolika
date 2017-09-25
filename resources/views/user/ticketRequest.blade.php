@@ -25,8 +25,8 @@
                                 <div class="col-md-9 col-sm-6 col-xs-12">
                                     <select class="form-control col-md-7 col-xs-12" style="direction: rtl;" name="units" id="units">
                                         <option value="واحد مربوطه را انتخاب نمایید" class="text-right">واحد مربوطه را انتخاب نمایید</option>
-                                        <option value="واحد تدارکات" class="text-right">واحد تدارکات</option>
-                                        <option value="واحد انفورماتیک" class="text-right">واحد انفورماتیک</option>
+                                        <option value="تدارکات" class="text-right">واحد تدارکات</option>
+                                        <option value="انفورماتیک" class="text-right">واحد انفورماتیک</option>
                                     </select>
                                 </div>
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="unit_id"> واحد
