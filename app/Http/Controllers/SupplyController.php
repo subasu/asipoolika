@@ -222,7 +222,7 @@ class SupplyController extends Controller
             ]);
         $unit = new Unit();
         $unit->title = $request->title;
-        $unit->phone = $request->title;
+        $unit->phone = $request->phone;
         $unit->description = $request->description;
         $unit->organization_id = 1;
         $res = $unit->save();
@@ -274,8 +274,9 @@ class SupplyController extends Controller
     //Rayat//show edit unit in unitsManage
     public function unitsUpdateShow($id)
     {
+        $pageTitle='ویرایش واحد شماره : '.$id;
         $unit = Unit::where('id', $id)->get();
-        return view('admin.unitsUpdate', compact('unit'));
+        return view('admin.unitsUpdate', compact('unit','pageTitle'));
     }
 
     //Rayat//show edit unit in unitsManage

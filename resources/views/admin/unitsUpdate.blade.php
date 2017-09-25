@@ -19,8 +19,7 @@
                     <div class="clearfix"></div>
                 </div>
                 {{-- table --}}
-                <div class="col-md-3 col-sm-3 col-xs-12"></div>
-                <div class="col-md-6 col-sm-6 col-xs-12" dir="rtl">
+                <div class="col-md-8 col-sm-6 col-xs-12 col-md-offset-3" dir="rtl" style="font-size: 18px;">
                     <div class="x_content" dir="rtl">
                         @foreach($unit as $val)
                             <form style="text-align: right !important;" class="form-horizontal form-label-left" id="unit-send-form" method="POST" action="{{url('')}}">
@@ -32,8 +31,8 @@
                                                placeholder="" value="{{$val->title}}"
                                                required="required" type="text">
                                     </div>
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title"> عنوان <span
-                                                class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title"><span
+                                                class="required" style="color:red" title="پر کردن این فیلد الزامی است">*</span> عنوان
                                     </label>
                                     @if ($errors->has('title'))
                                         <span class="help-block">
@@ -65,8 +64,8 @@
                                 </div>
                                 <div class="ln_solid"></div>
                                 <div class="form-group">
-                                    <div class="col-md-6 ">
-                                        <button id="unit-send" type="button" class="col-md-3 btn btn-primary">ویرایش
+                                    <div class="col-md-12">
+                                        <button id="unit-send" type="button" class="col-md-6 btn btn-primary">ویرایش
                                         </button>
                                     </div>
                                 </div>

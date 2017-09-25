@@ -41,7 +41,7 @@
                             </div>
                             <div class="item form-group" {{ $errors->has('phone') ? ' has-error' : '' }}>
                                 <div class="col-md-9 col-sm-6 col-xs-12">
-                                    <input type="phone" id="tel" name="phone" required="required"
+                                    <input type="number" id="tel" name="phone" required="required"
                                            data-validate-length-range="8,20" class="form-control col-md-7 col-xs-12">
                                 </div>
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="phone">شماره داخلی
@@ -63,7 +63,7 @@
                             <div class="ln_solid"></div>
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <button id="unit-send" type="button" class="col-md-9 btn btn-primary">ثبت</button>
+                                    <button id="unit-send" type="button" class="col-md-12 btn btn-primary">ثبت</button>
                                 </div>
                             </div>
                         </form>

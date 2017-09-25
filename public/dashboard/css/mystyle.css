@@ -37,3 +37,6 @@
 }
 input {direction: rtl;
 text-align: right}
+textarea {direction: rtl;
+    text-align: right;
+    resize: vertical;}
