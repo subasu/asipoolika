@@ -24,10 +24,15 @@ Route::group(['prefix'=>'user'],function() {
         'roles'=>['author','admin']
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
+    //shiri
     Route::get('/serviceRequest','RequestController@serviceRequestGet');
-    Route::get('/ticketRequest','RequestController@ticketRequest');   //96/7/2
-    Route::get('/getUnits','RequestController@getUnits');             //96/7/2
     Route::post('sendService','RequestController@sendService');
+    Route::get('/ticketRequest','RequestController@ticketRequest');                         //96/7/2
+    Route::get('/getUnits','RequestController@getUnits');                                   //96/7/2
+    Route::post('sendTicket','RequestController@sendTicket');                               //96/7/3
+    Route::get('ticketsManagement','RequestController@ticketsManagement');                  //96/7/3
+    Route::post('searchOnDate/{id}','RequestController@searchOnDate');                      //96/7/3
+    Route::get('ticketConversation/{id}','RequestController@ticketConversation');          //96/7/3
 
 });
 
@@ -55,7 +60,7 @@ Route::group(['prefix'=>'admin'],function() {
 
     Route::get('/refusedProductRequestManagement','SupplyController@refusedProductRequestManagementGet');
     Route::get('/acceptProductRequestManagement','SupplyController@acceptProductRequestManagementGet');
-//shiri
+    //shiri
     Route::get('recentlyAddedService','SupplyController@recentlyAddedService');  //96/6/25
     Route::get('serviceShowDetails/{id}','SupplyController@serviceShowDetails'); //96/6/26
     Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
