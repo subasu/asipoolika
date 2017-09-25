@@ -63,13 +63,15 @@ Route::group(['prefix'=>'admin'],function() {
 
     Route::get('showToCreditManager','CertificateController@showToCreditManager');
     Route::get('workerCardCreate' ,'SupplyController@workerCardCreate');        //96/7/1
-
+    Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
     Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');             //96/7/1
+
     Route::get('workerCardManage' ,'SupplyController@workerCardManage');        //96/7/2
     Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');          //96/7/2
+    Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');       //96/7/2
     // Route::get('kiayanfar','RequestController@kiyanfar');
 
-    Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
+
 
 
     //rayat - users manage:

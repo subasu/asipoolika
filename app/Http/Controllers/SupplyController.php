@@ -338,10 +338,6 @@ class SupplyController extends Controller
         $date = Verta::getJalali($year, $month, $day);
         $myDate = $date[0] . '/' . $date[1] . '/' . $date[2];
         return $myDate;
-
-        $pageTitle="لیست کارت های کارگری";
-        return view ('admin.exportedWorkersCard',compact('pageTitle'));
-
     }
 
     /* shiri
@@ -483,4 +479,19 @@ class SupplyController extends Controller
 
     }
 
+
+    /* shiri
+       below function is related to to show workers card image
+      */
+    public function showWorkerCard($id)
+    {
+        //dd($id);
+        $pageTitle = 'نمایش تصویر کارت کارگری';
+        $cards = Workers::where('id',$id)->get();
+        foreach ($cards as $card) {
+            $card->card = 'data:image/jpeg;base64,'.$card->card;
+        }
+        //dd($cards);
+        return view('admin.showWorkerCard',compact('cards','pageTitle'));
+    }
 }
