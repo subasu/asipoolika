@@ -88,4 +88,10 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Workers','user_id');
     }
 
+    //shiri : this function is related to relation of user and ticket
+    public function ticket()
+    {
+        return $this->hasMany('App\Models\Ticket');
+    }
+
 }

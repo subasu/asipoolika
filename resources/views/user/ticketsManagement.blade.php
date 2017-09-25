@@ -5,7 +5,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2> مدیریت کاربران</h2>
+                    <h2> بررسی تیکت ها</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i
                                         class="fa fa-chevron-up"></i></a>
@@ -18,80 +18,84 @@
                 <div class="col-md-12">
 
                 </div>
-                <form id="myForm">
-                    <div class="container">
-                        {{ csrf_field() }}
-                        <div class="col-md-3 col-sm-3 col-xs-12 form-group pull-right">
-                            <input type="text" class="form-control" style="text-align:right;" id="date1"
-                                   name="date1" placeholder="از تاریخ" min="1" max="5">
-                        </div>
-                        <div class="col-md-3 col-sm-3 col-xs-12 form-group pull-right">
-                            <input type="text" class="form-control" style="text-align:right;" id="date2"
-                                   name="date2" placeholder=" تا تاریخ" min="1" max="5">
-                        </div>
-                        <input type="hidden" id="token" value="{{ csrf_token() }}">
-                        <button id="search" type="button" class="col-md-2 btn btn-info" style="font-weight: bold; margin-left: 30%">
-
-                            جستجو
-                        </button>
+                <div class="container">
+                    <div class="col-md-3 col-sm-3 col-xs-12 form-group pull-right">
+                        <input type="text" class="form-control" style="text-align:right;" id="date1"
+                               name="date1" placeholder="از تاریخ" min="1" max="5">
                     </div>
-                </form>
+                    <div class="col-md-3 col-sm-3 col-xs-12 form-group pull-right">
+                        <input type="text" class="form-control" style="text-align:right;" id="date2"
+                               name="date2" placeholder=" تا تاریخ" min="1" max="5">
+                    </div>
+                    <a id="user-send" type="button" class="col-md-2 btn btn-danger " href="{{url('user/ticketRequest')}}" style="font-weight: bold;"><i
+                                class="fa fa-user-plus"></i>
+                        ارسال تیکت جدید
+                    </a>
+                    <button id="search" type="button" class="col-md-2 btn btn-success" href="{{url('user/ticketRequest')}}" style="margin-left: 150px;">
+                            جستجو
+                    </button>
+
+                </div>
                 <div class="x_content">
                     <table style="direction:rtl;text-align: center" id="example"
                            class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <input type="hidden" id="token" value="{{ csrf_token() }}">
                         <thead>
                         <tr>
-                            <th style="text-align: center">شناسه</th>
-                            <th style="text-align: center">نام و نام خانودگی صادر کننده</th>
-                            <th style="text-align: center"> نام و نام خانوادگی کارگر</th>
-                            <th style="text-align: center">تاریخ درج</th>
-                            <th style="text-align: center">نمایش کارت</th>
+                            <th style="text-align: center" class="">شناسه</th>
+                            <th style="text-align: center" class="">نام واحد</th>
+                            <th style="text-align: center;" > عنوان تیکت</th>
+                            <th style="text-align: center;" class="col-md-2">تاریخ ثبت تیکت</th>
+                            <th style="text-align: center;border-left: 1px solid #ddd;">وضعیت</th>
+                            <th style="text-align: center;" class="col-md-3">عملیات</th>
                         </tr>
                         </thead>
-
                         <tbody id="change">
-                        @foreach($workers as $worker)
-                            <tr class="unit">
-                                <td class="col-md-1">
-                                    {{$worker->id}}
-                                </td>
-                                <td id="adminName">
-                                    {{$worker->user->name.chr(10).$worker->user->family}}
-                                </td>
-                                <td>
-                                    {{$worker->name.chr(10).$worker->family}}
-                                </td>
-                                <td>
-                                    {{$worker->date}}
-                                </td>
-                                <td class="statusUser" id="">
-                                    <a class="btn btn-success" href="{{URL::asset('admin/showWorkerCard')}}/{{$worker->id}}">نمایش کارت</a>
-                                </td>
-
-                            </tr>
+                         @foreach($tickets as $ticket)
+                        <tr class="unit">
+                            <td>
+                                {{$ticket->id}}
+                            </td>
+                            <td>
+                                {{$ticket->unit->title}}
+                            </td>
+                            <td>
+                                {{$ticket->title}}
+                            </td>
+                            <td>
+                                {{$ticket->date}}
+                            </td>
+                            <td style="border-left: 1px solid #ddd;">
+                                @if($ticket->status == 0)
+                                    در حال بررسی
+                                @endif
+                                @if($ticket->status == 1)
+                                        اتمام تیکت
+                                @endif
+                            </td>
+                            <td>
+                                <a class="col-md-6 col-md-offset-3 btn btn-success" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
+                            </td>
+                        </tr>
                         @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        {{--edit user's status by user-id --}}
         <script src="{{URL::asset('public/js/persianDatepicker.js')}}"></script>
         <script>
             $('#date1').persianDatepicker();
             $('#date2').persianDatepicker();
         </script>
-
         <script>
+            $(document).on('click','#search',function(){
+                var date1 = $('#date1').val();
+                var date2 = $('#date2').val();
 
-
-            $('#search').click(function () {
-                var date1=$('#date1').val();
-                var date2=$('#date2').val();
                 var token=$('#token').val();
-                var name =$('#adminName').text();
-               // alert(name);
+
+                // alert(name);
 
 //            alert(date1);
 //            alert(date2);
@@ -103,7 +107,7 @@
                 $.ajax
                 ({
 
-                    url:"{{Url('admin/searchOnDate')}}/{{1}}",
+                    url:"{{Url('user/searchOnDate')}}/{{1}}",
                     type:'post',
                     dataType:'json',
                     data:{'date1':date1,'date2':date2,'_token':token},
@@ -173,20 +177,39 @@
                             });
                             return false;
                         }else
-                            {
-                                $('#change').empty();
-                                $.each(response.data,function(key,value) {
-                                    $('#change').append(
+                        {
+                            $('#change').empty();
+                            $.each(response.data,function(key,value) {
+                                if(value.status == 0)
+                                {
+                                        $('#change').append(
+
                                         "<tr   class='unit'>" +
                                         "<td   id='date'>" + value.id+ "</td>" +
-                                        "<td   id='date'>" + name + "</td>" +
-                                        "<td   id='date'>" + value.name + ' ' + value.family + "</td>" +
-                                        "<td   id='time1'>" + value.date + "</td>" +
-                                        "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("admin/showWorkerCard")}}/"+value.id+"'>نمایش عکس کارت</a></td>"+
+                                        "<td   id='date'>" + value.title + "</td>" +
+                                        "<td   id='date'>" + value.title + "</td>" +
+                                        "<td   id='date'>" + value.date + "</td>" +
+                                        "<td   id='time1'>در حال بررسی</td>" +
+                                        "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
                                         "</tr>");
+                                }
+                                if(value.status == 1)
+                                {
+                                    $('#change').append(
 
-                                });
-                            }
+                                        "<tr   class='unit'>" +
+                                        "<td   id='date'>" + value.id+ "</td>" +
+                                        "<td   id='date'>" + value.title + "</td>" +
+                                        "<td   id='date'>" + value.title + "</td>" +
+                                        "<td   id='date'>" + value.date + "</td>" +
+                                        "<td   id='time1'>اتمام تیکت</td>" +
+                                        "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
+                                        "</tr>");
+                                }
+
+
+                            });
+                        }
 
                     },error:function (error) {
 
@@ -203,4 +226,5 @@
 
             });
         </script>
+    {{--edit user's status by user-id --}}
 @endsection

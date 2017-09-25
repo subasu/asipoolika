@@ -201,7 +201,7 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>
                                     </li>
-                                    <li><a href="">پیگیری تیکت</a>
+                                    <li><a href="{{url('user/ticketsManagement')}}">پیگیری تیکت</a>
                                     </li>
                                 </ul>
                             </li>

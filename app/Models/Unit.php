@@ -19,4 +19,10 @@ class Unit extends Model
     {
         return $this->blongsTo('App\Models\Organization');
     }
+
+    //shiri : relation of unit and ticket
+    public function ticket()
+    {
+        return $this->hasMany('App\Models\Ticket','unit_id');
+    }
 }
