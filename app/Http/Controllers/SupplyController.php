@@ -457,8 +457,14 @@ class SupplyController extends Controller
     public function serviceRequestManagement()
     {
         $pageTitle='مدیریت درخواست خدمت';
+        $pageName='serviceRequestManagement';
         $serviceRequests=Request2::where([['request_type_id',2],['active',0]])->get();
-        return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests'));
+        foreach($serviceRequests as $serviceRequest)
+        {
+            $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null]])->count();
+            $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+        }
+        return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
     }
     public function refusedProductRequestManagementGet()
     {

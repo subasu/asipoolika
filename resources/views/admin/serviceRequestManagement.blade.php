@@ -1,37 +1,40 @@
 @extends('layouts.adminLayout');
 @section('content')
 
-
         <!-- Modal -->
-<form>
-    {{csrf_field()}}
-    <div id="commentModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" style="direction: rtl; font-size: 20px;">رد درخواست</h4>
-                </div>
-                <div class="modal-body">
-                    <h4 style="direction: rtl; font-size: 20px;">لطفا دلیل رد درخواست را بطور کامل تایپ کنید.</h4>
-                    <textarea class="form-control" id="comment" name="comment" placeholder=""></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button style="margin-left:40%; width: 30%;font-size: 20px;" type="button" class="btn btn-primary" id="sub" data-dismiss="modal">ثبت</button>
-                </div>
+<div id="commentModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="direction: ltr; font-size: 20px;">رد درخواست</h4>
             </div>
-            <input type="hidden" id="token" value="{{ csrf_token() }}">
+            <div class="modal-body" style="direction: rtl;text-align:right;">
+                <label for="comment" style="direction: rtl; font-size: 20px;">لطفا دلیل رد درخواست را بطور کامل تایپ کنید.</label>
+                <textarea style="" class="form-control" id="comment" name="comment"></textarea>
+            </div>
+            <div class="modal-footer  col-md-12">
+                <button style="margin-left:40%; width: 30%;font-size: 20px;" type="button" class="btn btn-primary" id="sub" data-dismiss="modal">ثبت</button>
+            </div>
         </div>
+        <input type="hidden" id="token" value="{{ csrf_token() }}">
     </div>
-</form>
+</div>
+
 
 <div class="clearfix"></div>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2> مدیریت درخواست های خدمت تازه ثبت شده</h2>
+                @if($pageName=='productRequestManagement')
+                    <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت درخواست های کالا تازه ثبت شده</h2>
+                @elseif($pageName=='refusedProductRequestManagement')
+                    <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های کالای رد شده</h2>
+                @elseif($pageName=='acceptProductRequestManagement')
+                    <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های کالای تایید شده</h2>
+                @endif
                 <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
                     </li>
@@ -51,7 +54,20 @@
                         <th style="text-align: center ;">شناسه</th>
                         <th style="text-align: center ;">نام واحد</th>
                         <th style="text-align: center ;">درخواست دهنده</th>
-                        <th style="text-align: center ;"></th>
+                        @if(!empty($pageName))
+                            @if($pageName=='serviceRequestManagement')
+                                <th class="col-md-2" style="text-align: center ;">رکوردهای فعال</th>
+                                <th class="col-md-2" style="text-align: center ;">رکوردهای رد شده</th>
+                                <th class="col-md-1" style="text-align: center ;">عملیات</th>
+                            @elseif($pageName=='refusedProductRequestManagement')
+                                <th class="col-md-2" style="text-align: center ;">رکوردهای رد شده</th>
+                                {{--<th style="text-align: center ;">عملیات</th>--}}
+                            @elseif($pageName=='acceptProductRequestManagement')
+                                <th class="col-md-2" style="text-align: center ;">رکوردهای فعال</th>
+                                <th class="col-md-2" style="text-align: center ;">رکوردهای رد شده</th>
+                                <th class="col-md-1" style="text-align: center ;">عملیات</th>
+                            @endif
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -62,7 +78,20 @@
                             <td class="col-md-1">{{$serviceRequest->id}}</td>
                             <td> واحد {{$serviceRequest->user->unit->title}}</td>
                             <td>{{$serviceRequest->user->name .chr(10). $serviceRequest->user->family}}</td>
-                            <td><a class="btn btn-info" href="{{url('admin/productRequestInfo/'.$serviceRequest->id)}}">مشاهده جزییات</a>
+                            @if(!empty($pageName))
+                                @if($pageName=='serviceRequestManagement')
+                                    <td class="success">{{$serviceRequest->request_record_count}}</td>
+                                    <td class="danger">{{$serviceRequest->request_record_count_refused}}</td>
+                                    <td><a class="btn btn-info" href="{{url('admin/serviceRequestRecords/'.$serviceRequest->id)}}">مشاهده جزییات</a>
+                                @elseif($pageName=='refusedServiceRequestManagement')
+                                    <td  class="danger">{{$serviceRequest->refuse_record_count}}</td>
+                                    {{--<td>بررسی مجدد</td>--}}
+                                @elseif($pageName=='acceptServiceRequestManagement')
+                                    <td class="success">{{$serviceRequest->request_record_count}}</td>
+                                    <td class="danger">{{$serviceRequest->request_record_count_refused}}</td>
+                                    <td><a class="btn btn-info" href="{{url('admin/serviceRequestRecords/'.$serviceRequest->id)}}">مشاهده جزییات</a>
+                                @endif
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>

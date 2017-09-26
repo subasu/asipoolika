@@ -171,17 +171,13 @@
             {{--}--}}
         </script>
 
-
-
         <script>
-
             var count=0;
             var record_count=0;
             $('#add_to_list').click(function(){
                 count++;
                 var row_id='row'+count;
                 var select_id='select'+count;
-                //var row='<tr id="row'+count+'">'+
                 var product_title = $('#product_title').val();
                 var product_count = $('#product_count').val();
 
@@ -221,7 +217,6 @@
                     $('#table-row').append(row);
                     record_count++;
                     $('#record_count').val(record_count);
-
                 }
             });
             $(document).on('click','.remove_row', function(){
@@ -229,10 +224,7 @@
                 record_count--;
                 $('#record_count').val(record_count);
             });
-
         </script>
-
-
 
         <script>
             $('#save_request').click(function () {

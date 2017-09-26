@@ -26,7 +26,7 @@ Route::group(['prefix'=>'user'],function() {
     Route::post('/productRequest','RequestController@productRequestPost');
     //shiri
     Route::get('/serviceRequest','RequestController@serviceRequestGet');
-    Route::post('sendService','RequestController@sendService');
+    Route::post('serviceRequest','RequestController@serviceRequest');
     Route::get('/ticketRequest','RequestController@ticketRequest');                         //96/7/2
     Route::get('/getUnits','RequestController@getUnits');                                   //96/7/2
     Route::post('sendTicket','RequestController@sendTicket');                               //96/7/3
@@ -75,8 +75,6 @@ Route::group(['prefix'=>'admin'],function() {
     Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');          //96/7/2
     Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');       //96/7/2
     // Route::get('kiayanfar','RequestController@kiyanfar');
-
-
 
 
     //rayat - users manage:
