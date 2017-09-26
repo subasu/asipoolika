@@ -57,12 +57,11 @@ Route::group(['prefix'=>'admin'],function() {
     Route::get('/productRequestManagement','SupplyController@productRequestManagement');
     Route::get('/productRequestRecords/{id}','SupplyController@productRequestRecords');
     Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');
-
     Route::get('/refusedProductRequestManagement','SupplyController@refusedProductRequestManagementGet');
     Route::get('/acceptProductRequestManagement','SupplyController@acceptProductRequestManagementGet');
     //shiri
     Route::get('recentlyAddedService','SupplyController@recentlyAddedService');  //96/6/25
-    Route::get('serviceShowDetails/{id}','SupplyController@serviceShowDetails'); //96/6/26
+    Route::get('serviceRequestRecords/{id}','SupplyController@serviceShowDetails'); //96/6/26
     Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
     Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');   //96/6/27
 
