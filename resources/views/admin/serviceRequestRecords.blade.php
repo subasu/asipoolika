@@ -1,4 +1,4 @@
-@extends('layouts.adminLayout');
+@extends('layouts.adminLayout')
 @section('content')
 
     <!-- Modal -->
@@ -29,10 +29,10 @@
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
-                    <div class="x_title">
-                        @if(!empty($requestRecords[0]))
-                            <input type="hidden" value="{{$requestRecords[0]->id}}" name="request_id">
-                            <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست کالای شماره :  {{$requestRecords[0]->request_id}} | ثبت شده توسط :   {{$requestRecords[0]->request->user->name}} {{$requestRecords[0]->request->user->family}} از واحد {{$requestRecords[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$requestRecords->count()}} رکورد</span></h2>
+                    <div class="x_title" style="direction:rtl;">
+                        @if(!empty($records[0]))
+                            <input type="hidden" value="{{$records[0]->id}}" name="request_id">
+                            <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست خدمت شماره : {{$records[0]->request_id}} | ثبت شده توسط :   {{$records[0]->request->user->name}} {{$records[0]->request->user->family}} از واحد {{$records[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$records->count()}} رکورد</span></h2>
                         @endif
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
@@ -43,12 +43,12 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <table style="direction:rtl;text-align: center" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <table style="direction:rtl;text-align: center;font-size:15px;" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                             <thead>
                             <tr>
+                                <th style="text-align: center ;">شناسه</th>
                                 <th style="text-align: center ;">عنوان درخواست</th>
-                                <th style="text-align: center ;">براورد مقدار</th>
-                                <th style="text-align: center ;">توضیحات</th>
+                                <th style="text-align: center ;">مقدار/تعداد</th>
                                 <th style="text-align: center ;">نرخ (به تومان)</th>
                                 <th style="text-align: center ;">قیمت</th>
                                 <th style="text-align: center ;">عملیات</th>
@@ -61,12 +61,14 @@
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                             @foreach($records as $record)
                                 <tr>
+                                    <th style="text-align: center">{{$record->id}}</th>
                                     <td>{{$record->title}}</td>
-                                    <td>{{$record->count}}</td>
-                                    <td>{{$record->description}}</td>
+                                    <td>{{$record->count}} عدد</td>
                                     <td><input type="text" class="form-control" id="rate"  name="rate"/></td>
                                     <td><input type="text" class="form-control" id="price" name="price"/></td>
                                     <td>
+                                        <button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$record->description}}"> توضیحات
+                                        </button>
                                         <input id="acceptRequest" content="{{$record->id}}" name="{{$record->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
                                         <input id="refuseRequest" content="{{$record->id}}" name="{{$record->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن" />
                                     </td>
@@ -78,7 +80,6 @@
                     </div>
                 </div>
             </div>
-        </div>
 
     <script>
 

@@ -1,4 +1,4 @@
-@extends('layouts.adminLayout');
+@extends('layouts.adminLayout')
 @section('content')
 <!-- Modal -->
 <div id="why_not_modal" class="modal fade" role="dialog">
@@ -44,7 +44,7 @@
                 <table style="direction:rtl;text-align: center;font-size: 16px;" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th style="text-align: center ;">شماره</th>
+                        <th style="text-align: center ;">شناسه</th>
                         <th style="text-align: center ;">عنوان درخواست</th>
                         <th style="text-align: center ;">مقدار</th>
                         <th style="text-align: center ;">نرخ (به تومان)</th>
@@ -59,7 +59,7 @@
                         <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                         @foreach($requestRecords as $requestRecord)
                             <tr>
-                                <td>{{$requestRecord->id}}</td>
+                                <th style="text-align: center">{{$requestRecord->id}}</th>
                                 <td>{{$requestRecord->title}}</td>
                                 <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
                                 <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">

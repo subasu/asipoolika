@@ -27,7 +27,7 @@ class SupplyController extends Controller
     /* shiri
        below function is to show  all the uncertain service requests to the admin of supply
      */
-    
+
     public function recentlyAddedService()
     {
         $pageTitle = 'درخواست های خدمت';
@@ -54,11 +54,11 @@ class SupplyController extends Controller
     /*shiri
         below function is related to  show all request records and those details...
       */
-    public function serviceShowDetails($id)
+    public function serviceRequestRecords($id)
     {
         $pageTitle = 'جزئیات درخواست شماره : '.$id;
         $records = RequestRecord::where([['request_id',$id],['step',1],['active',0],['refuse_user_id',null]])->get();
-        return view ('admin.serviceShowDetails',compact('pageTitle','records'));
+        return view ('admin.serviceRequestRecords',compact('pageTitle','records'));
     }
 
     /* shiri
