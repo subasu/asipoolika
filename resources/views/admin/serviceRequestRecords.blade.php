@@ -177,8 +177,6 @@
         });
 
 
-
-
         $(document).on('click','#refuseRequest',function(){
             var id = $(this).attr('content');
             var requestId = $(this).attr('name');

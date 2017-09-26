@@ -4,7 +4,7 @@
     <div class="page-title">
         <div class="title_right">
             <h3>
-                درخواست خرید کالا
+درخواست خرید خدمت
             </h3>
         </div>
     </div>

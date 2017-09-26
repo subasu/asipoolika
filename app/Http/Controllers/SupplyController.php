@@ -99,6 +99,7 @@ class SupplyController extends Controller
     /*shiri
       function to refuse request record
     */
+
     public function refuseRequestRecord(Request $request)
     {
         if(!$request->ajax())
@@ -109,12 +110,15 @@ class SupplyController extends Controller
         $array = array('why_not'=>$request->whyNot , 'step'=> 2 , 'refuse_user_id' => $refuseId);
         $requestRecord = new RequestRecord();
         $update = $requestRecord->where('id',$request->id)->update($array);
-//        return response()->json('hello');
         if($update)
         {
             $req = new Request2();
-            $req->where('id',$request->requestId)->increment('refuse_record_count');
-            $requestOpt = $req->where('id',$request->requestId)->value('request_opt');
+            $q=$req->where('id',$request->requestId)->increment('refuse_record_count');
+            if($q)
+            {
+                return response('درخواست مربوطه با ثبت دلیل رد شد');
+            }
+//            $requestOpt = $req->where('id',$request->requestId)->value('request_opt');
 //            $requestQty = $req->where('id',$request->requestId)->value('request_Qty');
 //            if($requestOpt === $requestQty)
 //            {
@@ -122,7 +126,6 @@ class SupplyController extends Controller
 //            }
 //            return response('درخواست مربوطه با ثبت دلیل رد شد');
         }
-
     }
 
 

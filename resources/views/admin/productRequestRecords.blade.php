@@ -52,7 +52,6 @@
                         <th style="text-align: center ;">عملیات</th>
                     </tr>
                     </thead>
-
                     <tbody>
                     {{--<form id="serviceDetailForm">--}}
                         {{ csrf_field() }}
@@ -111,7 +110,6 @@
             return false;
         }else
         {
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')

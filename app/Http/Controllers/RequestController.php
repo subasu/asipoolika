@@ -76,6 +76,8 @@ class RequestController extends Controller
         return view('user.serviceRequest' ,compact('pageTitle'));
     }
 
+
+
     public function serviceRequest(Request $request)
     {
 //        $requestType = RequestType::where('title','درخواست خدمت')->value('id');
