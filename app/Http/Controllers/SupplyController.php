@@ -428,20 +428,32 @@ class SupplyController extends Controller
     {
         $pageTitle='مدیریت درخواست کالا';
         $pageName='productRequestManagement';
-        $productRequests=Request2::where([['request_type_id',3]])->get();
 
+        $me=Auth::user();
+        switch(trim($me->unit->title))
+        {
+            case 'تدارکات':
+                $step=1;
+                break;
+//            case 'انبار':
+//                $step=0;
+//                break;
+//            case 'ریاست':
+//                $step=0;
+//                break;
+//            case 'اعتبار':
+//                $step=0;
+//                break;
+            default: $step=1;
+        }
+
+        $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
+        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
         foreach($productRequests as $productRequest)
         {
-//            $all_records=RequestRecord::where('request_id',$productRequest->id)->count();
-//            $refused_records_count=Request2::where('id',$productRequest->id)->pluck('refuse_record_count');
-//            if($all_records==$refused_records_count[0])
-//            {
-//                Request2::where('id',$productRequest->request_id)->first()->delete();
-//            }
             $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null]])->count();
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
         }
-//        dd($refused_records_count[0]);
         return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
     public function productRequestRecords($id)
