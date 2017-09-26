@@ -101,10 +101,10 @@
                                 <tr>
                                     <th class="col-md-1">ردیف</th>
                                     {{--<th>کد کالا</th>--}}
-                                    <th class="col-md-2">عنوان کالا</th>
+                                    <th class="col-md-3">عنوان کالا</th>
                                     <th class="col-md-1">تعداد / مقدار</th>
                                     <th class="col-md-1">واحد سنجش</th>
-                                    <th class="col-md-4">توضیحات</th>
+                                    <th class="col-md-3">توضیحات</th>
                                     <th class="col-md-1">حذف</th>
                                 </tr>
                                 </thead>
