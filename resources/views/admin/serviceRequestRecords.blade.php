@@ -63,9 +63,10 @@
                                 <tr>
                                     <th style="text-align: center">{{$record->id}}</th>
                                     <td>{{$record->title}}</td>
-                                    <td>{{$record->count}} عدد</td>
-                                    <td><input type="text" class="form-control" id="rate"  name="rate"/></td>
-                                    <td><input type="text" class="form-control" id="price" name="price"/></td>
+                                    <td id="count" content="{{$record->count}}">{{$record->count}}</td>
+                                    <input type="hidden" class="count" value="{{$record->count}}" name="count">
+                                    <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
+                                    <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
                                     <td>
                                         <button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$record->description}}"> توضیحات
                                         </button>
@@ -89,88 +90,89 @@
 
         $(document).on('click','#acceptRequest',function(){
             var id= $(this).attr('content');
-            //alert(id);
             var requestId = $(this).attr('name');
-            //alert(requestId);
-            var rate  = $('#rate').val();
-            var price = $('#price').val();
+
+            var rate=$(this).parents('tr').find('.rate').val();
+            var price=$(this).parents('tr').find('.price').val();
+
+            price = price.replace(',', '');
+//        console.log(price);
+//        $('#rate').attr('content',price);
             var token = $('#token').val();
             var td = $(this);
             var DOM = $('#table');
 
-             if(rate == '' || rate == null)
-             {
-                 $('#rate').focus();
-                 $('#rate').css('border-color','red');
-                 return false;
-             }
+            if(rate == '' || rate == null)
+            {
+                $('#rate').focus();
+                $('#rate').css('border-color','red');
+                return false;
+            }
+            else if(price == '' || price == null)
+            {
+                $('#price').focus();
+                $('#price').css('border-color','red');
+                return false;
+            }else
+            {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+                //var formData = new formData('#serviceDetailForm').serialize();
 
-             else if(price == '' || price == null)
-             {
-                 $('#price').focus();
-                 $('#price').css('border-color','red');
-                 return false;
-             }else
-                 {
-
-             $.ajaxSetup({
-                 headers: {
-                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                 }
-             });
-
-            //var formData = new formData('#serviceDetailForm').serialize();
-            $.ajax
-            ({
-                url: "{{Url('admin/acceptServiceRequest')}}",
-                type:"post",
-                context:td,
-                data:{'rate':rate,'price':price,'id':id,'requestId':requestId,'_token':token},
-                success:function(response)
-                {
-                    $(td).parentsUntil(DOM,'tr').fadeOut(2000);
-                    $(td).parentsUntil(DOM,'tr').empty();
-                    swal
-                    ({
-                        title: '',
-                        text: response,
-                        type:'info',
-                        confirmButtonText: 'بستن'
-                    });
-                },
-                error:function (error) {
-                    if(error.status === 500)
+                $.ajax
+                ({
+                    url: "{{url('admin/acceptServiceRequest')}}",
+                    type:"post",
+//                context:td,
+                    data:{rate:rate,price:price,id:id,requestId:requestId,_token:token},
+                    success:function(response)
                     {
+                        $(td).parentsUntil(DOM,'tr').fadeOut(2000);
+                        $(td).parentsUntil(DOM,'tr').empty();
                         swal
                         ({
                             title: '',
-                            text: 'خطایی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید',
-                            type:'info',
+                            text: response,
+                            type:'success',
                             confirmButtonText: 'بستن'
                         });
-                        console.log(error);
+                    },
+                    error:function (error) {
+                        if(error.status === 500)
+                        {
+                            swal
+                            ({
+                                title: '',
+                                text: 'خطایی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید',
+                                type:'info',
+                                confirmButtonText: 'بستن'
+                            });
+                            console.log(error);
+                        }
+
+                        if(error.status === 422)
+                        {
+                            console.log(error);
+                            var errors = error.responseJSON; //this will get the errors response data.
+                            //show them somewhere in the markup
+                            //e.g
+                            var  errorsHtml = '';
+
+                            $.each(errors, function( key, value ) {
+                                errorsHtml +=  value[0] + '\n'; //showing only the first error.
+                            });
+                            swal({
+                                title: "",
+                                text: errorsHtml,
+                                type: "info",
+                                confirmButtonText: "بستن"
+                            });
+                        }
+
                     }
-
-                    if(error.status === 422)
-                    {
-                        console.log(error);
-                        var errors = error.responseJSON; //this will get the errors response data.
-                        //show them somewhere in the markup
-                        //e.g
-                        var  errorsHtml = '';
-
-                        $.each(errors, function( key, value ) {
-                            errorsHtml +=  value[0] + '\n'; //showing only the first error.
-                        });
-                        swal({
-                            title: "",
-                            text: errorsHtml,
-                            type: "info",
-                            confirmButtonText: "بستن"
-                        });
-                    }
-
-                }
 
                 })
             }

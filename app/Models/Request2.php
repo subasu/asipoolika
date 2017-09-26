@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Request2 extends Model
 {
+    use SoftDeletes;
+    protected $dates = ['deleted_at'];
     protected  $table='requests';
     //shiri relation user
     public function user()

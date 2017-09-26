@@ -64,7 +64,7 @@ class SupplyController extends Controller
     /* shiri
         below function is related to accept the requested service
     */
-    public function acceptServiceRequest(AcceptServiceRequestValidation $request)
+    public function acceptServiceRequest(Request $request)
     {
         if(!$request->ajax())
         {
@@ -75,23 +75,18 @@ class SupplyController extends Controller
         $price     = $request->price;
         $requestId = $request->requestId;
 
-        $array = array('rate'=>$rate , 'price' => $price , 'step'=> 2 , 'active' => 1);
-        $requestRecord = new RequestRecord();
-        $update = $requestRecord->where('id',$id)->update($array);
-        if($update)
+        $q=RequestRecord::where('id',$id)->update([
+            'rate'=>$rate,
+            'price'=>$price,
+            'step'=>2,
+            'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+        ]);
+        if($q)
         {
-            $req = new Request2();
-            $req->where('id',$requestId)->increment('request_opt');
-            $requestOpt = $req->where('id',$requestId)->value('request_opt');
-            $requestQty = $req->where('id',$requestId)->value('request_Qty');
-            if($requestOpt === $requestQty)
-            {
-                $req->where('id',$requestId)->update(['active' => 1]);
-            }
             return response('نرخ و قیمت ثبت گردید و درخواست خدمت به مرحله بعد ارسال شد');
         }
-
-
+        else
+            return response('خطایی رخ داده با پشتیبانی تماس بگیرید');
     }
 
 
@@ -433,19 +428,26 @@ class SupplyController extends Controller
     {
         $pageTitle='مدیریت درخواست کالا';
         $pageName='productRequestManagement';
-        $productRequests=Request2::where([['request_type_id',3],['active',0]])->get();
+        $productRequests=Request2::where([['request_type_id',3]])->get();
+
         foreach($productRequests as $productRequest)
         {
+//            $all_records=RequestRecord::where('request_id',$productRequest->id)->count();
+//            $refused_records_count=Request2::where('id',$productRequest->id)->pluck('refuse_record_count');
+//            if($all_records==$refused_records_count[0])
+//            {
+//                Request2::where('id',$productRequest->request_id)->first()->delete();
+//            }
             $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null]])->count();
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
         }
-
+//        dd($refused_records_count[0]);
         return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
     public function productRequestRecords($id)
     {
         $pageTitle='رکوردهای درخواست شماره '.$id;
-        $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null]])->get();
+        $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',1]])->get();
         return view ('admin.productRequestRecords',compact('pageTitle','requestRecords'));
     }
     public function serviceRequestManagement()

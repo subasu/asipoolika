@@ -74,6 +74,7 @@
                                 {{ csrf_field() }}
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                                 @foreach($productRequests as $productRequest)
+                                    @if($productRequest->request_record_count>0)
                                     <tr>
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td> واحد {{$productRequest->user->unit->title}}</td>
@@ -93,6 +94,7 @@
                                             @endif
                                         @endif
                                     </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>

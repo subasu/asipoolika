@@ -62,9 +62,9 @@
                                 <td>{{$requestRecord->title}}</td>
                                 <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
                                 <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">
-                                <input type="hidden" class="" value="2000" name="count[]">
+                                {{--<input type="hidden" class="" value="2000" name="count[]">--}}
                                 <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
-                                <td><input type="text" class="form-control price" id="price" name="price[]" style="font-size:16px;color:red"/></td>
+                                <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
                                 <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>
                                 <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
@@ -86,11 +86,14 @@
 
     $(document).on('click','#acceptRequest',function(){
         var id= $(this).attr('content');
-        //alert(id);
         var requestId = $(this).attr('name');
-        //alert(requestId);
-        var rate  = $('#rate').val();
-        var price = $('#price').val();
+
+        var rate=$(this).parents('tr').find('.rate').val();
+        var price=$(this).parents('tr').find('.price').val();
+
+        price = price.replace(',', '');
+//        console.log(price);
+//        $('#rate').attr('content',price);
         var token = $('#token').val();
         var td = $(this);
         var DOM = $('#table');
@@ -101,7 +104,6 @@
             $('#rate').css('border-color','red');
             return false;
         }
-
         else if(price == '' || price == null)
         {
             $('#price').focus();
@@ -114,14 +116,14 @@
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 }
             });
-
             //var formData = new formData('#serviceDetailForm').serialize();
+
             $.ajax
             ({
-                url: "{{Url('admin/acceptServiceRequest')}}",
+                url: "{{url('admin/acceptServiceRequest')}}",
                 type:"post",
-                context:td,
-                data:{'rate':rate,'price':price,'id':id,'requestId':requestId,'_token':token},
+//                context:td,
+                data:{rate:rate,price:price,id:id,requestId:requestId,_token:token},
                 success:function(response)
                 {
                     $(td).parentsUntil(DOM,'tr').fadeOut(2000);
@@ -130,7 +132,7 @@
                     ({
                         title: '',
                         text: response,
-                        type:'info',
+                        type:'success',
                         confirmButtonText: 'بستن'
                     });
                 },
@@ -299,7 +301,7 @@
             var rate=$(this).parents('tr').find('.rate').val();
             var count=$(this).parents('tr').find('.count').val();
             var price = rate * count;
-            $(this).parents('tr').find('.price').val(formatNumber(price)+' تومان');
+            $(this).parents('tr').find('.price').val(formatNumber(price));
         });
 
 
