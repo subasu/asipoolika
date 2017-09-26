@@ -62,9 +62,9 @@
                                 <td>{{$requestRecord->title}}</td>
                                 <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
                                 <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">
-                                <input type="hidden" class="" value="2000" name="count">
-                                <td><input type="text" class="form-control rate" id="rate"  name="rate"/></td>
-                                <td><input type="text" class="form-control price" id="price" name="price"/></td>
+                                <input type="hidden" class="" value="2000" name="count[]">
+                                <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
+                                <td><input type="text" class="form-control price" id="price" name="price[]" style="font-size:16px;color:red"/></td>
                                 <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>
                                 <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
@@ -77,8 +77,7 @@
             </div>
         </div>
     </div>
-
-<script>
+                <script>
 
 
     /**
@@ -209,7 +208,6 @@
                     }
                 },
                 success:function (response) {
-
                     $(td).parentsUntil(DOM,'tr').fadeOut(2000);
                     $(td).parentsUntil(DOM,'tr').empty();
                     swal
@@ -296,17 +294,17 @@
         }
     </script>
     <script>
-        $(document).on('keyup','.rate',function () {
-           //alert('hello');
-            var rate = $('input.rate').val();
-            var count = $('input.count').val();
+
+        $('.rate').on('keyup', function() {
+            var rate=$(this).parents('tr').find('.rate').val();
+            var count=$(this).parents('tr').find('.count').val();
             var price = rate * count;
-            $('#price').val(formatNumber(price));
-            //alert(rate * count);
-            //alert(count);
+            $(this).parents('tr').find('.price').val(formatNumber(price)+' تومان');
         });
 
 
-
+$('.icode').on('change', function() {
+    $(this).parents('tr').find('.description').val($(this).val());
+});
     </script>
 @endsection

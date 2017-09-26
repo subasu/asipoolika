@@ -53,7 +53,7 @@ class RequestController extends Controller
                   'description'=>$request->product_details[$i],
                   'code'=>mt_rand(1000,5000),
                   'count'=>$request->product_count[$i],
-                  'unit_count'=>$request->unit_count[$i],
+                  'unit_count'=>$request->unit_count_each[$i],
                   'step'=>1,
                   'request_id'=>$request_id
               ]);
