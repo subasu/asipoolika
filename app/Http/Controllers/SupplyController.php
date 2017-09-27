@@ -447,9 +447,9 @@ class SupplyController extends Controller
             case 'تدارکات':
                 $step=1;
                 break;
-//            case 'انبار':
-//                $step=0;
-//                break;
+            case 'انبار':
+                $step=2;
+                break;
 //            case 'ریاست':
 //                $step=0;
 //                break;
@@ -461,6 +461,7 @@ class SupplyController extends Controller
 
         $requestRecords=RequestRecord::where([['step',$step],['active',0]])->pluck('request_id');
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
+
         foreach($productRequests as $productRequest)
         {
             //active records
@@ -468,6 +469,7 @@ class SupplyController extends Controller
             //inactive records
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
         }
+//        dd($productRequests);
         return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
     public function productRequestRecords($id)
