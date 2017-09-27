@@ -101,26 +101,34 @@ class SupplyController extends Controller
         {
             abort(403);
         }
-        $refuseId = Auth::user()->id;
-        $array = array('why_not'=>$request->whyNot , 'step'=> 2 , 'refuse_user_id' => $refuseId);
-        $requestRecord = new RequestRecord();
-        $update = $requestRecord->where('id',$request->id)->update($array);
-        if($update)
+        $user=Auth::user();
+        switch(trim($user->unit->title))
         {
-            $req = new Request2();
-            $q=$req->where('id',$request->requestId)->increment('refuse_record_count');
-            if($q)
-            {
-                return response('درخواست مربوطه با ثبت دلیل رد شد');
-            }
-//            $requestOpt = $req->where('id',$request->requestId)->value('request_opt');
-//            $requestQty = $req->where('id',$request->requestId)->value('request_Qty');
-//            if($requestOpt === $requestQty)
-//            {
-//                $req->where('id',$request->requestId)->update(['active' => 1]);
-//            }
-//            return response('درخواست مربوطه با ثبت دلیل رد شد');
+            case 'تدارکات':
+                $step=2;
+                break;
+            default :
+                $step=1;
         }
+//        $update=
+            DB::table('request_records')->where('id',$request->request_record_id)->update([
+            'why_not'=>$request->whyNot,
+            'step'=> $step,
+            'refuse_user_id' => $user->id,
+            'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+        ]);
+//            $q=
+                DB::table('requests')->where('id',$request->requestId)->increment('refuse_record_count');
+//            $q1=$q[0]+1;
+
+//            $check=DB::table('requests')->where('id',$request->requestId)->update([
+//                'refuse_record_count'=>$q1
+//            ]);
+//        return response($q[0].'/'.$q1);
+//            if($check)
+//            {
+                return response('درخواست مربوطه با ثبت دلیل رد شد');
+//            }
     }
 
 
@@ -478,13 +486,15 @@ class SupplyController extends Controller
     {
         $pageTitle='درخواست های رد شده';
         $pageName='refusedProductRequestManagement';
-        $productRequests=Request2::where([['request_type_id',3],['active',0],['refuse_record_count','!=',0]])->get();
-        return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
+//        $requestRecords=RequestRecord::where([['refuse_user_id','!=',null],[]])
+        $requestRecords=RequestRecord::where([['refuse_user_id','!=',null],['active',0]])->pluck('request_id');
+        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
+        return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
     public function acceptProductRequestManagementGet()
     {
         //change it later
-        $pageTitle='درخواست های تایید شده';
+        $pageTitle='درخواست های در حال پیگیری';
         $pageName='acceptProductRequestManagement';
         $productRequests=Request2::where([['request_type_id',3],['active',0],['refuse_record_count','!=',0]])->get();
         foreach($productRequests as $productRequest)

@@ -11,11 +11,11 @@
             </div>
             <div class="modal-body" style="text-align: right">
                 <label for="why_not" style="font-size: 20px;">دلیل خود برای رد این درخواست را بنویسید تا به اطلاع درخواست کننده برسد</label>
-                 <textarea id="why_not" style="text-align: right" maxlength="300" required="required" class="form-control" name="why_not" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="300" data-parsley-minlength-message="شما حداقل باید 20 کاراکتر وارد کنید"
+                 <textarea id="why_not" style="text-align: right" maxlength="300" required="required" class="form-control why_not" name="why_not" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="300" data-parsley-minlength-message="شما حداقل باید 20 کاراکتر وارد کنید"
                            data-parsley-validation-threshold="10"></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" id="why_not_btn" name="why_not_btn" class="btn btn-primary col-md-12">ثبت دلیل</button>
+                <button type="button" id="why_not_btn" content="" name="why_not_btn" class="btn btn-primary col-md-12">ثبت دلیل</button>
             </div>
         </div>
 
@@ -58,6 +58,7 @@
                         <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                         @foreach($requestRecords as $requestRecord)
                             <tr>
+                                <input type="hidden" value="{{$requestRecord->id}}" class="record_id">
                                 <th style="text-align: center">{{$requestRecord->id}}</th>
                                 <td>{{$requestRecord->title}}</td>
                                 <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
@@ -77,7 +78,7 @@
             </div>
         </div>
     </div>
-                <script>
+<script>
 
 
     /**
@@ -175,15 +176,19 @@
     });
 
     $(document).on('click','#refuseRequest',function(){
+//        request record id
         var id = $(this).attr('content');
         var requestId = $(this).attr('name');
+        //set the request record id into the modal for having access in why_not_btn
+        $('#why_not_btn').attr('content',id);
         var td = $(this);
         var DOM = $('#table');
         $('#why_not_modal').modal('show');
         $('#why_not_btn').click(function(){
-            var whyNot = $('#why_not').val();
+            var request_record_id=$(this).attr('content');
+//            var whyNot =$(this).find('textarea.why_not').val();
+            var whyNot=$(this).parents('div').find('.why_not').val();
             var token = $('#token').val();
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -194,7 +199,7 @@
                 url:"{{Url('admin/refuseRequestRecord')}}",
                 type:'post',
                 context:td,
-                data:{'id':id,'requestId':requestId,'whyNot':whyNot,'_token':token},
+                data:{request_record_id:request_record_id,requestId:requestId,whyNot:whyNot,_token:token},
                 beforeSend:function()
                 {
                     if(whyNot == '' || whyNot == null)
@@ -216,9 +221,11 @@
                     ({
                         title: '',
                         text: response,
-                        type:'info',
+                        type:'success',
                         confirmButtonText: 'بستن'
                     });
+                    $('#why_not_modal').modal('hide');
+                    $('#why_not').val('');
                 },error:function(error)
                 {
                     if(error.status === 500)
@@ -230,7 +237,7 @@
                             type:'info',
                             confirmButtonText: 'بستن'
                         });
-                        console.log(error);
+                        console.log();
                     }
 
                     if(error.status === 422)
