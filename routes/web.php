@@ -82,7 +82,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
         //rayat - users manage:
-        Route::get('usersManage', 'SupplyController@usersManageGet');
+        Route::get('usersManagement', 'SupplyController@usersManagementGet');
         Route::get('usersCreate', 'SupplyController@usersCreateGet');
         Route::post('usersCreate', 'SupplyController@usersCreatePost');
         Route::post('statusUser', 'SupplyController@statusUser');

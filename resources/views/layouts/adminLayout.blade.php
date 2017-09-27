@@ -131,7 +131,7 @@
                             <li><a><i class="fa fa-users"></i> مدیریت کاربران <span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('admin/usersManage')}}">مدیریت کاربران</a>
+                                    <li><a href="{{url('admin/usersManagement')}}">مدیریت کاربران</a>
                                     </li>
                                     <li><a href="{{url('admin/usersCreate')}}">درج کاربر جدید</a>
                                     </li>
