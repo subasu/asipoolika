@@ -159,8 +159,8 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/showTickets')}}"> مشاهده تیکت ها</a>
                                     </li>
-                                    <li><a href="{{url('admin/deactiveTickets')}}">بسته شده ها</a>
-                                    </li>
+                                    {{--<li><a href="{{url('admin/deactiveTickets')}}">بسته شده ها</a>--}}
+                                    {{--</li>--}}
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>

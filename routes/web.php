@@ -34,6 +34,7 @@ Route::group(['prefix'=>'user'],function() {
     Route::post('searchOnDate/{id}','RequestController@searchOnDate');                      //96/7/3
     Route::get('ticketConversation/{id}','RequestController@ticketConversation');          //96/7/3
     Route::post('userSendMessage','RequestController@userSendMessage');                    //96/7/4
+    Route::post('userEndTicket' , 'RequestController@userEndTicket');                      //96/7/5
 
 
 });
@@ -78,6 +79,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('workerCardManage' ,'SupplyController@workerCardManage');        //96/7/2
         Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');          //96/7/2
         Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');       //96/7/2
+        Route::get('showTickets','SupplyController@showTickets');                  //96/7/5
+        Route::post('adminSendMessage','SupplyController@adminSendMessage');       //96/7/5
+        Route::post('adminEndTicket','SupplyController@adminEndTicket');           //96/7/5
         // Route::get('kiayanfar','RequestController@kiyanfar');
 
 

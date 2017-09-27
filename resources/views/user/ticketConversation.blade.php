@@ -23,14 +23,22 @@
         </div>
     </div>
 
-
+    @foreach($tickets as $ticket)
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2> محتوای تیکت
-                    </h2>
+                    <h1 dir="rtl" style="">وضعیت:</h1>
+                    @if($ticket->active == 0)
+                        <h1 style="margin-left: 70%; margin-top: -49px;">فعال</h1>
+                    @endif
+                    @if($ticket->active == 2)
+                        <h1 style="margin-left: 70%; margin-top: -49px;">اتمام از طرف کاربر</h1>
+                    @endif
+                    @if($ticket->active == 1)
+                        <h1 style="margin-left: 70%; margin-top: -49px;">اتمام از طرف ادمین</h1>
+                    @endif
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -40,7 +48,7 @@
                     <div class="clearfix"></div>
                 </div>
                 {{-- table --}}
-                @foreach($tickets as $ticket)
+
                     <div class="col-md-12 col-sm-12 col-xs-12 ">
                         <div class="x_content" dir="rtl">
                             <div class="item form-group">
@@ -68,9 +76,10 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+
             </div>
         </div>
+        @endforeach
         @if(count($messages))
 
             <div class="col-md-12 col-sm-12 col-xs-12">
@@ -88,8 +97,8 @@
                     </div>
                     {{-- table --}}
                     @foreach($messages as $message)
-                        <div class="x_content" style="float: none !important; padding-top: 1%;">{{-- AdminConversation--}}
-                            @if($message->ticket->unit_id === \Illuminate\Support\Facades\Auth::user()->unit_id &&  !count($message->answer) )
+                        <div class="x_content" style="float: none !important;">{{-- AdminConversation--}}
+                            @if($message->ticket->user_id !== \Illuminate\Support\Facades\Auth::user()->id)
                                 <div class="col-md-2">
                                     <br>
                                     <br>
@@ -99,7 +108,7 @@
                                 </div>
                             @endif
                             <div class="item form-group" dir="rtl">
-                                <div class="col-md-5 col-xs-12">
+                                <div class="col-md-4 col-xs-12">
                                     @if(count($message->answer))
                                         <textarea id="description" required="required" name="description" class="form-control col-md-1 col-xs-12" disabled>{{$message->answer}}</textarea>
                                     @endif
@@ -112,7 +121,7 @@
                             </div>
 
                             <div class="item form-group " dir="rtl">
-                                <div class="col-md-5 col-xs-12">
+                                <div class="col-md-4 col-xs-12">
                                     <textarea id="description" required="required" name="description"
                                               class="form-control col-md-4 col-xs-12"
                                               disabled>{{$message->content}}</textarea>
@@ -122,16 +131,20 @@
                             </div>
                         </div>
                     @endforeach
-                    @if($ticket->user_id === \Illuminate\Support\Facades\Auth::user()->id)
+
                         <div class="x_content" style="float: none !important; padding-top: 1%;">{{-- AdminConversation--}}
                             <div class="item form-group col-md-12" dir="rtl">
                                 <div class="col-md-2 col-xs-12">
-                                    <button id="userMessage" content="{{$message->ticket_id}}" class="btn btn-info">ارسال پیام جدید
-                                    </button>
+                                    @if($ticket->user_id === \Illuminate\Support\Facades\Auth::user()->id && $ticket->active == 0)
+                                        <button id="userMessage" style="margin-right: -10%;" content="{{$message->ticket_id}}" class="btn btn-info">ارسال پیام جدید</button>
+                                        <button id="userEndTicket" content="{{$message->ticket_id}}" style="margin-right: 57%; margin-top: -25%;" class="btn btn-info">خاتمه تیکت</button>
+                                    @endif
+                                    @if($ticket->user_id !== \Illuminate\Support\Facades\Auth::user()->id && $ticket->active == 0)
+                                            <button id="adminEndTicket" content="{{$message->ticket_id}}" style="margin-right: 57%;" class="btn btn-info">خاتمه تیکت</button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                    @endif
                 </div>
             </div>
 
@@ -160,7 +173,9 @@
     <!-- admin message script -->
     <script>
         $(document).on('click', '#adminMessage', function () {
-            var messageId = $(this).attr('content');
+            messageId = $(this).attr('content');
+           // alert(messageId);
+
             var token=$('#token').val();
             $('#messageModal').modal('show');
 
@@ -189,10 +204,21 @@
                         data :{'messageId':messageId , 'message' : message , '_token' : token},
                         success: function(response)
                         {
-                          alert('success');
+                            swal({
+                                title: "",
+                                text: response,
+                                type: "info",
+                                confirmButtonText: "بستن"
+                            });
+                          window.location.reload();
                         },error:function(error)
                         {
-                            alert('error');
+                            swal({
+                                title: "",
+                                text: "خطا در ثبت اطلاعات ، لطفا با بخش پشتیبانی تماس بگیرید",
+                                type: "warning",
+                                confirmButtonText: "بستن"
+                            });
                             console.log(error);
                         }
                     })
@@ -239,14 +265,93 @@
                             type: "info",
                             confirmButtonText: "بستن"
                         });
-                        location.reload();
+                        window.location.reload();
                     },error:function(error)
                     {
-                        alert('error');
+                        swal({
+                            title: "",
+                            text: "خطا در ثبت اطلاعات ، لطفا با بخش پشتیبانی تماس بگیرید",
+                            type: "warning",
+                            confirmButtonText: "بستن"
+                        });
                         console.log(error);
                     }
                 })
             });
+        });
+    </script>
+    <script>
+        $(document).on('click','#userEndTicket',function(){
+           var ticketId = $(this).attr('content');
+           var token    = $('#token').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            })
+            $.ajax
+            ({
+               url  : "{{Url('user/userEndTicket')}}",
+               type : "post",
+               data : {'ticketId':ticketId , '_token':token},
+                success:function(response)
+                {
+                    swal({
+                        title: "",
+                        text:  response,
+                        type: "info",
+                        confirmButtonText: "بستن"
+                    });
+                    window.location.reload();
+                },error:function(error)
+                {
+                    swal({
+                        title: "",
+                        text: "خطا  ، لطفا با بخش پشتیبانی تماس بگیرید",
+                        type: "warning",
+                        confirmButtonText: "بستن"
+                    });
+                    console.log(error);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).on('click','#adminEndTicket',function(){
+            var ticketId = $(this).attr('content');
+            var token    = $('#token').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            })
+            $.ajax
+            ({
+                url  : "{{Url('admin/adminEndTicket')}}",
+                type : "post",
+                data : {'ticketId':ticketId , '_token':token},
+                success:function(response)
+                {
+                    swal({
+                        title: "",
+                        text:  response,
+                        type: "info",
+                        confirmButtonText: "بستن"
+                    });
+                    window.location.reload();
+                },error:function(error)
+                {
+                    swal({
+                        title: "",
+                        text: "خطا  ، لطفا با بخش پشتیبانی تماس بگیرید",
+                        type: "warning",
+                        confirmButtonText: "بستن"
+                    });
+                    console.log(error);
+                }
+            });
+
         });
     </script>
 @endsection
