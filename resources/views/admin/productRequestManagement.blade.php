@@ -65,7 +65,7 @@
                                     @elseif($pageName=='acceptProductRequestManagement')
                                         <th class="col-md-2" style="text-align: center ;">رکوردهای فعال</th>
                                         <th class="col-md-2" style="text-align: center ;">رکوردهای رد شده</th>
-                                        <th class="col-md-1" style="text-align: center ;">عملیات</th>
+                                        {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
                                     @endif
                             </tr>
                             </thead>
@@ -89,7 +89,7 @@
                                             @elseif($pageName=='acceptProductRequestManagement')
                                                 <td class="success">{{$productRequest->request_record_count}}</td>
                                                 <td class="danger">{{$productRequest->request_record_count_refused}}</td>
-                                                <td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                                {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                             @endif
                                     </tr>
                                 @endforeach

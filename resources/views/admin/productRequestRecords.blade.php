@@ -121,7 +121,7 @@
 
             $.ajax
             ({
-                url: "{{url('admin/acceptServiceRequest')}}",
+                url: "{{url('admin/acceptProductRequest')}}",
                 type:"post",
 //                context:td,
                 data:{rate:rate,price:price,id:id,requestId:requestId,_token:token},

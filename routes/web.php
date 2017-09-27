@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
         //shiri
         Route::get('recentlyAddedService','SupplyController@recentlyAddedService');  //96/6/25
         Route::get('serviceRequestRecords/{id}','SupplyController@serviceRequestRecords'); //96/6/26
+        Route::post('acceptProductRequest','SupplyController@acceptProductRequest');  //96/6/26
         Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
         Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');   //96/6/27
 

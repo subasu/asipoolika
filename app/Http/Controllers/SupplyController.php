@@ -64,7 +64,7 @@ class SupplyController extends Controller
     /* shiri
         below function is related to accept the requested service
     */
-    public function acceptServiceRequest(Request $request)
+    public function acceptProductRequest(Request $request)
     {
         if(!$request->ajax())
         {
@@ -74,11 +74,21 @@ class SupplyController extends Controller
         $rate      = $request->rate;
         $price     = $request->price;
         $requestId = $request->requestId;
+        $user=Auth::user();
+        switch(trim($user->unit->title))
+        {
+            case 'تدارکات':
+                $step=2;
+                break;
+            default :
+                $step=1;
+        }
 
         $q=RequestRecord::where('id',$id)->update([
             'rate'=>$rate,
             'price'=>$price,
-            'step'=>2,
+            'step'=>$step,
+            'active'=>1,
             'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
         ]);
         if($q)
@@ -428,7 +438,7 @@ class SupplyController extends Controller
     }
     public function productRequestManagement()
     {
-        $pageTitle='مدیریت درخواست کالا';
+        $pageTitle='مدیریت درخواست کالا تازه ثبت شده';
         $pageName='productRequestManagement';
 
         $me=Auth::user();
@@ -449,7 +459,7 @@ class SupplyController extends Controller
             default: $step=1;
         }
 
-        $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
+        $requestRecords=RequestRecord::where([['step',$step],['active',0]])->pluck('request_id');
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
         foreach($productRequests as $productRequest)
         {
@@ -482,7 +492,6 @@ class SupplyController extends Controller
     {
         $pageTitle='درخواست های رد شده';
         $pageName='refusedProductRequestManagement';
-//        $requestRecords=RequestRecord::where([['refuse_user_id','!=',null],[]])
         $requestRecords=RequestRecord::where([['refuse_user_id','!=',null],['active',0]])->pluck('request_id');
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
         return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
@@ -492,7 +501,17 @@ class SupplyController extends Controller
         //change it later
         $pageTitle='درخواست های در حال پیگیری';
         $pageName='acceptProductRequestManagement';
-        $productRequests=Request2::where([['request_type_id',3],['active',0],['refuse_record_count','!=',0]])->get();
+        $user=Auth::user();
+        switch(trim($user->unit->title))
+        {
+            case 'تدارکات':
+                $step=2;
+                break;
+            default :
+                $step=1;
+        }
+        $requestRecords=RequestRecord::where([['step',$step],['active',1]])->pluck('request_id');
+        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
         foreach($productRequests as $productRequest)
         {
             $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null]])->count();
