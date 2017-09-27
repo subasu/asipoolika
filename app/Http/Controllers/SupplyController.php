@@ -110,25 +110,19 @@ class SupplyController extends Controller
             default :
                 $step=1;
         }
-//        $update=
+//        return response($request->request_record_id);
+        $update=
             DB::table('request_records')->where('id',$request->request_record_id)->update([
             'why_not'=>$request->whyNot,
             'step'=> $step,
             'refuse_user_id' => $user->id,
             'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
         ]);
-//            $q=
-                DB::table('requests')->where('id',$request->requestId)->increment('refuse_record_count');
-//            $q1=$q[0]+1;
-
-//            $check=DB::table('requests')->where('id',$request->requestId)->update([
-//                'refuse_record_count'=>$q1
-//            ]);
-//        return response($q[0].'/'.$q1);
-//            if($check)
-//            {
-                return response('درخواست مربوطه با ثبت دلیل رد شد');
-//            }
+        if($update)
+        {
+            DB::table('requests')->where('id',$request->requestId)->increment('refuse_record_count');
+        }
+           return response('درخواست مربوطه با ثبت دلیل رد شد');
     }
 
 
@@ -459,7 +453,9 @@ class SupplyController extends Controller
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
         foreach($productRequests as $productRequest)
         {
+            //active records
             $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null]])->count();
+            //inactive records
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
         }
         return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));

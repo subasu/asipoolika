@@ -15,7 +15,7 @@
                            data-parsley-validation-threshold="10"></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" id="why_not_btn" content="" name="why_not_btn" class="btn btn-primary col-md-12">ثبت دلیل</button>
+                <button type="button" id="why_not_btn" content=""  name="" class="btn btn-primary col-md-12">ثبت دلیل</button>
             </div>
         </div>
 
@@ -181,11 +181,13 @@
         var requestId = $(this).attr('name');
         //set the request record id into the modal for having access in why_not_btn
         $('#why_not_btn').attr('content',id);
+        $('#why_not_btn').attr('name',requestId);
         var td = $(this);
         var DOM = $('#table');
         $('#why_not_modal').modal('show');
         $('#why_not_btn').click(function(){
             var request_record_id=$(this).attr('content');
+            var request_id=$(this).attr('name');
 //            var whyNot =$(this).find('textarea.why_not').val();
             var whyNot=$(this).parents('div').find('.why_not').val();
             var token = $('#token').val();
@@ -199,7 +201,7 @@
                 url:"{{Url('admin/refuseRequestRecord')}}",
                 type:'post',
                 context:td,
-                data:{request_record_id:request_record_id,requestId:requestId,whyNot:whyNot,_token:token},
+                data:{request_record_id:request_record_id,requestId:request_id,whyNot:whyNot,_token:token},
                 beforeSend:function()
                 {
                     if(whyNot == '' || whyNot == null)
