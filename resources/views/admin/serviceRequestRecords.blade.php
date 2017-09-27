@@ -1,4 +1,4 @@
-@extends('layouts.adminLayout');
+@extends('layouts.adminLayout')
 @section('content')
 
     <!-- Modal -->
@@ -29,8 +29,11 @@
         <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
-                    <div class="x_title">
-                        <h2>مشاهده جزییات درخواست ها</h2>
+                    <div class="x_title" style="direction:rtl;">
+                        @if(!empty($records[0]))
+                            <input type="hidden" value="{{$records[0]->id}}" name="request_id">
+                            <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست خدمت شماره : {{$records[0]->request_id}} | ثبت شده توسط :   {{$records[0]->request->user->name}} {{$records[0]->request->user->family}} از واحد {{$records[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$records->count()}} رکورد</span></h2>
+                        @endif
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
                             </li>
@@ -39,20 +42,16 @@
                         </ul>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="alert alert-info col-md-12 col-sm-12 col-xs-12" style="direction:rtl;font-size:17px;color:white;">
-
-                    </div>
                     <div class="x_content">
-                        <table style="direction:rtl;text-align: center" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <table style="direction:rtl;text-align: center;font-size:15px;" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                             <thead>
                             <tr>
+                                <th style="text-align: center ;">شناسه</th>
                                 <th style="text-align: center ;">عنوان درخواست</th>
-                                <th style="text-align: center ;">براورد مقدار</th>
-                                <th style="text-align: center ;">توضیحات</th>
+                                <th style="text-align: center ;">مقدار/تعداد</th>
                                 <th style="text-align: center ;">نرخ (به تومان)</th>
                                 <th style="text-align: center ;">قیمت</th>
-                                <th style="text-align: center ;">پیگیری درخواست</th>
-                                <th style="text-align: center ;">رد کردن درخواست</th>
+                                <th style="text-align: center ;">عملیات</th>
                             </tr>
                             </thead>
 
@@ -62,13 +61,18 @@
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                             @foreach($records as $record)
                                 <tr>
+                                    <th style="text-align: center">{{$record->id}}</th>
                                     <td>{{$record->title}}</td>
-                                    <td>{{$record->count}}</td>
-                                    <td>{{$record->description}}</td>
-                                    <td><input type="text" class="form-control" id="rate"  name="rate"/></td>
-                                    <td><input type="text" class="form-control" id="price" name="price"/></td>
-                                    <td><input id="acceptRequest" content="{{$record->id}}" name="{{$record->request_id}}" type="button" class="btn btn-success" required value="پیگیری درخواست" /></td>
-                                    <td><input id="refuseRequest" content="{{$record->id}}" name="{{$record->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن درخواست" /></td>
+                                    <td id="count" content="{{$record->count}}">{{$record->count}}</td>
+                                    <input type="hidden" class="count" value="{{$record->count}}" name="count">
+                                    <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
+                                    <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
+                                    <td>
+                                        <button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$record->description}}"> توضیحات
+                                        </button>
+                                        <input id="acceptRequest" content="{{$record->id}}" name="{{$record->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
+                                        <input id="refuseRequest" content="{{$record->id}}" name="{{$record->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن" />
+                                    </td>
                                 </tr>
                             @endforeach()
                             {{--</form>--}}
@@ -77,7 +81,6 @@
                     </div>
                 </div>
             </div>
-        </div>
 
     <script>
 
@@ -87,94 +90,93 @@
 
         $(document).on('click','#acceptRequest',function(){
             var id= $(this).attr('content');
-            //alert(id);
             var requestId = $(this).attr('name');
-            //alert(requestId);
-            var rate  = $('#rate').val();
-            var price = $('#price').val();
+
+            var rate=$(this).parents('tr').find('.rate').val();
+            var price=$(this).parents('tr').find('.price').val();
+
+            price = price.replace(',', '');
+//        console.log(price);
+//        $('#rate').attr('content',price);
             var token = $('#token').val();
             var td = $(this);
             var DOM = $('#table');
 
-             if(rate == '' || rate == null)
-             {
-                 $('#rate').focus();
-                 $('#rate').css('border-color','red');
-                 return false;
-             }
+            if(rate == '' || rate == null)
+            {
+                $('#rate').focus();
+                $('#rate').css('border-color','red');
+                return false;
+            }
+            else if(price == '' || price == null)
+            {
+                $('#price').focus();
+                $('#price').css('border-color','red');
+                return false;
+            }else
+            {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+                //var formData = new formData('#serviceDetailForm').serialize();
 
-             else if(price == '' || price == null)
-             {
-                 $('#price').focus();
-                 $('#price').css('border-color','red');
-                 return false;
-             }else
-                 {
-
-             $.ajaxSetup({
-                 headers: {
-                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                 }
-             });
-
-            //var formData = new formData('#serviceDetailForm').serialize();
-            $.ajax
-            ({
-                url: "{{Url('admin/acceptServiceRequest')}}",
-                type:"post",
-                context:td,
-                data:{'rate':rate,'price':price,'id':id,'requestId':requestId,'_token':token},
-                success:function(response)
-                {
-                    $(td).parentsUntil(DOM,'tr').fadeOut(2000);
-                    $(td).parentsUntil(DOM,'tr').empty();
-                    swal
-                    ({
-                        title: '',
-                        text: response,
-                        type:'info',
-                        confirmButtonText: 'بستن'
-                    });
-                },
-                error:function (error) {
-                    if(error.status === 500)
+                $.ajax
+                ({
+                    url: "{{url('admin/acceptServiceRequest')}}",
+                    type:"post",
+//                context:td,
+                    data:{rate:rate,price:price,id:id,requestId:requestId,_token:token},
+                    success:function(response)
                     {
+                        $(td).parentsUntil(DOM,'tr').fadeOut(2000);
+                        $(td).parentsUntil(DOM,'tr').empty();
                         swal
                         ({
                             title: '',
-                            text: 'خطایی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید',
-                            type:'info',
+                            text: response,
+                            type:'success',
                             confirmButtonText: 'بستن'
                         });
-                        console.log(error);
+                    },
+                    error:function (error) {
+                        if(error.status === 500)
+                        {
+                            swal
+                            ({
+                                title: '',
+                                text: 'خطایی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید',
+                                type:'info',
+                                confirmButtonText: 'بستن'
+                            });
+                            console.log(error);
+                        }
+
+                        if(error.status === 422)
+                        {
+                            console.log(error);
+                            var errors = error.responseJSON; //this will get the errors response data.
+                            //show them somewhere in the markup
+                            //e.g
+                            var  errorsHtml = '';
+
+                            $.each(errors, function( key, value ) {
+                                errorsHtml +=  value[0] + '\n'; //showing only the first error.
+                            });
+                            swal({
+                                title: "",
+                                text: errorsHtml,
+                                type: "info",
+                                confirmButtonText: "بستن"
+                            });
+                        }
+
                     }
-
-                    if(error.status === 422)
-                    {
-                        console.log(error);
-                        var errors = error.responseJSON; //this will get the errors response data.
-                        //show them somewhere in the markup
-                        //e.g
-                        var  errorsHtml = '';
-
-                        $.each(errors, function( key, value ) {
-                            errorsHtml +=  value[0] + '\n'; //showing only the first error.
-                        });
-                        swal({
-                            title: "",
-                            text: errorsHtml,
-                            type: "info",
-                            confirmButtonText: "بستن"
-                        });
-                    }
-
-                }
 
                 })
             }
         });
-
-
 
 
         $(document).on('click','#refuseRequest',function(){

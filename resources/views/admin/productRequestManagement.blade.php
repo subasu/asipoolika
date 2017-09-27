@@ -1,4 +1,4 @@
-@extends('layouts.adminLayout');
+@extends('layouts.adminLayout')
 @section('content')
 
             <!-- Modal -->
@@ -33,7 +33,7 @@
                         @elseif($pageName=='refusedProductRequestManagement')
                         <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های کالای رد شده</h2>
                         @elseif($pageName=='acceptProductRequestManagement')
-                            <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های کالای تایید شده</h2>
+                            <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های کالا در حال پیگیری</h2>
                         @endif
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
@@ -49,12 +49,12 @@
                     <div class="x_content">
                         {{--<form id="serviceDetailForm">--}}
                         <table style="direction:rtl;text-align: center" id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                            @if(!empty($pageName))
                             <thead>
                             <tr>
                                 <th style="text-align: center ;">شناسه</th>
                                 <th style="text-align: center ;">نام واحد</th>
                                 <th style="text-align: center ;">درخواست دهنده</th>
-                                @if(!empty($pageName))
                                     @if($pageName=='productRequestManagement')
                                         <th class="col-md-2" style="text-align: center ;">رکوردهای فعال</th>
                                         <th class="col-md-2" style="text-align: center ;">رکوردهای رد شده</th>
@@ -65,9 +65,8 @@
                                     @elseif($pageName=='acceptProductRequestManagement')
                                         <th class="col-md-2" style="text-align: center ;">رکوردهای فعال</th>
                                         <th class="col-md-2" style="text-align: center ;">رکوردهای رد شده</th>
-                                        <th class="col-md-1" style="text-align: center ;">عملیات</th>
+                                        {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
                                     @endif
-                                @endif
                             </tr>
                             </thead>
                             <tbody>
@@ -78,23 +77,24 @@
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td> واحد {{$productRequest->user->unit->title}}</td>
                                         <td>{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
-                                        @if(!empty($pageName))
                                             @if($pageName=='productRequestManagement')
+                                                @if($productRequest->request_record_count>0)
                                                 <td class="success">{{$productRequest->request_record_count}}</td>
                                                 <td class="danger">{{$productRequest->request_record_count_refused}}</td>
                                                 <td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                                @endif
                                             @elseif($pageName=='refusedProductRequestManagement')
                                                 <td  class="danger">{{$productRequest->refuse_record_count}}</td>
                                                 {{--<td>بررسی مجدد</td>--}}
                                             @elseif($pageName=='acceptProductRequestManagement')
                                                 <td class="success">{{$productRequest->request_record_count}}</td>
                                                 <td class="danger">{{$productRequest->request_record_count_refused}}</td>
-                                                <td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                                {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                             @endif
-                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
+                            @endif
                         </table>
                         {{--</form>--}}
                     </div>

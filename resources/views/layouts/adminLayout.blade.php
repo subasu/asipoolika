@@ -109,9 +109,9 @@
                             <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/productRequestManagement')}}"> درخواست های جدید</a></li>
-                                    <li><a href="{{url('/admin/acceptProductRequestManagement')}}"> تاییده شده ها</a>
+                                    <li><a href="{{url('/admin/acceptProductRequestManagement')}}"> در حال پیگیری</a>
                                     <li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>
-                                    <li><a href="{{url('/admin/')}}"> در حال پیگیری</a></li>
+                                    {{--<li><a href="{{url('/admin/')}}"> در حال پیگیری</a></li>--}}
                                     <li><a href="{{url('/admin/')}}">انجام شده</a>
                                     </li>
                                 </ul>

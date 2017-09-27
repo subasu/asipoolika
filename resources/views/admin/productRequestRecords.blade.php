@@ -1,4 +1,4 @@
-@extends('layouts.adminLayout');
+@extends('layouts.adminLayout')
 @section('content')
 <!-- Modal -->
 <div id="why_not_modal" class="modal fade" role="dialog">
@@ -11,11 +11,11 @@
             </div>
             <div class="modal-body" style="text-align: right">
                 <label for="why_not" style="font-size: 20px;">دلیل خود برای رد این درخواست را بنویسید تا به اطلاع درخواست کننده برسد</label>
-                 <textarea id="why_not" style="text-align: right" maxlength="300" required="required" class="form-control" name="why_not" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="300" data-parsley-minlength-message="شما حداقل باید 20 کاراکتر وارد کنید"
+                 <textarea id="why_not" style="text-align: right" maxlength="300" required="required" class="form-control why_not" name="why_not" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="300" data-parsley-minlength-message="شما حداقل باید 20 کاراکتر وارد کنید"
                            data-parsley-validation-threshold="10"></textarea>
             </div>
             <div class="modal-footer">
-                <button type="button" id="why_not_btn" name="why_not_btn" class="btn btn-primary col-md-12">ثبت دلیل</button>
+                <button type="button" id="why_not_btn" content=""  name="" class="btn btn-primary col-md-12">ثبت دلیل</button>
             </div>
         </div>
 
@@ -44,7 +44,7 @@
                 <table style="direction:rtl;text-align: center;font-size: 16px;" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th style="text-align: center ;">شماره</th>
+                        <th style="text-align: center ;">شناسه</th>
                         <th style="text-align: center ;">عنوان درخواست</th>
                         <th style="text-align: center ;">مقدار</th>
                         <th style="text-align: center ;">نرخ (به تومان)</th>
@@ -52,21 +52,22 @@
                         <th style="text-align: center ;">عملیات</th>
                     </tr>
                     </thead>
-
                     <tbody>
                     {{--<form id="serviceDetailForm">--}}
                         {{ csrf_field() }}
                         <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                         @foreach($requestRecords as $requestRecord)
                             <tr>
-                                <td class="td">{{$requestRecord->id}}</td>
-                                <td class="td">{{$requestRecord->title}}</td>
-                                <td class="td" id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
+                                <input type="hidden" value="{{$requestRecord->id}}" class="record_id">
+                                <th style="text-align: center">{{$requestRecord->id}}</th>
+                                <td>{{$requestRecord->title}}</td>
+                                <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
                                 <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">
-                                <input type="hidden" class="" value="2000" name="count">
-                                <td class="td"><input type="text" class="form-control rate" id="rate"  name="rate"/></td>
-                                <td class="td"><input type="text" class="form-control price" id="price" name="price"/></td>
-                                <td class="td"><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
+                                {{--<input type="hidden" class="" value="2000" name="count[]">--}}
+                                <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
+                                <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
+                                <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
+
                                 </button>
                                 <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
                                 <input id="refuseRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن" /></td>
@@ -78,7 +79,6 @@
             </div>
         </div>
     </div>
-
 <script>
 
 
@@ -88,11 +88,14 @@
 
     $(document).on('click','#acceptRequest',function(){
         var id= $(this).attr('content');
-        //alert(id);
         var requestId = $(this).attr('name');
-        //alert(requestId);
-        var rate  = $('#rate').val();
-        var price = $('#price').val();
+
+        var rate=$(this).parents('tr').find('.rate').val();
+        var price=$(this).parents('tr').find('.price').val();
+
+        price = price.replace(',', '');
+//        console.log(price);
+//        $('#rate').attr('content',price);
         var token = $('#token').val();
         var td = $(this);
         var DOM = $('#table');
@@ -103,7 +106,6 @@
             $('#rate').css('border-color','red');
             return false;
         }
-
         else if(price == '' || price == null)
         {
             $('#price').focus();
@@ -111,20 +113,19 @@
             return false;
         }else
         {
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                 }
             });
-
             //var formData = new formData('#serviceDetailForm').serialize();
+
             $.ajax
             ({
-                url: "{{Url('admin/acceptServiceRequest')}}",
+                url: "{{url('admin/acceptProductRequest')}}",
                 type:"post",
-                context:td,
-                data:{'rate':rate,'price':price,'id':id,'requestId':requestId,'_token':token},
+//                context:td,
+                data:{rate:rate,price:price,id:id,requestId:requestId,_token:token},
                 success:function(response)
                 {
                     $(td).parentsUntil(DOM,'tr').fadeOut(2000);
@@ -133,7 +134,7 @@
                     ({
                         title: '',
                         text: response,
-                        type:'info',
+                        type:'success',
                         confirmButtonText: 'بستن'
                     });
                 },
@@ -176,15 +177,21 @@
     });
 
     $(document).on('click','#refuseRequest',function(){
+//        request record id
         var id = $(this).attr('content');
         var requestId = $(this).attr('name');
+        //set the request record id into the modal for having access in why_not_btn
+        $('#why_not_btn').attr('content',id);
+        $('#why_not_btn').attr('name',requestId);
         var td = $(this);
         var DOM = $('#table');
         $('#why_not_modal').modal('show');
         $('#why_not_btn').click(function(){
-            var whyNot = $('#why_not').val();
+            var request_record_id=$(this).attr('content');
+            var request_id=$(this).attr('name');
+//            var whyNot =$(this).find('textarea.why_not').val();
+            var whyNot=$(this).parents('div').find('.why_not').val();
             var token = $('#token').val();
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -195,7 +202,7 @@
                 url:"{{Url('admin/refuseRequestRecord')}}",
                 type:'post',
                 context:td,
-                data:{'id':id,'requestId':requestId,'whyNot':whyNot,'_token':token},
+                data:{request_record_id:request_record_id,requestId:request_id,whyNot:whyNot,_token:token},
                 beforeSend:function()
                 {
                     if(whyNot == '' || whyNot == null)
@@ -211,16 +218,17 @@
                     }
                 },
                 success:function (response) {
-
                     $(td).parentsUntil(DOM,'tr').fadeOut(2000);
                     $(td).parentsUntil(DOM,'tr').empty();
                     swal
                     ({
                         title: '',
                         text: response,
-                        type:'info',
+                        type:'success',
                         confirmButtonText: 'بستن'
                     });
+                    $('#why_not_modal').modal('hide');
+                    $('#why_not').val('');
                 },error:function(error)
                 {
                     if(error.status === 500)
@@ -232,7 +240,7 @@
                             type:'info',
                             confirmButtonText: 'بستن'
                         });
-                        console.log(error);
+                        console.log();
                     }
 
                     if(error.status === 422)
@@ -298,14 +306,21 @@
         }
     </script>
     <script>
-        $(document).on('keyup','.rate',function () {
-           //alert('hello');
-            var rate  = $('input.rate').val();
-            var count = $('input.count').val();
+
+
+        $('.rate').on('keyup', function() {
+            var rate=$(this).parents('tr').find('.rate').val();
+            var count=$(this).parents('tr').find('.count').val();
+
             var price = rate * count;
-            $('#price').val(formatNumber(price));
-            //alert(rate * count);
-            //alert(count);
+            $(this).parents('tr').find('.price').val(formatNumber(price));
         });
+
+
+
+$('.icode').on('change', function() {
+    $(this).parents('tr').find('.description').val($(this).val());
+});
+
     </script>
 @endsection

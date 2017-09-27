@@ -54,7 +54,7 @@ class RequestController extends Controller
                   'description'=>$request->product_details[$i],
                   'code'=>mt_rand(1000,5000),
                   'count'=>$request->product_count[$i],
-                  'unit_count'=>$request->unit_count[$i],
+                  'unit_count'=>$request->unit_count_each[$i],
                   'step'=>1,
                   'request_id'=>$request_id
               ]);
@@ -77,56 +77,42 @@ class RequestController extends Controller
         return view('user.serviceRequest' ,compact('pageTitle'));
     }
 
-    public function sendService(ServiceRequestValidation $request)
-    {
 
-        $requestType = RequestType::where('title','درخواست خدمت')->value('id');
-        if(!$request->ajax())
+
+    public function serviceRequest(Request $request)
+    {
+//        $requestType = RequestType::where('title','درخواست خدمت')->value('id');
+        if (!$request->ajax())
         {
             abort(403);
         }
-        $len = count($request->count);
-        //dd($len);
-        if($len !=0)
+        $record_count=$request->record_count;
+        //it has some records at least one record
+//        return response()->json($record_count);
+        if($record_count!=0)
         {
-            $requestId = DB::table('requests')->insertGetId
-            ([
-                'request_type_id' => $requestType,
-                'user_id'        => Auth::user()->id,
-                'request_qty'    => $len,
+            $request_id=DB::table('requests')->insertGetId([
+                'request_type_id'=>2,
+                'user_id'=>Auth::user()->id,
                 'created_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
             ]);
-
-            if($requestId)
-            {
-
-                $i= 0;
-                while ($len > 0)
-                {
-                    $q=DB::table('request_records')->insert
-                    ([
-                        'title'=>trim($request->title[$i]),
-                        'code'=>mt_rand(1000,5000),
-                        'count'=>trim($request->count[$i]),
-                        //'unit_count'=>$request->unit_count[$i],
-                        'step'=>1,
-                        'request_id'=>$requestId,
-                        'description'=>trim($request->description[$i])
-                    ]);
-                    $i++;
-                    $len--;
-                }
-                if($q)
-                {
-                    return response ('اطلاعات شما با موفقیت ثبت گردید');
-                }else
-                {
-                    return response ('در ثبت اطلاعات مشکلی وجود دارد.لطفا با واحد پشتیبانی تماس بگیرید');
-                }
-
-            }
+            $i=0;
+            do{
+                $q=DB::table('request_records')->insert([
+                    'title'=>$request->service_title[$i],
+                    'description'=>$request->service_details[$i],
+                    'count'=>$request->service_count[$i],
+                    'code'=>mt_rand(1000,5000),
+                    'step'=>1,
+                    'request_id'=>$request_id
+                ]);
+                $i++;
+                $record_count--;
+            } while($record_count>=1);
+            return response()->json($q);
         }
-
+        else
+            return response()->json('is zero');
     }
 
     /* shiri

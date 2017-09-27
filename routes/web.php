@@ -26,7 +26,7 @@ Route::group(['prefix'=>'user'],function() {
     Route::post('/productRequest','RequestController@productRequestPost');
     //shiri
     Route::get('/serviceRequest','RequestController@serviceRequestGet');
-    Route::post('sendService','RequestController@sendService');
+    Route::post('serviceRequest','RequestController@serviceRequest');
     Route::get('/ticketRequest','RequestController@ticketRequest');                         //96/7/2
     Route::get('/getUnits','RequestController@getUnits');                                   //96/7/2
     Route::post('sendTicket','RequestController@sendTicket');                               //96/7/3
@@ -54,53 +54,53 @@ Route::group(['prefix'=>'systemManager'],function() {
     Route::post('/productRequest','RequestController@productRequestPost');
 });
 
-Route::group(['prefix'=>'admin'],function() {
-    //kianfar
-    Route::get('/productRequestManagement','SupplyController@productRequestManagement');
-    Route::get('/productRequestRecords/{id}','SupplyController@productRequestRecords');
-    Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');
+Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/refusedProductRequestManagement','SupplyController@refusedProductRequestManagementGet');
-    Route::get('/acceptProductRequestManagement','SupplyController@acceptProductRequestManagementGet');
-    //shiri
-    Route::get('recentlyAddedService','SupplyController@recentlyAddedService');  //96/6/25
-    Route::get('serviceShowDetails/{id}','SupplyController@serviceShowDetails'); //96/6/26
-    Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
-    Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');   //96/6/27
+    Route::group(['prefix'=>'admin'],function() {
+        //kianfar
+        Route::get('/productRequestManagement','SupplyController@productRequestManagement');
+        Route::get('/productRequestRecords/{id}','SupplyController@productRequestRecords');
+        Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');
+        Route::get('/refusedProductRequestManagement','SupplyController@refusedProductRequestManagementGet');
+        Route::get('/acceptProductRequestManagement','SupplyController@acceptProductRequestManagementGet');
+        //shiri
+        Route::get('recentlyAddedService','SupplyController@recentlyAddedService');  //96/6/25
+        Route::get('serviceRequestRecords/{id}','SupplyController@serviceRequestRecords'); //96/6/26
+        Route::post('acceptProductRequest','SupplyController@acceptProductRequest');  //96/6/26
+        Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
+        Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');   //96/6/27
 
-    Route::get('showToCreditManager','CertificateController@showToCreditManager');
-    Route::get('workerCardCreate' ,'SupplyController@workerCardCreate');        //96/7/1
-    Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
-    Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');             //96/7/1
+        Route::get('showToCreditManager','CertificateController@showToCreditManager');
+        Route::get('workerCardCreate' ,'SupplyController@workerCardCreate');        //96/7/1
+        Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
+        Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');             //96/7/1
 
-    Route::get('workerCardManage' ,'SupplyController@workerCardManage');        //96/7/2
-    Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');          //96/7/2
-    Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');       //96/7/2
-    Route::get('showTickets','SupplyController@showTickets');                  //96/7/4
-    Route::post('adminSendMessage','SupplyController@adminSendMessage');       //96/7/4
-    // Route::get('kiayanfar','RequestController@kiyanfar');
-
-
+        Route::get('workerCardManage' ,'SupplyController@workerCardManage');        //96/7/2
+        Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');          //96/7/2
+        Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');       //96/7/2
+        // Route::get('kiayanfar','RequestController@kiyanfar');
 
 
-    //rayat - users manage:
-    Route::get('usersManage', 'SupplyController@usersManageGet');
-    Route::get('usersCreate', 'SupplyController@usersCreateGet');
-    Route::post('usersCreate', 'SupplyController@usersCreatePost');
-    Route::post('statusUser', 'SupplyController@statusUser');
-    Route::get('usersUpdate/{id}', 'SupplyController@usersUpdateShow');
-    Route::post('usersUpdate', 'SupplyController@usersUpdate');
+        //rayat - users manage:
+        Route::get('usersManage', 'SupplyController@usersManageGet');
+        Route::get('usersCreate', 'SupplyController@usersCreateGet');
+        Route::post('usersCreate', 'SupplyController@usersCreatePost');
+        Route::post('statusUser', 'SupplyController@statusUser');
+        Route::get('usersUpdate/{id}', 'SupplyController@usersUpdateShow');
+        Route::post('usersUpdate', 'SupplyController@usersUpdate');
 
-    //rayat - units manage:
-    Route::get('unitsManage', 'SupplyController@unitsManageGet');
-    Route::get('unitsCreate', 'SupplyController@unitsCreateGet');
-    Route::post('unitsCreate', 'SupplyController@unitsCreatePost');
-    Route::get('units', 'SupplyController@unitsGet');
-    Route::post('statusUnit', 'SupplyController@statusUnit');
-    Route::get('unitsUpdate/{id}', 'SupplyController@unitsUpdateShow');
-    Route::post('unitsUpdate', 'SupplyController@unitsUpdate');
-    Route::post('usersSupervisor', 'SupplyController@usersSupervisor');
+        //rayat - units manage:
+        Route::get('unitsManage', 'SupplyController@unitsManageGet');
+        Route::get('unitsCreate', 'SupplyController@unitsCreateGet');
+        Route::post('unitsCreate', 'SupplyController@unitsCreatePost');
+        Route::get('units', 'SupplyController@unitsGet');
+        Route::post('statusUnit', 'SupplyController@statusUnit');
+        Route::get('unitsUpdate/{id}', 'SupplyController@unitsUpdateShow');
+        Route::post('unitsUpdate', 'SupplyController@unitsUpdate');
+        Route::post('usersSupervisor', 'SupplyController@usersSupervisor');
+    });
 });
+
 Route::get('unit_signature','SystemManagerController@unit_user_list');
 Route::get('price','IndexController@ajaxPrice');
 

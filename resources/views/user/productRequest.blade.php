@@ -101,10 +101,10 @@
                                 <tr>
                                     <th class="col-md-1">ردیف</th>
                                     {{--<th>کد کالا</th>--}}
-                                    <th class="col-md-2">عنوان کالا</th>
+                                    <th class="col-md-3">عنوان کالا</th>
                                     <th class="col-md-1">تعداد / مقدار</th>
                                     <th class="col-md-1">واحد سنجش</th>
-                                    <th class="col-md-4">توضیحات</th>
+                                    <th class="col-md-3">توضیحات</th>
                                     <th class="col-md-1">حذف</th>
                                 </tr>
                                 </thead>
@@ -171,17 +171,13 @@
             {{--}--}}
         </script>
 
-
-
         <script>
-
             var count=0;
             var record_count=0;
             $('#add_to_list').click(function(){
                 count++;
                 var row_id='row'+count;
                 var select_id='select'+count;
-                //var row='<tr id="row'+count+'">'+
                 var product_title = $('#product_title').val();
                 var product_count = $('#product_count').val();
 
@@ -202,16 +198,17 @@
                 {
                     var row='<tr id="'+row_id+'">'+
                         '<th scope="row">'+count+'</th>'+
-                        '<td>'+'<input  style="padding-right:5px;" class="required form-control" type="text" name="product_title[]" value="'+$('#product_title').val()+'">'+'</td>'+
+                        '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" name="product_title[]" value="'+$('#product_title').val()+'">'+'</td>'+
                         '<td>'+'<input style="padding-right:5px;" class="required form-control" type="number" name="product_count[]" value="'+$('#product_count').val()+'">'+'</td>'+
                         '<td>'+$.trim($("#unit_count option:selected").text())+'</td>'+
-                        '<input type="text" name="unit_count[]" value="'+$.trim($("#unit_count option:selected").text())+'">'+
+                        '<input type="text" name="unit_count" value="'+$.trim($("#unit_count option:selected").text())+'">'+
                         '<td class="col-md-9">'+
-                         '<input id="product_details" class="form-control" name="product_details[]" placeholder=""  value="'+$('#product_details').val()+'" type="text" >'+'</td>'+
-                        //'<td>'+'<select id="'+select_id+'" class="form-control">'+
-                        //      unit_count_each_record(select_id)
-                        //+'</select>'+
-                        //'</td>'+
+                        '<input id="product_details" class="form-control" name="product_details[]" placeholder=""  value="'+$('#product_details').val()+'" type="text" >'+'</td>'+
+                        '<input type="hidden" value="'+$.trim($("#unit_count option:selected").text())+'" name="unit_count_each[]">'+
+//                        '<td>'+'<select id="'+select_id+'" class="form-control">'+
+//                              unit_count_each_record(select_id)
+//                        +'</select>'+
+//                        '</td>'+
                         '<td>'+
                         '<a type="button" class="btn btn-danger remove_row" data-toggle="tooltip" title="حذف" style="font-size:18px;">'+
                         '<span class="fa fa-trash"></span>'+
@@ -221,7 +218,6 @@
                     $('#table-row').append(row);
                     record_count++;
                     $('#record_count').val(record_count);
-
                 }
             });
             $(document).on('click','.remove_row', function(){
@@ -229,10 +225,7 @@
                 record_count--;
                 $('#record_count').val(record_count);
             });
-
         </script>
-
-
 
         <script>
             $('#save_request').click(function () {
@@ -283,6 +276,7 @@
                                 },
                                 success: function (response) {
                                     swal('درخواست ثبت شد', 'درخواست به لیست درخواست های شما اضافه شد', 'success');
+//                                    window.location.href='';
                                 },
                                 error: function (error) {
                                     if (error.status === 422) {
