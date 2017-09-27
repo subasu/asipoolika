@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
 {
+    protected $table = 'tickets';
     //
     //shiri : this function is related to relation of user and ticket
     public function user()
@@ -20,8 +21,8 @@ class Ticket extends Model
     }
 
     //shiri : this function is related to relation of ticket and conversation
-    public function conversation()
+    public function message()
     {
-        return $this->hasOne('App\Models\Conversation','ticket_id');
+        return $this->hasMany('App\Models\Message','ticket_id');
     }
 }

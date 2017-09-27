@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AcceptServiceRequestValidation;
 use App\Models\Request2;
 use App\Models\RequestRecord;
+use App\Models\Ticket;
 use App\Models\Workers;
 use App\User;
 use App\Models\Unit;
@@ -430,12 +431,17 @@ class SupplyController extends Controller
                 $data = Workers::whereBetween('date', [$gDate1, $gDate2])->where([['active', 0], ['user_id', $userId]])->orderBy('date')->get();
                 break;
         }
+
         foreach ($data as $date) {
             $date->date = $this->toPersian($date->date);
             $date->card = 'data:image/jpeg;base64,' . $date->card;
         }
         return response()->json(compact('data'));
     }
+
+
+
+
     public function productRequestManagement()
     {
         $pageTitle='مدیریت درخواست کالا تازه ثبت شده';
@@ -537,5 +543,26 @@ class SupplyController extends Controller
         }
         //dd($cards);
         return view('admin.showWorkerCard',compact('cards','pageTitle'));
+    }
+
+    //shiri : below function is relate to show active ticket to supply admin....
+    public function showTickets()
+    {
+        $pageTitle = 'تیکت های فعال';
+      //  $userId = Auth::user()->id;
+        $unitId = Auth::user()->unit_id;
+        //dd($unitId);
+        $tickets = Ticket::where('unit_id' , $unitId)->get();
+        foreach ($tickets as $ticket)
+        {
+            $ticket->date = $this->toPersian($ticket->date);
+        }
+        return view ('admin.showTickets',compact('pageTitle','tickets'));
+    }
+
+    // shiri : below function is to register admin message related to ticket
+    public function adminSendMessage(Request $request)
+    {
+        print_r(Auth::user()->id);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SendTicketValidation;
 use App\Http\Requests\ServiceRequestValidation;
 use App\Models\Conversation;
+use App\Models\Message;
 use App\Models\RequestType;
 use App\Models\Ticket;
 use App\Models\Unit;
@@ -137,23 +138,24 @@ class RequestController extends Controller
      *  */
     public function sendTicket(SendTicketValidation $request)
     {
-        $reciverId = Unit::where('title',$request->unit)->value('supervisor_id');
+        //$reciverId = Unit::where('title',$request->unit)->value('supervisor_id');
         $unitId    = Unit::where('title',$request->unit)->value('id');
         $now  = new Carbon();
         $date = $now->toDateString();
         $time = $now->toTimeString();
-        $query = DB::table('tickets')->insert
+        $ticketId = DB::table('tickets')->insertGetId
         ([
            'title'           => $request->title,
            'description'     => $request->description,
            'date'            => $date,
            'time'            => $time,
            'unit_id'         => $unitId,
-           'sender_user_id'  => Auth::user()->id,
-           'reciver_user_id' => $reciverId
+           'user_id'         => Auth::user()->id,
+
         ]);
-        if($query)
+        if($ticketId)
         {
+
             return response('اطلاعات شما با موفقیت ثبت گردید');
         }else
             {
@@ -167,7 +169,7 @@ class RequestController extends Controller
     {
         $pageTitle = 'بررسی تیکت ها';
         $userId = Auth::user()->id;
-        $tickets = Ticket::where('sender_user_id' , $userId)->get();
+        $tickets = Ticket::where('user_id' , $userId)->get();
         foreach ($tickets as $ticket)
         {
             $ticket->date = $this->toPersian($ticket->date);
@@ -181,7 +183,8 @@ class RequestController extends Controller
     public function toPersian($date)
     {
         $gDate = $date;
-        if ($date = explode('-', $gDate)) {
+        if ($date = explode('-', $gDate))
+        {
             $year  = $date[0];
             $month = $date[1];
             $day   = $date[2];
@@ -195,7 +198,7 @@ class RequestController extends Controller
     //shiri : below function is related to search on date
     public function searchOnDate(Request $request,$id)
     {
-        $userId = Auth::user()->id;
+
         $date1 = trim($request->date1);
         if ($dat1 = explode('/', $date1)) {
             $year = $dat1[0];
@@ -207,7 +210,8 @@ class RequestController extends Controller
 
         /***** give second  jalali date and convert it to gregorian date *****/
         $date2 = trim($request->date2);
-        if ($dat2 = explode('/', $date2)) {
+        if ($dat2 = explode('/', $date2))
+        {
             $year = $dat2[0];
             $month = $dat2[1];
             $day = $dat2[2];
@@ -217,12 +221,17 @@ class RequestController extends Controller
 
         switch ($id) {
             case 1 :
-                $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where([['active', 0], ['sender_user_id', $userId]])->orderBy('date')->get();
+                $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where([['active', 0], ['user_id', Auth::user()->id]])->orderBy('date')->get();
+                break;
+            case 2 :
+                $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where([['active', 0], ['unit_id', Auth::user()->unit_id]])->orderBy('date')->get();
                 break;
         }
         foreach ($data as $date) {
             $date->date = $this->toPersian($date->date);
+            $date->unit_name = $date->unit->title;
         }
+       // dd($data);
         return response()->json(compact('data'));
     }
 
@@ -239,8 +248,32 @@ class RequestController extends Controller
     {
         //
         $pageTitle = 'مشاهده جزییات تیکت ها';
-        $conversations = Conversation::where('ticket_id',$id)->get();
-        return view ('user.ticketConversation',compact('conversations','pageTitle'));
+        $tickets = Ticket::where('id',$id)->get();
+        $messages = Message::where('ticket_id',$id)->get();
+        return view ('user.ticketConversation',compact('messages','tickets','pageTitle'));
+    }
 
+    //shiri : below function is to register user message related to ticket
+    public function userSendMessage(Request $request)
+    {
+        $userId = Auth::user()->id;
+        $now  = new Carbon();
+        $date = $now->toDateString();
+        $time = $now->toTimeString();
+        $query = DB::table('ticket_messages')->insertGetId
+        ([
+             'ticket_id'         => $request->ticketId,
+             'user_id'           => $userId,
+             'content'           => trim($request->message),
+             'time'              => $time,
+             'date'              => $date
+        ]);
+        if($query)
+        {
+            return response('پیام شما به مسئول مربوطه ارسال گردید');
+        }else
+            {
+                return response('خطا در ثبت اطلاعات');
+            }
     }
 }

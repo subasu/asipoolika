@@ -33,6 +33,8 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('ticketsManagement','RequestController@ticketsManagement');                  //96/7/3
     Route::post('searchOnDate/{id}','RequestController@searchOnDate');                      //96/7/3
     Route::get('ticketConversation/{id}','RequestController@ticketConversation');          //96/7/3
+    Route::post('userSendMessage','RequestController@userSendMessage');                    //96/7/4
+
 
 });
 
@@ -97,7 +99,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('unitsUpdate', 'SupplyController@unitsUpdate');
         Route::post('usersSupervisor', 'SupplyController@usersSupervisor');
     });
-
 });
 
 Route::get('unit_signature','SystemManagerController@unit_user_list');

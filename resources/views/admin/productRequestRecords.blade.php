@@ -67,6 +67,7 @@
                                 <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
                                 <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
                                 <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
+
                                 </button>
                                 <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
                                 <input id="refuseRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن" /></td>
@@ -306,16 +307,20 @@
     </script>
     <script>
 
+
         $('.rate').on('keyup', function() {
             var rate=$(this).parents('tr').find('.rate').val();
             var count=$(this).parents('tr').find('.count').val();
+
             var price = rate * count;
             $(this).parents('tr').find('.price').val(formatNumber(price));
         });
 
 
+
 $('.icode').on('change', function() {
     $(this).parents('tr').find('.description').val($(this).val());
 });
+
     </script>
 @endsection
