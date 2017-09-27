@@ -33,6 +33,8 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('ticketsManagement','RequestController@ticketsManagement');                  //96/7/3
     Route::post('searchOnDate/{id}','RequestController@searchOnDate');                      //96/7/3
     Route::get('ticketConversation/{id}','RequestController@ticketConversation');          //96/7/3
+    Route::post('userSendMessage','RequestController@userSendMessage');                    //96/7/4
+
 
 });
 
@@ -74,6 +76,8 @@ Route::group(['prefix'=>'admin'],function() {
     Route::get('workerCardManage' ,'SupplyController@workerCardManage');        //96/7/2
     Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');          //96/7/2
     Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');       //96/7/2
+    Route::get('showTickets','SupplyController@showTickets');                  //96/7/4
+    Route::post('adminSendMessage','SupplyController@adminSendMessage');       //96/7/4
     // Route::get('kiayanfar','RequestController@kiyanfar');
 
 

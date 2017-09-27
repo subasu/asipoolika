@@ -27,12 +27,9 @@
                         <input type="text" class="form-control" style="text-align:right;" id="date2"
                                name="date2" placeholder=" تا تاریخ" min="1" max="5">
                     </div>
-                    <a id="user-send" type="button" class="col-md-2 btn btn-danger " href="{{url('user/ticketRequest')}}" style="font-weight: bold;"><i
-                                class="fa fa-user-plus"></i>
-                        ارسال تیکت جدید
-                    </a>
+
                     <button id="search" type="button" class="col-md-2 btn btn-success" href="{{url('user/ticketRequest')}}" style="margin-left: 150px;">
-                            جستجو
+                        جستجو
                     </button>
 
                 </div>
@@ -51,32 +48,32 @@
                         </tr>
                         </thead>
                         <tbody id="change">
-                         @foreach($tickets as $ticket)
-                        <tr class="unit">
-                            <td>
-                                {{$ticket->id}}
-                            </td>
-                            <td>
-                                {{$ticket->unit->title}}
-                            </td>
-                            <td>
-                                {{$ticket->title}}
-                            </td>
-                            <td>
-                                {{$ticket->date}}
-                            </td>
-                            <td style="border-left: 1px solid #ddd;">
-                                @if($ticket->status == 0)
-                                    <label class="col-md-7 col-md-offset-3  label label-warning" style="font-size: 120%;width: 60%;">در حال بررسی</label>
-                                @endif
-                                @if($ticket->status == 1)
+                        @foreach($tickets as $ticket)
+                            <tr class="unit">
+                                <td>
+                                    {{$ticket->id}}
+                                </td>
+                                <td>
+                                    {{$ticket->unit->title}}
+                                </td>
+                                <td>
+                                    {{$ticket->title}}
+                                </td>
+                                <td>
+                                    {{$ticket->date}}
+                                </td>
+                                <td style="border-left: 1px solid #ddd;">
+                                    @if($ticket->status == 0)
+                                        <label class="col-md-7 col-md-offset-3  label label-warning" style="font-size: 120%;width: 60%;">در حال بررسی</label>
+                                    @endif
+                                    @if($ticket->status == 1)
                                         <span class="col-md-7 col-md-offset-3  label label-default" style="font-size: 120%;width: 60%;">اتمام تیکت</span>
-                                @endif
-                            </td>
-                            <td>
-                                <a class="col-md-6 col-md-offset-3 btn btn-success" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
-                            </td>
-                        </tr>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a class="col-md-6 col-md-offset-3 btn btn-success" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
+                                </td>
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>
@@ -107,7 +104,7 @@
                 $.ajax
                 ({
 
-                    url:"{{Url('user/searchOnDate')}}/{{1}}",
+                    url:"{{Url('user/searchOnDate')}}/{{2}}",
                     type:'post',
                     dataType:'json',
                     data:{'date1':date1,'date2':date2,'_token':token},
@@ -182,7 +179,7 @@
                             $.each(response.data,function(key,value) {
                                 if(value.status == 0)
                                 {
-                                        $('#change').append(
+                                    $('#change').append(
 
                                         "<tr   class='unit'>" +
                                         "<td   id='date'>" + value.id+ "</td>" +

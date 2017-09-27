@@ -1,15 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    //shiri : relation of conversation and message
-    public function conversation()
+    protected $table = 'ticket_messages';
+    //shiri : relation of ticket and message
+    public function ticket()
     {
-        return $this->belongsTo('App\Models\Conversation');
+        return $this->belongsTo('App\Models\Ticket');
     }
 
 }

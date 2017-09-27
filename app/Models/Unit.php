@@ -17,7 +17,7 @@ class Unit extends Model
     //shiri relation of organization and units
     public function organization()
     {
-        return $this->blongsTo('App\Models\Organization');
+        return $this->belongsTo('App\Models\Organization');
     }
 
     //shiri : relation of unit and ticket

@@ -59,14 +59,14 @@
                         <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                         @foreach($requestRecords as $requestRecord)
                             <tr>
-                                <td>{{$requestRecord->id}}</td>
-                                <td>{{$requestRecord->title}}</td>
-                                <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
+                                <td class="td">{{$requestRecord->id}}</td>
+                                <td class="td">{{$requestRecord->title}}</td>
+                                <td class="td" id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
                                 <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">
                                 <input type="hidden" class="" value="2000" name="count">
-                                <td><input type="text" class="form-control rate" id="rate"  name="rate"/></td>
-                                <td><input type="text" class="form-control price" id="price" name="price"/></td>
-                                <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
+                                <td class="td"><input type="text" class="form-control rate" id="rate"  name="rate"/></td>
+                                <td class="td"><input type="text" class="form-control price" id="price" name="price"/></td>
+                                <td class="td"><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>
                                 <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
                                 <input id="refuseRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن" /></td>
@@ -300,15 +300,12 @@
     <script>
         $(document).on('keyup','.rate',function () {
            //alert('hello');
-            var rate = $('input.rate').val();
+            var rate  = $('input.rate').val();
             var count = $('input.count').val();
             var price = rate * count;
             $('#price').val(formatNumber(price));
             //alert(rate * count);
             //alert(count);
         });
-
-
-
     </script>
 @endsection
