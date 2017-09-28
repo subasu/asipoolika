@@ -504,6 +504,7 @@ class SupplyController extends Controller
         $pageName='productRequestManagement';
 
         $me=Auth::user();
+
         switch(trim($me->unit->title))
         {
             case 'تدارکات':
@@ -532,10 +533,10 @@ class SupplyController extends Controller
                 break;
             default: $step=1;$step2=1;
         }
-
-        $requestRecords=RequestRecord::where([['step',$step],['active',0]])->pluck('request_id');
+        $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
+//        dd();
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
-//        dd($productRequests);
+
         foreach($productRequests as $productRequest)
         {
             //undecided records
@@ -629,7 +630,7 @@ class SupplyController extends Controller
                 $step=7;
                 $step2=6;
                 break;
-            default: $step=1;$step2=1;
+            default: $step=2;$step2=1;
         }
         $requestRecords=RequestRecord::where([['step',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
