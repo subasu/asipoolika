@@ -547,7 +547,11 @@ class SupplyController extends Controller
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
         foreach($productRequests as $productRequest)
         {
-            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null]])->count();
+            // all records
+            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',1]])->count();
+            //active records
+            $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',2]])->count();
+            //inactive records
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
         }
 //        dd($productRequests);
