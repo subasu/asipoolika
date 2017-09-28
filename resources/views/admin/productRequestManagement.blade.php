@@ -56,7 +56,7 @@
                                 <th style="text-align: center ;">نام واحد</th>
                                 <th style="text-align: center ;">درخواست دهنده</th>
                                     @if($pageName=='productRequestManagement')
-                                        <th class="col-md-2" style="text-align: center ;">فعال</th>
+                                        <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
                                         <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                         <th class="col-md-2" style="text-align: center ;">رد شده</th>
                                         <th class="col-md-1" style="text-align: center ;">عملیات</th>
@@ -64,45 +64,60 @@
                                         <th class="col-md-1" style="text-align: center ;">رکوردهای رد شده</th>
                                         {{--<th style="text-align: center ;">عملیات</th>--}}
                                     @elseif($pageName=='acceptProductRequestManagement')
-                                        <th class="col-md-2" style="text-align: center ;">فعال</th>
+                                        <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
                                         <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                         <th class="col-md-2" style="text-align: center ;">رد شده</th>
                                         {{--<th class="col-md-2" style="text-align: center ;">مرحله</th>--}}
                                         {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
+                                    @endif
                                     @endif
                             </tr>
                             </thead>
                             <tbody>
                                 {{ csrf_field() }}
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
-                                @foreach($productRequests as $productRequest)
+                                @if($pageName=='productRequestManagement')
+                                    @foreach($productRequests as $productRequest)
                                     <tr>
-                                        
                                         @if($productRequest->request_record_count>0)
+                                            <td class="col-md-1">{{$productRequest->id}}</td>
+                                            <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
+                                            <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                            <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
+                                            <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
+                                            <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
+                                            <td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                        @endif
+                                    </tr>
+                                    @endforeach
+                                @elseif($pageName=='refusedProductRequestManagement')
+                                    @foreach($productRequests as $productRequest)
+{{--                                        @if($productRequest->request_refuse_count>0)--}}
+                                     <tr>
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                         <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                        <td class="col-md-2 danger">{{$productRequest->refuse_record_count}}</td>
+                                        {{--<td>بررسی مجدد</td>--}}
+                                     </tr>
+                                     {{--@endif--}}
+                                    @endforeach
+                                @elseif($pageName=='acceptProductRequestManagement')
+                                    @foreach($productRequests as $productRequest)
+                                        @if($productRequest->request_record_count_accept>0)
+                                        <tr>
+                                            <td class="col-md-1">{{$productRequest->id}}</td>
+                                            <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
+                                            <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                            <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
+                                            <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
+                                            <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
+                                            {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
+                                        </tr>
                                         @endif
-                                            @if($pageName=='productRequestManagement')
-                                                @if($productRequest->request_record_count>0)
-                                                <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
-                                                <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
-                                                <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                                <td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
-                                                @endif
-                                            @elseif($pageName=='refusedProductRequestManagement')
-                                                <td  class="danger">{{$productRequest->refuse_record_count}}</td>
-                                                {{--<td>بررسی مجدد</td>--}}
-                                            @elseif($pageName=='acceptProductRequestManagement')
-                                                <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
-                                                <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
-                                                <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                                {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
-                                            @endif
-                                    </tr>
-                                @endforeach
+                                    @endforeach
+                                @endif
                             </tbody>
-                            @endif
                         </table>
                         {{--</form>--}}
                     </div>

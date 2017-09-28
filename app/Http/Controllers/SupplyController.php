@@ -112,6 +112,7 @@ class SupplyController extends Controller
         {
             $q=RequestRecord::where('id',$id)->update([
                 'step'=>$step,
+                'active'=>1,
                 'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
             ]);
         }
@@ -534,7 +535,7 @@ class SupplyController extends Controller
 
         $requestRecords=RequestRecord::where([['step',$step],['active',0]])->pluck('request_id');
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
-
+//        dd($productRequests);
         foreach($productRequests as $productRequest)
         {
             //undecided records
@@ -599,7 +600,6 @@ class SupplyController extends Controller
     }
     public function acceptProductRequestManagementGet()
     {
-        //change it later
         $pageTitle='درخواست های در حال پیگیری';
         $pageName='acceptProductRequestManagement';
         $user=Auth::user();
@@ -607,40 +607,45 @@ class SupplyController extends Controller
         {
             case 'تدارکات':
                 $step=2;
+                $step2=1;
                 break;
             case 'انبار':
                 $step=3;
+                $step2=2;
                 break;
             case 'اعتبار':
                 $step=4;
+                $step2=3;
                 break;
             case 'امور عمومی':
                 $step=5;
+                $step2=4;
                 break;
             case 'ریاست':
                 $step=6;
+                $step2=5;
                 break;
             case 'امور مالی':
                 $step=7;
+                $step2=6;
                 break;
-            default: $step=1;
+            default: $step=1;$step2=1;
         }
         $requestRecords=RequestRecord::where([['step',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
         foreach($productRequests as $productRequest)
         {
-            // all records
-            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',1]])->count();
-            //active records
-            $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',2]])->count();
+            //undecided records
+            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',$step2]])->count();
+            //in the process records
+            $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',$step],['active',1]])->count();
             //inactive records
-            $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+            $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['step','<=',$step]])->count();
         }
 //        dd($productRequests);
         return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
 
     }
-
 
     /* shiri
        below function is related to to show workers card image

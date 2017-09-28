@@ -93,6 +93,7 @@
     $(document).on('click','#acceptRequest',function(){
         var id= $(this).attr('content');
         var requestId = $(this).attr('name');
+        var user_unit_title=$('#user_unit_title').val();
         if(user_unit_title=='تدارکات')
         {
             var rate=$(this).parents('tr').find('.rate').val();
