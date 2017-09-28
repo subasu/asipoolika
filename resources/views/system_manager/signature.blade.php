@@ -41,9 +41,9 @@
                                 <tr>
                                     <td>{{$signature->id}}</td>
                                     <td>{{$signature->user->name}} {{$signature->user->family}}</td>
-                                    <td>{{$signature->title}}</td>
+                                    <td>{{$signature->unit->title}}</td>
                                     <td style="font-size:20px;">
-                                        @if($signature->force==1)
+                                        @if($signature->forced==1)
                                         <span class="label label-danger col-md-12">اجباری</span>
                                         @else
                                         <span class="label label-info col-md-12">اختیاری</span>
@@ -51,14 +51,21 @@
                                     </td>
                                     {{--<td><img class="col-md-2" src="http://s9.picofile.com/file/8306682392/blesing_cover_.jpg" style="padding:0;"/></td>--}}
                                     <td>
-                                        <a href="http://s9.picofile.com/file/8306682392/blesing_cover_.jpg" target="_blank" type="button"
+                                        <a href="{{URL::asset('systemManager/showSignature')}}/{{$signature->id}}" target="_blank" type="button"
                                            class="btn btn-round btn-default" data-toggle="tooltip" title="نمایش امضا">
                                             <span class="fa fa-search"></span>
                                         </a>
-                                        <a href="{{url('systemManager/edit_signature/'.$signature->id)}}" type="button"
-                                           class="btn btn-round btn-success" data-toggle="tooltip" title="ویرایش امضاء">
-                                            <span class="fa fa-pencil"></span>
+                                        @if($signature->forced == 1)
+                                        <a  content="{{$signature->id}}" name="تبدیل به اختیاری" id="change" type="button" class="btn btn-round btn-success" data-toggle="tooltip" title="تبدیل به اختیاری">
+                                            <span class="glyphicon glyphicon-refresh"></span>
                                         </a>
+                                        @endif
+                                        @if($signature->forced == 0)
+                                            <a  content="{{$signature->id}}" name="تبدیل به اجباری" id="change" type="button" class="btn btn-round btn-success" data-toggle="tooltip" title="تبدیل به اجباری">
+                                                <span class="glyphicon glyphicon-refresh"></span>
+                                            </a>
+                                            <input type="hidden" id="token" value="{{ csrf_token() }}">
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -70,4 +77,82 @@
             </div>
         </div>
 
+        <script>
+            $(document).on('click','#change',function () {
+               var signatureId = $(this).attr('content');
+               var token       = $('#token').val();
+               var parent      = $(this).parent();
+               var status      = $(this).attr('name');
+               var td          = $(this);
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+               if(status == 'تبدیل به اجباری')
+               {
+
+                   $.ajax
+                   ({
+
+                       url     : "{{Url('systemManager/makeSignatureForced')}}",
+                       type    : "post",
+                       data    : {'signatureId':signatureId , '_token' : token},
+                       context : {'parent':parent,'td':td},
+                       success : function (response) {
+                           $(parent).prev().empty();
+                           $(td).title= 'تبدیل به اختیاری';
+                           $(parent).prev().append(  "<span class='label label-danger col-md-12'>اجباری</span>" );
+                           swal({
+                               title: "",
+                               text: response,
+                               type: "info",
+                               confirmButtonText: "بستن"
+                           });
+                       },error : function()
+                       {
+                           swal({
+                               title: "",
+                               text: 'خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید',
+                               type: "warning",
+                               confirmButtonText: "بستن"
+                           });
+                       }
+                   })
+
+
+               }
+               else if(status == 'تبدیل به اختیاری')
+               {
+                   $.ajax
+                   ({
+
+                       url     : "{{Url('systemManager/makeSignatureUnforced')}}",
+                       type    : "post",
+                       data    : {'signatureId':signatureId , '_token' : token},
+                       context : {'parent':parent,'td':td},
+                       success : function (response) {
+                           $(td).title = "تبدیل به اجباری";
+                           $(parent).prev().empty();
+                           $(parent).prev().append(  "<span class='label label-info col-md-12'>اختیاری</span>" );
+                           swal({
+                               title: "",
+                               text: response,
+                               type: "info",
+                               confirmButtonText: "بستن"
+                           });
+                       },error : function()
+                       {
+                           swal({
+                               title: "",
+                               text: 'خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید',
+                               type: "warning",
+                               confirmButtonText: "بستن"
+                           });
+                       }
+                   })
+               }
+
+            });
+        </script>
 @endsection

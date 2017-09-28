@@ -672,7 +672,7 @@
                 var html;
                 html += '<option value="">صاحب امضاء را انتخاب کنید</option>';
                 $.each(response.users, function (index, value) {
-                    html += '<option value="' + value['id'] + '">' + value['title'] + ' ' + value['name'] + ' ' + value['family'] + '</option>';
+                    html += '<option name="users" value="' + value['id'] + '">' + value['name'] + ' ' + value['family'] + '</option>';
                 });
                 $("#user_signature").html(html);
             },

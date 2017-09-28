@@ -383,7 +383,7 @@ class SupplyController extends Controller
             $fileName = base64_encode($image);
             DB::table('workers')->insert(
                 [
-                    'card' => $fileName,
+                    'card'    => $fileName,
                     'user_id' => Auth::user()->id,
                     'date'    => $gDate1,
                     'name'    => $request->name,

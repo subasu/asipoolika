@@ -53,6 +53,11 @@ Route::group(['prefix'=>'systemManager'],function() {
         'as'=>'editSignature'
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
+    //shiri
+    Route::post('addSignature','SystemManagerController@addSignature');                      //96/7/6
+    Route::get('showSignature/{id}','SystemManagerController@showSignature');                //96/7/6
+    Route::post('makeSignatureForced' , 'SystemManagerController@makeSignatureForced');      //96/7/6
+    route::post('makeSignatureUnforced' , 'SystemManagerController@makeSignatureUnforced');  //96/7/6
 });
 
 Route::group(['middleware' => 'auth'], function () {
