@@ -121,7 +121,6 @@ class SupplyController extends Controller
             default :
                 $step=1;
         }
-//        return response($request->request_record_id);
         $update=
             DB::table('request_records')->where('id',$request->request_record_id)->update([
             'why_not'=>$request->whyNot,
@@ -129,11 +128,27 @@ class SupplyController extends Controller
             'refuse_user_id' => $user->id,
             'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
         ]);
-        if($update)
+        if($update==1)
         {
-            DB::table('requests')->where('id',$request->requestId)->increment('refuse_record_count');
+            $q=DB::table('requests')->where('id',$request->requestId)->increment('refuse_record_count');
+           if($q)
+           {
+               $class='success';
+               return response()->json(['msg'=>'درخواست مربوطه با ثبت دلیل رد شد',
+               'class'=>$class]);
+           } else
+           {
+               $class='danger';
+               return response()->json(['msg'=>'خطا رخ داده',
+                   'class'=>$class]);
+           }
         }
-           return response('درخواست مربوطه با ثبت دلیل رد شد');
+       else
+       {
+           $class='info';
+           return response()->json(['msg'=>'آپدیت نشد',
+               'class'=>$class]);
+       }
     }
 
 
@@ -458,12 +473,18 @@ class SupplyController extends Controller
             case 'انبار':
                 $step=2;
                 break;
-//            case 'ریاست':
-//                $step=0;
-//                break;
-//            case 'اعتبار':
-//                $step=0;
-//                break;
+            case 'اعتبار':
+                $step=3;
+                break;
+            case 'امور عمومی':
+                $step=3;
+                break;
+            case 'ریاست':
+                $step=0;
+                break;
+            case 'امور مالی':
+                $step=0;
+                break;
             default: $step=1;
         }
 
@@ -472,8 +493,10 @@ class SupplyController extends Controller
 
         foreach($productRequests as $productRequest)
         {
+            // all records
+            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',1]])->count();
             //active records
-            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null]])->count();
+            $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',2]])->count();
             //inactive records
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
         }
@@ -520,13 +543,14 @@ class SupplyController extends Controller
             default :
                 $step=1;
         }
-        $requestRecords=RequestRecord::where([['step',$step],['active',1]])->pluck('request_id');
+        $requestRecords=RequestRecord::where([['step',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
         foreach($productRequests as $productRequest)
         {
             $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null]])->count();
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
         }
+//        dd($productRequests);
         return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
 
     }

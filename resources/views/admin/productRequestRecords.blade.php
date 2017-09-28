@@ -67,9 +67,8 @@
                                 <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
                                 <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
                                 <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
-
                                 </button>
-                                <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="پیگیری" />
+                                <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="تایید" />
                                 <input id="refuseRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن" /></td>
                             </tr>
                         @endforeach
@@ -192,6 +191,8 @@
 //            var whyNot =$(this).find('textarea.why_not').val();
             var whyNot=$(this).parents('div').find('.why_not').val();
             var token = $('#token').val();
+//            console.log(request_record_id+'/'+request_id+'/'+whyNot);
+//            return false;
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -223,12 +224,19 @@
                     swal
                     ({
                         title: '',
-                        text: response,
-                        type:'success',
+                        text: response.msg,
+                        type: response.class,
                         confirmButtonText: 'بستن'
+                    },function() {
+                        // Redirect the user
+                        window.location.reload();
+                        $('#why_not_modal').modal('hide');
+                        $('#why_not').val('');
                     });
-                    $('#why_not_modal').modal('hide');
-                    $('#why_not').val('');
+
+
+
+
                 },error:function(error)
                 {
                     if(error.status === 500)

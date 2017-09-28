@@ -35,6 +35,11 @@
     font-size:30px;
     color:white;
 }
+.table tbody tr > td.info {
+    background-color: #4da6ff !important;
+    font-size:30px;
+    color:white;
+}
 input {direction: rtl;
 text-align: right}
 textarea {direction: rtl;
