@@ -77,9 +77,12 @@
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                                 @foreach($productRequests as $productRequest)
                                     <tr>
+                                        
+                                        @if($productRequest->request_record_count>0)
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                         <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                        @endif
                                             @if($pageName=='productRequestManagement')
                                                 @if($productRequest->request_record_count>0)
                                                 <td class="info col-md-2">{{$productRequest->request_record_count}}</td>

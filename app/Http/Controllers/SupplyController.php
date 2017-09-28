@@ -81,20 +81,44 @@ class SupplyController extends Controller
             case 'تدارکات':
                 $step=2;
                 break;
-            default :
-                $step=1;
+            case 'انبار':
+                $step=3;
+                break;
+            case 'اعتبار':
+                $step=4;
+                break;
+            case 'امور عمومی':
+                $step=5;
+                break;
+            case 'ریاست':
+                $step=6;
+                break;
+            case 'امور مالی':
+                $step=7;
+                break;
+            default: $step=1;
+        }
+        if($user->unit->title=='تدارکات')
+        {
+            $q=RequestRecord::where('id',$id)->update([
+                'rate'=>$rate,
+                'price'=>$price,
+                'step'=>$step,
+                'active'=>1,
+                'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+            ]);
+        }
+        else
+        {
+            $q=RequestRecord::where('id',$id)->update([
+                'step'=>$step,
+                'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+            ]);
         }
 
-        $q=RequestRecord::where('id',$id)->update([
-            'rate'=>$rate,
-            'price'=>$price,
-            'step'=>$step,
-            'active'=>1,
-            'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
-        ]);
         if($q)
         {
-            return response('نرخ و قیمت ثبت گردید و درخواست خدمت به مرحله بعد ارسال شد');
+            return response('درخواست ثبت شد به مرحله بعد ارسال شد');
         }
         else
             return response('خطایی رخ داده با پشتیبانی تماس بگیرید');
@@ -118,8 +142,22 @@ class SupplyController extends Controller
             case 'تدارکات':
                 $step=2;
                 break;
-            default :
-                $step=1;
+            case 'انبار':
+                $step=3;
+                break;
+            case 'اعتبار':
+                $step=4;
+                break;
+            case 'امور عمومی':
+                $step=5;
+                break;
+            case 'ریاست':
+                $step=6;
+                break;
+            case 'امور مالی':
+                $step=7;
+                break;
+            default: $step=1;
         }
         $update=
             DB::table('request_records')->where('id',$request->request_record_id)->update([
@@ -458,13 +496,62 @@ class SupplyController extends Controller
 
 
 
-
+//pr2
     public function productRequestManagement()
     {
         $pageTitle='مدیریت درخواست کالا تازه ثبت شده';
         $pageName='productRequestManagement';
 
         $me=Auth::user();
+        switch(trim($me->unit->title))
+        {
+            case 'تدارکات':
+                $step=1;
+                $step2=2;
+                break;
+            case 'انبار':
+                $step=2;
+                $step2=3;
+                break;
+            case 'اعتبار':
+                $step=3;
+                $step2=4;
+                break;
+            case 'امور عمومی':
+                $step=4;
+                $step2=5;
+                break;
+            case 'ریاست':
+                $step=5;
+                $step2=6;
+                break;
+            case 'امور مالی':
+                $step=6;
+                $step2=7;
+                break;
+            default: $step=1;$step2=1;
+        }
+
+        $requestRecords=RequestRecord::where([['step',$step],['active',0]])->pluck('request_id');
+        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
+
+        foreach($productRequests as $productRequest)
+        {
+            //undecided records
+            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',$step]])->count();
+            //in the process records
+            $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',$step2],['active',1]])->count();
+            //inactive records
+            $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+        }
+//        dd($productRequests);
+        return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
+    }
+    public function productRequestRecords($id)
+    {
+        $pageTitle='رکوردهای درخواست شماره '.$id;
+        $me=Auth::user();
+        $user=Auth::user();
         switch(trim($me->unit->title))
         {
             case 'تدارکات':
@@ -477,37 +564,18 @@ class SupplyController extends Controller
                 $step=3;
                 break;
             case 'امور عمومی':
-                $step=3;
+                $step=4;
                 break;
             case 'ریاست':
-                $step=0;
+                $step=5;
                 break;
             case 'امور مالی':
-                $step=0;
+                $step=6;
                 break;
             default: $step=1;
         }
-
-        $requestRecords=RequestRecord::where([['step',$step],['active',0]])->pluck('request_id');
-        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
-
-        foreach($productRequests as $productRequest)
-        {
-            // all records
-            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',1]])->count();
-            //active records
-            $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',2]])->count();
-            //inactive records
-            $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
-        }
-//        dd($productRequests);
-        return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
-    }
-    public function productRequestRecords($id)
-    {
-        $pageTitle='رکوردهای درخواست شماره '.$id;
-        $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',1]])->get();
-        return view ('admin.productRequestRecords',compact('pageTitle','requestRecords'));
+        $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',$step]])->get();
+        return view ('admin.productRequestRecords',compact('pageTitle','requestRecords','user'));
     }
     public function serviceRequestManagement()
     {
@@ -540,8 +608,22 @@ class SupplyController extends Controller
             case 'تدارکات':
                 $step=2;
                 break;
-            default :
-                $step=1;
+            case 'انبار':
+                $step=3;
+                break;
+            case 'اعتبار':
+                $step=4;
+                break;
+            case 'امور عمومی':
+                $step=5;
+                break;
+            case 'ریاست':
+                $step=6;
+                break;
+            case 'امور مالی':
+                $step=7;
+                break;
+            default: $step=1;
         }
         $requestRecords=RequestRecord::where([['step',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
