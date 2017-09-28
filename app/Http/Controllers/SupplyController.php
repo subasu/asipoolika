@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 //use Illuminate\Http\File;
 use App\Http\Requests\AcceptServiceRequestValidation;
+use App\Models\Message;
 use App\Models\Request2;
 use App\Models\RequestRecord;
 use App\Models\Ticket;
@@ -18,7 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-
+use phpDocumentor\Reflection\Types\Null_;
 
 
 class SupplyController extends Controller
@@ -436,7 +437,7 @@ class SupplyController extends Controller
             $fileName = base64_encode($image);
             DB::table('workers')->insert(
                 [
-                    'card' => $fileName,
+                    'card'    => $fileName,
                     'user_id' => Auth::user()->id,
                     'date'    => $gDate1,
                     'name'    => $request->name,
@@ -708,6 +709,45 @@ class SupplyController extends Controller
     // shiri : below function is to register admin message related to ticket
     public function adminSendMessage(Request $request)
     {
-        print_r(Auth::user()->id);
+        $message = Message::where('id',$request->messageId)->value('answer');
+        //$count = count($message);
+        //dd($count);
+        if($message == null)
+        {
+            $query = Message::where('id',$request->messageId)->update
+            ([
+                'answer' => $request->message,
+                'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+            ]);
+            if($query)
+            {
+                return response('پاسخ شما با موفقیت ثبت گردید');
+            }
+            else
+                {
+                    return response('خطا در ثبت اطلاعات ، لطفا با بخش پشتیبانی تماس بگیرید');
+                }
+        }
+        else
+            {
+                return response('قبلا به این پیام پاسخ داده اید،لطفا درخواست مجدد نفرمائید');
+            }
+
+    }
+
+    //shiri : below  function to end ticket by admin
+    public function adminEndTicket(Request $request)
+    {
+        $end = Ticket::where('id',$request->ticketId)->update
+        ([
+           'active'  => 1
+        ]);
+        if($end)
+        {
+            return response('تیکت مورد نظر غیر فعال گردید');
+        }else
+            {
+                return response('خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید');
+            }
     }
 }
