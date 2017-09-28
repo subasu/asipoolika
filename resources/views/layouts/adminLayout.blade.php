@@ -64,6 +64,7 @@
 <![endif]-->
 </head>
 <?php $user_info=\Illuminate\Support\Facades\Auth::user(); ?>
+<input type="hidden" value="{{$user=\Illuminate\Support\Facades\Auth::user()}}">
 <body class="nav-md">
 <div class="container body">
     <div class="main_container">
@@ -78,8 +79,8 @@
                              class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
-                        <span>{{$user_info->title}}</span>
-                        <h2>{{$user_info->name}} {{$user_info->family}}</h2>
+                        <span>{{$user->unit->description}}</span>
+                        <h2>{{$user_info->title}} {{$user_info->name}} {{$user_info->family}}</h2>
                     </div>
                 </div>
                 <!-- /menu prile quick info -->
@@ -90,7 +91,8 @@
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
 
                     <div class="menu_section">
-                        <h3>کاربر عمومی</h3>
+
+                        <h3>{{$user->unit->description}}</h3>
                         <ul class="nav side-menu">
                             //system manager menu
                             <li><a><i class="fa fa-home"></i> مدیر سیستم<span></span></a>

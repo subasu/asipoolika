@@ -534,7 +534,7 @@ class SupplyController extends Controller
             default: $step=1;$step2=1;
         }
         $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
-//        dd();
+//
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
 
         foreach($productRequests as $productRequest)
@@ -595,8 +595,35 @@ class SupplyController extends Controller
     {
         $pageTitle='درخواست های رد شده';
         $pageName='refusedProductRequestManagement';
+        $user=Auth::user();
+        switch(trim($user->unit->title))
+        {
+            case 'تدارکات':
+                $step=2;
+                break;
+            case 'انبار':
+                $step=3;
+                break;
+            case 'اعتبار':
+                $step=4;
+                break;
+            case 'امور عمومی':
+                $step=5;
+                break;
+            case 'ریاست':
+                $step=6;
+                break;
+            case 'امور مالی':
+                $step=7;
+                break;
+            default: $step=2;$step2=1;
+        }
+        //uncomment it if every thing goes wrong
+//        $requestRecords=RequestRecord::where([['refuse_user_id','!=',null],['active',0]])->pluck('request_id');
         $requestRecords=RequestRecord::where([['refuse_user_id','!=',null],['active',0]])->pluck('request_id');
+//        $requestRecords=RequestRecord::where([['refuse_user_id','!=',null],['active',0],['step',3]])->get();
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
+//        dd($productRequests);
         return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
     public function acceptProductRequestManagementGet()
