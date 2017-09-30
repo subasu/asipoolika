@@ -29,11 +29,13 @@
                 <div class="x_panel">
                     <div class="x_title">
                         @if($pageName=='productRequestManagement')
-                        <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت درخواست های کالا تازه ثبت شده</h2>
+                            <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت درخواست های کالا تازه ثبت شده</h2>
                         @elseif($pageName=='refusedProductRequestManagement')
-                        <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های کالای رد شده</h2>
+                            <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های کالای رد شده</h2>
                         @elseif($pageName=='acceptProductRequestManagement')
                             <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های کالا در حال پیگیری</h2>
+                        @elseif($pageName=='confirmProductRequest')
+                            <h2  style="color:#cc0099;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های تایید شده</h2>
                         @endif
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
@@ -69,10 +71,15 @@
                                         <th class="col-md-2" style="text-align: center ;">رد شده</th>
                                         {{--<th class="col-md-2" style="text-align: center ;">مرحله</th>--}}
                                         {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
+                                    @elseif($pageName=='confirmProductRequest')
+                                        <th class="col-md-1" style="text-align: center ;">تایید شده</th>
+                                        <th class="col-md-1" style="text-align: center ;">رد شده</th>
+                                        <th class="col-md-3" style="text-align: center ;"> عملیات</th>
                                     @endif
-                                    @endif
+
                             </tr>
                             </thead>
+                            @endif
                             <tbody>
                                 {{ csrf_field() }}
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
@@ -114,6 +121,23 @@
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
                                             {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                         </tr>
+                                        @endif
+                                    @endforeach
+                                @elseif($pageName=='confirmProductRequest')
+                                    @foreach($productRequests as $productRequest)
+                                        @if($productRequest->all_count==($productRequest->accept_count+$productRequest->refuse_count))
+                                    <tr>
+                                        <td class="col-md-1">{{$productRequest->id}}</td>
+                                        <td class="col-md-1"> واحد {{$productRequest->user->unit->title}}</td>
+                                        <td class="col-md-1">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                        <td class="success col-md-1">{{$productRequest->accept_count}}</td>
+                                        <td class="danger col-md-1">{{$productRequest->refuse_count}}</td>
+                                        <td style="font-size: 25px;"><button class="btn btn-danger">صدور صورتجلسه تحویل و نصب</button>
+                                            <button class="btn btn-info">صدور صورت جلسه تحویل و مصرف</button>
+                                            <button type="button" class="btn btn-default" data-toggle="tooltip" title="چاپ گواهی">
+                                                <span class="fa fa-print" style="font-size: 20px;"></span>
+                                            </button>
+                                `   </tr>
                                         @endif
                                     @endforeach
                                 @endif

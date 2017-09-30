@@ -79,10 +79,10 @@ class SupplyController extends Controller
         switch(trim($user->unit->title))
         {
             case 'تدارکات':
-//                if($user->is_supervisor==1)
+                if($user->is_supervisor==1)
                     $step=2;
-//                else
-//                    $step=7;
+                else
+                    $step=8;
                 break;
             case 'انبار':
                 $step=3;
@@ -101,7 +101,7 @@ class SupplyController extends Controller
                 break;
             default: $step=1;
         }
-        if($user->unit->title=='تدارکات')
+        if($user->unit->title=='تدارکات' and $user->is_supervisor==1)
         {
             $q=RequestRecord::where('id',$id)->update([
                 'rate'=>$rate,
@@ -512,10 +512,17 @@ class SupplyController extends Controller
         {
             case 'تدارکات':
                 if($me->is_supervisor==1)
+                {
                     $step=1;
+                    $step2=2;
+                }
                     //the user is Karpardaz
-                else  $step=7;
-                $step2=2;
+                else
+                {
+                    $step=7;
+                    $step2=8;
+                }
+
                 break;
             case 'انبار':
                 $step=2;
@@ -563,7 +570,11 @@ class SupplyController extends Controller
         switch(trim($me->unit->title))
         {
             case 'تدارکات':
-                $step=1;
+                if($me->is_supervisor==1)
+                    $step=1;
+                //the user is Karpardaz
+                else
+                    $step=7;
                 break;
             case 'انبار':
                 $step=2;
@@ -640,8 +651,18 @@ class SupplyController extends Controller
         switch(trim($user->unit->title))
         {
             case 'تدارکات':
-                $step=2;
-                $step2=1;
+                if($user->is_supervisor==1)
+                {
+                    $step=2;
+                    $step2=1;
+                }
+                //the user is Karpardaz
+                else
+                {
+                    $step=8;
+                    $step2=7;
+                }
+
                 break;
             case 'انبار':
                 $step=3;
@@ -715,5 +736,28 @@ class SupplyController extends Controller
     public function adminSendMessage(Request $request)
     {
         print_r(Auth::user()->id);
+    }
+
+    public function confirmProductRequestManagementGet()
+    {
+        $pageTitle="مدیریت درخواست های انجام شده";
+        $pageName='confirmProductRequest';
+        $productRequests=Request2::all();
+        foreach($productRequests as $productRequest)
+        {
+            $all_count=RequestRecord::where('request_id',$productRequest->id)->count();
+            $accept_count=RequestRecord::where([['request_id',$productRequest->id],['step',7]])->count();
+            $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
+            if($all_count==($accept_count+$refuse_count))
+                $productRequest->msg='Yes';
+            else
+                $productRequest->msg='No';
+            $productRequest->all_count=$all_count;
+            $productRequest->accept_count=$accept_count;
+            $productRequest->refuse_count=$refuse_count;
+
+        }
+        return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
+//        dd($requests);
     }
 }

@@ -60,15 +60,21 @@ Route::group(['middleware' => 'auth'], function () {
         //kianfar
         Route::get('/productRequestManagement','SupplyController@productRequestManagement');
         Route::get('/productRequestRecords/{id}','SupplyController@productRequestRecords');
-        Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');
-        Route::get('/refusedProductRequestManagement','SupplyController@refusedProductRequestManagementGet');
         Route::get('/acceptProductRequestManagement','SupplyController@acceptProductRequestManagementGet');
+        Route::post('acceptProductRequest','SupplyController@acceptProductRequest');
+        Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');
+        Route::get('/refusedProductRequestManagement','SupplyController@refusedProductRequestManagementGet');
+        Route::get('/confirmProductRequestManagement','SupplyController@confirmProductRequestManagementGet');
+
+
+        Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');
+
         //shiri
         Route::get('recentlyAddedService','SupplyController@recentlyAddedService');  //96/6/25
         Route::get('serviceRequestRecords/{id}','SupplyController@serviceRequestRecords'); //96/6/26
-        Route::post('acceptProductRequest','SupplyController@acceptProductRequest');  //96/6/26
+
         Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
-        Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');   //96/6/27
+
 
         Route::get('showToCreditManager','CertificateController@showToCreditManager');
         Route::get('workerCardCreate' ,'SupplyController@workerCardCreate');        //96/7/1
@@ -105,6 +111,10 @@ Route::get('unit_signature','SystemManagerController@unit_user_list');
 Route::get('price','IndexController@ajaxPrice');
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('/f', function () {
+    return view('forms.productDeliveryForm');
+});
 
 Route::get('/form2', function () {
     return view('user.serviceRequest');

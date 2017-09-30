@@ -29,7 +29,7 @@
             <div class="x_title" style="direction: rtl">
                 @if(!empty($requestRecords[0]))
                     <input type="hidden" value="{{$requestRecords[0]->id}}" name="request_id">
-                    <input type="hidden" value="{{$user->unit->title}}" name="user_unit_title" id="user_unit_title">
+                    <input type="hidden" value="{{$user->unit->title}}" content="{{$user->is_supervisor}}" name="user_unit_title" id="user_unit_title">
                     <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست کالای شماره :  {{$requestRecords[0]->request_id}} | ثبت شده توسط :   {{$requestRecords[0]->request->user->name}} {{$requestRecords[0]->request->user->family}} از واحد {{$requestRecords[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$requestRecords->count()}} رکورد</span></h2>
                 @endif
                 {{--<h2>لیست رکوردهای درخواست کالای شماره : {{$requestRecords[0]->request_id}}</h2>--}}
@@ -67,7 +67,7 @@
                                 <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
                                 <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">
                                 {{--<input type="hidden" class="" value="2000" name="count[]">--}}
-                                @if($user->unit->title=='تدارکات')
+                                @if($user->unit->title=='تدارکات' and $user->is_supervisor==1)
                                 <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
                                 <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
                                 @else
@@ -97,7 +97,9 @@
         var id= $(this).attr('content');
         var requestId = $(this).attr('name');
         var user_unit_title=$('#user_unit_title').val();
-        if(user_unit_title=='تدارکات')
+        var user_is_supervisor=$('#user_unit_title').attr('content');
+
+        if(user_unit_title=='تدارکات'  && user_is_supervisor==1)
         {
             var rate=$(this).parents('tr').find('.rate').val();
             var price=$(this).parents('tr').find('.price').val();
