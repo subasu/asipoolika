@@ -67,17 +67,11 @@
                             <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
                             <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">
                             {{--<input type="hidden" class="" value="2000" name="count[]">--}}
-                            @if($user->unit->title=='تدارکات' and $user->is_supervisor==1)
-                                <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
-                                <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
-                            @else
                                 <td>{{number_format($requestRecord->rate)}} تومان</td>
                                 <td>{{number_format($requestRecord->price)}} تومان</td>
-                            @endif
                             <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>
-                                <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="تایید" />
-                                <input id="refuseRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن" /></td>
+                                <input id="add_to_list" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger" required value="به این گواهی اضافه شود" />
                         </tr>
                     @endforeach
                     {{--</form>--}}
@@ -86,251 +80,106 @@
             </div>
         </div>
     </div>
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title" style="direction: rtl">
+                        <h2><i class="fa fa-newspaper-o"></i> صدور گواهی</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li><a class="close-link" data-toggle="tooltip" title="بستن"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="col-md-12 col-sm-8 col-xs-12">
+                        <div class="x_content">
+                            <div class="row" style="direction: rtl;text-align: right;margin-bottom: 20px;font-size:20px;">
+                                <div class="col-md-12"> بدینوسیله گواهی می شود خدمات انجام شده توسط شرکت / فروشگاه
+                                    <input id="shop_comp" name="shop_comp"
+                                           placeholder="" required="required" type="text" style="width: 20%;padding:2px 5px 2px 5px;"> به واحد
+                                    <span style="color:red">{{$users[0]->unit->title}}</span> به آقای / خانم
+                                    <select name="" id="" style="font-size: 18px;padding:2px 5px 2px 5px;">
+                                        @foreach($users as $user)
+                                        <option value="{{$user->id}}">{{$user->name}} {{$user->family}}</option>
+                                        @endforeach
+                                    </select> تحویل گردید و پرداخت شده است.
+                                </div>
+                            </div>
+
+                            <form class="form-horizontal form-label-left product" novalidate id="product">
+                                {!! csrf_field() !!}
+                                <input type="hidden" value="{{$user}}" name="user_id" id="user_id">
+                                <input type="hidden" value="0" name="record_count" id="record_count">
+
+                                <table class="table table-bordered mytable" dir="rtl">
+                                    <thead>
+                                    <tr>
+                                        <th class="col-md-1">ردیف</th>
+                                        {{--<th>کد کالا</th>--}}
+                                        <th class="col-md-3">شرح</th>
+                                        <th class="col-md-1">تعداد / مقدار</th>
+                                        <th class="col-md-3">مبلغ کل</th>
+                                        <th class="col-md-1">حذف</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="table-row">
+
+                                    </tbody>
+                                </table>
+                            </form>
+                            <div class="form-group">
+                                <div class="col-md-8">
+                                    <button id="save_request" name="save_request" type="button" class="btn btn-primary col-md-6 col-md-offset-6"> صدور گواهی
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        var count=0;
+        var record_count=0;
+        $('#add_to_list').click(function(){
+            count++;
+            var row_id='row'+count;
+            var select_id='select'+count;
+            var product_title = $('#product_title').val();
+            var product_count = $('#product_count').val();
 
-        $(document).on('click','#acceptRequest',function(){
-            var id= $(this).attr('content');
-            var requestId = $(this).attr('name');
-            var user_unit_title=$('#user_unit_title').val();
-            var user_is_supervisor=$('#user_unit_title').attr('content');
+                var row='<tr id="'+row_id+'">'+
+                        '<th scope="row">'+count+'</th>'+
+                        '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" name="product_title[]" value="'+$('#product_title').val()+'">'+'</td>'+
+                        '<td>'+'<input style="padding-right:5px;" class="required form-control" type="number" name="product_count[]" value="'+$('#product_count').val()+'">'+'</td>'+
+                        '<td>'+$.trim($("#unit_count option:selected").text())+'</td>'+
+                        '<input type="text" name="unit_count" value="'+$.trim($("#unit_count option:selected").text())+'">'+
+                        '<td class="col-md-9">'+
+                        '<input id="product_details" class="form-control" name="product_details[]" placeholder=""  value="'+$('#product_details').val()+'" type="text" >'+'</td>'+
+                        '<input type="hidden" value="'+$.trim($("#unit_count option:selected").text())+'" name="unit_count_each[]">'+
+                        '<td>'+
+                        '<a type="button" class="btn btn-danger remove_row" data-toggle="tooltip" title="حذف" style="font-size:18px;">'+
+                        '<span class="fa fa-trash"></span>'+
+                        '</a>'+
+                        '</td>'+
+                        '</tr>';
+                $('#table-row').append(row);
+                record_count++;
+                $('#record_count').val(record_count);
 
-            if(user_unit_title=='تدارکات'  && user_is_supervisor==1)
-            {
-                var rate=$(this).parents('tr').find('.rate').val();
-                var price=$(this).parents('tr').find('.price').val();
-                price = price.replace(',', '');
-                if(rate == '' || rate == null)
-                {
-                    $('#rate').focus();
-                    $('#rate').css('border-color','red');
-                    return false;
-                }
-                else if(price == '' || price == null)
-                {
-                    $('#price').focus();
-                    $('#price').css('border-color','red');
-                    return false;
-                }
-            }
-
-            var token = $('#token').val();
-            var td = $(this);
-            var DOM = $('#table');
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            });
-            //var formData = new formData('#serviceDetailForm').serialize();
-
-            $.ajax
-            ({
-                url: "{{url('admin/acceptProductRequest')}}",
-                type:"post",
-//                context:td,
-                data:{rate:rate,price:price,id:id,requestId:requestId,_token:token},
-                success:function(response)
-                {
-                    $(td).parentsUntil(DOM,'tr').fadeOut(2000);
-                    $(td).parentsUntil(DOM,'tr').empty();
-                    swal
-                    ({
-                        title: '',
-                        text: response,
-                        type:'success',
-                        confirmButtonText: 'بستن'
-                    });
-                },
-                error:function (error) {
-                    if(error.status === 500)
-                    {
-                        swal
-                        ({
-                            title: '',
-                            text: 'خطایی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید',
-                            type:'info',
-                            confirmButtonText: 'بستن'
-                        });
-                        console.log(error);
-                    }
-
-                    if(error.status === 422)
-                    {
-                        console.log(error);
-                        var errors = error.responseJSON; //this will get the errors response data.
-                        //show them somewhere in the markup
-                        //e.g
-                        var  errorsHtml = '';
-
-                        $.each(errors, function( key, value ) {
-                            errorsHtml +=  value[0] + '\n'; //showing only the first error.
-                        });
-                        swal({
-                            title: "",
-                            text: errorsHtml,
-                            type: "info",
-                            confirmButtonText: "بستن"
-                        });
-                    }
-                }
-            })
         });
-
-        $(document).on('click','#refuseRequest',function(){
-//        request record id
-            var id = $(this).attr('content');
-            var requestId = $(this).attr('name');
-            //set the request record id into the modal for having access in why_not_btn
-            $('#why_not_btn').attr('content',id);
-            $('#why_not_btn').attr('name',requestId);
-            var td = $(this);
-            var DOM = $('#table');
-            $('#why_not_modal').modal('show');
-            $('#why_not_btn').click(function(){
-                var request_record_id=$(this).attr('content');
-                var request_id=$(this).attr('name');
-//            var whyNot =$(this).find('textarea.why_not').val();
-                var whyNot=$(this).parents('div').find('.why_not').val();
-                var token = $('#token').val();
-//            console.log(request_record_id+'/'+request_id+'/'+whyNot);
-//            return false;
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                    }
-                });
-                $.ajax
-                ({
-                    url:"{{Url('admin/refuseRequestRecord')}}",
-                    type:'post',
-                    context:td,
-                    data:{request_record_id:request_record_id,requestId:request_id,whyNot:whyNot,_token:token},
-                    beforeSend:function()
-                    {
-                        if(whyNot == '' || whyNot == null)
-                        {
-                            swal
-                            ({
-                                title: '',
-                                text: 'لضفا توضیحاتی برای رد درخواست بنویسید سپس دکمه ثبت را بزنید',
-                                type:'warning',
-                                confirmButtonText: 'بستن'
-                            });
-                            return false;
-                        }
-                    },
-                    success:function (response) {
-                        $(td).parentsUntil(DOM,'tr').fadeOut(2000);
-                        $(td).parentsUntil(DOM,'tr').empty();
-                        swal
-                        ({
-                            title: '',
-                            text: response.msg,
-                            type: response.class,
-                            confirmButtonText: 'بستن'
-                        },function() {
-                            // Redirect the user
-                            window.location.reload();
-                            $('#why_not_modal').modal('hide');
-                            $('#why_not').val('');
-                        });
-
-
-
-
-                    },error:function(error)
-                    {
-                        if(error.status === 500)
-                        {
-                            swal
-                            ({
-                                title: '',
-                                text: 'خطایی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید',
-                                type:'info',
-                                confirmButtonText: 'بستن'
-                            });
-                            console.log();
-                        }
-
-                        if(error.status === 422)
-                        {
-                            console.log(error);
-                            var errors = error.responseJSON; //this will get the errors response data.
-                            //show them somewhere in the markup
-                            //e.g
-                            var  errorsHtml = '';
-
-                            $.each(errors, function( key, value ) {
-                                errorsHtml +=  value[0] + '\n'; //showing only the first error.
-                            });
-                            swal({
-                                title: "",
-                                text: errorsHtml,
-                                type: "info",
-                                confirmButtonText: "بستن"
-                            });
-                        }
-
-                    }
-                });
-            });
+        $(document).on('click','.remove_row', function(){
+            $(this).closest('tr').remove();
+            record_count--;
+            $('#record_count').val(record_count);
         });
-
     </script>
-    {{--<script>--}}
-    {{--$(document).ready(function(){--}}
-    {{--$('.rate').keypress(function(e){--}}
-    {{--if (this.value.length == 0 && e.which == 48 ){--}}
-    {{--return false;--}}
-    {{--}--}}
-    {{--});--}}
-    {{--$('.rate').keyup(function(){--}}
-    {{--var rate=$(this).val();--}}
-    {{--var record_count=$('#count').attr('content');--}}
-    {{--var a=$(this).closest('tr').children('input.show_price').val();--}}
-    {{--alert(a);--}}
-    {{--if(rate.length>=4)--}}
-    {{--{--}}
-    {{--var price=rate*record_count;--}}
-    {{--$(this).closest('tr').children('input.price').val(price);--}}
-    {{--}--}}
-    {{--else--}}
-    {{--$('#sellPriceS').html('عدد کامل وارد کنید');--}}
-    {{--});--}}
 
-    {{--function validateMaxLength()--}}
-    {{--{--}}
-    {{--var text = $(this).val();--}}
-    {{--var maxlength = $(this).data('maxlength');--}}
-    {{--if(maxlength > 0)--}}
-    {{--{--}}
-    {{--$(this).val(text.substr(0, maxlength));--}}
-    {{--}--}}
-    {{--}--}}
-    {{--});--}}
-    {{--</script>--}}
-    <script>
-        function formatNumber (num) {
-            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-        }
-    </script>
-    <script>
-
-
-        $('.rate').on('keyup', function() {
-            var rate=$(this).parents('tr').find('.rate').val();
-            var count=$(this).parents('tr').find('.count').val();
-
-            var price = rate * count;
-            $(this).parents('tr').find('.price').val(formatNumber(price));
-        });
-
-
-
-        $('.icode').on('change', function() {
-            $(this).parents('tr').find('.description').val($(this).val());
-        });
-
-    </script>
 @endsection
