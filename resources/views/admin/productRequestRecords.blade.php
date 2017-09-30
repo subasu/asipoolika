@@ -50,8 +50,8 @@
                         <th style="text-align: center ;">مقدار</th>
                         @if($user->unit->title=='تدارکات')
                         <th style="text-align: center ;">نرخ (به تومان)</th>
-                        <th style="text-align: center ;">قیمت</th>
                         @endif
+                        <th style="text-align: center ;">قیمت</th>
                         <th class="col-md-3" style="text-align: center ;">عملیات</th>
                     </tr>
                     </thead>
@@ -70,6 +70,8 @@
                                 @if($user->unit->title=='تدارکات')
                                 <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
                                 <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
+                                @else
+                                <td>{{number_format($requestRecord->price)}} تومان</td>
                                 @endif
                                 <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>
