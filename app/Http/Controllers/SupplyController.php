@@ -79,7 +79,10 @@ class SupplyController extends Controller
         switch(trim($user->unit->title))
         {
             case 'تدارکات':
-                $step=2;
+//                if($user->is_supervisor==1)
+                    $step=2;
+//                else
+//                    $step=7;
                 break;
             case 'انبار':
                 $step=3;
@@ -508,7 +511,10 @@ class SupplyController extends Controller
         switch(trim($me->unit->title))
         {
             case 'تدارکات':
-                $step=1;
+                if($me->is_supervisor==1)
+                    $step=1;
+                    //the user is Karpardaz
+                else  $step=7;
                 $step2=2;
                 break;
             case 'انبار':

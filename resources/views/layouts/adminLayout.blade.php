@@ -92,7 +92,7 @@
 
                     <div class="menu_section">
 
-                        <h3>{{$user->unit->description}}</h3>
+                        <h3 style="font-size: 16px;"><a href="{{url('/logout')}}" style="color:white">خروج</a></h3>
                         <ul class="nav side-menu">
                             //system manager menu
                             <li><a><i class="fa fa-home"></i> مدیر سیستم<span></span></a>
@@ -111,10 +111,13 @@
                             <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/productRequestManagement')}}"> درخواست های جدید</a></li>
+                                    @if($user->is_supervisor==1)
                                     <li><a href="{{url('/admin/acceptProductRequestManagement')}}"> در حال پیگیری</a>
                                     <li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>
+
                                     {{--<li><a href="{{url('/admin/')}}"> در حال پیگیری</a></li>--}}
                                     <li><a href="{{url('/admin/')}}">انجام شده</a>
+                                    @endif
                                     </li>
                                 </ul>
                             </li>

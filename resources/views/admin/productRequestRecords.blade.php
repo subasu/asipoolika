@@ -48,9 +48,9 @@
                         <th style="text-align: center ;">شناسه</th>
                         <th style="text-align: center ;">عنوان درخواست</th>
                         <th style="text-align: center ;">مقدار</th>
-                        @if($user->unit->title=='تدارکات')
-                        <th style="text-align: center ;">نرخ (به تومان)</th>
-                        @endif
+{{--                        @if($user->unit->title=='تدارکات')--}}
+                        <th style="text-align: center ;">نرخ</th>
+                        {{--@endif--}}
                         <th style="text-align: center ;">قیمت</th>
                         <th class="col-md-3" style="text-align: center ;">عملیات</th>
                     </tr>
@@ -71,6 +71,7 @@
                                 <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
                                 <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
                                 @else
+                                <td>{{number_format($requestRecord->rate)}} تومان</td>
                                 <td>{{number_format($requestRecord->price)}} تومان</td>
                                 @endif
                                 <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
