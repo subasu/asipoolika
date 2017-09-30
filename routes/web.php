@@ -57,7 +57,7 @@ Route::group(['prefix'=>'systemManager'],function() {
 Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix'=>'admin'],function() {
-        //kianfar
+        //Product Request Management
         Route::get('/productRequestManagement','SupplyController@productRequestManagement');
         Route::get('/productRequestRecords/{id}','SupplyController@productRequestRecords');
         Route::get('/acceptProductRequestManagement','SupplyController@acceptProductRequestManagementGet');
@@ -66,7 +66,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/refusedProductRequestManagement','SupplyController@refusedProductRequestManagementGet');
         Route::get('/confirmProductRequestManagement','SupplyController@confirmProductRequestManagementGet');
 
+        Route::get('/certificate/{id}','CertificateController@deliveryAndInstallCertificateGet');
 
+        //End Product Request Management
         Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');
 
         //shiri
@@ -74,7 +76,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('serviceRequestRecords/{id}','SupplyController@serviceRequestRecords'); //96/6/26
 
         Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
-
 
         Route::get('showToCreditManager','CertificateController@showToCreditManager');
         Route::get('workerCardCreate' ,'SupplyController@workerCardCreate');        //96/7/1
