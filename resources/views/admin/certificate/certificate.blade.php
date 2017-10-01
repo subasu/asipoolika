@@ -24,22 +24,23 @@
                 <table style="direction:rtl;text-align: center;font-size: 16px;" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th style="text-align: center ;">شناسه</th>
-                        <th style="text-align: center ;">عنوان درخواست</th>
+                        <th class="col-md-1" style="text-align: center ;">انتخاب</th>
+                        <th class="col-md-2" style="text-align: center ;">عنوان درخواست</th>
                         <th style="text-align: center ;">مقدار</th>
                         <th style="text-align: center ;">نرخ</th>
                         <th style="text-align: center ;">قیمت</th>
-                        <th class="col-md-3" style="text-align: center ;">عملیات</th>
+                        {{--<th class="col-md-3" style="text-align: center ;">عملیات</th>--}}
                     </tr>
                     </thead>
                     <tbody id="main_table">
-
                     {{ csrf_field() }}
                     <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                     @foreach($requestRecords as $requestRecord)
                         <tr>
                             <input type="hidden" value="{{$requestRecord->id}}" class="record_id">
-                            <th style="text-align: center">{{$requestRecord->id}}</th>
+                            <td style="text-align: center">
+                                <input type="checkbox" class="flat" name="record">
+                            </td>
                             <td>{{$requestRecord->title}}</td>
                             <input type="hidden" value="{{$requestRecord->title}}" id="record_title" class="record_title" name="">
                             <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
@@ -49,14 +50,16 @@
                             <input type="hidden" value="{{$requestRecord->rate}}" id="record_rate" class="record_rate" name="">
                             <td>{{number_format($requestRecord->price)}} تومان</td>
                             <input type="hidden" value="{{$requestRecord->price}}" id="record_price" class="record_price" name="">
-                            <td>
-                            <input id="add_to_list" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger add_to_list" value="به این گواهی اضافه شود" />
                             <input type="hidden" value="{{$requestRecord->request_id}}" class="request_id">
-                            </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="add_to_list btn btn-info col-md-4 col-md-offset-4">اضافه کردن به گواهی</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -95,7 +98,7 @@
                                 {!! csrf_field() !!}
                                 <input type="hidden" value="{{$user}}" name="user_id" id="user_id">
                                 <input type="hidden" value="0" name="record_count" id="record_count">
-                                <table style="direction:rtl;text-align: center;font-size: 16px;" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                                <table style="direction:rtl;text-align: center;font-size: 16px;" id="table2" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                     <thead>
                                     <tr>
                                         <th style="text-align: center ;">ردیف</th>
@@ -111,6 +114,7 @@
 
                                     </tbody>
                                 </table>
+
                             </form>
                             <div class="form-group">
                                 <div class="col-md-8">
@@ -128,74 +132,80 @@
         function formatNumber (num) {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
         }
+
+
+        $(document).ready(function(){
+            var count=0;
+            var record_count=0;
+            $(document).on('click','.add_to_list',function(){
+                count++;
+//                    var record_title = $(this).parent().parent().parent().find('.record_title').val();
+                    var record_id = $(this).parent().parent().parent().find('.record_id').val();
+//                        var record_title = $(this).parents('tr').find('.record_title').val();
+                    var record_title = $(this).parent().parent().parent().find('.record_title').val();
+                    var record_price = $(this).parent().parent().parent().find('.record_price').val();
+                    var record_count2 = $(this).parent().parent().parent().find('.record_count2').val();
+                    var unit_count = $(this).parent().parent().parent().find('.unit_count').val();
+                    var record_rate = $(this).parent().parent().parent().find('.record_rate').val();
+                    var request_id = $(this).parent().parent().parent().find('.request_id').val();
+
+            var row=
+                    '<tr>'+
+                    '<input type="hidden" value="'+record_id+'" class="record_id">'+
+                    '<td>'+count+'</td>'+
+                    '<td>'+record_title+'</td>'+
+                    '<input type="hidden" value="'+record_title+'" id="record_title" class="record_title" name="">'+
+                    '<td>'+record_count2+'</td>'+
+                    '<input type="hidden" class="record_count2" value="'+record_count2+'" name="count">'+
+                    '<input type="hidden" class="unit_count" value="'+unit_count+'" name="unit_count">'+
+                    '<input type="hidden" class="record_rate" value="'+record_rate+'" name="record_rate">'+
+                    '<td>'+formatNumber(record_price)+' تومان'+'</td>'+
+                    '<input type="hidden" value="'+record_price+'" id="record_price" class="record_price" name="">'+
+                    '<td><a type="button" class="btn btn-danger remove_row" data-toggle="tooltip" title="حذف" style="font-size:18px;"><span class="fa fa-trash"></span></a></td>'+
+                    '<input type="hidden" value="'+request_id+'" class="request_id">'+
+                    '</tr>';
+                $("#table").find('input[name="record"]').each(function(){
+                    if($(this).is(":checked")){
+                        $('#table-row').append(row);
+                        $(this).closest('tr').remove();
+                }
+                });
+            });
+        });
     </script>
     <script>
-        var count=0;
-        var record_count=0;
-
-
-        $('table .add_to_list').on('click',function(e){
-//        $(document).on('click','.add_to_list',function(){
-//            $('.add_to_list').on('click',function(){
-                count++;
-                var record_id = $(this).parents('tr').find('.record_id').val();
-                var record_title = $(this).parents('tr').find('.record_title').val();
-                var record_price = $(this).parents('tr').find('.record_price').val();
-                var record_count2 = $(this).parents('tr').find('.record_count2').val();
-                var unit_count = $(this).parents('tr').find('.unit_count').val();
-                var record_rate = $(this).parents('tr').find('.record_rate').val();
-                var request_id = $(this).parents('tr').find('.request_id').val();
-                var row=
-                        '<tr>'+
-                            '<input type="hidden" value="'+record_id+'" class="record_id">'+
-                            '<td>'+count+'</td>'+
-                            '<td>'+record_title+'</td>'+
-                            '<input type="hidden" value="'+record_title+'" id="record_title" class="record_title" name="">'+
-                            '<td>'+record_count2+'</td>'+
-                            '<input type="hidden" class="record_count2" value="'+record_count2+'" name="count">'+
-                            '<input type="hidden" class="unit_count" value="'+unit_count+'" name="unit_count">'+
-                            '<input type="hidden" class="record_rate" value="'+record_rate+'" name="record_rate">'+
-                            '<td>'+formatNumber(record_price)+' تومان'+'</td>'+
-                            '<input type="hidden" value="'+record_price+'" id="record_price" class="record_price" name="">'+
-                            '<td><a type="button" class="btn btn-danger remove_row" data-toggle="tooltip" title="حذف" style="font-size:18px;"><span class="fa fa-trash"></span></a></td>'+
-                            '<input type="hidden" value="'+request_id+'" class="request_id">'+
-                        '</tr>';
-
-                $('#table-row').append(row);
-//                record_count++;
-//                $('#record_count').val(record_count);
-                $(this).closest('tr').remove();
-            });
 
         $(document).on('click','.remove_row', function(){
-
             record_count--;
             $('#record_count').val(record_count);
-            var record_id = $(this).parents('tr').find('.record_id').val();
-            var record_title = $(this).parents('tr').find('.record_title').val();
-            var record_price = $(this).parents('tr').find('.record_price').val();
-            var record_count2 = $(this).parents('tr').find('.record_count').val();
-            var unit_count = $(this).parents('tr').find('.unit_count').val();
-            var record_rate = $(this).parents('tr').find('.record_rate').val();
-            var request_id = $(this).parents('tr').find('.request_id').val();
+            var record_id = $(this).parent().parent().parent().find('.record_id').val();
+//                var record_title = $(this).parents('tr').find('.record_title').val();
+            var record_title = $(this).parent().parent().parent().find('.record_title').val();
+            var record_price = $(this).parent().parent().parent().find('.record_price').val();
+            var record_count2 = $(this).parent().parent().parent().find('.record_count2').val();
+            var unit_count = $(this).parent().parent().parent().find('.unit_count').val();
+            var record_rate = $(this).parent().parent().parent().find('.record_rate').val();
+            var request_id = $(this).parent().parent().parent().find('.request_id').val();
 
                 var row=
                         '<tr>'+
                             '<input type="hidden" value="'+record_id+'" class="record_id">'+
-                            '<th style="text-align: center">'+record_id+'</th>'+
+                            '<td style="text-align: center">'+
+                            '<input type="checkbox" class="flat" name="record">'+
+                            '</td>'+
                             '<td>'+record_title+'</td>'+
                             '<input type="hidden" value="'+record_title+'" id="record_title" class="record_title" name="">'+
                             '<td id="count" content="'+record_count2+'">'+record_count2+' '+unit_count+'</td>'+
                             '<input type="hidden" class="unit_count" value="'+unit_count+'" name="unit_count">'+
-                            '<input type="hidden" class="record_count" value="'+record_count2+'" name="count">'+
+                            '<input type="hidden" class="record_count2" value="'+record_count2+'" name="count">'+
                             '<td>'+formatNumber(record_rate)+' تومان</td>'+
                             '<input type="hidden" value="'+record_rate+'" id="record_rate" class="record_rate" name="">'+
                             '<td>'+formatNumber(record_price)+' تومان</td>'+
                             '<input type="hidden" value="'+record_price+'" id="record_price" class="record_price" name="">'+
-                            '<td>'+
-                            '<input id="add_to_list" content="'+record_id+'" name="'+request_id+'" type="button" class="btn btn-danger add_to_list" required value="به این گواهی اضافه شود" />'+
+//                            '<td>'+
+//                            '<input id="add_to_list" content="'+record_id+'" name="'+request_id+'" type="button" class="btn btn-danger add_to_list" required value="به این گواهی اضافه شود" />'+
                             '<input type="hidden" value="'+request_id+'" class="request_id">'+
-                            '</td>'+
+//                            '</td>'+
                         '</tr>';
             $('#main_table').append(row);
             $(this).closest('tr').remove();
