@@ -282,38 +282,7 @@
     });
 
 </script>
- {{--<script>--}}
-        {{--$(document).ready(function(){--}}
-            {{--$('.rate').keypress(function(e){--}}
-                {{--if (this.value.length == 0 && e.which == 48 ){--}}
-                    {{--return false;--}}
-                {{--}--}}
-            {{--});--}}
-            {{--$('.rate').keyup(function(){--}}
-                {{--var rate=$(this).val();--}}
-                {{--var record_count=$('#count').attr('content');--}}
-                {{--var a=$(this).closest('tr').children('input.show_price').val();--}}
-                {{--alert(a);--}}
-                {{--if(rate.length>=4)--}}
-                {{--{--}}
-                    {{--var price=rate*record_count;--}}
-                    {{--$(this).closest('tr').children('input.price').val(price);--}}
-                {{--}--}}
-                {{--else--}}
-                    {{--$('#sellPriceS').html('عدد کامل وارد کنید');--}}
-            {{--});--}}
 
-            {{--function validateMaxLength()--}}
-            {{--{--}}
-                {{--var text = $(this).val();--}}
-                {{--var maxlength = $(this).data('maxlength');--}}
-                {{--if(maxlength > 0)--}}
-                {{--{--}}
-                    {{--$(this).val(text.substr(0, maxlength));--}}
-                {{--}--}}
-            {{--}--}}
-        {{--});--}}
-    {{--</script>--}}
     <script>
         function formatNumber (num) {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
@@ -330,11 +299,11 @@
             $(this).parents('tr').find('.price').val(formatNumber(price));
         });
 
-
-
-$('.icode').on('change', function() {
-    $(this).parents('tr').find('.description').val($(this).val());
-});
+//
+//
+//$('.icode').on('change', function() {
+//    $(this).parents('tr').find('.description').val($(this).val());
+//});
 
     </script>
 @endsection

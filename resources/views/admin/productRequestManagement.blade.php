@@ -69,6 +69,7 @@
                                         <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
                                         <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                         <th class="col-md-2" style="text-align: center ;">رد شده</th>
+                                        <th class="col-md-1" style="text-align: center ;">وضعیت</th>
                                         {{--<th class="col-md-2" style="text-align: center ;">مرحله</th>--}}
                                         {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
                                     @elseif($pageName=='confirmProductRequest')
@@ -120,6 +121,7 @@
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
+                                            <td class="col-md-2">@if($productRequest->active==1) Finish @else In Proccess @endif</td>
                                             {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                         </tr>
                                         @endif
@@ -137,7 +139,7 @@
                                         <td class="danger col-md-1">{{$productRequest->refuse_count}}</td>
                                         <td class="col-md-2" style="font-size: 25px;">
                                             {{--<a href="" class="btn btn-danger">صدور صورتجلسه تحویل و نصب</a>--}}
-                                            <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-7 col-md-offset-2"> صدور گواهی</a>
+                                            <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-10"> صدور گواهی</a>
                                             {{--<button type="button" class="btn btn-default" data-toggle="tooltip" title="چاپ گواهی">--}}
                                              {{--<span class="fa fa-print" style="font-size: 20px;"></span>--}}
                                             {{--</button>--}}

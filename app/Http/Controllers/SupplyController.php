@@ -746,7 +746,7 @@ class SupplyController extends Controller
         foreach($productRequests as $productRequest)
         {
             $all_count=RequestRecord::where('request_id',$productRequest->id)->count();
-            $accept_count=RequestRecord::where([['request_id',$productRequest->id],['step',7]])->count();
+            $accept_count=RequestRecord::where([['request_id',$productRequest->id],['step',7],['refuse_user_id',null],['active',1]])->count();
             $has_certificate_count=RequestRecord::where([['request_id',$productRequest->id],['step',8]])->count();
             $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
             if($all_count==($accept_count+$refuse_count))

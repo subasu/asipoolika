@@ -106,6 +106,13 @@
         function formatNumber (num) {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         }
+        $('.new_rate').on('keyup', function() {
+            var rate=$(this).parents('tr').find('.new_rate').val();
+            var count=$(this).parents('tr').find('.new_count').val();
+
+            var price = rate * count;
+            $(this).parents('tr').find('.new_price').val(formatNumber(price));
+        });
     </script>
 <script>
 
@@ -159,7 +166,7 @@ $(".record_ch").click(function() {
                         success: function (response) {
                             console.log(response);
                             swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
-                            window.location.reload();
+                            location.reload(true);
 //                                    window.location.href='';
                         },
                         error: function (error) {
@@ -186,6 +193,8 @@ $(".record_ch").click(function() {
                 }
             });
         });
+
+
     </script>
 
 @endsection
