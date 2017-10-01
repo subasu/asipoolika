@@ -238,7 +238,7 @@
                         confirmButtonText: 'بستن'
                     },function() {
                         // Redirect the user
-                        window.location.reload();
+//                        window.location.reload();
                         $('#why_not_modal').modal('hide');
                         $('#why_not').val('');
                     });

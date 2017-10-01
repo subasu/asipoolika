@@ -15,16 +15,22 @@
                 <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
                     </li>
+
                     <li><a class="close-link" data-toggle="tooltip" title="بستن"><i class="fa fa-close"></i></a>
                     </li>
                 </ul>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
+                <div class="alert alert-danger" style="direction: rtl;text-align:right;font-size:18px;">
+                    <strong>روش کار : </strong> گزینه هایی که قصد صدور آن ها در یک گواهی را دارید انتخاب کرده و روی دکمه مربوطه کلیک کنید.
+                </div>
+                <form id="form_certificate">
                 <table style="direction:rtl;text-align: center;font-size: 16px;" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th class="col-md-1" style="text-align: center ;">انتخاب</th>
+                        <th class="col-md-1" style="text-align: center ;">ردیف</th>
                         <th class="col-md-2" style="text-align: center ;">عنوان درخواست</th>
                         <th style="text-align: center ;">مقدار</th>
                         <th style="text-align: center ;">نرخ</th>
@@ -35,12 +41,15 @@
                     <tbody id="main_table">
                     {{ csrf_field() }}
                     <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
+                    <?php $row=1; ?>
                     @foreach($requestRecords as $requestRecord)
                         <tr>
                             <input type="hidden" value="{{$requestRecord->id}}" class="record_id">
                             <td style="text-align: center">
-                                <input type="checkbox" class="flat" name="record">
+                                <input type="checkbox" value="{{$requestRecord->id}}" class=" record_ch" name="record[]">
                             </td>
+                            <td>{{$row}}</td>
+                            <?php $row++; ?>
                             <td>{{$requestRecord->title}}</td>
                             <input type="hidden" value="{{$requestRecord->title}}" id="record_title" class="record_title" name="">
                             <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
@@ -50,166 +59,107 @@
                             <input type="hidden" value="{{$requestRecord->rate}}" id="record_rate" class="record_rate" name="">
                             <td>{{number_format($requestRecord->price)}} تومان</td>
                             <input type="hidden" value="{{$requestRecord->price}}" id="record_price" class="record_price" name="">
-                            <input type="hidden" value="{{$requestRecord->request_id}}" class="request_id">
                         </tr>
                     @endforeach
+                    <input type="hidden" value="0" name="checked_count" id="checked_count">
+                    <input type="hidden" value="" name="certificate_type" id="certificate_type">
                     </tbody>
                 </table>
+                </form>
                 <div class="row">
-                    <div class="col-md-12">
-                        <button class="add_to_list btn btn-info col-md-4 col-md-offset-4">اضافه کردن به گواهی</button>
+                    <div class="col-md-12 col-md-offset-3">
+                        <button id="use_certificate" content="2" class="btn btn-danger col-md-3">صدول گواهی تحویل و مصرف</button>
+                        <button id="install_certificate"  content="1" class="btn btn-primary col-md-3">صدور گواهی تحویل و نصب</button>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title" style="direction: rtl">
-                        <h2><i class="fa fa-newspaper-o"></i> صدور گواهی</h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <li><a class="close-link" data-toggle="tooltip" title="بستن"><i class="fa fa-close"></i></a>
-                            </li>
-                        </ul>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class="col-md-12 col-sm-8 col-xs-12">
-                        <div class="x_content">
-                            <div class="row" style="direction: rtl;text-align: right;margin-bottom: 20px;font-size:20px;">
-                                <input type="hidden" class="unit_id" value="{{$users[0]->unit->id}}">
-                                <div class="col-md-12"> بدینوسیله گواهی می شود خدمات انجام شده توسط شرکت / فروشگاه
-                                    <input id="shop_comp" name="shop_comp"
-                                           placeholder="" required="required" type="text" style="width: 20%;padding:2px 5px 2px 5px;"> به واحد
-                                    <span style="color:red">{{$users[0]->unit->title}}</span> به آقای / خانم
-                                    <select name="" id="" style="font-size: 18px;padding:2px 5px 2px 5px;">
-                                        @foreach($users as $user)
-                                        <option value="{{$user->id}}">{{$user->name}} {{$user->family}}</option>
-                                        @endforeach
-                                    </select> تحویل گردید و پرداخت شده است.
-                                </div>
-                            </div>
-
-                            <form class="form-horizontal form-label-left product" novalidate id="product">
-                                {!! csrf_field() !!}
-                                <input type="hidden" value="{{$user}}" name="user_id" id="user_id">
-                                <input type="hidden" value="0" name="record_count" id="record_count">
-                                <table style="direction:rtl;text-align: center;font-size: 16px;" id="table2" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                                    <thead>
-                                    <tr>
-                                        <th style="text-align: center ;">ردیف</th>
-                                        <th style="text-align: center ;">شرح</th>
-                                        <th style="text-align: center ;">تعداد / مقدار</th>
-                                        <th style="text-align: center ;">مبلغ کل</th>
-                                        <th class="col-md-3" style="text-align: center ;">حذف</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="table-row">
-                                    {{ csrf_field() }}
-                                    <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
-
-                                    </tbody>
-                                </table>
-
-                            </form>
-                            <div class="form-group">
-                                <div class="col-md-8">
-                                    <button id="save_request" name="save_request" type="button" class="btn btn-primary col-md-6 col-md-offset-6"> صدور گواهی
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <script>
         function formatNumber (num) {
-            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         }
 
-
-        $(document).ready(function(){
-            var count=0;
-            var record_count=0;
-            $(document).on('click','.add_to_list',function(){
-                count++;
-//                    var record_title = $(this).parent().parent().parent().find('.record_title').val();
-                    var record_id = $(this).parent().parent().parent().find('.record_id').val();
-//                        var record_title = $(this).parents('tr').find('.record_title').val();
-                    var record_title = $(this).parent().parent().parent().find('.record_title').val();
-                    var record_price = $(this).parent().parent().parent().find('.record_price').val();
-                    var record_count2 = $(this).parent().parent().parent().find('.record_count2').val();
-                    var unit_count = $(this).parent().parent().parent().find('.unit_count').val();
-                    var record_rate = $(this).parent().parent().parent().find('.record_rate').val();
-                    var request_id = $(this).parent().parent().parent().find('.request_id').val();
-
-            var row=
-                    '<tr>'+
-                    '<input type="hidden" value="'+record_id+'" class="record_id">'+
-                    '<td>'+count+'</td>'+
-                    '<td>'+record_title+'</td>'+
-                    '<input type="hidden" value="'+record_title+'" id="record_title" class="record_title" name="">'+
-                    '<td>'+record_count2+'</td>'+
-                    '<input type="hidden" class="record_count2" value="'+record_count2+'" name="count">'+
-                    '<input type="hidden" class="unit_count" value="'+unit_count+'" name="unit_count">'+
-                    '<input type="hidden" class="record_rate" value="'+record_rate+'" name="record_rate">'+
-                    '<td>'+formatNumber(record_price)+' تومان'+'</td>'+
-                    '<input type="hidden" value="'+record_price+'" id="record_price" class="record_price" name="">'+
-                    '<td><a type="button" class="btn btn-danger remove_row" data-toggle="tooltip" title="حذف" style="font-size:18px;"><span class="fa fa-trash"></span></a></td>'+
-                    '<input type="hidden" value="'+request_id+'" class="request_id">'+
-                    '</tr>';
-                $("#table").find('input[name="record"]').each(function(){
-                    if($(this).is(":checked")){
-                        $('#table-row').append(row);
-                        $(this).closest('tr').remove();
-                }
-                });
-            });
-        });
     </script>
+<script>
+
+</script>
     <script>
 
-        $(document).on('click','.remove_row', function(){
-            record_count--;
-            $('#record_count').val(record_count);
-            var record_id = $(this).parent().parent().parent().find('.record_id').val();
-//                var record_title = $(this).parents('tr').find('.record_title').val();
-            var record_title = $(this).parent().parent().parent().find('.record_title').val();
-            var record_price = $(this).parent().parent().parent().find('.record_price').val();
-            var record_count2 = $(this).parent().parent().parent().find('.record_count2').val();
-            var unit_count = $(this).parent().parent().parent().find('.unit_count').val();
-            var record_rate = $(this).parent().parent().parent().find('.record_rate').val();
-            var request_id = $(this).parent().parent().parent().find('.request_id').val();
+var checked_count;
+$(".record_ch").click(function() {
+    if(this.checked) {
+        checked_count=$('#checked_count').val();
+        checked_count++;
+        $('#checked_count').val(checked_count);
+    }
+    if(!(this.checked)) {
+        checked_count=$('#checked_count').val();
+        checked_count--;
+        $('#checked_count').val(checked_count);
+    }
+});
 
-                var row=
-                        '<tr>'+
-                            '<input type="hidden" value="'+record_id+'" class="record_id">'+
-                            '<td style="text-align: center">'+
-                            '<input type="checkbox" class="flat" name="record">'+
-                            '</td>'+
-                            '<td>'+record_title+'</td>'+
-                            '<input type="hidden" value="'+record_title+'" id="record_title" class="record_title" name="">'+
-                            '<td id="count" content="'+record_count2+'">'+record_count2+' '+unit_count+'</td>'+
-                            '<input type="hidden" class="unit_count" value="'+unit_count+'" name="unit_count">'+
-                            '<input type="hidden" class="record_count2" value="'+record_count2+'" name="count">'+
-                            '<td>'+formatNumber(record_rate)+' تومان</td>'+
-                            '<input type="hidden" value="'+record_rate+'" id="record_rate" class="record_rate" name="">'+
-                            '<td>'+formatNumber(record_price)+' تومان</td>'+
-                            '<input type="hidden" value="'+record_price+'" id="record_price" class="record_price" name="">'+
-//                            '<td>'+
-//                            '<input id="add_to_list" content="'+record_id+'" name="'+request_id+'" type="button" class="btn btn-danger add_to_list" required value="به این گواهی اضافه شود" />'+
-                            '<input type="hidden" value="'+request_id+'" class="request_id">'+
-//                            '</td>'+
-                        '</tr>';
-            $('#main_table').append(row);
-            $(this).closest('tr').remove();
-            count--;
+        $('#install_certificate').click(function () {
+            var certificate_type=$(this).attr('content');
+            $('#certificate_type').val(certificate_type);
+            swal({
+                title: "آیا از ثبت درخواست مطمئن هستید؟",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "	#5cb85c",
+                cancelButtonText: "خیر ، منصرف شدم",
+                confirmButtonText: "بله ثبت شود",
+                closeOnConfirm: true,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    //serialize() send all form input values
+                    var formData = $('#form_certificate').serialize();
+//                    console.log(formData);
+//                    return false;
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: "{{ url('admin/execute_certificate') }}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: formData,
+                        success: function (response) {
+                            console.log(response);
+                            swal('درخواست ثبت شد', 'درخواست به لیست درخواست های شما اضافه شد', 'success');
+//                                    window.location.href='';
+                        },
+                        error: function (error) {
+                            if (error.status === 422) {
+                                $errors = error.responseJSON; //this will get the errors response data.
+                                //show them somewhere in the markup
+                                //e.g
+                                var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
+//
+                                $.each($errors, function (key, value) {
+                                    errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                });
+                                errorsHtml += '</ul></div>';
+                                $('fieldset').append(errorsHtml);
+                                swal("خطاهای زیر را برطرف کنید !", '', "error");
+                            } else if (error.status === 500) {
+                                swal('لطفا با بخش پشتیبانی تماس بگیرید', 'خطایی رخ داده است', 'success');
+                                console.log(error);
+                            }
+                        }
+                    });
+                } else {
+                    swal("منصرف شدید", "درخواست ثبت نشد", "error");
+                }
+            });
         });
     </script>
 
