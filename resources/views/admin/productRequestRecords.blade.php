@@ -243,9 +243,6 @@
                         $('#why_not').val('');
                     });
 
-
-
-
                 },error:function(error)
                 {
                     if(error.status === 500)

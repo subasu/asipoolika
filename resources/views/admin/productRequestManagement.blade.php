@@ -72,6 +72,7 @@
                                         {{--<th class="col-md-2" style="text-align: center ;">مرحله</th>--}}
                                         {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
                                     @elseif($pageName=='confirmProductRequest')
+                                        <th class="col-md-1" style="text-align: center ;">دارای گواهی</th>
                                         <th class="col-md-1" style="text-align: center ;">تایید شده</th>
                                         <th class="col-md-1" style="text-align: center ;">رد شده</th>
                                         <th class="col-md-3" style="text-align: center ;"> عملیات</th>
@@ -125,11 +126,13 @@
                                     @endforeach
                                 @elseif($pageName=='confirmProductRequest')
                                     @foreach($productRequests as $productRequest)
-                                        @if($productRequest->all_count==($productRequest->accept_count+$productRequest->refuse_count))
+{{--                                        @if($productRequest->all_count==($productRequest->accept_count+$productRequest->refuse_count))--}}
+                                        @if($productRequest->active==1)
                                     <tr>
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-1"> واحد {{$productRequest->user->unit->title}}</td>
                                         <td class="col-md-1">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                        <td class="info col-md-1">{{$productRequest->has_certificate_count}}</td>
                                         <td class="success col-md-1">{{$productRequest->accept_count}}</td>
                                         <td class="danger col-md-1">{{$productRequest->refuse_count}}</td>
                                         <td class="col-md-2" style="font-size: 25px;">

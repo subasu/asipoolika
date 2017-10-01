@@ -45,7 +45,7 @@
                     <tr>
                         <th class="col-md-1" style="text-align: center ;">انتخاب</th>
                         <th class="col-md-1" style="text-align: center ;">ردیف</th>
-                        <th class="col-md-2" style="text-align: center ;">عنوان درخواست</th>
+                        <th class="col-md-1" style="text-align: center ;">شرح</th>
                         <th style="text-align: center ;">مقدار</th>
                         <th style="text-align: center ;">مقدار واقعی</th>
                         <th style="text-align: center ;">نرخ</th>
@@ -59,25 +59,33 @@
                     {{ csrf_field() }}
                     <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                     <?php $row=1; ?>
+
                     @foreach($requestRecords as $requestRecord)
                         <tr>
-                            <input type="hidden" value="{{$requestRecord->id}}" class="record_id">
+                            <input type="hidden" value="{{$requestRecord->id}}" class="record_id" name="record_id[]">
                             <td style="text-align: center">
-                                <input type="checkbox" value="{{$requestRecord->id}}" class=" record_ch" name="record[]">
+                                <input type="checkbox" value="{{$requestRecord->id}}" class=" record_ch" name="record">
                             </td>
                             <td>{{$row}}</td>
                             <?php $row++; ?>
                             <td>{{$requestRecord->title}}</td>
                             <input type="hidden" value="{{$requestRecord->title}}" id="record_title" class="record_title" name="">
-                            <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
-                            <input type="hidden" class="unit_count" value="{{$requestRecord->unit_count}}" name="unit_count">
+
+                            <td class="gray3" id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
+                            <td class="gray3" ><input type="text" class="form-control new_count" id="new_count"  name="new_count[]"/></td>
                             <input type="hidden" class="record_count2" value="{{$requestRecord->count}}" name="count">
-                            <td>{{number_format($requestRecord->rate)}} تومان</td>
+                            <input type="hidden" class="unit_count" value="{{$requestRecord->unit_count}}" name="unit_count">
+
+                            <td class="gray2">{{number_format($requestRecord->rate)}} تومان</td>
+                            <td class="gray2"><input type="text" class="form-control new_rate" id="new_rate"  name="new_rate[]"/></td>
                             <input type="hidden" value="{{$requestRecord->rate}}" id="record_rate" class="record_rate" name="">
-                            <td>{{number_format($requestRecord->price)}} تومان</td>
+
+                            <td class="gray1">{{number_format($requestRecord->price)}} تومان</td>
+                            <td class="gray1"><input type="text" class="form-control new_price" id="new_price" content="content" name="new_price[]" style="font-size:16px;color:red"/></td>
                             <input type="hidden" value="{{$requestRecord->price}}" id="record_price" class="record_price" name="">
                         </tr>
                     @endforeach
+
                     <input type="hidden" value="0" name="checked_count" id="checked_count">
                     <input type="hidden" value="" name="certificate_type" id="certificate_type">
                     </tbody>
@@ -90,7 +98,6 @@
                         <button id="install_certificate"  content="1" class="btn btn-primary col-md-3">صدور گواهی تحویل و نصب</button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -99,7 +106,6 @@
         function formatNumber (num) {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         }
-
     </script>
 <script>
 
@@ -152,7 +158,8 @@ $(".record_ch").click(function() {
                         data: formData,
                         success: function (response) {
                             console.log(response);
-                            swal('درخواست ثبت شد', 'درخواست به لیست درخواست های شما اضافه شد', 'success');
+                            swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
+                            window.location.reload();
 //                                    window.location.href='';
                         },
                         error: function (error) {

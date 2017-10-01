@@ -747,17 +747,25 @@ class SupplyController extends Controller
         {
             $all_count=RequestRecord::where('request_id',$productRequest->id)->count();
             $accept_count=RequestRecord::where([['request_id',$productRequest->id],['step',7]])->count();
+            $has_certificate_count=RequestRecord::where([['request_id',$productRequest->id],['step',8]])->count();
             $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
             if($all_count==($accept_count+$refuse_count))
+            {
+                DB::table('requests')->where('id',$productRequest->id)->update([
+                    'active'=>1
+                ]);
                 $productRequest->msg='Yes';
+            }
+
             else
                 $productRequest->msg='No';
             $productRequest->all_count=$all_count;
             $productRequest->accept_count=$accept_count;
+            $productRequest->has_certificate_count=$has_certificate_count;
             $productRequest->refuse_count=$refuse_count;
-
         }
+//                dd($productRequests);
         return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
-//        dd($requests);
+
     }
 }

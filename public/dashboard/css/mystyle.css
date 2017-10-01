@@ -40,6 +40,21 @@
     font-size:30px;
     color:white;
 }
+.table tbody tr > td.gray1 {
+    background-color: #004080 !important;
+    font-size:16px;
+    color:white;
+}
+.table tbody tr > td.gray2 {
+    background-color: #0066cc !important;
+    font-size:16px;
+    color:white;
+}
+.table tbody tr > td.gray3 {
+    background-color: #3399ff !important;
+    font-size:16px;
+    color:white;
+}
 input {direction: rtl;
 text-align: right}
 textarea {direction: rtl;
