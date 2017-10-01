@@ -7,7 +7,6 @@
         <div class="x_panel">
             <div class="x_title" style="direction: rtl">
                 @if(!empty($requestRecords[0]))
-                    <input type="hidden" value="{{$requestRecords[0]->id}}" name="request_id">
                     <input type="hidden" value="{{$user->unit->title}}" content="{{$user->is_supervisor}}" name="user_unit_title" id="user_unit_title">
                     <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست کالای شماره :  {{$requestRecords[0]->request_id}} | ثبت شده توسط :   {{$requestRecords[0]->request->user->name}} {{$requestRecords[0]->request->user->family}} از واحد {{$requestRecords[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$requestRecords->count()}} رکورد</span></h2>
                     <input type="hidden" value="{{$requestRecords->count()}}" id="record_counts">
@@ -15,7 +14,6 @@
                 <ul class="nav navbar-right panel_toolbox">
                     <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
                     </li>
-
                     <li><a class="close-link" data-toggle="tooltip" title="بستن"><i class="fa fa-close"></i></a>
                     </li>
                 </ul>
@@ -23,9 +21,25 @@
             </div>
             <div class="x_content">
                 <div class="alert alert-danger" style="direction: rtl;text-align:right;font-size:18px;">
+                    <a href="#" data-toggle="popover" title="بستن" class="pull-left" data-dismiss="alert" aria-label="close" style="font-size:20px;color:white"><i class="fa fa-times" aria-hidden="true"></i></a>
                     <strong>روش کار : </strong> گزینه هایی که قصد صدور آن ها در یک گواهی را دارید انتخاب کرده و روی دکمه مربوطه کلیک کنید.
                 </div>
                 <form id="form_certificate">
+                    @if(!empty($requestRecords[0]))
+                        <input type="hidden" value="{{$requestRecords[0]->request_id}}" name="request_id">
+                    @endif
+                    <div class="row" style="font-size: 18px;direction: rtl;text-align: right;margin-bottom: 10px;">
+                        <div class="col-md-12"> بدینوسیله گواهی می شود خدمات انجام شده توسط شرکت / فروشگاه
+                            <input id="shop_comp" name="shop_comp"
+                                   placeholder="" required="required" type="text" style="width: 20%;padding:2px 5px 2px 5px;"> به واحد
+                            <span style="color:red">{{$users[0]->unit->title}}</span> به آقای / خانم
+                            <select name="receiver_id" id="" style="font-size: 18px;padding:2px 5px 2px 5px;">
+                                @foreach($users as $user)
+                                    <option value="{{$user->id}}">{{$user->name}} {{$user->family}}</option>
+                                @endforeach
+                            </select> تحویل گردید و پرداخت شده است.
+                        </div>
+                    </div>
                 <table style="direction:rtl;text-align: center;font-size: 16px;" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
@@ -33,8 +47,11 @@
                         <th class="col-md-1" style="text-align: center ;">ردیف</th>
                         <th class="col-md-2" style="text-align: center ;">عنوان درخواست</th>
                         <th style="text-align: center ;">مقدار</th>
+                        <th style="text-align: center ;">مقدار واقعی</th>
                         <th style="text-align: center ;">نرخ</th>
+                        <th style="text-align: center ;">نرخ واقعی</th>
                         <th style="text-align: center ;">قیمت</th>
+                        <th style="text-align: center ;">قیمت واقعی</th>
                         {{--<th class="col-md-3" style="text-align: center ;">عملیات</th>--}}
                     </tr>
                     </thead>
@@ -65,6 +82,7 @@
                     <input type="hidden" value="" name="certificate_type" id="certificate_type">
                     </tbody>
                 </table>
+
                 </form>
                 <div class="row">
                     <div class="col-md-12 col-md-offset-3">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Request2;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\RequestRecord;
 use Illuminate\Support\Facades\Auth;
@@ -34,24 +35,23 @@ class CertificateController extends Controller
     {
 
         $record_count=$request->checked_count;
-//        return response()->json($request->certificate_type);
+//        return response()->json($request->request_id);
         if($record_count!=0)
         {
             $certificate_id=DB::table('certificates')->insertGetId([
-                'request_id'=>3,
-                'certificate_type_id'=>Auth::user()->id,
+                'request_id'=>$request->request_id,
+                'user_id'=>Auth::user()->id,
+                'certificate_type_id'=>$request->certificate_type,
                 'created_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
             ]);
             $i=0;
             do{
-                $q=DB::table('request_records')->insert([
+                $q=DB::table('certificate_records')->insert([
                     'title'=>$request->product_title[$i],
                     'description'=>$request->product_details[$i],
-                    'code'=>mt_rand(1000,5000),
-                    'count'=>$request->product_count[$i],
-                    'unit_count'=>$request->unit_count_each[$i],
-                    'step'=>1,
-                    'request_id'=>$request_id
+                    'shop_comp'=>$request->shop_comp,
+                    'receiver_id'=>$request->receiver_id,
+                    'certificate_id'=>$request->request_id,
                 ]);
                 $i++;
                 $record_count--;
