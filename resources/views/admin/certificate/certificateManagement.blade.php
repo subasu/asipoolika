@@ -28,8 +28,8 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                @if($pageName=='productRequestManagement')
-                    <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت درخواست های کالا تازه ثبت شده</h2>
+                @if($pageName=='certificateManagement')
+                    <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت گواهی های تازه ثبت شده</h2>
                 @elseif($pageName=='refusedProductRequestManagement')
                     <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های کالای رد شده</h2>
                 @elseif($pageName=='acceptProductRequestManagement')

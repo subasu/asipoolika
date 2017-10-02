@@ -90,9 +90,13 @@ class CertificateController extends Controller
         }
 //        dd($certificates);
         return view('admin.certificate.certificateManagement',compact('pageTitle','pageName','certificates'));
+
     }
     public function certificateRecordsGet($id)
     {
-        return true;
+       $pageTitle='مدیریت رکوردهای گواهی شماره : '.$id;
+       $certificateRecords=CertificateRecord::where([['certificate_id',$id],['step',1]])->get();
+//       $pageName=;
+        return view('admin.certificate.certificateRecords',compact('pageTitle','certificateRecords','certificates'));
     }
 }
