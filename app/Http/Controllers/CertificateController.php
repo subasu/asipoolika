@@ -111,15 +111,29 @@ class CertificateController extends Controller
         $pageTitle='مدیریت گواهی ها';
         $pageName='certificateManagement';
 
-        $certificateRecords=CertificateRecord::where('step',1)->pluck('certificate_id');
-
+        $user=Auth::user();
+        //receiver
+        $certificateRecords=CertificateRecord::where([['step',1],['receiver_id',$user->id]])->pluck('certificate_id');
         $certificates=Certificate::whereIn('id',$certificateRecords)->get();
+
+        //chief of unit
+        $certificateRecords=CertificateRecord::where([['step',2]])->pluck('certificate_id');
+        $certificates=Certificate::whereIn('id',$certificateRecords)->get();
+
+//        dd($certificates);
+        $certificateRecords=CertificateRecord::where('receiver_id',Auth::user()->id)->pluck('certificate_id');
+        $certificates=Certificate::whereIn('id',$certificateRecords)->get();
+//        dd($certificateRecords);
+//
+//        $certificateRecords=CertificateRecord::where('step',1)->pluck('certificate_id');
+//        $certificates=Certificate::whereIn('id',$certificateRecords)->get();
         foreach($certificates as $certificate)
         {
             //undecided records
             $certificate->certificate_undecided_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',1],['active',0]])->count();
             //in the process records
             $certificate->certificate_accepted_count=CertificateRecord::where([['certificate_id',$certificate->id],['step','>=',2],['active',1]])->count();
+//            if(Auth::user()->id==$certificate->receiver_id)
         }
 //        dd($certificates);
         return view('admin.certificate.certificateManagement',compact('pageTitle','pageName','certificates'));
@@ -128,12 +142,6 @@ class CertificateController extends Controller
     public function certificateRecordsGet($id)
     {
        $pageTitle='مدیریت رکوردهای گواهی شماره : '.$id;
-
-//        switch()
-//        {
-//            case 1:
-//                break;
-//        }
        $certificateRecords=CertificateRecord::where([['certificate_id',$id],['step',1]])->get();
 //        dd($certificateRecords);
 //       $pageName=;
