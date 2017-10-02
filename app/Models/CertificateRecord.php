@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CertificateRecord extends Model
 {
-    //shiri relation of certificate and certificate_records
     public function certificate()
     {
         return $this->belongsTo('App\Models\Certificate');

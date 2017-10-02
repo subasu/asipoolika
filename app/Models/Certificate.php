@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Certificate extends Model
 {
-    //shiri relation of certificate and certificate_records
+
     public function certificateRecords()
     {
-        return $this->hasMany('App\Models\RequestRecord');
+        return $this->hasMany('App\Models\CertificateRecord','certificate_id');
     }
 
     //shiri relation of certificate and certificate_type

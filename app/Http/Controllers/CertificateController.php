@@ -37,6 +37,11 @@ class CertificateController extends Controller
         $users=User::where('unit_id',$requestRecords[0]->request->user->unit->id)->get();
         return view('admin.certificate.certificate',compact('pageTitle','requestRecords','user','users'));
     }
+    public function impartGet($id)
+    {
+        $pageTitle="ابلاغ درخواست شماره : ".$id;
+        return view('admin.impart',compact('pageTitle'));
+    }
     public function execute_certificate(Request $request)
     {
 
@@ -57,6 +62,7 @@ class CertificateController extends Controller
                     'price'=>$request->new_price2[$i],
                     'rate'=>$request->new_rate[$i],
                     'count'=>$request->new_count[$i],
+                    'unit_count'=>$request->unit_count[$i],
                     'certificate_id'=>$certificate_id,
                     'receiver_id'=>$request->receiver_id,
                 ]);
@@ -95,8 +101,28 @@ class CertificateController extends Controller
     public function certificateRecordsGet($id)
     {
        $pageTitle='مدیریت رکوردهای گواهی شماره : '.$id;
+
+//        switch()
+//        {
+//            case 1:
+//                break;
+//        }
        $certificateRecords=CertificateRecord::where([['certificate_id',$id],['step',1]])->get();
+//        dd($certificateRecords);
 //       $pageName=;
         return view('admin.certificate.certificateRecords',compact('pageTitle','certificateRecords','certificates'));
+    }
+    public function acceptCertificate(Request $request)
+    {
+        if (!$request->ajax())
+        {
+            abort(403);
+        }
+        CertificateRecord::where('id',$request->certificate_record_id)->update([
+            'step'=>2,
+            'active'=>1,
+            'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+        ]);
+        return response()->json($request->all());
     }
 }

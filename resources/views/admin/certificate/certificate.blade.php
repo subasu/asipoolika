@@ -74,7 +74,7 @@
                             <td class="gray3" id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
                             <td class="gray3" ><input type="text" class="form-control new_count" id="new_count"  name="new_count[]"/></td>
                             <input type="hidden" class="record_count2" value="{{$requestRecord->count}}" name="count">
-                            <input type="hidden" class="unit_count" value="{{$requestRecord->unit_count}}" name="unit_count">
+                            <input type="hidden" class="unit_count" value="{{$requestRecord->unit_count}}" name="unit_count[]">
 
                             <td class="gray2">{{number_format($requestRecord->rate)}} تومان</td>
                             <td class="gray2"><input type="text" class="form-control new_rate" id="new_rate"  name="new_rate[]"/></td>

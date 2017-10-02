@@ -141,6 +141,7 @@
                                     <td class="danger col-md-1">{{$productRequest->refuse_count}}</td>
                                     <td class="col-md-2" style="font-size: 25px;">
                                         {{--<a href="" class="btn btn-danger">صدور صورتجلسه تحویل و نصب</a>--}}
+
                                         <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-10"> صدور گواهی</a>
                                         {{--<button type="button" class="btn btn-default" data-toggle="tooltip" title="چاپ گواهی">--}}
                                         {{--<span class="fa fa-print" style="font-size: 20px;"></span>--}}
