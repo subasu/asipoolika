@@ -37,13 +37,11 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            {{--<div class="alert alert-info col-md-12 col-sm-12 col-xs-12" style="direction:rtl;font-size:17px;color:white;">تعداد درخواست ها :  {{$productRequests->count()}} عدد--}}
-
-            {{--</div>--}}
+         <input type="hidden" id="request_id" value="{{$id}}">
             <div class="x_content">
                 {{--<form id="serviceDetailForm">--}}
                 <div class="row">
-                    <div class="col-md-7 col-xs-12 col-md-offset-4" style="direction: rtl;text-align: right">
+                    <div id="impart_div" class="col-md-7 col-xs-12 col-md-offset-4" style="direction: rtl;text-align: right">
                         <form class="form-horizontal form-label-left input_mask">
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                                 <label for="heard"> نام کاربر : </label>
@@ -59,17 +57,66 @@
                             <div class="form-group">
                                 <div class="col-md-9 col-sm-9 col-xs-12">
                                     {{--<button type="submit" class="btn btn-primary col-md-6">Cancel</button>--}}
-                                    <button type="submit" class="btn btn-primary col-md-8">ابلاغ شود</button>
+                                    <button type="button" id="impart_send" class="btn btn-primary col-md-8">ابلاغ شود</button>
                                 </div>
                             </div>
 
                         </form>
                     </div>
-
+                    <div class="form-group" id="return_button" style="display: none">
+                        <div class="col-md-6 col-sm-9 col-xs-12 col-md-offset-4">
+                            {{--<button type="submit" class="btn btn-primary col-md-6">Cancel</button>--}}
+                            <button type="button" id="impart_send" class="btn btn-danger col-md-7">بازگشت به درخواست های تایید شده</button>
+                        </div>
+                    </div>
                 </div>
                 {{--</form>--}}
             </div>
         </div>
     </div>
 
+    <script>
+        $("#impart_send").click(function() {
+            var user = $.trim($("#heard option:selected").val());
+            var request_id=$('#request_id').val();
+            $.ajax({
+                url: "{{ url('admin/impart') }}",
+                type: 'GET',
+                dataType: 'json',
+                data: {user:user,request_id:request_id},
+                success: function(response) {
+                    if(response.n==1)
+                    {
+                        new PNotify({
+                            title: 'پیام سیستم',
+                            text: response.message,
+                            type: 'success'
+                        });
+                        $('#impart_div').remove();
+                        $('#return_button').show();
+                    }
+                    else if (response.n==2)
+                    {
+                        new PNotify({
+                            title: 'پیام سیستم : ',
+                            text: response.message,
+                            type: 'danger'
+                        });
+                    }
+                    else if (response.n==3)
+                    {
+                        new PNotify({
+                            title: 'پیام سیستم : ',
+                            text: response.message,
+                            type: 'warning'
+                        });
+                    }
+                },
+                error: function(error) {
+                    var errors = error.responseJSON;
+                    console.log(errors);
+                }
+            });
+        });
+    </script>
 @endsection

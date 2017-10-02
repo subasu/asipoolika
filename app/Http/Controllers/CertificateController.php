@@ -41,14 +41,37 @@ class CertificateController extends Controller
     public function impartGet($id)
     {
         $pageTitle="ابلاغ درخواست شماره : ".$id;
+        $request=Request2::find($id);
+        if($request->supplier_id!=null)
+            return redirect('admin/confirmProductRequestManagement');
         $unit_id=Unit::where('title','تدارکات')->pluck('id');
         $users=User::where([['is_supervisor',0],['unit_id',$unit_id]])->get();
-//        dd($users);
-        return view('admin.impart',compact('pageTitle','users'));
+        return view('admin.impart',compact('pageTitle','users','id'));
+    }
+    public function impart(Request $request)
+    {
+        if (!$request->ajax())
+        {
+            abort(403);
+        }
+        $user_id=$request->user;
+        $request_id=$request->request_id;
+        $imparted=Request2::where('id',$request_id)->update([
+            'supplier_id'=>$user_id
+        ]);
+        if($imparted)
+        {
+            $message='درخواست با موفقیت ابلاغ شد';
+            $n=1;
+        } else
+        {
+            $message='در ابلاغ درخواست خطایی رخ داده است';
+            $n=1;
+        }
+        return response()->json(compact('message','n'));
     }
     public function execute_certificate(Request $request)
     {
-
         $record_count=$request->checked_count;
 //        return response()->json($request->new_price2);
         if($record_count!=0)

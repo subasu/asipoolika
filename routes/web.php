@@ -67,6 +67,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/confirmProductRequestManagement','SupplyController@confirmProductRequestManagementGet');
 
         Route::get('/impart/{id}','CertificateController@impartGet');
+        Route::get('/impart','CertificateController@impart');
         Route::get('/certificate/{id}','CertificateController@execute_certificateGet');
         Route::post('/execute_certificate','CertificateController@execute_certificate');
         Route::get('/certificatesManagement','CertificateController@certificatesManagementGet');
