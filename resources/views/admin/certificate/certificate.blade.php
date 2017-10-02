@@ -173,8 +173,7 @@ $(".record_ch").click(function() {
                         success: function (response) {
                             console.log(response);
                             swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
-
-//                            location.reload(true);
+                            location.reload(true);
 //                                    window.location.href='';
                         },
                         error: function (error) {
