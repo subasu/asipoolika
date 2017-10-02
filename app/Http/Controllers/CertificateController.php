@@ -39,7 +39,7 @@ class CertificateController extends Controller
     {
 
         $record_count=$request->checked_count;
-//        return response()->json($request->request_id);
+//        return response()->json($request->new_price2);
         if($record_count!=0)
         {
             $certificate_id=DB::table('certificates')->insertGetId([
@@ -51,7 +51,7 @@ class CertificateController extends Controller
             $i=0;
             do{
                 $q=DB::table('certificate_records')->insert([
-                    'price'=>$request->new_price[$i],
+                    'price'=>$request->new_price2[$i],
                     'rate'=>$request->new_rate[$i],
                     'count'=>$request->new_count[$i],
                     'certificate_id'=>$certificate_id,

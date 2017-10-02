@@ -83,6 +83,7 @@
                             <td class="gray1">{{number_format($requestRecord->price)}} تومان</td>
                             <td class="gray1"><input type="text" class="form-control new_price" id="new_price" content="content" name="new_price[]" style="font-size:16px;color:red"/></td>
                             <input type="hidden" value="{{$requestRecord->price}}" id="record_price" class="record_price" name="">
+                            <input type="hidden" value="" id="new_price2" class="new_price2" name="new_price2[]">
                         </tr>
                     @endforeach
 
@@ -106,12 +107,17 @@
         function formatNumber (num) {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         }
+
         $('.new_rate').on('keyup', function() {
             var rate=$(this).parents('tr').find('.new_rate').val();
             var count=$(this).parents('tr').find('.new_count').val();
 
             var price = rate * count;
             $(this).parents('tr').find('.new_price').val(formatNumber(price));
+            $(this).parents('tr').find('.new_price2').val(price);
+
+//            var price=$(this).parents('tr').find('.price').val();
+            price = price.replace(',', '');
         });
     </script>
 <script>
@@ -136,6 +142,7 @@ $(".record_ch").click(function() {
         $('#install_certificate').click(function () {
             var certificate_type=$(this).attr('content');
             $('#certificate_type').val(certificate_type);
+
             swal({
                 title: "آیا از ثبت درخواست مطمئن هستید؟",
                 text: "",
@@ -166,7 +173,8 @@ $(".record_ch").click(function() {
                         success: function (response) {
                             console.log(response);
                             swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
-                            location.reload(true);
+
+//                            location.reload(true);
 //                                    window.location.href='';
                         },
                         error: function (error) {

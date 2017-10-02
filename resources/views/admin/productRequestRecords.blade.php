@@ -289,8 +289,6 @@
         }
     </script>
     <script>
-
-
         $('.rate').on('keyup', function() {
             var rate=$(this).parents('tr').find('.rate').val();
             var count=$(this).parents('tr').find('.count').val();
