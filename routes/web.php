@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/certificate/{id}','CertificateController@execute_certificateGet');
         Route::post('/execute_certificate','CertificateController@execute_certificate');
+        Route::get('/certificatesManagement','CertificateController@certificatesManagementGet');
 
         //End Product Request Management
         Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');

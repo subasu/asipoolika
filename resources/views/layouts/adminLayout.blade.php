@@ -202,6 +202,8 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li><a href="{{url('admin/certificatesManagement')}}"><i class="fa fa-newspaper-o"></i> تایید گواهی<span></span></a>
+                            </li>
                             <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>

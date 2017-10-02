@@ -71,4 +71,8 @@ class CertificateController extends Controller
         }
         return response($record_count);
     }
+    public function certificatesManagementGet()
+    {
+        return view('admin.certificate.certificateManagement');
+    }
 }
