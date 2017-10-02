@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Certificate;
 use App\Models\CertificateRecord;
 use App\Models\Request2;
+use App\Models\Unit;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -40,7 +41,10 @@ class CertificateController extends Controller
     public function impartGet($id)
     {
         $pageTitle="ابلاغ درخواست شماره : ".$id;
-        return view('admin.impart',compact('pageTitle'));
+        $unit_id=Unit::where('title','تدارکات')->pluck('id');
+        $users=User::where([['is_supervisor',0],['unit_id',$unit_id]])->get();
+//        dd($users);
+        return view('admin.impart',compact('pageTitle','users'));
     }
     public function execute_certificate(Request $request)
     {
