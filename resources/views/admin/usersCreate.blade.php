@@ -154,6 +154,15 @@
                             </div>
                             <div class="item form-group">
                                 <div class="col-md-6 col-sm-6 col-xs-12">
+
+                                    <input id="unitManager" name="unitManager" value="0" type="checkbox">
+                                    <label>در نظر داشته باشید در صورتی که تیک زده شود کاربر  مربوطه به عنوان سوپروایزر واحد انتخاب شده شناخته میشود.</label>
+                                </div>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="supervisor_id">مدیر واحد
+                                    </label>
+                            </div>
+                            <div class="item form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
                                     <textarea id="description" required="required" name="description"
                                               class="form-control col-md-7 col-xs-12"></textarea>
                                 </div>
@@ -273,4 +282,13 @@
             });
         });
     </script>
+
+        <script>
+            $(function () {
+                $(':checkbox').change(function() {
+                    $(this).val(1);
+                });
+            })
+
+        </script>
 @endsection

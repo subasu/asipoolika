@@ -175,7 +175,7 @@
             $.ajax({
                 type: 'post',
                 cache: false,
-                url: "{{URL::asset('admin/usersUpdate')}}",
+                url: "{{Url('admin/usersUpdate')}}",
                 data: formData,
                 dataType: 'json',
                 contentType: false,//very important for upload file
@@ -187,9 +187,9 @@
                         type: "info",
                         confirmButtonText: "بستن"
                     });
-                    setInterval(function () {
-                        top.location = '{{URL::asset('admin/usersManage')}}';
-                    },500);
+
+                        window.url =('usersManagement');
+
                 },
                 error: function (xhr) {
                     if (xhr.status === 422) {
