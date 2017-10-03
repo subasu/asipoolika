@@ -129,7 +129,7 @@ Route::get('price','IndexController@ajaxPrice');
 Route::get('/home', 'HomeController@index');
 
 Route::get('/f', function () {
-    return view('forms.productDeliveryForm');
+    return view('forms.productRequestForm');
 });
 
 Route::get('/form2', function () {

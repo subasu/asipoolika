@@ -112,30 +112,64 @@ class CertificateController extends Controller
         $pageName='certificateManagement';
 
         $user=Auth::user();
-        //receiver
-        $certificateRecords=CertificateRecord::where([['step',1],['receiver_id',$user->id]])->pluck('certificate_id');
-        $certificates=Certificate::whereIn('id',$certificateRecords)->get();
-
-        //chief of unit
-        $certificateRecords=CertificateRecord::where([['step',2]])->pluck('certificate_id');
-        $certificates=Certificate::whereIn('id',$certificateRecords)->get();
-
-//        dd($certificates);
-        $certificateRecords=CertificateRecord::where('receiver_id',Auth::user()->id)->pluck('certificate_id');
-        $certificates=Certificate::whereIn('id',$certificateRecords)->get();
-//        dd($certificateRecords);
-//
-//        $certificateRecords=CertificateRecord::where('step',1)->pluck('certificate_id');
-//        $certificates=Certificate::whereIn('id',$certificateRecords)->get();
-        foreach($certificates as $certificate)
+        if($user->is_supervisor==0)
         {
-            //undecided records
-            $certificate->certificate_undecided_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',1],['active',0]])->count();
-            //in the process records
-            $certificate->certificate_accepted_count=CertificateRecord::where([['certificate_id',$certificate->id],['step','>=',2],['active',1]])->count();
-//            if(Auth::user()->id==$certificate->receiver_id)
+            $unit_id=Unit::where('title','تدارکات')->pluck('id');
+            if($user->unit_id==$unit_id[0])
+            {
+                $my_roll='supplier';
+                $step=3;
+                $me='من کارپردازم';
+            }
+            else
+            {
+                $my_roll='unit_employee';
+                $step=1;
+                $me='من کارمند جز واحدم';
+            }
+
         }
-//        dd($certificates);
+        elseif($user->is_supervisor==1)
+        {
+            $unit_id=Unit::where('title','ریاست')->pluck('id');
+            if($user->unit_id==$unit_id[0])
+            {
+                $my_roll='boss';
+                $step=4;
+                $me='من رئیسم';
+            }
+            else
+            {
+                $my_roll='unit_supervisor';
+                $step=2;
+                $me='من مدیر واحدم';
+            }
+        }
+        else $my_roll='non';
+
+        switch($my_roll)
+        {
+            case 'supplier':
+                $request_id=Request2::where('supplier_id',$user->id)->pluck('id');
+                $certificates=Certificate::whereIn('request_id',$request_id)->get();
+//                dd($certificates);
+                break;
+            case 'unit_employee':
+                $request_id=RequestRecord::where('receiver_id',$user->id)->pluck('request_id');
+                $certificate_id=Certificate::whereIn('request_id',$request_id)->pluck('id');
+                $certificate_records=CertificateRecord::where('step',1)->whereIn('certificate_id',$certificate_id)->pluck('certificate_id');
+                $certificates=Certificate::whereIn('id',$certificate_records)->get();
+                dd($certificates);
+
+                break;
+            case 'boss':
+                $certificate_id=CertificateRecord::where('step',4)->pluck('certificate_id');
+                $certificates=Certificate::whereIn('id',$certificate_id)->get();
+                break;
+            case 'unit_supervisor':
+                break;
+        }
+        dd($me.' / '.$step.' / '.$my_roll);
         return view('admin.certificate.certificateManagement',compact('pageTitle','pageName','certificates'));
 
     }

@@ -45,6 +45,7 @@ class RequestController extends Controller
             $request_id=DB::table('requests')->insertGetId([
                'request_type_id'=>3,
                'user_id'=>Auth::user()->id,
+               'unit_id'=>Auth::user()->unit_id,
                'created_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
            ]);
             $i=0;

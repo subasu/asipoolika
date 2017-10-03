@@ -663,7 +663,6 @@ class SupplyController extends Controller
                     $step=8;
                     $step2=7;
                 }
-
                 break;
             case 'انبار':
                 $step=3;
