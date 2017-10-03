@@ -108,13 +108,16 @@
                             </li>
                             //End system manager menu <br>
                             //Admin menu
-                            <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
+                           <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/productRequestManagement')}}"> درخواست های جدید</a></li>
-                                    <li><a href="{{url('/admin/acceptProductRequestManagement')}}"> در حال پیگیری</a>
-                                    <li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>
+                                    @if($user->is_supervisor==1)
+                                    <li><a href="{{url('/admin/acceptProductRequestManagement')}}">بررسی شده</a>
+                                    {{--<li><a href="{{url('/admin/')}}">تایید شده</a>--}}
+{{--                                    <li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
                                     {{--<li><a href="{{url('/admin/')}}"> در حال پیگیری</a></li>--}}
-                                    <li><a href="{{url('/admin/')}}">انجام شده</a>
+                                    <li><a href="{{url('/admin/confirmProductRequestManagement')}}">تایید شده</a>
+                                    @endif
                                     </li>
                                 </ul>
                             </li>
