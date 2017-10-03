@@ -56,15 +56,16 @@
                                             <span class="fa fa-search"></span>
                                         </a>
                                         @if($signature->forced == 1)
-                                        <a  content="{{$signature->id}}" name="تبدیل به اختیاری" id="change" type="button" class="btn btn-round btn-success" data-toggle="tooltip" title="تبدیل به اختیاری">
+                                        <a  content="{{$signature->id}}" name="تبدیل به اختیاری" id="change"  class="btn btn-round btn-success" data-toggle="tooltip" title="تبدیل به اختیاری">
                                             <span class="glyphicon glyphicon-refresh"></span>
                                         </a>
                                         @endif
                                         @if($signature->forced == 0)
-                                            <a  content="{{$signature->id}}" name="تبدیل به اجباری" id="change" type="button" class="btn btn-round btn-success" data-toggle="tooltip" title="تبدیل به اجباری">
+                                            <a  content="{{$signature->id}}" name="تبدیل به اجباری" id="change"  class="btn btn-round btn-success" data-toggle="tooltip" title="تبدیل به اجباری">
                                                 <span class="glyphicon glyphicon-refresh"></span>
                                             </a>
-                                            <input type="hidden" id="token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+
                                         @endif
                                     </td>
                                 </tr>
@@ -84,13 +85,16 @@
                var parent      = $(this).parent();
                var status      = $(this).attr('name');
                var td          = $(this);
+
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                     }
                 });
+
                if(status == 'تبدیل به اجباری')
                {
+
 
                    $.ajax
                    ({
@@ -101,11 +105,17 @@
                        context : {'parent':parent,'td':td},
                        success : function (response) {
                            $(parent).prev().empty();
-                           $(td).title= 'تبدیل به اختیاری';
+                           $(td).replaceWith
+                           (
+                               "<a  content=' "+ signatureId  +" ' name='تبدیل به اختیاری' id='change'  class='btn btn-round btn-success'  title='تبدیل به اختیاری'>"+
+                                    "<span class='glyphicon glyphicon-refresh'></span>"+
+                               "</a>"
+                           );
+                           //$(td).name  = 'تبدیل به اختیاری';
                            $(parent).prev().append(  "<span class='label label-danger col-md-12'>اجباری</span>" );
                            swal({
                                title: "",
-                               text: response,
+                               text: "وضعیت امضاء از اختیاری به اجباری تغییر یافت",
                                type: "info",
                                confirmButtonText: "بستن"
                            });
@@ -122,8 +132,9 @@
 
 
                }
-               else if(status == 'تبدیل به اختیاری')
+               if(status == 'تبدیل به اختیاری')
                {
+
                    $.ajax
                    ({
 
@@ -132,12 +143,19 @@
                        data    : {'signatureId':signatureId , '_token' : token},
                        context : {'parent':parent,'td':td},
                        success : function (response) {
-                           $(td).title = "تبدیل به اجباری";
+//                           $(td).title = "تبدیل به اجباری";
+//                           $(td).name  = 'تبدیل به اجباری';
+                           $(td).replaceWith
+                           (
+                               "<a  content=' "+ signatureId  +" ' name='تبدیل به اجباری' id='change'  class='btn btn-round btn-success'  title='تبدیل به اجباری'>"+
+                               "<span class='glyphicon glyphicon-refresh'></span>"+
+                               "</a>"
+                           );
                            $(parent).prev().empty();
                            $(parent).prev().append(  "<span class='label label-info col-md-12'>اختیاری</span>" );
                            swal({
                                title: "",
-                               text: response,
+                               text: "وضعیت امضاء از اجباری  به اختیاری تغییر یافت",
                                type: "info",
                                confirmButtonText: "بستن"
                            });
