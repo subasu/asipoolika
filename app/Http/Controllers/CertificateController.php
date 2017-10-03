@@ -151,7 +151,9 @@ class CertificateController extends Controller
         {
             case 'supplier':
                 $request_id=Request2::where('supplier_id',$user->id)->pluck('id');
-                $certificates=Certificate::whereIn('request_id',$request_id)->get();
+                $certificate_id=Certificate::whereIn('request_id',$request_id)->pluck('id');
+                $certificate_records=CertificateRecord::where('step',3)->whereIn('certificate_id',$certificate_id)->pluck('certificate_id');
+                $certificates=Certificate::whereIn('id',$certificate_records)->get();
 //                dd($certificates);
                 break;
             case 'unit_employee':
@@ -159,26 +161,60 @@ class CertificateController extends Controller
                 $certificate_id=Certificate::whereIn('request_id',$request_id)->pluck('id');
                 $certificate_records=CertificateRecord::where('step',1)->whereIn('certificate_id',$certificate_id)->pluck('certificate_id');
                 $certificates=Certificate::whereIn('id',$certificate_records)->get();
-                dd($certificates);
-
+//                dd($user->id);
                 break;
             case 'boss':
                 $certificate_id=CertificateRecord::where('step',4)->pluck('certificate_id');
                 $certificates=Certificate::whereIn('id',$certificate_id)->get();
                 break;
             case 'unit_supervisor':
+                $request_id=Request2::where('unit_id',$user->unit_id)->pluck('id');
+                $certificate_id=Certificate::whereIn('request_id',$request_id)->pluck('id');
+                $certificate_records=CertificateRecord::where('step',2)->whereIn('certificate_id',$certificate_id)->pluck('certificate_id');
+                $certificates=Certificate::whereIn('id',$certificate_records)->get();
+//                dd($certificates);
                 break;
         }
-        dd($me.' / '.$step.' / '.$my_roll);
+//        dd($me.' / '.$step.' / '.$my_roll);
         return view('admin.certificate.certificateManagement',compact('pageTitle','pageName','certificates'));
 
     }
     public function certificateRecordsGet($id)
     {
        $pageTitle='مدیریت رکوردهای گواهی شماره : '.$id;
-       $certificateRecords=CertificateRecord::where([['certificate_id',$id],['step',1]])->get();
+        $user=Auth::user();
+        if($user->is_supervisor==0)
+        {
+            $unit_id=Unit::where('title','تدارکات')->pluck('id');
+            if($user->unit_id==$unit_id[0])
+            {
+                $step=3;
+                $me='من کارپردازم';
+            }
+            else
+            {
+                $step=1;
+                $me='من کارمند جز واحدم';
+            }
+
+        }
+        elseif($user->is_supervisor==1)
+        {
+            $unit_id=Unit::where('title','ریاست')->pluck('id');
+            if($user->unit_id==$unit_id[0])
+            {
+                $step=4;
+                $me='من رئیسم';
+            }
+            else
+            {
+                $step=2;
+                $me='من مدیر واحدم';
+            }
+        }
+        else $step=0;
+       $certificateRecords=CertificateRecord::where([['certificate_id',$id],['step',$step]])->get();
 //        dd($certificateRecords);
-//       $pageName=;
         return view('admin.certificate.certificateRecords',compact('pageTitle','certificateRecords','certificates'));
     }
     public function acceptCertificate(Request $request)

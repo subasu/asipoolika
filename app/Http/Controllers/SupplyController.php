@@ -80,27 +80,32 @@ class SupplyController extends Controller
         switch(trim($user->unit->title))
         {
             case 'تدارکات':
-                if($user->is_supervisor==1)
+//                if($user->is_supervisor==1)
                     $step=2;
-                else
-                    $step=8;
+//                else
+//                    $step=8;
                 break;
             case 'انبار':
+                $accept=0;
                 $step=3;
                 break;
             case 'اعتبار':
+                $accept=0;
                 $step=4;
                 break;
             case 'امور عمومی':
+                $accept=0;
                 $step=5;
                 break;
             case 'ریاست':
+                $accept=0;
                 $step=6;
                 break;
             case 'امور مالی':
+                $accept=1;
                 $step=7;
                 break;
-            default: $step=1;
+            default: $step=1;$accept=0;
         }
         if($user->unit->title=='تدارکات' and $user->is_supervisor==1)
         {
@@ -117,6 +122,7 @@ class SupplyController extends Controller
             $q=RequestRecord::where('id',$id)->update([
                 'step'=>$step,
                 'active'=>1,
+                'accept'=>$accept,
                 'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
             ]);
         }
@@ -512,18 +518,17 @@ class SupplyController extends Controller
         switch(trim($me->unit->title))
         {
             case 'تدارکات':
-                if($me->is_supervisor==1)
-                {
+//                if($me->is_supervisor==1)
+//                {
                     $step=1;
                     $step2=2;
-                }
+//                }
                     //the user is Karpardaz
-                else
-                {
-                    $step=7;
-                    $step2=8;
-                }
-
+//                else
+//                {
+//                    $step=7;
+//                    $step2=8;
+//                }
                 break;
             case 'انبار':
                 $step=2;
@@ -571,11 +576,11 @@ class SupplyController extends Controller
         switch(trim($me->unit->title))
         {
             case 'تدارکات':
-                if($me->is_supervisor==1)
+//                if($me->is_supervisor==1)
                     $step=1;
                 //the user is Karpardaz
-                else
-                    $step=7;
+//                else
+//                    $step=7;
                 break;
             case 'انبار':
                 $step=2;
