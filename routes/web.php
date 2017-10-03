@@ -94,12 +94,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
         Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');             //96/7/1
 
-        Route::get('workerCardManage' ,'SupplyController@workerCardManage');        //96/7/2
-        Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');          //96/7/2
-        Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');       //96/7/2
-        Route::get('showTickets','SupplyController@showTickets');                  //96/7/5
-        Route::post('adminSendMessage','SupplyController@adminSendMessage');       //96/7/5
-        Route::post('adminEndTicket','SupplyController@adminEndTicket');           //96/7/5
+        Route::get('workerCardManage' ,'SupplyController@workerCardManage');                         //96/7/2
+        Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');                           //96/7/2
+        Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');                         //96/7/2
+        Route::get('showTickets','SupplyController@showTickets');                                    //96/7/5
+        Route::post('adminSendMessage','SupplyController@adminSendMessage');                        //96/7/5
+        Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
+        Route::get('printProductRequest/{id}','SupplyController@printProductRequest');     //96/7/11
         // Route::get('kiayanfar','RequestController@kiyanfar');
 
 
@@ -129,7 +130,7 @@ Route::get('price','IndexController@ajaxPrice');
 Route::get('/home', 'HomeController@index');
 
 Route::get('/f', function () {
-    return view('forms.productDeliveryForm');
+    return view('forms.productRequestForm');
 });
 
 Route::get('/form2', function () {

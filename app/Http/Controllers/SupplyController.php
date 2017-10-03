@@ -808,4 +808,17 @@ class SupplyController extends Controller
         return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
 
     }
+
+    //shiri : below function is related to show printed form of product request
+    public function printProductRequest($id)
+    {
+        $pageTitle = 'نسخه چاپی گواهی';
+        $productRequestRecords = RequestRecord::where([['request_id',$id],['accept',1]])->get();
+        $sum = 0;
+        foreach ($productRequestRecords as $productRequestRecord)
+        {
+            $sum += $productRequestRecord->rate * $productRequestRecord->count;
+        }
+        return view ('admin.certificate.productRequestForm',compact('pageTitle','productRequestRecords','sum'));
+    }
 }

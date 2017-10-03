@@ -140,6 +140,7 @@
                                         <td class="col-md-2" style="font-size: 25px;">
                                             {{--<a href="" class="btn btn-danger">صدور صورتجلسه تحویل و نصب</a>--}}
                                             <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-10"> صدور گواهی</a>
+                                            <a href="{{url('admin/printProductRequest/'.$productRequest->id)}}" class="btn btn-primary col-md-10">مشاهده نسخه چاپی درخواست</a>
                                             @if($productRequest->supplier_id==null)
                                             <a href="{{url('admin/impart/'.$productRequest->id)}}" class="btn btn-info col-md-10"> ابلاغ به کارپرداز</a>
                                             @else
