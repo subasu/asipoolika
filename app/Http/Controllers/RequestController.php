@@ -150,12 +150,20 @@ class RequestController extends Controller
            'date'            => $date,
            'time'            => $time,
            'unit_id'         => $unitId,
-           'user_id'         => Auth::user()->id,
+           'user_id'         => Auth::user()->id
 
         ]);
         if($ticketId)
         {
 
+            $query = DB::table('ticket_messages')->insert
+            ([
+               'ticket_id'  => $ticketId,
+               'user_id'    => Auth::user()->id,
+               'content'    => $request->description,
+               'date'       => $date,
+               'time'       => $time
+            ]);
             return response('اطلاعات شما با موفقیت ثبت گردید');
         }else
             {
@@ -221,10 +229,10 @@ class RequestController extends Controller
 
         switch ($id) {
             case 1 :
-                $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where([['active', 0], ['user_id', Auth::user()->id]])->orderBy('date')->get();
+                $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where('user_id', Auth::user()->id)->orderBy('date')->get();
                 break;
             case 2 :
-                $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where([['active', 0], ['unit_id', Auth::user()->unit_id]])->orderBy('date')->get();
+                $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where('unit_id', Auth::user()->unit_id)->orderBy('date')->get();
                 break;
         }
         foreach ($data as $date) {
@@ -275,5 +283,21 @@ class RequestController extends Controller
             {
                 return response('خطا در ثبت اطلاعات');
             }
+    }
+
+    //shiri : below  function to end ticket by user
+    public function userEndTicket(Request $request)
+    {
+        $end = Ticket::where('id',$request->ticketId)->update
+        ([
+            'active'  => 2
+        ]);
+        if($end)
+        {
+            return response('تیکت مورد نظر غیر فعال گردید');
+        }else
+        {
+            return response('خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید');
+        }
     }
 }

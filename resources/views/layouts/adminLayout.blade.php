@@ -164,8 +164,8 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/showTickets')}}"> مشاهده تیکت ها</a>
                                     </li>
-                                    <li><a href="{{url('admin/deactiveTickets')}}">بسته شده ها</a>
-                                    </li>
+                                    {{--<li><a href="{{url('admin/deactiveTickets')}}">بسته شده ها</a>--}}
+                                    {{--</li>--}}
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>
@@ -679,7 +679,7 @@
                 var html;
                 html += '<option value="">صاحب امضاء را انتخاب کنید</option>';
                 $.each(response.users, function (index, value) {
-                    html += '<option value="' + value['id'] + '">' + value['title'] + ' ' + value['name'] + ' ' + value['family'] + '</option>';
+                    html += '<option name="users" value="' + value['id'] + '">' + value['name'] + ' ' + value['family'] + '</option>';
                 });
                 $("#user_signature").html(html);
             },

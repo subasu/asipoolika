@@ -25,4 +25,10 @@ class Unit extends Model
     {
         return $this->hasMany('App\Models\Ticket','unit_id');
     }
+
+    //shiri : below function is related to relation signature and unit
+    public function signature()
+    {
+        return $this->hasMany('App\Models\Signature','unit_id');
+    }
 }

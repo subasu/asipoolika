@@ -66,11 +66,14 @@
                                 {{$ticket->date}}
                             </td>
                             <td style="border-left: 1px solid #ddd;">
-                                @if($ticket->status == 0)
-                                    <label class="col-md-7 col-md-offset-3  label label-warning" style="font-size: 120%;width: 60%;">در حال بررسی</label>
+                                @if($ticket->active == 0)
+                                    <label  class="col-md-7 col-md-offset-3  label label-warning" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">در حال بررسی</label>
                                 @endif
-                                @if($ticket->status == 1)
-                                        <span class="col-md-7 col-md-offset-3  label label-default" style="font-size: 120%;width: 60%;">اتمام تیکت</span>
+                                @if($ticket->active == 1)
+                                    <span class="col-md-7 col-md-offset-3  label label-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف سایت</span>
+                                @endif
+                                @if($ticket->active == 2)
+                                    <span class="col-md-7 col-md-offset-3  label label-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف کاربر</span>
                                 @endif
                             </td>
                             <td>
@@ -180,20 +183,7 @@
                         {
                             $('#change').empty();
                             $.each(response.data,function(key,value) {
-                                if(value.status == 0)
-                                {
-                                        $('#change').append(
-
-                                        "<tr   class='unit'>" +
-                                        "<td   id='date'>" + value.id+ "</td>" +
-                                        "<td   id='date'>" + value.unit.title + "</td>" +
-                                        "<td   id='date'>" + value.title + "</td>" +
-                                        "<td   id='date'>" + value.date + "</td>" +
-                                        "<td   id='time1'>در حال بررسی</td>" +
-                                        "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
-                                        "</tr>");
-                                }
-                                if(value.status == 1)
+                                if(value.active == 0)
                                 {
                                     $('#change').append(
 
@@ -202,7 +192,33 @@
                                         "<td   id='date'>" + value.unit.title + "</td>" +
                                         "<td   id='date'>" + value.title + "</td>" +
                                         "<td   id='date'>" + value.date + "</td>" +
-                                        "<td   id='time1'>اتمام تیکت</td>" +
+                                        "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-warning' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>در حال بررسی</label></td>" +
+                                        "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
+                                        "</tr>");
+                                }
+                                if(value.active == 1)
+                                {
+                                    $('#change').append(
+
+                                        "<tr   class='unit'>" +
+                                        "<td   id='date'>" + value.id+ "</td>" +
+                                        "<td   id='date'>" + value.unit.title + "</td>" +
+                                        "<td   id='date'>" + value.title + "</td>" +
+                                        "<td   id='date'>" + value.date + "</td>" +
+                                        "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-default' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>اتمام تیکت از طرف ادمین</label></td>" +
+                                        "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
+                                        "</tr>");
+                                }
+                                if(value.active == 2)
+                                {
+                                    $('#change').append(
+
+                                        "<tr   class='unit'>" +
+                                        "<td   id='date'>" + value.id+ "</td>" +
+                                        "<td   id='date'>" + value.unit.title + "</td>" +
+                                        "<td   id='date'>" + value.title + "</td>" +
+                                        "<td   id='date'>" + value.date + "</td>" +
+                                        "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-default' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>اتمام تیکت از طرف ادمین</label></td>" +
                                         "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
                                         "</tr>");
                                 }
