@@ -120,10 +120,6 @@ class SystemManagerController extends Controller
             'forced' => 0,
             'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
         ]);
-        if($query)
-        {
-            return response('وضعیت امضاء از اجباری به اختیاری تغییر یافت');
-        }
 
     }
 
