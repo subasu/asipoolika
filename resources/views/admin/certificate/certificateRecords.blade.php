@@ -47,7 +47,10 @@
                             <input type="hidden" value="{{$certificateRecord->id}}" class="record_id">
                             <th style="text-align: center">{{$r}}</th>
                             <td style="text-align: center">{{$certificateRecord->id}}</td>
+                            @if($certificateRecord->request_record_id!=null)
                             <td>{{$certificateRecord->RequestRecord->title}}</td>
+                                @else <td></td>
+                            @endif
                             <td id="count" content="{{$certificateRecord->count}}">{{$certificateRecord->count}} {{$certificateRecord->unit_count}}</td>
                             {{--<input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">--}}
                             {{--<input type="hidden" class="" value="2000" name="count[]">--}}
