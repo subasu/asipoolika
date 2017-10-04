@@ -32,7 +32,7 @@ class UserCreateValidation extends FormRequest
                 'cellphone' => 'required|numeric',
                 'internal_phone' => 'required|numeric',
                 'unit_id' => 'required',
-                'supervisor_id' => 'required',
+//                'supervisor_id' => 'required',
                 //'description' => 'required',
             ];
     }
@@ -60,7 +60,7 @@ class UserCreateValidation extends FormRequest
                 'internal_phone.numeric' => ' فیلد شماره داخلی عددی است',
                 'internal_phone.size' => ' فیلد شماره داخلی باید 11 رقمی باشد',
                 'unit_id.required' => ' فیلد شماره واحد الزامی است',
-                'supervisor_id.required' => ' فیلد سرپرست الزامی است',
+                //'supervisor_id.required' => ' فیلد سرپرست الزامی است',
                 //'description.required' => ' فیلد توضیحات الزامی است',
             ];
     }

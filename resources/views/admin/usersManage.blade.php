@@ -52,7 +52,7 @@
                                     <button class="btn btn-success">{{($val->active===0)?'غیرفعال':'فعال'}}</button>
                                 </td>
                                 <td id="{{$val->id}}">
-                                    <a class="btn btn-danger" href="{{url('admin/usersUpdate'.'/'.$val->id)}}">ویرایش</a></td>
+                                    <a class="btn btn-info" href="{{url('admin/usersUpdate'.'/'.$val->id)}}">ویرایش</a></td>
                                 </td>
                             </tr>
                         @endforeach

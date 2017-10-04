@@ -130,16 +130,16 @@
                                         <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
                                 </div>
 
-                                <div class="item form-group">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <select class="form-control col-md-7 col-xs-12" name="supervisor_id"
-                                                id="supervisor_id">
-                                            <option value="{{$val->supervisor_id}}">{{$val->user->title. ' '.$val->user->name.' '.$val->user->family}}</option>
-                                        </select>
-                                    </div>
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="supervisor_id">سرپرست
-                                        <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
-                                </div>
+                                {{--<div class="item form-group">--}}
+                                    {{--<div class="col-md-6 col-sm-6 col-xs-12">--}}
+                                        {{--<select class="form-control col-md-7 col-xs-12" name="supervisor_id"--}}
+                                                {{--id="supervisor_id">--}}
+                                            {{--<option value="{{$val->supervisor_id}}">{{$val->user->title. ' '.$val->user->name.' '.$val->user->family}}</option>--}}
+                                        {{--</select>--}}
+                                    {{--</div>--}}
+                                    {{--<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supervisor_id">سرپرست--}}
+                                        {{--<span class="required" title="پر کردن این فیلد الزامی است">*</span></label>--}}
+                                {{--</div>--}}
                                 <div class="item form-group">
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                     <textarea id="description" required="required" name="description"
@@ -187,8 +187,10 @@
                         type: "info",
                         confirmButtonText: "بستن"
                     });
+                        setInterval(function () {
+                            window.location.href ='../usersManagement';
+                        },1000);
 
-                        window.url =('usersManagement');
 
                 },
                 error: function (xhr) {
@@ -206,17 +208,6 @@
                             type: "info",
                             confirmButtonText: "بستن"
                         });
-                    }
-                    else if (xhr.status === 421) {
-                        swal({
-                            title: "",
-                            text: "اطلاعات شما با مؤفقیت ثبت شد",
-                            type: "info",
-                            confirmButtonText: "بستن"
-                        });
-                        setInterval(function () {
-                            top.location = '{{URL::asset('admin/usersManage')}}';
-                        }, 500);
                     }
                     else if (xhr.status === 500) {
                         swal({
