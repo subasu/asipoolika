@@ -33,7 +33,7 @@
                             <input id="shop_comp" name="shop_comp"
                                    placeholder="" required="required" type="text" style="width: 20%;padding:2px 5px 2px 5px;"> به واحد
                             <span style="color:red">{{$users[0]->unit->title}}</span> به آقای / خانم
-                            <select name="receiver_id" id="" style="font-size: 18px;padding:2px 5px 2px 5px;">
+                            <select name="receiver_id" id="receiver_id" style="font-size: 18px;padding:2px 5px 2px 5px;">
                                 @foreach($users as $user)
                                     <option value="{{$user->id}}">{{$user->name}} {{$user->family}}</option>
                                 @endforeach

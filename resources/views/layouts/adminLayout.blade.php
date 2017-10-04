@@ -79,7 +79,7 @@
                              class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
-                        <span>{{$user->unit->description}}</span>
+                        <span>@if($user_info->is_supervisor==1) مدیر @endif{{$user->unit->description}}</span>
                         <h2>{{$user_info->title}} {{$user_info->name}} {{$user_info->family}}</h2>
                     </div>
                 </div>

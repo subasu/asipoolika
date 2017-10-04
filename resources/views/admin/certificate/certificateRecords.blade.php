@@ -24,13 +24,15 @@
                 <table style="direction:rtl;text-align: center;font-size: 16px;" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
+                        <th style="text-align: center ;">ردیف</th>
                         <th style="text-align: center ;">شناسه</th>
-                        <th style="text-align: center ;">تامین کننده</th>
+                        <th style="text-align: center ;">شرح</th>
                         <th style="text-align: center ;">مقدار</th>
                         {{--                        @if($user->unit->title=='تدارکات')--}}
                         <th style="text-align: center ;">نرخ</th>
                         {{--@endif--}}
                         <th style="text-align: center ;">قیمت</th>
+                        <th style="text-align: center ;">تامین کننده</th>
                         <th class="col-md-3" style="text-align: center ;">عملیات</th>
                     </tr>
                     </thead>
@@ -38,16 +40,23 @@
                     {{--<form id="serviceDetailForm">--}}
                     {{ csrf_field() }}
                     <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
+                    <?php $r=0; ?>
                     @foreach($certificateRecords as $certificateRecord)
+                        <?php $r++; ?>
                         <tr>
                             <input type="hidden" value="{{$certificateRecord->id}}" class="record_id">
-                            <th style="text-align: center">{{$certificateRecord->id}}</th>
-                            <td>{{$certificateRecord->certificate->shop_comp}}</td>
+                            <th style="text-align: center">{{$r}}</th>
+                            <td style="text-align: center">{{$certificateRecord->id}}</td>
+                            @if($certificateRecord->request_record_id!=null)
+                            <td>{{$certificateRecord->RequestRecord->title}}</td>
+                                @else <td></td>
+                            @endif
                             <td id="count" content="{{$certificateRecord->count}}">{{$certificateRecord->count}} {{$certificateRecord->unit_count}}</td>
                             {{--<input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">--}}
                             {{--<input type="hidden" class="" value="2000" name="count[]">--}}
                             <td>{{number_format($certificateRecord->rate)}} تومان</td>
                             <td>{{number_format($certificateRecord->price)}} تومان</td>
+                            <td>{{$certificateRecord->certificate->shop_comp}}</td>
                             <td>
                             {{--<button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات--}}
                                 {{--</button>--}}

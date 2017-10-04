@@ -45,6 +45,7 @@ class RequestController extends Controller
             $request_id=DB::table('requests')->insertGetId([
                'request_type_id'=>3,
                'user_id'=>Auth::user()->id,
+               'unit_id'=>Auth::user()->unit_id,
                'created_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
            ]);
             $i=0;
@@ -77,8 +78,6 @@ class RequestController extends Controller
         return view('user.serviceRequest' ,compact('pageTitle'));
     }
 
-
-
     public function serviceRequest(Request $request)
     {
 //        $requestType = RequestType::where('title','درخواست خدمت')->value('id');
@@ -94,6 +93,7 @@ class RequestController extends Controller
             $request_id=DB::table('requests')->insertGetId([
                 'request_type_id'=>2,
                 'user_id'=>Auth::user()->id,
+                'unit_id'=>Auth::user()->unit_id,
                 'created_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
             ]);
             $i=0;
@@ -114,7 +114,6 @@ class RequestController extends Controller
         else
             return response()->json('is zero');
     }
-
     /* shiri
        below function is related to ticket request
     */

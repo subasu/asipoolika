@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 //use Illuminate\Http\File;
 use App\Http\Requests\AcceptServiceRequestValidation;
 use App\Http\Requests\UserCreateValidation;
+use App\Models\Certificate;
+use App\Models\CertificateRecord;
 use App\Models\Message;
 use App\Models\Request2;
 use App\Models\RequestRecord;
@@ -81,27 +83,32 @@ class SupplyController extends Controller
         switch(trim($user->unit->title))
         {
             case 'تدارکات':
-                if($user->is_supervisor==1)
+//                if($user->is_supervisor==1)
                     $step=2;
-                else
-                    $step=8;
+//                else
+//                    $step=8;
                 break;
             case 'انبار':
+                $accept=0;
                 $step=3;
                 break;
             case 'اعتبار':
+                $accept=0;
                 $step=4;
                 break;
             case 'امور عمومی':
+                $accept=0;
                 $step=5;
                 break;
             case 'ریاست':
+                $accept=0;
                 $step=6;
                 break;
             case 'امور مالی':
+                $accept=1;
                 $step=7;
                 break;
-            default: $step=1;
+            default: $step=1;$accept=0;
         }
         if($user->unit->title=='تدارکات' and $user->is_supervisor==1)
         {
@@ -118,6 +125,7 @@ class SupplyController extends Controller
             $q=RequestRecord::where('id',$id)->update([
                 'step'=>$step,
                 'active'=>1,
+                'accept'=>$accept,
                 'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
             ]);
         }
@@ -583,18 +591,17 @@ class SupplyController extends Controller
         switch(trim($me->unit->title))
         {
             case 'تدارکات':
-                if($me->is_supervisor==1)
-                {
+//                if($me->is_supervisor==1)
+//                {
                     $step=1;
                     $step2=2;
-                }
+//                }
                     //the user is Karpardaz
-                else
-                {
-                    $step=7;
-                    $step2=8;
-                }
-
+//                else
+//                {
+//                    $step=7;
+//                    $step2=8;
+//                }
                 break;
             case 'انبار':
                 $step=2;
@@ -619,7 +626,7 @@ class SupplyController extends Controller
             default: $step=1;$step2=1;
         }
         $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
-//
+
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
 
         foreach($productRequests as $productRequest)
@@ -642,11 +649,11 @@ class SupplyController extends Controller
         switch(trim($me->unit->title))
         {
             case 'تدارکات':
-                if($me->is_supervisor==1)
+//                if($me->is_supervisor==1)
                     $step=1;
                 //the user is Karpardaz
-                else
-                    $step=7;
+//                else
+//                    $step=7;
                 break;
             case 'انبار':
                 $step=2;
@@ -734,7 +741,6 @@ class SupplyController extends Controller
                     $step=8;
                     $step2=7;
                 }
-
                 break;
             case 'انبار':
                 $step=3;
@@ -851,7 +857,7 @@ class SupplyController extends Controller
 
     public function confirmProductRequestManagementGet()
     {
-        $pageTitle="مدیریت درخواست های انجام شده";
+        $pageTitle="مدیریت درخواست ها";
         $pageName='confirmProductRequest';
         $productRequests=Request2::all();
         foreach($productRequests as $productRequest)
@@ -874,8 +880,22 @@ class SupplyController extends Controller
             $productRequest->accept_count=$accept_count;
             $productRequest->has_certificate_count=$has_certificate_count;
             $productRequest->refuse_count=$refuse_count;
+
+            $certificates=Certificate::where('request_id',$productRequest->id)->get();
+
+            foreach ($certificates as $certificate) {
+                $all_c_count=CertificateRecord::where('certificate_id',$certificate->id)->count();
+                $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
+                if($all_c_count==$finished_c_count)
+                {
+                    Certificate::where('id',$certificate->id)->update([
+                        'active'=>1
+                    ]);
+
+                }
+            }
         }
-//                dd($productRequests);
+
         return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
 
     }
