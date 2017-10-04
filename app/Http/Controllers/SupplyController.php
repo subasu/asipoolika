@@ -538,7 +538,7 @@ class SupplyController extends Controller
             default: $step=1;$step2=1;
         }
         $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
-//
+
         $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
 
         foreach($productRequests as $productRequest)

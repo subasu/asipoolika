@@ -247,7 +247,6 @@ class CertificateController extends Controller
                 $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
                 $certificateRecords = CertificateRecord::where('step', 2)->whereIn('certificate_id', $certificate_id)->get();
 
-
                 //bring certificates as a unit employee
                 $request_id = RequestRecord::where('receiver_id', $user->id)->pluck('request_id');
                 $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
