@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 //use Illuminate\Http\File;
 use App\Http\Requests\AcceptServiceRequestValidation;
 use App\Http\Requests\UserCreateValidation;
+use App\Models\Certificate;
+use App\Models\CertificateRecord;
 use App\Models\Message;
 use App\Models\Request2;
 use App\Models\RequestRecord;
@@ -769,7 +771,7 @@ class SupplyController extends Controller
 
     public function confirmProductRequestManagementGet()
     {
-        $pageTitle="مدیریت درخواست های انجام شده";
+        $pageTitle="مدیریت درخواست ها";
         $pageName='confirmProductRequest';
         $productRequests=Request2::all();
         foreach($productRequests as $productRequest)
@@ -792,8 +794,22 @@ class SupplyController extends Controller
             $productRequest->accept_count=$accept_count;
             $productRequest->has_certificate_count=$has_certificate_count;
             $productRequest->refuse_count=$refuse_count;
+
+            $certificates=Certificate::where('request_id',$productRequest->id)->get();
+
+            foreach ($certificates as $certificate) {
+                $all_c_count=CertificateRecord::where('certificate_id',$certificate->id)->count();
+                $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
+                if($all_c_count==$finished_c_count)
+                {
+                    Certificate::where('id',$certificate->id)->update([
+                        'active'=>1
+                    ]);
+
+                }
+            }
         }
-//                dd($productRequests);
+
         return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
 
     }

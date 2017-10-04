@@ -142,9 +142,9 @@
                                             @if($productRequest->supplier_id==null)
                                             <a href="{{url('admin/impart/'.$productRequest->id)}}" class="btn btn-danger col-md-10"> ابلاغ به کارپرداز</a>
                                             @else
-                                                <span class="label label-success  col-md-10" style="font-size:17px;padding:7px 0 7px 0;font-weight: lighter;margin-bottom: 5px;">ابلاغ شده</span>
+                                                <span class="label label-success col-md-10" style="font-size:17px;padding:7px 0 7px 0;font-weight: lighter;margin-bottom: 5px;">ابلاغ شده</span>
                                             @endif
-                                            <a href="{{url('admin/impart/'.$productRequest->id)}}" class="btn btn-warning col-md-10">چاپ گواهی</a>
+                                            <a href="{{url('admin/impart/'.$productRequest->id)}}"  class="btn btn-warning col-md-10">چاپ گواهی</a>
                                             {{--<button type="button" class="btn btn-default" data-toggle="tooltip" title="چاپ گواهی">--}}
                                              {{--<span class="fa fa-print" style="font-size: 20px;"></span>--}}
                                             {{--</button>--}}
