@@ -86,6 +86,7 @@ class CertificateController extends Controller
             $i=0;
             do{
                 $q=DB::table('certificate_records')->insert([
+                    'request_record_id'=>$request->record_id[$i],
                     'price'=>$request->new_price2[$i],
                     'rate'=>$request->new_rate[$i],
                     'count'=>$request->new_count[$i],
@@ -214,14 +215,7 @@ class CertificateController extends Controller
         }
         else $step=0;
        $certificateRecords=CertificateRecord::where([['certificate_id',$id],['step',$step]])->get();
-        foreach($certificateRecords as $certificateRecord)
-        {
-            $request_id=$certificateRecord->certificate->request_id;
-            $certificateRecord->request_id=$request_id;
-            $certificateRecord->certificate_record_title=RequestRecord::where('request_id',$request_id)->pluck('title');
 
-        }
-        dd($certificateRecord->certificate_record_title);
         return view('admin.certificate.certificateRecords',compact('pageTitle','certificateRecords','certificates'));
     }
     public function acceptCertificate(Request $request)
