@@ -99,12 +99,18 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('showTickets','SupplyController@showTickets');                                    //96/7/5
         Route::post('adminSendMessage','SupplyController@adminSendMessage');                        //96/7/5
         Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
-        Route::get('printProductRequest/{id}','SupplyController@printProductRequest');     //96/7/11
+
+        Route::get('printProductRequest/{id}','SupplyController@printProductRequest');              //96/7/11
+        Route::post('newUserCreate','SupplyController@newUserCreate');                              //96/7/12
+        Route::post('newUserWithUnitManager','SupplyController@newUserWithUnitManager');            //96/7/12
+        Route::post('newUserWithoutUnitManager','SupplyController@newUserWithoutUnitManager');      //96/7/12
+        // Route::get('kiayanfar','RequestController@kiyanfar');
+
 
         //rayat - users manage:
         Route::get('usersManagement', 'SupplyController@usersManagementGet');
         Route::get('usersCreate', 'SupplyController@usersCreateGet');
-        Route::post('usersCreate', 'SupplyController@usersCreatePost');
+        Route::post('checkUnitSupervisor', 'SupplyController@checkUnitSupervisor');
         Route::post('statusUser', 'SupplyController@statusUser');
         Route::get('usersUpdate/{id}', 'SupplyController@usersUpdateShow');
         Route::post('usersUpdate', 'SupplyController@usersUpdate');

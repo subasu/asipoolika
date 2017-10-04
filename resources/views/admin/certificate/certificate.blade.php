@@ -61,10 +61,10 @@
                     <?php $row=1; ?>
 
                     @foreach($requestRecords as $requestRecord)
-                        <tr>
+                        <tr id="{{$requestRecord->id}}" value="0" class="tr" name="tr">
                             <input type="hidden" value="{{$requestRecord->id}}" class="record_id" name="record_id[]">
                             <td style="text-align: center">
-                                <input type="checkbox" value="{{$requestRecord->id}}" class=" record_ch" name="record">
+                                <input type="checkbox" id="record_ch" value="{{$requestRecord->id}}" class="record_ch" name="record">
                             </td>
                             <td>{{$row}}</td>
                             <?php $row++; ?>
@@ -95,7 +95,7 @@
                 </form>
                 <div class="row">
                     <div class="col-md-12 col-md-offset-3">
-                        <button id="use_certificate" content="2" class="btn btn-danger col-md-3">صدول گواهی تحویل و مصرف</button>
+                        <button id="use_certificate" content="2" class="btn btn-danger col-md-3">صدور گواهی تحویل و مصرف</button>
                         <button id="install_certificate"  content="1" class="btn btn-primary col-md-3">صدور گواهی تحویل و نصب</button>
                     </div>
                 </div>
@@ -123,85 +123,209 @@
 <script>
 
 </script>
+<script>
+
+//var checked_count;
+//$(".record_ch").click(function() {
+//    if(this.checked) {
+//        checked_count=$('#checked_count').val();
+//        checked_count++;
+//        $('#checked_count').val(checked_count);
+//    }
+//    if(!(this.checked)) {
+//        checked_count=$('#checked_count').val();
+//        checked_count--;
+//        $('#checked_count').val(checked_count);
+//    }
+//});
+
+        {{--$('#install_certificate').click(function () {--}}
+            {{--var certificate_type=$(this).attr('content');--}}
+            {{--$('#certificate_type').val(certificate_type);--}}
+
+            {{--swal({--}}
+                {{--title: "آیا از ثبت درخواست مطمئن هستید؟",--}}
+                {{--text: "",--}}
+                {{--type: "warning",--}}
+                {{--showCancelButton: true,--}}
+                {{--confirmButtonColor: "	#5cb85c",--}}
+                {{--cancelButtonText: "خیر ، منصرف شدم",--}}
+                {{--confirmButtonText: "بله ثبت شود",--}}
+                {{--closeOnConfirm: true,--}}
+                {{--closeOnCancel: false--}}
+            {{--},--}}
+            {{--function (isConfirm) {--}}
+                {{--if (isConfirm) {--}}
+                    {{--//serialize() send all form input values--}}
+                    {{--var formData = $('#form_certificate').serialize();--}}
+{{--//                    console.log(formData);--}}
+{{--//                    return false;--}}
+                    {{--$.ajaxSetup({--}}
+                        {{--headers: {--}}
+                            {{--'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')--}}
+                        {{--}--}}
+                    {{--});--}}
+                    {{--$.ajax({--}}
+                        {{--url: "{{ url('admin/execute_certificate') }}",--}}
+                        {{--type: 'POST',--}}
+                        {{--dataType: 'json',--}}
+                        {{--data: formData,--}}
+                        {{--success: function (response) {--}}
+                            {{--console.log(response);--}}
+                            {{--swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');--}}
+                            {{--location.reload(true);--}}
+{{--//                                    window.location.href='';--}}
+                        {{--},--}}
+                        {{--error: function (error) {--}}
+                            {{--if (error.status === 422) {--}}
+                                {{--$errors = error.responseJSON; //this will get the errors response data.--}}
+                                {{--//show them somewhere in the markup--}}
+                                {{--//e.g--}}
+                                {{--var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';--}}
+{{--//--}}
+                                {{--$.each($errors, function (key, value) {--}}
+                                    {{--errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.--}}
+                                {{--});--}}
+                                {{--errorsHtml += '</ul></div>';--}}
+                                {{--$('fieldset').append(errorsHtml);--}}
+                                {{--swal("خطاهای زیر را برطرف کنید !", '', "error");--}}
+                            {{--} else if (error.status === 500) {--}}
+                                {{--swal('لطفا با بخش پشتیبانی تماس بگیرید', 'خطایی رخ داده است', 'success');--}}
+                                {{--console.log(error);--}}
+                            {{--}--}}
+                        {{--}--}}
+                    {{--});--}}
+                {{--} else {--}}
+                    {{--swal("منصرف شدید", "درخواست ثبت نشد", "error");--}}
+                {{--}--}}
+            {{--});--}}
+        {{--});--}}
+
+
+</script>
     <script>
-
-var checked_count;
-$(".record_ch").click(function() {
-    if(this.checked) {
-        checked_count=$('#checked_count').val();
-        checked_count++;
-        $('#checked_count').val(checked_count);
-    }
-    if(!(this.checked)) {
-        checked_count=$('#checked_count').val();
-        checked_count--;
-        $('#checked_count').val(checked_count);
-    }
-});
-
-        $('#install_certificate').click(function () {
+        var checked_count;
+        $(".record_ch").click(function() {
+            if(this.checked) {
+                checked_count=$('#checked_count').val();
+                checked_count++;
+                $('#checked_count').val(checked_count);
+            }
+            if(!(this.checked)) {
+                checked_count=$('#checked_count').val();
+                checked_count--;
+                $('#checked_count').val(checked_count);
+            }
+        });
+        $(document).on('click','#install_certificate',function(){
             var certificate_type=$(this).attr('content');
             $('#certificate_type').val(certificate_type);
+            var DOM = $('#table');
+            var shop_comp = $('#shop_comp').val();
+            if(shop_comp == '' || shop_comp == null)
+            {
+                $('#shop_comp').css('border' , 'red 4px solid');
+                $('#shop_comp').focus();
+                return false;
+            }
+            if ($('input.record_ch').is(':checked'))
+            {
 
-            swal({
-                title: "آیا از ثبت درخواست مطمئن هستید؟",
-                text: "",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "	#5cb85c",
-                cancelButtonText: "خیر ، منصرف شدم",
-                confirmButtonText: "بله ثبت شود",
-                closeOnConfirm: true,
-                closeOnCancel: false
-            },
-            function (isConfirm) {
-                if (isConfirm) {
-                    //serialize() send all form input values
-                    var formData = $('#form_certificate').serialize();
-//                    console.log(formData);
-//                    return false;
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                        }
-                    });
-                    $.ajax({
-                        url: "{{ url('admin/execute_certificate') }}",
-                        type: 'POST',
-                        dataType: 'json',
-                        data: formData,
-                        success: function (response) {
-                            console.log(response);
-                            swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
-                            location.reload(true);
+                $("[name = 'record']:checked").each(function(){
+                    var td    = $(this);
+                    var rate  = $(this).parents('tr').find('.new_rate').val();
+                    var price = $(this).parents('tr').find('.new_price').val();
+                    var count = $(this).parents('tr').find('.new_count').val();
+                    if(count == '' || count == null )
+                    {
+                        $(this).parents('tr').find('.new_count').css('border' , 'red 4px solid' );
+                        $(this).parents('tr').find('.new_count').focus();
+                        return false;
+                    }
+                    else if(rate == '' || rate == null)
+                    {
+                        $(this).parents('tr').find('.new_rate').css('border' , 'red 4px solid' );
+                        $(this).parents('tr').find('.new_rate').focus();
+                        return false;
+                    }
+                    else if(price == '' || price == null )
+                    {
+                        $(this).parents('tr').find('.new_price').css('border' , 'red 4px solid' );
+                        $(this).parents('tr').find('.new_price').focus();
+                        return false;
+                    }
+                    else
+                        {
+
+                            swal({
+                                    title: "آیا از ثبت درخواست مطمئن هستید؟",
+                                    text: "",
+                                    type: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "	#5cb85c",
+                                    cancelButtonText: "خیر ، منصرف شدم",
+                                    confirmButtonText: "بله ثبت شود",
+                                    closeOnConfirm: true,
+                                    closeOnCancel: false
+                                },
+                                function (isConfirm) {
+                                    if (isConfirm) {
+                                        //serialize() send all form input values
+                                        var formData = $('#form_certificate').serialize();
+                    //                    console.log(formData);
+                    //                    return false;
+                                        $.ajaxSetup({
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                            }
+                                        });
+                                        $.ajax({
+                                            url: "{{ url('admin/execute_certificate') }}",
+                                            type: 'POST',
+                                            //dataType: 'json',
+                                            data: formData,
+                                            context : td,
+                                            success: function (response) {
+                                                $(td).parentsUntil(DOM,'tr').hide();
+                                                console.log(response);
+                                                swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
+                                                //location.reload(true);
 //                                    window.location.href='';
-                        },
-                        error: function (error) {
-                            if (error.status === 422) {
-                                $errors = error.responseJSON; //this will get the errors response data.
-                                //show them somewhere in the markup
-                                //e.g
-                                var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
+                                            },
+                                            error: function (error) {
+                                                if (error.status === 422) {
+                                                    $errors = error.responseJSON; //this will get the errors response data.
+                                                    //show them somewhere in the markup
+                                                    //e.g
+                                                    var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
 //
-                                $.each($errors, function (key, value) {
-                                    errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                                    $.each($errors, function (key, value) {
+                                                        errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                                    });
+                                                    errorsHtml += '</ul></div>';
+                                                    $('fieldset').append(errorsHtml);
+                                                    swal("خطاهای زیر را برطرف کنید !", '', "error");
+                                                } else if (error.status === 500) {
+                                                    swal('لطفا با بخش پشتیبانی تماس بگیرید', 'خطایی رخ داده است', 'success');
+                                                    console.log(error);
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        swal("منصرف شدید", "درخواست ثبت نشد", "error");
+                                    }
                                 });
-                                errorsHtml += '</ul></div>';
-                                $('fieldset').append(errorsHtml);
-                                swal("خطاهای زیر را برطرف کنید !", '', "error");
-                            } else if (error.status === 500) {
-                                swal('لطفا با بخش پشتیبانی تماس بگیرید', 'خطایی رخ داده است', 'success');
-                                console.log(error);
-                            }
+
                         }
-                    });
-                } else {
-                    swal("منصرف شدید", "درخواست ثبت نشد", "error");
+
+
+                });
+
+            }else
+                {
+                    swal( "لطفا سطری را انتخاب نمایید");
+                    return false;
                 }
-            });
-        });
-
-
+        })
     </script>
-
 @endsection
