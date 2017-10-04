@@ -106,14 +106,14 @@
             price = price.replace(',', '');
             if(rate == '' || rate == null)
             {
-                $('#rate').focus();
-                $('#rate').css('border-color','red');
+                $(this).parents('tr').find('.rate').focus();
+                $(this).parents('tr').find('.rate').css('border-color','red');
                 return false;
             }
             else if(price == '' || price == null)
             {
-                $('#price').focus();
-                $('#price').css('border-color','red');
+                $(this).parents('tr').find('.price').focus();
+                $(this).parents('tr').find('.price').css('border-color','red');
                 return false;
             }
         }

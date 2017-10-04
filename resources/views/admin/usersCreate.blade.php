@@ -134,7 +134,7 @@
                                     <select class="form-control col-md-7 col-xs-12" name="unit_id" id="unit_id">
                                         <option value="">واحد مربوطه را انتخاب نمایید</option>
                                         @foreach($units as $unit)
-                                            <option class="align-right" value="{{$unit->id}}">{{$unit->title}}</option>
+                                            <option name="units" class="align-right" value="{{$unit->id}}">{{$unit->title}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -146,11 +146,20 @@
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <select class="form-control col-md-7 col-xs-12" name="supervisor_id"
                                             id="supervisor_id">
-                                        <option value="">ابتدا واحد را انتخاب نمایید</option>
+                                        <option name="supervisor" value="">ابتدا واحد را انتخاب نمایید</option>
                                     </select>
                                 </div>
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="supervisor_id">سرپرست
                                     <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
+                            </div>
+                            <div class="item form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+
+                                    <input id="unitManager" name="unitManager" value="0" type="checkbox">
+                                    <label>در نظر داشته باشید در صورتی که تیک زده شود کاربر  مربوطه به عنوان سوپروایزر واحد انتخاب شده شناخته میشود.</label>
+                                </div>
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="supervisor_id">مدیر واحد
+                                    </label>
                             </div>
                             <div class="item form-group">
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -169,6 +178,8 @@
                             <div class="form-group">
                                 <div class="col-md-6">
                                     <button id="user-send" type="button" class="col-md-3 btn btn-primary">ثبت</button>
+                                    <input type="hidden" name="unitId" id="unitId" value="0">
+                                    <input type="hidden" name="supervisorId" id="supervisorId" value="0">
                                 </div>
                             </div>
                         </form>
@@ -181,25 +192,56 @@
     {{--create user by AJAX and show result alert and redirect to usersList page --}}
     <script>
         $("#user-send").click(function () {
+
+
+            var unitId = "";
+            $("[name='units']:selected").each(function(){
+                unitId +=$(this).val();
+                $('#unitId').val(unitId);
+            });
+            //alert(unitId);
+
+            var supervisorId = "";
+            $("[name='supervisor']:selected").each(function () {
+                supervisorId += $(this).val();
+                $('#supervisorId').val(supervisorId);
+            });
+
+            var password = $('#password').val();
+            var confirmPassword = $('#password-confirm').val();
+
+
             var formData = new FormData($('#user-send-form')[0]);
+
             $.ajax({
-                type: 'post',
-                cache: false,
+
+                cache : false,
                 url: "{{URL::asset('admin/usersCreate')}}",
+                type: 'post',
                 data: formData,
+                contentType : false,
+                processData : false,
                 dataType: 'json',
-                contentType: false,//very important for upload file
-                processData: false,//very important for upload file
-                success: function (data) {
+                beforeSend:function()
+                {
+                    if(password !== confirmPassword)
+                    {
+                        swal({
+                            title: "",
+                            text: 'رمزهای وارد شده با هم مطابقت ندارند',
+                            type: "warning",
+                            confirmButtonText: "بستن"
+                        });
+                        return false;
+                    }
+                },
+                success: function (response) {
                     swal({
                         title: "",
-                        text: "اطلاعات شما با مؤفقیت ثبت شد",
+                        text: response,
                         type: "info",
                         confirmButtonText: "بستن"
                     });
-                    setInterval(function () {
-                        top.location = '{{URL::asset('admin/usersManageGet')}}';
-                    }, 500);
                 },
                 error: function (xhr) {
                     if (xhr.status === 422) {
@@ -217,17 +259,7 @@
                             confirmButtonText: "بستن"
                         });
                     }
-                    else if (xhr.status === 421) {
-                        swal({
-                            title: "",
-                            text: "اطلاعات شما با مؤفقیت ثبت شد",
-                            type: "info",
-                            confirmButtonText: "بستن"
-                        });
-                        setInterval(function () {
-                            top.location = '{{URL::asset('admin/usersManageGet')}}';
-                        }, 500);
-                    }
+
                     else if (xhr.status === 500) {
                         swal({
                             title: "",
@@ -263,7 +295,7 @@
                     item.empty();
                     console.log(data);
                     $.each(data, function (index, value) {
-                        item.append('<option value="' + value.id + '">' + value.name + ' ' + value.family + '</option>');
+                        item.append('<option name="supervisor" value="' + value.id + '">' + value.name + ' ' + value.family + '</option>');
                     });
 
                 },
@@ -273,4 +305,13 @@
             });
         });
     </script>
+
+        <script>
+            $(function () {
+                $(':checkbox').change(function() {
+                    $(this).val(1);
+                });
+            })
+
+        </script>
 @endsection
