@@ -26,6 +26,7 @@
                     <tr>
                         <th style="text-align: center ;">شناسه</th>
                         <th style="text-align: center ;">تامین کننده</th>
+                        <th style="text-align: center ;">شرح</th>
                         <th style="text-align: center ;">مقدار</th>
                         {{--                        @if($user->unit->title=='تدارکات')--}}
                         <th style="text-align: center ;">نرخ</th>
@@ -43,6 +44,7 @@
                             <input type="hidden" value="{{$certificateRecord->id}}" class="record_id">
                             <th style="text-align: center">{{$certificateRecord->id}}</th>
                             <td>{{$certificateRecord->certificate->shop_comp}}</td>
+                            <td>{{$certificateRecord->certificate_record_title}}</td>
                             <td id="count" content="{{$certificateRecord->count}}">{{$certificateRecord->count}} {{$certificateRecord->unit_count}}</td>
                             {{--<input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">--}}
                             {{--<input type="hidden" class="" value="2000" name="count[]">--}}

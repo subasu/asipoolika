@@ -214,7 +214,14 @@ class CertificateController extends Controller
         }
         else $step=0;
        $certificateRecords=CertificateRecord::where([['certificate_id',$id],['step',$step]])->get();
-//        dd($certificateRecords);
+        foreach($certificateRecords as $certificateRecord)
+        {
+            $request_id=$certificateRecord->certificate->request_id;
+            $certificateRecord->request_id=$request_id;
+            $certificateRecord->certificate_record_title=RequestRecord::where('request_id',$request_id)->pluck('title');
+
+        }
+        dd($certificateRecord->certificate_record_title);
         return view('admin.certificate.certificateRecords',compact('pageTitle','certificateRecords','certificates'));
     }
     public function acceptCertificate(Request $request)
