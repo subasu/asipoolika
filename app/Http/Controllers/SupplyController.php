@@ -675,18 +675,75 @@ class SupplyController extends Controller
         $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',$step]])->get();
         return view ('admin.productRequestRecords',compact('pageTitle','requestRecords','user'));
     }
+//sr2
     public function serviceRequestManagement()
     {
-        $pageTitle='مدیریت درخواست خدمت';
-        $pageName='serviceRequestManagement';
-        $serviceRequests=Request2::where([['request_type_id',2],['active',0]])->get();
+//        $pageTitle='مدیریت درخواست خدمت';
+//        $pageName='serviceRequestManagement';
+        $pageTitle='مدیریت درخواست خدمت تازه ثبت شده';
+        $pageName='productRequestManagement';
+
+        $me=Auth::user();
+
+        switch(trim($me->unit->title))
+        {
+            case 'تدارکات':
+//                if($me->is_supervisor==1)
+//                {
+                $step=1;
+                $step2=2;
+//                }
+                //the user is Karpardaz
+//                else
+//                {
+//                    $step=7;
+//                    $step2=8;
+//                }
+                break;
+            case 'انبار':
+                $step=2;
+                $step2=3;
+                break;
+            case 'اعتبار':
+                $step=3;
+                $step2=4;
+                break;
+            case 'امور عمومی':
+                $step=4;
+                $step2=5;
+                break;
+            case 'ریاست':
+                $step=5;
+                $step2=6;
+                break;
+            case 'امور مالی':
+                $step=6;
+                $step2=7;
+                break;
+            default: $step=1;$step2=1;
+        }
+        $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
+        $serviceRequests=Request2::where('request_type_id',2)->whereIn('id',$requestRecords)->get();
+
         foreach($serviceRequests as $serviceRequest)
         {
-            $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null]])->count();
+            //undecided records
+            $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',$step]])->count();
+            //in the process records
+            $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',$step2],['active',1]])->count();
+            //inactive records
             $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
         }
-        return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
+
+        return view('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
+//        return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
     }
+
+    public function acceptServiceRequestManagementGet()
+    {
+
+    }
+
     public function refusedProductRequestManagementGet()
     {
         $pageTitle='درخواست های رد شده';

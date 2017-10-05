@@ -120,7 +120,7 @@
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                            <td class="col-md-2">@if($productRequest->active==1) Finish @else In Proccess @endif</td>
+                                            <td class="col-md-2">@if($productRequest->active==1) پایان یافته @else درحال رسیدگی @endif</td>
                                             {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                         </tr>
                                         @endif

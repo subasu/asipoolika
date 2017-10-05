@@ -230,7 +230,6 @@
             }
             if ($('input.record_ch').is(':checked'))
             {
-
                 $("[name = 'record']:checked").each(function(){
                     var td    = $(this);
                     var rate  = $(this).parents('tr').find('.new_rate').val();
