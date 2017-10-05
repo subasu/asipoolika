@@ -86,6 +86,7 @@ class CertificateController extends Controller
             $i=0;
             do{
                 $q=DB::table('certificate_records')->insert([
+                    'request_record_id'=>$request->record_id[$i],
                     'price'=>$request->new_price2[$i],
                     'rate'=>$request->new_rate[$i],
                     'count'=>$request->new_count[$i],
@@ -112,40 +113,152 @@ class CertificateController extends Controller
         $pageName='certificateManagement';
 
         $user=Auth::user();
-        //receiver
-        $certificateRecords=CertificateRecord::where([['step',1],['receiver_id',$user->id]])->pluck('certificate_id');
-        $certificates=Certificate::whereIn('id',$certificateRecords)->get();
-
-        //chief of unit
-        $certificateRecords=CertificateRecord::where([['step',2]])->pluck('certificate_id');
-        $certificates=Certificate::whereIn('id',$certificateRecords)->get();
-
-//        dd($certificates);
-        $certificateRecords=CertificateRecord::where('receiver_id',Auth::user()->id)->pluck('certificate_id');
-        $certificates=Certificate::whereIn('id',$certificateRecords)->get();
-//        dd($certificateRecords);
-//
-//        $certificateRecords=CertificateRecord::where('step',1)->pluck('certificate_id');
-//        $certificates=Certificate::whereIn('id',$certificateRecords)->get();
-        foreach($certificates as $certificate)
+        if($user->is_supervisor==0)
         {
-            //undecided records
-            $certificate->certificate_undecided_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',1],['active',0]])->count();
-            //in the process records
-            $certificate->certificate_accepted_count=CertificateRecord::where([['certificate_id',$certificate->id],['step','>=',2],['active',1]])->count();
-//            if(Auth::user()->id==$certificate->receiver_id)
-        }
-//        dd($certificates);
-        return view('admin.certificate.certificateManagement',compact('pageTitle','pageName','certificates'));
+            $unit_id=Unit::where('title','تدارکات')->pluck('id');
+            if($user->unit_id==$unit_id[0])
+            {
+                $my_roll='supplier';
+                $step=3;
+                $me='من کارپردازم';
+            }
+            else
+            {
+                $my_roll='unit_employee';
+                $step=1;
+                $me='من کارمند جز واحدم';
+            }
 
+        }
+        elseif($user->is_supervisor==1)
+        {
+            $unit_id=Unit::where('title','ریاست')->pluck('id');
+            if($user->unit_id==$unit_id[0])
+            {
+                $my_roll='boss';
+                $step=4;
+                $me='من رئیسم';
+            }
+            else
+            {
+                $my_roll='unit_supervisor';
+                $step=2;
+                $me='من مدیر واحدم';
+            }
+        }
+        else $my_roll='non';
+
+        switch($my_roll) {
+            case 'supplier':
+                $request_id = Request2::where('supplier_id', $user->id)->pluck('id');
+                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                $certificate_records = CertificateRecord::where('step', 3)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
+                $certificates = Certificate::whereIn('id', $certificate_records)->get();
+//                dd($certificates);
+                break;
+            case 'unit_employee':
+                $request_id = RequestRecord::where('receiver_id', $user->id)->pluck('request_id');
+                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                $certificate_records = CertificateRecord::where('step', 1)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
+                $certificates = Certificate::whereIn('id', $certificate_records)->get();
+//                dd($user->id);
+                break;
+            case 'boss':
+                $certificate_id = CertificateRecord::where('step', 4)->pluck('certificate_id');
+                $certificates = Certificate::whereIn('id', $certificate_id)->get();
+                break;
+            case 'unit_supervisor':
+                //bring certificates as a unit supervisor
+                $request_id = Request2::where('unit_id', $user->unit_id)->pluck('id');
+                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                $certificate_records = CertificateRecord::where('step', 2)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
+                $certificates = Certificate::whereIn('id', $certificate_records)->get();
+
+                //bring certificates as a unit employee
+                $request_id = RequestRecord::where('receiver_id', $user->id)->pluck('request_id');
+                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                $certificate_records = CertificateRecord::where('step', 1)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
+                $certificates2 = Certificate::whereIn('id', $certificate_records)->get();
+                $certificates=$certificates->merge($certificates2);
+
+//                dd($certificates);
+                break;
+        }
+//        dd($me.' / '.$step.' / '.$my_roll);
+        return view('admin.certificate.certificateManagement',compact('pageTitle','pageName','certificates','title','certificates2'));
     }
     public function certificateRecordsGet($id)
     {
        $pageTitle='مدیریت رکوردهای گواهی شماره : '.$id;
-       $certificateRecords=CertificateRecord::where([['certificate_id',$id],['step',1]])->get();
-//        dd($certificateRecords);
-//       $pageName=;
-        return view('admin.certificate.certificateRecords',compact('pageTitle','certificateRecords','certificates'));
+        $user=Auth::user();
+        if($user->is_supervisor==0)
+        {
+            $unit_id=Unit::where('title','تدارکات')->pluck('id');
+            if($user->unit_id==$unit_id[0])
+            {
+                $step=3;
+                $my_roll='supplier';
+                $me='من کارپردازم';
+            }
+            else
+            {
+                $step=1;
+                $my_roll='unit_employee';
+                $me='من کارمند جز واحدم';
+            }
+        }
+        elseif($user->is_supervisor==1)
+        {
+            $unit_id=Unit::where('title','ریاست')->pluck('id');
+            if($user->unit_id==$unit_id[0])
+            {
+                $step=4;
+                $my_roll='boss';
+                $me='من رئیسم';
+            }
+            else
+            {
+                $step=2;
+                $my_roll='unit_supervisor';
+                $me='من مدیر واحدم';
+            }
+        }
+        else $step=0;
+        switch($my_roll) {
+            case 'supplier':
+                $request_id = Request2::where('supplier_id', $user->id)->pluck('id');
+                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                $certificateRecords = CertificateRecord::where('step', 3)->whereIn('certificate_id', $certificate_id)->get();
+
+//                dd($certificates);
+                break;
+            case 'unit_employee':
+                $request_id = RequestRecord::where('receiver_id', $user->id)->pluck('request_id');
+                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                $certificateRecords = CertificateRecord::where('step', 1)->whereIn('certificate_id', $certificate_id)->get();
+//                dd($certificate_records);
+                break;
+            case 'boss':
+                $certificateRecords = CertificateRecord::where('step', 4)->get();
+                break;
+            case 'unit_supervisor':
+                //bring certificates as a unit supervisor
+                $request_id = Request2::where('unit_id', $user->unit_id)->pluck('id');
+                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                $certificateRecords = CertificateRecord::where('step', 2)->whereIn('certificate_id', $certificate_id)->get();
+
+                //bring certificates as a unit employee
+                $request_id = RequestRecord::where('receiver_id', $user->id)->pluck('request_id');
+                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                $certificate_records2 = CertificateRecord::where('step', 1)->whereIn('certificate_id', $certificate_id)->get();
+
+                $certificateRecords=$certificateRecords->merge($certificate_records2);
+//                dd($certificate_records);
+                break;
+        }
+//        $certificate_records=CertificateRecord::where([['certificate_id',$id],['step',$step]])->get();
+
+       return view('admin.certificate.certificateRecords',compact('pageTitle','certificateRecords','certificates'));
     }
     public function acceptCertificate(Request $request)
     {
@@ -153,11 +266,48 @@ class CertificateController extends Controller
         {
             abort(403);
         }
-        CertificateRecord::where('id',$request->certificate_record_id)->update([
-            'step'=>2,
+        $user=Auth::user();
+        if($user->is_supervisor==0)
+        {
+            $unit_id=Unit::where('title','تدارکات')->pluck('id');
+            if($user->unit_id==$unit_id[0])
+            {
+                $step=4;
+                $me='من کارپردازم';
+            }
+            else
+            {
+                $step=2;
+                $me='من کارمند جز واحدم';
+            }
+        }
+        elseif($user->is_supervisor==1)
+        {
+            $unit_id=Unit::where('title','ریاست')->pluck('id');
+            if($user->unit_id==$unit_id[0])
+            {
+                $step=5;
+                $me='من رئیسم';
+            }
+            else
+            {
+                $step=3;
+                $me='من مدیر واحدم';
+            }
+        }
+        else $step=0;
+
+
+
+        $q=CertificateRecord::where('id',$request->certificate_record_id)->update([
+            'step'=>$step,
             'active'=>1,
             'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
         ]);
-        return response()->json($request->all());
+        if($q)
+        {
+            return response()->json('گواهی با موفقیت تایید شده و به مرحله بعد ارسال شد');
+        } else
+        return response()->json('خطایی رخ داده است');
     }
 }

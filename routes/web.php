@@ -27,14 +27,14 @@ Route::group(['prefix'=>'user'],function() {
     //shiri
     Route::get('/serviceRequest','RequestController@serviceRequestGet');
     Route::post('serviceRequest','RequestController@serviceRequest');
-    Route::get('/ticketRequest','RequestController@ticketRequest');                         //96/7/2
-    Route::get('/getUnits','RequestController@getUnits');                                   //96/7/2
-    Route::post('sendTicket','RequestController@sendTicket');                               //96/7/3
-    Route::get('ticketsManagement','RequestController@ticketsManagement');                  //96/7/3
-    Route::post('searchOnDate/{id}','RequestController@searchOnDate');                      //96/7/3
-    Route::get('ticketConversation/{id}','RequestController@ticketConversation');          //96/7/3
-    Route::post('userSendMessage','RequestController@userSendMessage');                    //96/7/4
-    Route::post('userEndTicket' , 'RequestController@userEndTicket');                      //96/7/5
+    Route::get('/ticketRequest','RequestController@ticketRequest');
+    Route::get('/getUnits','RequestController@getUnits');
+    Route::post('sendTicket','RequestController@sendTicket');
+    Route::get('ticketsManagement','RequestController@ticketsManagement');
+    Route::post('searchOnDate/{id}','RequestController@searchOnDate');
+    Route::get('ticketConversation/{id}','RequestController@ticketConversation');
+    Route::post('userSendMessage','RequestController@userSendMessage');
+    Route::post('userEndTicket' , 'RequestController@userEndTicket');
 
 
 });
@@ -52,8 +52,8 @@ Route::group(['prefix'=>'systemManager'],function() {
         'uses'=>'SystemManagerController@getEditSignature',
         'as'=>'editSignature'
     ]);
-    Route::post('/productRequest','RequestController@productRequestPost');
-    //shiri
+
+    //Shiri
     Route::post('addSignature','SystemManagerController@addSignature');                      //96/7/6
     Route::get('showSignature/{id}','SystemManagerController@showSignature');                //96/7/6
     Route::post('makeSignatureForced' , 'SystemManagerController@makeSignatureForced');      //96/7/6
@@ -61,7 +61,6 @@ Route::group(['prefix'=>'systemManager'],function() {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-
     Route::group(['prefix'=>'admin'],function() {
         //Product Request Management
         Route::get('/productRequestManagement','SupplyController@productRequestManagement');
@@ -100,10 +99,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('showTickets','SupplyController@showTickets');                                    //96/7/5
         Route::post('adminSendMessage','SupplyController@adminSendMessage');                        //96/7/5
         Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
-        Route::get('printProductRequest/{id}','SupplyController@printProductRequest');              //96/7/11
-        Route::post('newUserCreate','SupplyController@newUserCreate');                              //96/7/12
-        Route::post('newUserWithUnitManager','SupplyController@newUserWithUnitManager');            //96/7/12
-        Route::post('newUserWithoutUnitManager','SupplyController@newUserWithoutUnitManager');      //96/7/12
+
+        Route::get('printProductRequest/{id}','SupplyController@printProductRequest');                           //96/7/11
+        Route::post('newUserCreate','SupplyController@newUserCreate');                                           //96/7/12
+        Route::post('newUserWithUnitManager','SupplyController@newUserWithUnitManager');                         //96/7/12
+        Route::post('newUserWithoutUnitManager','SupplyController@newUserWithoutUnitManager');                   //96/7/12
+        Route::get('exportDeliveryInstallCertificate/{id}','SupplyController@exportDeliveryInstallCertificate'); //96/7/13
         // Route::get('kiayanfar','RequestController@kiyanfar');
 
 

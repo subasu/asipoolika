@@ -31,7 +31,7 @@
         <a href="{{ url('/password/reset') }}">رمز عبور خود را فراموش کرده اید؟</a>
 
         <button>
-            <i class="spinner"></i>
+            {{--<i class="spinner"></i>--}}
             <span class="state">ورود</span>
         </button>
 
