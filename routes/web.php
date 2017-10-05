@@ -111,7 +111,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('usersManagement', 'SupplyController@usersManagementGet');
         Route::get('usersCreate', 'SupplyController@usersCreateGet');
         Route::post('checkUnitSupervisor', 'SupplyController@checkUnitSupervisor');
-        Route::post('statusUser', 'SupplyController@statusUser');
+        Route::post('changeUserStatus/{id}', 'SupplyController@changeUserStatus');
         Route::get('usersUpdate/{id}', 'SupplyController@usersUpdateShow');
         Route::post('usersUpdate', 'SupplyController@usersUpdate');
 
@@ -120,7 +120,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('unitsCreate', 'SupplyController@unitsCreateGet');
         Route::post('unitsCreate', 'SupplyController@unitsCreatePost');
         Route::get('units', 'SupplyController@unitsGet');
-        Route::post('statusUnit', 'SupplyController@statusUnit');
+        Route::post('changeUnitStatus/{id}', 'SupplyController@changeUnitStatus');
         Route::get('unitsUpdate/{id}', 'SupplyController@unitsUpdateShow');
         Route::post('unitsUpdate', 'SupplyController@unitsUpdate');
         Route::post('usersSupervisor', 'SupplyController@usersSupervisor');

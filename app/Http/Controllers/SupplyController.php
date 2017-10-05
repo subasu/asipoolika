@@ -372,34 +372,53 @@ class SupplyController extends Controller
     {
         $pageTitle='مدیریت کاربران';
         $data = User::all();
+        //dd($data);
         return view('admin.usersManage', compact('data','pageTitle'));
     }
 
     //Rayat//active user in usersManage
-    public function statusUser(Request $request)
+    public function changeUserStatus(Request $request , $id)
     {
-        $id = $request->id;
-        $active = User::where('id', $id)->value('active');
-        if ($active == 0) {
-            User::where('id', $id)->update(['active' => 1]);
-            return response()->json('کاربر مورد نظر فعال شد');
-        } else {
-            User::where('id', $id)->update(['active' => 0]);
-            return response()->json('کاربر مورد نظر غیرفعال شد');
+        $userId = $request->userId;
+        switch ($id)
+        {
+            case 1:
+                $deactive = User::where('id', $userId)->update(['active' => 0]);
+                if($deactive)
+                {
+                    return response()->json( 'کاربر مورد نظر شما غیر فعال گردید');
+                }
+                break;
+            case 2:
+                $active = User::where('id', $userId)->update(['active' => 1]);
+                if($active)
+                {
+                    return response()->json( 'کاربر مورد نظر شما  فعال گردید');
+                }
+                break;
         }
     }
 
     //Rayat//active unit in unitsManage
-    public function statusUnit(Request $request)
+    public function changeUnitStatus(Request $request,$id)
     {
-        $id = $request->id;
-        $active = Unit::where('id', $id)->value('active');
-        if ($active == 0) {
-            Unit::where('id', $id)->update(['active' => 1]);
-            return response()->json('واحد مورد نظر فعال شد');
-        } else {
-            Unit::where('id', $id)->update(['active' => 0]);
-            return response()->json('واحد مورد نظر غیرفعال شد');
+        $unitId = $request->unitId;
+        switch ($id)
+        {
+            case 1:
+                $deactive = Unit::where('id', $unitId)->update(['active' => 0]);
+                if($deactive)
+                {
+                    return response()->json( 'واحد مورد نظر شما غیر فعال گردید');
+                }
+                break;
+            case 2:
+                $active = Unit::where('id', $unitId)->update(['active' => 1]);
+                if($active)
+                {
+                    return response()->json( 'واحد مورد نظر شما  فعال گردید');
+                }
+                break;
         }
     }
 
@@ -440,8 +459,8 @@ class SupplyController extends Controller
                 'email' => $request->email,
                 'cellphone' => $request->cellphone,
                 'internal_phone' => $request->internal_phone,
-                'unit_id' => $request->unit_id,
-                'supervisor_id' => $request->supervisor_id,
+                //'unit_id' => $request->unit_id,
+                //'supervisor_id' => $request->supervisor_id,
                 'description' => $request->description
             ]);
         return response()->json($res);

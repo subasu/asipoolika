@@ -1,5 +1,6 @@
 @extends('layouts.adminLayout')
 @section('content')
+
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -18,9 +19,7 @@
                 <div class="alert alert-info col-md-12 col-sm-12 col-xs-12"
                      style="direction:rtl;font-size:17px;color:white;">
                 </div>
-                <button id="user-send" type="button" class="col-md-2 btn btn-danger" style="font-weight: bold;"><i class="fa fa-user-plus"></i>
-                    افزودن کاربر جدید
-                </button>
+                <a href="{{url('admin/usersCreate')}}" id="user-send" type="button" class="col-md-2 btn btn-info" style="font-weight: bold;"><i class="fa fa-user-plus"></i>                    افزودن کاربر جدید                </a>
                 <div class="x_content">
                     <table style="direction:rtl;text-align: center" id="example"
                            class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
@@ -47,9 +46,13 @@
                                 <td>{{$val->email}} </td>
                                 <td>{{$val->cellphone}} </td>
                                 <td>{{$val->unit->title}}</td>
-                                <td>{{$val->user->title. ' '.$val->user->name.' '.$val->user->family}}</td>
-                                <td class="statusUser" id="{{$val->id}}">
-                                    <button class="btn btn-success">{{($val->active===0)?'غیرفعال':'فعال'}}</button>
+                                <td>{{$val->user->title.' '.$val->user->name .' '.$val->user->family }}</td>
+                                <td>
+                                    @if($val->active === 0)
+                                        <button  id="{{$val->id}}" value="{{$val->active}}" class="btn btn-danger">غیرفعال</button>
+                                    @else
+                                        <button  id="{{$val->id}}" value="{{$val->active}}" class="btn btn-success">فعال</button>
+                                    @endif
                                 </td>
                                 <td id="{{$val->id}}">
                                     <a class="btn btn-info" href="{{url('admin/usersUpdate'.'/'.$val->id)}}">ویرایش</a></td>
@@ -64,34 +67,76 @@
     {{--edit user's status by user-id --}}
 
     <script>
-        $(document).on('click','.statusUser',function () {
-            var uid = $(this).attr('id');
-            var token = $('#token').val();
+        $(document).on('click','.btn-success',function () {
+            var userId = $(this).attr('id');
+            var status = $(this).val();
+            var token  = $('#token').val();
+            var button = $(this);
             $.ajax
             ({
-                url : "{{Url('admin/statusUser')}}",
-                type: 'post',
-                data: {'id':uid,'_token':token},
-                dataType:'json',
+                url     : "{{Url('admin/changeUserStatus')}}/{{1}}",
+                type    : 'post',
+                data    : {'userId':userId,'_token':token},
+                context :  button,
+                //dataType:'json',
                 success : function (response)
                 {
+                    $(button).text('غیر فعال');
+                    $(button).toggleClass('btn-success btn-danger');
                     swal({
                         title: "",
                         text: response,
                         type: "info",
                         confirmButtonText: "بستن"
                     });
+                },
+                error : function(error)
+                {
+                    console.log(error);
+                    swal({
+                        title: "",
+                        text: "خطایی رخ داده است ، تماس با بخش پشتیبانی",
+                        type: "warning",
+                        confirmButtonText: "بستن"
+                    });
                 }
             });
-            var title=$(this).children('.btn-success').text();
-            if(title=='غیرفعال')
-            {
-                $(this).children('.btn-success').text('فعال');
-            }
-            else
-            {
-                $(this).children('.btn-success').text('غیرفعال');
-            }
         })
     </script>
+        <script>
+            $(document).on('click','.btn-danger',function () {
+                var userId = $(this).attr('id');
+                var status = $(this).val();
+                var token = $('#token').val();
+                var button = $(this);
+                $.ajax
+                ({
+                    url: "{{Url('admin/changeUserStatus')}}/{{2}}",
+                    type: 'post',
+                    data: {'userId': userId, '_token': token},
+                    context: button,
+                    //dataType:'json',
+                    success: function (response) {
+                        $(button).text('فعال');
+                        $(button).toggleClass('btn-success btn-danger');
+                        swal({
+                            title: "",
+                            text: response,
+                            type: "info",
+                            confirmButtonText: "بستن"
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        swal({
+                            title: "",
+                            text: "خطایی رخ داده است ، تماس با بخش پشتیبانی",
+                            type: "warning",
+                            confirmButtonText: "بستن"
+                        });
+                    }
+                });
+            });
+        </script>
+
 @endsection
