@@ -123,12 +123,14 @@ class CertificateController extends Controller
             {
                 $my_roll='supplier';
                 $step=3;
+                $step2=4;
                 $me='من کارپردازم';
             }
             else
             {
                 $my_roll='unit_employee';
                 $step=1;
+                $step2=2;
                 $me='من کارمند جز واحدم';
             }
 
@@ -140,12 +142,14 @@ class CertificateController extends Controller
             {
                 $my_roll='boss';
                 $step=4;
+                $step2=5;
                 $me='من رئیسم';
             }
             else
             {
                 $my_roll='unit_supervisor';
                 $step=2;
+                $step2=3;
                 $me='من مدیر واحدم';
             }
         }
@@ -186,6 +190,13 @@ class CertificateController extends Controller
 
 //                dd($certificates);
                 break;
+        }
+        foreach($certificates as $certificate)
+        {
+            //undecided records
+            $certificate->certificate_record_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',$step]])->count();
+            //in the process records
+            $certificate->certificate_record_count_accept=CertificateRecord::where([['certificate_id',$certificate->id],['step','>=',$step2],['active',1]])->count();
         }
 //        dd($me.' / '.$step.' / '.$my_roll);
         return view('admin.certificate.certificateManagement',compact('pageTitle','pageName','certificates','title','certificates2'));
