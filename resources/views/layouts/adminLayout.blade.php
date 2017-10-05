@@ -195,7 +195,7 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/serviceRequest')}}">ارسال درخواست خدمت</a>
                                     </li>
-                                    <li><a href="{{url('serviceCheck')}}">پیگیری درخواست خدمت</a>
+                                    <li><a href="{{url('user/serviceRequestFollow')}}">پیگیری درخواست خدمت</a>
                                     </li>
                                 </ul>
                             </li>

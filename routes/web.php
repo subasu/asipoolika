@@ -25,9 +25,16 @@ Route::group(['prefix'=>'user'],function() {
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
     Route::get('/productRequestFollow','RequestController@productRequestFollowGet');
+
     //shiri
     Route::get('/serviceRequest','RequestController@serviceRequestGet');
     Route::post('serviceRequest','RequestController@serviceRequest');
+    Route::get('/serviceRequestFollow','RequestController@serviceRequestFollowGet');
+
+    Route::get('/myRequestRecords/{id}','RequestController@myRequestRecordsGet');
+
+
+
     Route::get('/ticketRequest','RequestController@ticketRequest');
     Route::get('/getUnits','RequestController@getUnits');
     Route::post('sendTicket','RequestController@sendTicket');
