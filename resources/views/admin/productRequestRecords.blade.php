@@ -30,7 +30,11 @@
                 @if(!empty($requestRecords[0]))
                     <input type="hidden" value="{{$requestRecords[0]->id}}" name="request_id">
                     <input type="hidden" value="{{$user->unit->title}}" content="{{$user->is_supervisor}}" name="user_unit_title" id="user_unit_title">
+                    @if($requestRecords[0]->request->request_type_id==3)
                     <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست کالای شماره :  {{$requestRecords[0]->request_id}} | ثبت شده توسط :   {{$requestRecords[0]->request->user->name}} {{$requestRecords[0]->request->user->family}} از واحد {{$requestRecords[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$requestRecords->count()}} رکورد</span></h2>
+                    @elseif($requestRecords[0]->request->request_type_id==2)
+                    <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست خدمت شماره : {{$requestRecords[0]->request_id}} | ثبت شده توسط :   {{$requestRecords[0]->request->user->name}} {{$requestRecords[0]->request->user->family}} از واحد {{$requestRecords[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$requestRecords->count()}} رکورد</span></h2>
+                    @endif
                 @endif
                 {{--<h2>لیست رکوردهای درخواست کالای شماره : {{$requestRecords[0]->request_id}}</h2>--}}
                 <ul class="nav navbar-right panel_toolbox">

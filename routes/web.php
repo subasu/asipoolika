@@ -24,6 +24,7 @@ Route::group(['prefix'=>'user'],function() {
         'roles'=>['author','admin']
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
+    Route::get('/productRequestFollow','RequestController@productRequestFollowGet');
     //shiri
     Route::get('/serviceRequest','RequestController@serviceRequestGet');
     Route::post('serviceRequest','RequestController@serviceRequest');
@@ -77,6 +78,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/certificate/{id}','CertificateController@execute_certificateGet');
         Route::post('/execute_certificate','CertificateController@execute_certificate');
         Route::get('/certificatesManagement','CertificateController@certificatesManagementGet');
+        Route::get('/acceptedCertificatesManagement','CertificateController@acceptedCertificatesManagementGet');
         Route::get('/certificateRecords/{id}','CertificateController@certificateRecordsGet');
         Route::post('/acceptCertificate','CertificateController@acceptCertificate');
         // End Product Request Management

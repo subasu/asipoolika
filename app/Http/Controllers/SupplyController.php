@@ -1005,6 +1005,7 @@ class SupplyController extends Controller
                 }
             }
         }
+
         return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
 
     }

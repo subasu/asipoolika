@@ -187,7 +187,7 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/productRequest')}}">ارسال درخواست کالا</a>
                                     </li>
-                                    <li><a href="#">پیگیری درخواست کالا</a>
+                                    <li><a href="{{url('user/productRequestFollow')}}">پیگیری درخواست کالا</a>
                                     </li>
                                 </ul>
                             </li>
@@ -199,7 +199,14 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a href="{{url('admin/certificatesManagement')}}"><i class="fa fa-newspaper-o"></i> تایید گواهی<span></span></a>
+
+                            <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="{{url('admin/certificatesManagement')}}"> تایید گواهی<span></span></a>
+                                    </li>
+                                    <li><a href="{{url('admin/acceptedCertificatesManagement')}}"> وضعیت گواهی های تایید شده</a>
+                                    </li>
+                                </ul>
                             </li>
                             <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
