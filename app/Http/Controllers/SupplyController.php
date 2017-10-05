@@ -40,22 +40,6 @@ class SupplyController extends Controller
         return view ('admin.recentlyAddedService', compact('pageTitle','requests'));
     }
 
-    public function serviceInProcess()
-    {
-        $pageTitle ="درخواست های درحال پیگیری";
-
-        $requests=Request2::where('request_type_id',2)->get();
-        if(!empty($requests))
-        {
-            foreach ($requests as $request)
-            {
-                $request_records=RequestRecord::where([['request_id',$request->id],['active',1],['step',2]])->get();
-                $request->records=$request_records;
-            }
-        }
-        return view ('admin.serviceInProcess', compact('pageTitle','requests'));
-    }
-
     /*shiri
         below function is related to  show all request records and those details...
       */
