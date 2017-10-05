@@ -178,6 +178,7 @@ class SupplyController extends Controller
             'why_not'=>$request->whyNot,
             'step'=> $step,
             'refuse_user_id' => $user->id,
+            'active'=>0,
             'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
         ]);
         if($update==1)
@@ -741,7 +742,59 @@ class SupplyController extends Controller
 
     public function acceptServiceRequestManagementGet()
     {
-
+        $pageTitle='درخواست های در حال پیگیری';
+        $pageName='acceptProductRequestManagement';
+        $user=Auth::user();
+        switch(trim($user->unit->title))
+        {
+            case 'تدارکات':
+                if($user->is_supervisor==1)
+                {
+                    $step=2;
+                    $step2=1;
+                }
+                //the user is Karpardaz
+                else
+                {
+                    $step=8;
+                    $step2=7;
+                }
+                break;
+            case 'انبار':
+                $step=3;
+                $step2=2;
+                break;
+            case 'اعتبار':
+                $step=4;
+                $step2=3;
+                break;
+            case 'امور عمومی':
+                $step=5;
+                $step2=4;
+                break;
+            case 'ریاست':
+                $step=6;
+                $step2=5;
+                break;
+            case 'امور مالی':
+                $step=7;
+                $step2=6;
+                break;
+            default: $step=2;$step2=1;
+        }
+        $requestRecords=RequestRecord::where([['step','>=',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
+        $serviceRequests=Request2::where('request_type_id',2)->whereIn('id',$requestRecords)->get();
+        foreach($serviceRequests as $productRequest)
+        {
+            //undecided records
+            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',$step2]])->count();
+            //in the process records
+            $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step','>=',$step],['active',1]])->count();
+            //inactive records
+            $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+        }
+//        dd($productRequests);
+        return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
     }
 
     public function refusedProductRequestManagementGet()
@@ -916,7 +969,7 @@ class SupplyController extends Controller
     {
         $pageTitle="مدیریت درخواست ها";
         $pageName='confirmProductRequest';
-        $productRequests=Request2::all();
+        $productRequests=Request2::where('request_type_id',3)->get();
         foreach($productRequests as $productRequest)
         {
             $all_count=RequestRecord::where('request_id',$productRequest->id)->count();
@@ -968,5 +1021,49 @@ class SupplyController extends Controller
             $sum += $productRequestRecord->rate * $productRequestRecord->count;
         }
         return view ('admin.certificate.productRequestForm',compact('pageTitle','productRequestRecords','sum'));
+    }
+    public function confirmServiceRequestManagementGet()
+    {
+        $pageTitle="مدیریت درخواست ها";
+        $pageName='confirmProductRequest';
+        $productRequests=Request2::where('request_type_id',2)->get();
+
+        foreach($productRequests as $productRequest)
+        {
+            $all_count=RequestRecord::where('request_id',$productRequest->id)->count();
+            $accept_count=RequestRecord::where([['request_id',$productRequest->id],['step',7],['refuse_user_id',null],['active',1]])->count();
+            $has_certificate_count=RequestRecord::where([['request_id',$productRequest->id],['step',8]])->count();
+            $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
+            if($all_count==($accept_count+$refuse_count))
+            {
+                DB::table('requests')->where('id',$productRequest->id)->update([
+                    'active'=>1
+                ]);
+                $productRequest->msg='Yes';
+            }
+
+            else
+                $productRequest->msg='No';
+            $productRequest->all_count=$all_count;
+            $productRequest->accept_count=$accept_count;
+            $productRequest->has_certificate_count=$has_certificate_count;
+            $productRequest->refuse_count=$refuse_count;
+
+            $certificates=Certificate::where('request_id',$productRequest->id)->get();
+
+            foreach ($certificates as $certificate) {
+                $all_c_count=CertificateRecord::where('certificate_id',$certificate->id)->count();
+                $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
+                if($all_c_count==$finished_c_count)
+                {
+                    Certificate::where('id',$certificate->id)->update([
+                        'active'=>1
+                    ]);
+
+                }
+            }
+        }
+//        dd($productRequests);
+        return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
     }
 }
