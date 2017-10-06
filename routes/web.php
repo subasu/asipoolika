@@ -101,7 +101,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
 
         Route::get('printProductRequest/{id}','SupplyController@printProductRequest');                           //96/7/11
-        Route::post('newUserCreate','SupplyController@newUserCreate');                                           //96/7/12
+        Route::post('newUserCreate/{id}','SupplyController@newUserCreate');                                           //96/7/12
         Route::post('newUserWithUnitManager','SupplyController@newUserWithUnitManager');                         //96/7/12
         Route::post('newUserWithoutUnitManager','SupplyController@newUserWithoutUnitManager');                   //96/7/12
         Route::get('exportDeliveryInstallCertificate/{id}','SupplyController@exportDeliveryInstallCertificate'); //96/7/13

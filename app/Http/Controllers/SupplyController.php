@@ -9,6 +9,7 @@ use App\Models\CertificateRecord;
 use App\Models\Message;
 use App\Models\Request2;
 use App\Models\RequestRecord;
+use App\Models\Signature;
 use App\Models\Ticket;
 use App\Models\Workers;
 use App\User;
@@ -231,8 +232,8 @@ class SupplyController extends Controller
     {
        // dd($request->unitManager);
         $unitSupervisor = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->get();
-        //dd($unitSupervisor);
-        if($unitSupervisor && $request->unitManager === '1' )
+        //dd(count($unitSupervisor));
+        if(count($unitSupervisor) > 0 && $request->unitManager === '1' )
         {
             return response('مدیر این واحد قبلا انتخاب شده ، آیا در نظر دارید که ایشان را جایگزین مدیر قبلی نمایید؟');
         }
@@ -244,98 +245,148 @@ class SupplyController extends Controller
             {
                 return response('بنابراینکه واحد مربوطه مدیری ندارد ، مدیر تدارکات بعنوان مدیر این واحد در نظر گرفته میشود.آیا تمایل دارید؟');
             }
+            elseif(count($unitSupervisor)== 0 && $request->unitManager === '1')
+            {
+              return response('آیا از ثبت این کاربر به عنوان مدیر واحد انتخاب شده اطمینان دارید؟');
+            }
 
 
     }
 
-    public function newUserCreate(UserCreateValidation $request)
+    public function newUserCreate(UserCreateValidation $request,$id)
     {
-        $unitSupervisorId = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->value('id');
-        //dd($unitSupervisorId);
-        $unitSupervisorUpdate = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->update(['is_supervisor' => 0]);
-        $supervisorId = Unit::where('title','تدارکات')->value('supervisor_id');
-        if($unitSupervisorUpdate)
+        switch ($id)
         {
-            $userId = DB::table('users')->insertGetId
-            ([
-                'title'             =>$request->title,
-                'name'              =>$request->name,
-                'family'            =>$request->family,
-                'email'             =>$request->email,
-                'password'          =>bcrypt($request->password),
-                'cellphone'         =>$request->cellphone,
-                'internal_phone'    =>$request->internal_phone,
-                'description'       =>$request->description,
-                'unit_id'           =>$request->unitId,
-                'is_supervisor'     => 1,
-                'supervisor_id'     =>$supervisorId
+            case 1:
+                $unitSupervisorId = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->value('id');
+                //dd($unitSupervisorId);
+                $unitSupervisorUpdate = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->update(['is_supervisor' => 0]);
+                $supervisorId = Unit::where('title','تدارکات')->value('supervisor_id');
+                if($unitSupervisorUpdate)
+                {
+                    $userId = DB::table('users')->insertGetId
+                    ([
+                        'title'             =>trim($request->title),
+                        'name'              =>trim($request->name),
+                        'family'            =>trim($request->family),
+                        'email'             =>trim($request->email),
+                        'password'          =>bcrypt($request->password),
+                        'cellphone'         =>trim($request->cellphone),
+                        'internal_phone'    =>trim($request->internal_phone),
+                        'description'       =>trim($request->description),
+                        'unit_id'           =>$request->unitId,
+                        'is_supervisor'     => 1,
+                        'supervisor_id'     =>$supervisorId
 
-            ]);
-            if($userId)
-            {
-                $updateUser  = User::where('supervisor_id',$unitSupervisorId)->update(['supervisor_id' => $userId]);
-                $updateUsers = User::where('id',$unitSupervisorId)->update(['supervisor_id' => $userId]);
-                if($updateUser && $updateUsers)
+                    ]);
+                    if($userId)
+                    {
+                        $updateUser  = User::where('supervisor_id',$unitSupervisorId)->update(['supervisor_id' => $userId]);
+                        $updateUsers = User::where('id',$unitSupervisorId)->update(['supervisor_id' => $userId]);
+                        if($updateUser || $updateUsers)
+                        {
+                            return response('کاربر جدید درج شد');
+                        }
+                    }
+                }else
+                {
+                    return response('خطایی رخ داده است ، تماس با بخش پشتیبانی');
+                }
+                break;
+
+            case 2:
+                $unitSupervisors = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->get();
+                $supervisorId   = 0;
+                foreach ($unitSupervisors as $unitSupervisor)
+                {
+                    $supervisorId += $unitSupervisor->id;
+                }
+                //dd($supervisorId);
+                $userId = DB::table('users')->insertGetId
+                ([
+                    'title'             =>trim($request->title),
+                    'name'              =>trim($request->name),
+                    'family'            =>trim($request->family),
+                    'email'             =>trim($request->email),
+                    'password'          =>bcrypt($request->password),
+                    'cellphone'         =>trim($request->cellphone),
+                    'internal_phone'    =>trim($request->internal_phone),
+                    'description'       =>trim($request->description),
+                    'unit_id'           =>$request->unitId,
+                    'supervisor_id'     =>$supervisorId
+                ]);
+                if($userId)
                 {
                     return response('کاربر جدید درج شد');
                 }
-            }
-        }else
-            {
-                return response('خطایی رخ داده است ، تماس با بخش پشتیبانی');
-            }
+                break;
+
+            case 3:
+                $supervisorId = Unit::where('title','تدارکات')->value('supervisor_id');
+                $userId = DB::table('users')->insertGetId
+                ([
+                    'title'             =>trim($request->title),
+                    'name'              =>trim($request->name),
+                    'family'            =>trim($request->family),
+                    'email'             =>trim($request->email),
+                    'password'          =>bcrypt($request->password),
+                    'cellphone'         =>trim($request->cellphone),
+                    'internal_phone'    =>trim($request->internal_phone),
+                    'description'       =>trim($request->description),
+                    'unit_id'           =>$request->unitId,
+                    'supervisor_id'     =>$supervisorId
+
+                ]);
+                if($userId)
+                {
+                    return response('کاربر جدید درج شد');
+                }
+                break;
+
+            case 4:
+                $supervisorId = Unit::where('title','تدارکات')->value('supervisor_id');
+                $userId = DB::table('users')->insertGetId
+                ([
+                    'title'             =>trim($request->title),
+                    'name'              =>trim($request->name),
+                    'family'            =>trim($request->family),
+                    'email'             =>trim($request->email),
+                    'password'          =>bcrypt($request->password),
+                    'cellphone'         =>trim($request->cellphone),
+                    'internal_phone'    =>trim($request->internal_phone),
+                    'description'       =>trim($request->description),
+                    'unit_id'           =>$request->unitId,
+                    'is_supervisor'     =>1,
+                    'supervisor_id'     =>$supervisorId
+
+                ]);
+                if($userId)
+                {
+                    $users = User::where([['is_supervisor',0],['unit_id',$request->unitId],['supervisor_id',$supervisorId]])->get();
+                    if(count($users)>0)
+                    {
+                        $usersWithNewManager = User::where([['is_supervisor',0],['unit_id',$request->unitId],['supervisor_id',$supervisorId]])->update(['supervisor_id' => $userId]);
+                        if($usersWithNewManager)
+                        {
+                            return response('کاربر جدید درج شد');
+                        }
+                    }
+                    return response('کاربر جدید درج شد');
+
+                }
+        }
+
     }
 
     //
     public function newUserWithUnitManager(UserCreateValidation $request)
     {
-        $unitSupervisors = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->get();
-        $supervisorId   = 0;
-        foreach ($unitSupervisors as $unitSupervisor)
-        {
-            $supervisorId += $unitSupervisor->id;
-        }
-        //dd($supervisorId);
-        $userId = DB::table('users')->insertGetId
-        ([
-            'title'             =>$request->title,
-            'name'              =>$request->name,
-            'family'            =>$request->family,
-            'email'             =>$request->email,
-            'password'          =>bcrypt($request->password),
-            'cellphone'         =>$request->cellphone,
-            'internal_phone'    =>$request->internal_phone,
-            'description'       =>$request->description,
-            'unit_id'           =>$request->unitId,
-            'supervisor_id'     =>$supervisorId
-        ]);
-        if($userId)
-        {
-            return response('کاربر جدید درج شد');
-        }
+
     }
     //
     public function newUserWithoutUnitManager(UserCreateValidation $request)
     {
-        $supervisorId = Unit::where('title','تدارکات')->value('supervisor_id');
-        $userId = DB::table('users')->insertGetId
-        ([
-            'title'             =>$request->title,
-            'name'              =>$request->name,
-            'family'            =>$request->family,
-            'email'             =>$request->email,
-            'password'          =>bcrypt($request->password),
-            'cellphone'         =>$request->cellphone,
-            'internal_phone'    =>$request->internal_phone,
-            'description'       =>$request->description,
-            'unit_id'           =>$request->unitId,
-            'supervisor_id'     =>$supervisorId
 
-        ]);
-        if($userId)
-        {
-            return response('کاربر جدید درج شد');
-        }
     }
 
     //rayat//show user create form
@@ -922,6 +973,31 @@ class SupplyController extends Controller
     //shiri : below function is related to show printed form of product request
     public function printProductRequest($id)
     {
+        $storageId = Unit::where('title','انبار')->value('id');
+        $storageSupervisorId = User::where([['unit_id',$storageId],['is_supervisor',1]])->value('id');
+        $storageSupervisorSignature = Signature::where('user_id',$storageSupervisorId)->value('signature');
+        $storageSupervisorSignature = 'data:image/png;base64,'.$storageSupervisorSignature;
+
+        $originalJobId = Unit::where('title','امور عمومی')->value('id');
+        $originalJobSupervisorId = User::where([['unit_id',$originalJobId],['is_supervisor',1]])->value('id');
+        $originalJobSupervisorSignature = Signature::where('user_id',$originalJobSupervisorId)->value('signature');
+        $originalJobSupervisorSignature = 'data:image/png;base64,'.$originalJobSupervisorSignature;
+
+        $bossUnitId = Unit::where('title','ریاست')->value('id');
+        $bossId = User::where([['unit_id',$bossUnitId],['is_supervisor',1]])->value('id');
+        $bossSignature = Signature::where('user_id',$bossId)->value('signature');
+        $bossSignature = 'data:image/png;base64,'.$bossSignature;
+
+        $creditUnitId = Unit::where('title','اعتبار')->value('id');
+        $creditSupervisorId = User::where([['unit_id',$creditUnitId],['is_supervisor',1]])->value('id');
+        $creditSupervisorSignature = Signature::where('user_id',$creditSupervisorId)->value('signature');
+        $creditSupervisorSignature = 'data:image/png;base64,'.$creditSupervisorSignature;
+
+        $financeUnitId = Unit::where('title','امور مالی')->value('id');
+        $financeSupervisorId = User::where([['unit_id',$financeUnitId],['is_supervisor',1]])->value('id');
+        $financeSupervisorSignature = Signature::where('user_id',$financeSupervisorId)->value('signature');
+        $financeSupervisorSignature = 'data:image/png;base64,'.$financeSupervisorSignature;
+
         $pageTitle = 'نسخه چاپی گواهی';
         $productRequestRecords = RequestRecord::where([['request_id',$id],['accept',1]])->get();
         $sum = 0;
@@ -929,7 +1005,7 @@ class SupplyController extends Controller
         {
             $sum += $productRequestRecord->rate * $productRequestRecord->count;
         }
-        return view ('admin.certificate.productRequestForm',compact('pageTitle','productRequestRecords','sum'));
+        return view ('admin.certificate.productRequestForm',compact('pageTitle','productRequestRecords','sum','storageSupervisorSignature','originalJobSupervisorSignature','bossSignature' , 'creditSupervisorSignature' , 'financeSupervisorSignature'));
     }
 
     //shiri : below function is related to export delivery and install certificate

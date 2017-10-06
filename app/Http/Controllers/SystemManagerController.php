@@ -40,7 +40,7 @@ class SystemManagerController extends Controller
         $unit_id=$request->unit_id;
         $userIds = Signature::where('active',1)->pluck('user_id');
         //dd($userIds);
-        $users =User::where('unit_id',$unit_id)->whereNotIn('id',$userIds)->get();
+        $users =User::where([['unit_id',$unit_id],['is_supervisor',1]])->whereNotIn('id',$userIds)->get();
         return response()->json(compact('users'));
     }
     public function getEditSignature($id)

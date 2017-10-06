@@ -274,7 +274,7 @@
                                 $.ajax
                                 ({
                                     cache : false,
-                                    url: "{{ url('admin/newUserCreate') }}",
+                                    url: "{{ url('admin/newUserCreate') }}/{{1}}",
                                     type: 'post',
                                     //dataType: 'json',
                                     contentType : false,
@@ -331,7 +331,7 @@
                                 $.ajax
                                 ({
                                     cache : false,
-                                    url: "{{ url('admin/newUserWithUnitManager') }}",
+                                    url: "{{ url('admin/newUserCreate') }}/{{2}}",
                                     type: 'post',
                                     //dataType: 'json',
                                     contentType : false,
@@ -387,7 +387,63 @@
                                 $.ajax
                                 ({
                                     cache : false,
-                                    url: "{{ url('admin/newUserWithoutUnitManager') }}",
+                                    url: "{{ url('admin/newUserCreate') }}/{{3}}",
+                                    type: 'post',
+                                    //dataType: 'json',
+                                    contentType : false,
+                                    processData : false,
+                                    data: formData,
+                                    success: function (response)
+                                    {
+                                        swal
+                                        ({
+                                            title: "",
+                                            text: response,
+                                            type: "info",
+                                            confirmButtonText: "بستن"
+                                        });
+                                        setInterval(function(){ window.location.href= 'usersManagement'; }, 1000);
+                                    },error : function(error)
+                                    {
+                                        if (xhr.status === 422) {
+                                            var x = xhr.responseJSON;
+                                            var errorsHtml = '';
+                                            var count = 0;
+                                            $.each(x, function (key, value) {
+                                                errorsHtml += value[0] + '\n'; //showing only the first error.
+                                            });
+                                            console.log(count)
+                                            swal({
+                                                title: "",
+                                                text: errorsHtml,
+                                                type: "info",
+                                                confirmButtonText: "بستن"
+                                            });
+                                        }
+
+                                        else if (xhr.status === 500) {
+                                            swal({
+                                                title: "",
+                                                text: "متاسفانه اطلاعات شما ثبت نشد، با پشتیبانی تماس حاصل فرمائید",
+                                                type: "warning",
+                                                confirmButtonText: "بستن"
+                                            });
+
+                                        }
+                                    }
+                                });
+                            }else if(isConfirm && response== 'آیا از ثبت این کاربر به عنوان مدیر واحد انتخاب شده اطمینان دارید؟')
+                            {
+                                var formData = new FormData($('#user-send-form')[0]);
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                    }
+                                });
+                                $.ajax
+                                ({
+                                    cache : false,
+                                    url: "{{ url('admin/newUserCreate') }}/{{4}}",
                                     type: 'post',
                                     //dataType: 'json',
                                     contentType : false,

@@ -131,7 +131,7 @@
                                         @if($productRequest->active==1)
                                     <tr>
                                         <td class="col-md-1">{{$productRequest->id}}</td>
-                                        <td class="col-md-1"> واحد {{$productRequest->user->unit->title}}</td>
+                                        <td class="col-md-1">{{$productRequest->user->unit->title}}</td>
                                         <td class="col-md-1">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
                                         <td class="info col-md-1">{{$productRequest->accept_count}}</td>
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
