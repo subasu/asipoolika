@@ -64,7 +64,7 @@
                         <tr id="{{$requestRecord->id}}" value="0" class="tr" name="tr">
                             <input type="hidden" value="{{$requestRecord->id}}" class="record_id" name="record_id[]">
                             <td style="text-align: center">
-                                <input type="checkbox" id="record_ch" value="{{$requestRecord->id}}" class="record_ch" name="record">
+                               <input type="checkbox" id="record_ch" value="{{$requestRecord->id}}" class="record_ch" name="record">  {{--{{$requestRecord->id}}--}}
                             </td>
                             <td>{{$row}}</td>
                             <?php $row++; ?>
