@@ -31,4 +31,11 @@ class Unit extends Model
     {
         return $this->hasMany('App\Models\Signature','unit_id');
     }
+
+    //shiri : relation of request and unit
+    public function request()
+    {
+        return $this->hasMany('App\Models\Request2');
+    }
+
 }

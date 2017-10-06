@@ -3,6 +3,16 @@
     ویرایش کاربر
 @endsection
 @section('content')
+    <style>
+        span {
+            color: #ff0000;
+            float: right;
+        }
+
+        input, label {
+            font-size: 15px;
+        }
+    </style>
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -116,19 +126,19 @@
                                     @endif
                                 </div>
 
-                                <div class="item form-group">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <select class="form-control col-md-7 col-xs-12" name="unit_id" id="unit_id">
-                                            <option value="{{$val->unit_id}}">{{$val->unit->title}}</option>
-                                            @foreach($units as $unit)
-                                                <option class="align-right"
-                                                        value="{{$unit->id}}">{{$unit->title}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="unit_id"> واحد
-                                        <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
-                                </div>
+                                {{--<div class="item form-group">--}}
+                                    {{--<div class="col-md-6 col-sm-6 col-xs-12">--}}
+                                        {{--<select class="form-control col-md-7 col-xs-12" name="unit_id" id="unit_id">--}}
+                                            {{--<option value="{{$val->unit_id}}">{{$val->unit->title}}</option>--}}
+                                            {{--@foreach($units as $unit)--}}
+                                                {{--<option class="align-right"--}}
+                                                        {{--value="{{$unit->id}}">{{$unit->title}}</option>--}}
+                                            {{--@endforeach--}}
+                                        {{--</select>--}}
+                                    {{--</div>--}}
+                                    {{--<label class="control-label col-md-3 col-sm-3 col-xs-12" for="unit_id"> واحد--}}
+                                        {{--<span class="required" title="پر کردن این فیلد الزامی است">*</span></label>--}}
+                                {{--</div>--}}
 
                                 {{--<div class="item form-group">--}}
                                     {{--<div class="col-md-6 col-sm-6 col-xs-12">--}}

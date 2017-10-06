@@ -5,11 +5,33 @@
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
     <script>
         $(document).on('click','#print',function () {
-            window.print();
+
+            var body = $('#body')[0].innerHTML;
+            var token = $('#token').val();
+            var requestId = $('#requestId').val();
+            $.ajax
+            ({
+                url  : "{{url('admin/formSave')}}",
+                type : "post",
+                data : {'body':body ,'_token':token , 'requestId' : requestId},
+                success : function(response)
+                {
+                    alert(response);
+                    window.print();
+                },
+                error : function(error)
+                {
+                    console.log(error);
+                    alert('خطایی رخ داده است ، با بخش پشتیبانی تماس بگیرید');
+                }
+
+            });
         })
     </script>
 </head>
-<body>
+<body id="body">
+<input type="hidden" id="token" value="{{ csrf_token() }}">
+
 <div style="padding:1% 2.5%">
     <h4>نام واحد</h4>
     <h3 style="text-align: right;">فرم شماره 2</h3>
@@ -44,6 +66,7 @@
                 <td>{{$productRequestRecord->count}}</td>
                 <td>{{number_format($productRequestRecord->rate)}}</td>
                 <td>{{number_format($productRequestRecord->rate * $productRequestRecord->count)}}</td>
+                <input type="hidden" id="requestId" value="{{$productRequestRecord->request_id}}">
             </tr>
         @endforeach
     @endwhile
@@ -56,24 +79,15 @@
         <td colspan="2">مسئول انبار</td>
         <td>رئیس امور عمومی</td>
         <td>مدیر / رئیس</td>
-        <td colspan="3">تأمین اعتبار</td>
-    </tr>
-    <tr>
-        <td rowspan="2" colspan="2"></td>
-        <td rowspan="2" style="text-align: right;">
-            <input name="t" id="t" type="checkbox" value=""/>
-            <label for="t">تحویل مستقیم</label>
-            <br>
-            <input name="s" id="s" type="checkbox" value=""/>
-            <label for="s">سفارش</label>
-        </td>
-        <td rowspan="2"></td>
         <td colspan="2">مسئول اعتبار / کد ردیابی اعتبار</td>
         <td>مسئول امور مالی</td>
     </tr>
     <tr>
-        <td colspan="2">111</td>
-        <td></td>
+        <td rowspan="2" colspan="2"><img style="width: 100px; height: 100px;" src="{{$storageSupervisorSignature}}"></td>
+        <td rowspan="2" style="text-align: right;"><img style="width: 100px; height: 100px;" src="{{$originalJobSupervisorSignature}}"></td>
+        <td rowspan="2"><img style="width: 100px; height: 100px;" src="{{$bossSignature}}"></td>
+        <td rowspan="2" colspan="2"><img style="width: 100px; height: 100px;" src="{{$creditSupervisorSignature}}"></td>
+        <td rowspan="2"><img style="width: 100px; height: 100px;" src="{{$financeSupervisorSignature}}"></td>
     </tr>
     </tbody>
 </table>

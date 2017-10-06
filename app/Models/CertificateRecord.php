@@ -10,8 +10,14 @@ class CertificateRecord extends Model
     {
         return $this->belongsTo('App\Models\Certificate');
     }
-    public function RequestRecord()
+    public function requestRecord()
     {
-        return $this->belongsTo('App\Models\RequestRecord');
+        return $this->belongsTo('App\Models\RequestRecord','request_record_id');
+    }
+
+    //shiri : relation of user and certificate_records
+    public function user()
+    {
+        return $this->belongsTo('App\User','receiver_id');
     }
 }

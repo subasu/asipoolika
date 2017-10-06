@@ -116,17 +116,20 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('adminSendMessage','SupplyController@adminSendMessage');                        //96/7/5
         Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
 
-        Route::get('printProductRequest/{id}','SupplyController@printProductRequest');              //96/7/11
-        Route::post('newUserCreate','SupplyController@newUserCreate');                              //96/7/12
-        Route::post('newUserWithUnitManager','SupplyController@newUserWithUnitManager');            //96/7/12
-        Route::post('newUserWithoutUnitManager','SupplyController@newUserWithoutUnitManager');      //96/7/12
+
+        Route::get('printProductRequest/{id}','SupplyController@printProductRequest');                           //96/7/11
+        Route::post('newUserCreate/{id}','SupplyController@newUserCreate');                                      //96/7/12
+        Route::get('exportDeliveryInstallCertificate/{id}','SupplyController@exportDeliveryInstallCertificate'); //96/7/13
+
+        Route::post('formSave','SupplyController@formSave');                                                     //96/7/14
+
 
 
         //rayat - users manage:
         Route::get('usersManagement', 'SupplyController@usersManagementGet');
         Route::get('usersCreate', 'SupplyController@usersCreateGet');
         Route::post('checkUnitSupervisor', 'SupplyController@checkUnitSupervisor');
-        Route::post('statusUser', 'SupplyController@statusUser');
+        Route::post('changeUserStatus/{id}', 'SupplyController@changeUserStatus');
         Route::get('usersUpdate/{id}', 'SupplyController@usersUpdateShow');
         Route::post('usersUpdate', 'SupplyController@usersUpdate');
 
@@ -135,7 +138,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('unitsCreate', 'SupplyController@unitsCreateGet');
         Route::post('unitsCreate', 'SupplyController@unitsCreatePost');
         Route::get('units', 'SupplyController@unitsGet');
-        Route::post('statusUnit', 'SupplyController@statusUnit');
+        Route::post('changeUnitStatus/{id}', 'SupplyController@changeUnitStatus');
         Route::get('unitsUpdate/{id}', 'SupplyController@unitsUpdateShow');
         Route::post('unitsUpdate', 'SupplyController@unitsUpdate');
         Route::post('usersSupervisor', 'SupplyController@usersSupervisor');
