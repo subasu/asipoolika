@@ -112,24 +112,21 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/productRequestManagement')}}"> درخواست های جدید</a></li>
                                     @if($user->is_supervisor==1)
-                                    <li><a href="{{url('/admin/acceptProductRequestManagement')}}">بررسی شده</a>
-                                    {{--<li><a href="{{url('/admin/')}}">تایید شده</a>--}}
+                                    <li><a href="{{url('/admin/acceptProductRequestManagement')}}">بررسی شده</a><li>
 {{--                                    <li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
-                                    {{--<li><a href="{{url('/admin/')}}"> در حال پیگیری</a></li>--}}
-                                    <li><a href="{{url('/admin/confirmProductRequestManagement')}}">تایید شده</a>
+                                    <li><a href="{{url('/admin/confirmProductRequestManagement')}}">تایید شده</a><li>
                                     @endif
-                                    </li>
                                 </ul>
                             </li>
                             <li><a><i class="fa fa-edit"></i> مدیریت درخواست خدمت<span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/serviceRequestManagement')}}"> درخواست های جدید</a></li>
-                                    <li><a href="{{url('/admin/')}}"> تاییده شده ها</a>
-                                    <li><a href="{{url('/admin/')}}"> رد شده ها</a></li>
-                                    <li><a href="{{url('/admin/')}}"> در حال پیگیری</a></li>
-                                    <li><a href="{{url('/admin/')}}">انجام شده</a>
-                                    </li>
+                                    @if($user->is_supervisor==1)
+                                        <li><a href="{{url('/admin/acceptServiceRequestManagement')}}">بررسی شده</a><li>
+                                        {{--<li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
+                                        <li><a href="{{url('/admin/confirmServiceRequestManagement')}}">تایید شده</a><li>
+                                    @endif
                                 </ul>
                             </li>
                             {{-- Rayat Start --}}
@@ -190,7 +187,7 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/productRequest')}}">ارسال درخواست کالا</a>
                                     </li>
-                                    <li><a href="#">پیگیری درخواست کالا</a>
+                                    <li><a href="{{url('user/productRequestFollow')}}">پیگیری درخواست کالا</a>
                                     </li>
                                 </ul>
                             </li>
@@ -198,11 +195,18 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/serviceRequest')}}">ارسال درخواست خدمت</a>
                                     </li>
-                                    <li><a href="{{url('serviceCheck')}}">پیگیری درخواست خدمت</a>
+                                    <li><a href="{{url('user/serviceRequestFollow')}}">پیگیری درخواست خدمت</a>
                                     </li>
                                 </ul>
                             </li>
-                            <li><a href="{{url('admin/certificatesManagement')}}"><i class="fa fa-newspaper-o"></i> تایید گواهی<span></span></a>
+
+                            <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="{{url('admin/certificatesManagement')}}"> تایید گواهی<span></span></a>
+                                    </li>
+                                    <li><a href="{{url('admin/acceptedCertificatesManagement')}}"> وضعیت گواهی های تایید شده</a>
+                                    </li>
+                                </ul>
                             </li>
                             <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
