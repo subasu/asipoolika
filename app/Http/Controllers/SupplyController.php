@@ -43,12 +43,6 @@ class SupplyController extends Controller
     /*shiri
         below function is related to  show all request records and those details...
       */
-    public function serviceRequestRecords($id)
-    {
-        $pageTitle = 'جزئیات درخواست شماره : '.$id;
-        $records = RequestRecord::where([['request_id',$id],['step',1],['active',0],['refuse_user_id',null]])->get();
-        return view ('admin.serviceRequestRecords',compact('pageTitle','records'));
-    }
 
     /* shiri
         below function is related to accept the requested service
@@ -673,43 +667,44 @@ class SupplyController extends Controller
         switch(trim($me->unit->title))
         {
             case 'تدارکات':
-//                if($me->is_supervisor==1)
-//                {
                 $step=1;
                 $step2=2;
-//                }
-                //the user is Karpardaz
-//                else
-//                {
-//                    $step=7;
-//                    $step2=8;
-//                }
                 break;
-            case 'انبار':
+            case 'اعتبار':
                 $step=2;
                 $step2=3;
                 break;
-            case 'اعتبار':
+            case 'امور عمومی':
                 $step=3;
                 $step2=4;
                 break;
-            case 'امور عمومی':
+            case 'ریاست':
                 $step=4;
                 $step2=5;
-                break;
-            case 'ریاست':
-                $step=5;
-                $step2=6;
                 break;
             case 'امور مالی':
                 $step=6;
                 $step2=7;
                 break;
-            default: $step=1;$step2=1;
+            default:$step=1;$step2=1;
         }
         $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
         $serviceRequests=Request2::where('request_type_id',2)->whereIn('id',$requestRecords)->get();
+        //درخواست های من بعنوان مسئول واحد
+        $service_request_id=Request2::where([['unit_id',$me->unit_id],['request_type_id',2]])->pluck('id');
+        $requestRecords2=RequestRecord::where('step',5)->whereIn('request_id',$service_request_id)->pluck('request_id');
+        $serviceRequests2=Request2::whereIn('id',$requestRecords2)->get();
+        foreach($serviceRequests2 as $serviceRequest)
+        {
+            //undecided records
+            $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',5]])->count();
+            //in the process records
+            $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',6],['active',1]])->count();
+            //inactive records
+            $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+        }
 
+        $serviceRequests=$serviceRequests->merge($serviceRequests2);
         foreach($serviceRequests as $serviceRequest)
         {
             //undecided records
@@ -719,9 +714,41 @@ class SupplyController extends Controller
             //inactive records
             $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
         }
-
+//        dd($serviceRequests);
         return view('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
-//        return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
+    }
+
+    public function serviceRequestRecords($id)
+    {
+        $pageTitle='رکوردهای درخواست شماره '.$id;
+        $me=Auth::user();
+        $user=Auth::user();
+        switch(trim($me->unit->title))
+        {
+            case 'تدارکات':
+                $step=1;
+                break;
+            case 'اعتبار':
+                $step=2;
+                break;
+            case 'امور عمومی':
+                $step=3;
+                break;
+            case 'ریاست':
+                $step=4;
+                break;
+            case 'امور مالی':
+                $step=6;
+                break;
+            default: $step=1;
+        }
+        $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',$step]])->get();
+        //به عنوان مسئول واحد
+        $request_id=Request2::where([['unit_id',$user->unit_id],['id',$id]])->pluck('id');
+        $requestRecords2=RequestRecord::whereIn('request_id',$request_id)->where('step',5)->get();
+        $requestRecords=$requestRecords->merge($requestRecords2);
+
+        return view ('admin.productRequestRecords',compact('pageTitle','requestRecords','user'));
     }
 
     public function acceptServiceRequestManagementGet()
@@ -744,21 +771,17 @@ class SupplyController extends Controller
                     $step2=7;
                 }
                 break;
-            case 'انبار':
+            case 'اعتبار':
                 $step=3;
                 $step2=2;
                 break;
-            case 'اعتبار':
+            case 'امور عمومی':
                 $step=4;
                 $step2=3;
                 break;
-            case 'امور عمومی':
+            case 'ریاست':
                 $step=5;
                 $step2=4;
-                break;
-            case 'ریاست':
-                $step=6;
-                $step2=5;
                 break;
             case 'امور مالی':
                 $step=7;
@@ -768,6 +791,24 @@ class SupplyController extends Controller
         }
         $requestRecords=RequestRecord::where([['step','>=',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
         $serviceRequests=Request2::where('request_type_id',2)->whereIn('id',$requestRecords)->get();
+//به عنوان مسئول واحد
+        $service_request_id=Request2::where([['unit_id',$user->unit_id],['request_type_id',2]])->pluck('id');
+        $requestRecords2=RequestRecord::where([['step','>=',6]],['active',1],['refuse_user_id',null])->whereIn('request_id',$service_request_id)->pluck('request_id');
+        $serviceRequests2=Request2::whereIn('id',$requestRecords2)->get();
+//        dd();
+        foreach($serviceRequests2 as $serviceRequest)
+        {
+            //undecided records
+            $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',6]])->count();
+            //in the process records
+            $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',5],['active',1]])->count();
+            //inactive records
+            $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+        }
+
+        $serviceRequests=$serviceRequests->merge($serviceRequests2);
+
+
         foreach($serviceRequests as $productRequest)
         {
             //undecided records
