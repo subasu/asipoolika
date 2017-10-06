@@ -1,6 +1,6 @@
 @extends('layouts.adminLayout')
 @section('content')
-    <input type="hidden" value="{{$user_id=\Illuminate\Support\Facades\Auth::user()->id}}">
+    {{--<input type="hidden" value="{{$user_id=\Illuminate\Support\Facades\Auth::user()->id}}">--}}
     <div class="clearfix"></div>
 
     <div class="row">
@@ -64,13 +64,14 @@
                                             <a  content="{{$signature->id}}" name="تبدیل به اجباری" id="change"  class="btn btn-round btn-success" data-toggle="tooltip" title="تبدیل به اجباری">
                                                 <span class="glyphicon glyphicon-refresh"></span>
                                             </a>
-                                            <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+
 
                                         @endif
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
+                            <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                         </table>
                     </div>
                 </div>
@@ -86,22 +87,22 @@
                var status      = $(this).attr('name');
                var td          = $(this);
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                    }
-                });
+
 
                if(status == 'تبدیل به اجباری')
                {
-
+                   $.ajaxSetup({
+                       headers: {
+                           'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                       }
+                   });
 
                    $.ajax
                    ({
 
                        url     : "{{Url('systemManager/makeSignatureForced')}}",
                        type    : "post",
-                       data    : {'signatureId':signatureId , '_token' : token},
+                       data    : {'signatureId':signatureId ,'_token':token},
                        context : {'parent':parent,'td':td},
                        success : function (response) {
                            $(parent).prev().empty();
@@ -134,13 +135,18 @@
                }
                if(status == 'تبدیل به اختیاری')
                {
+                   $.ajaxSetup({
+                       headers: {
+                           'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                       }
+                   });
 
                    $.ajax
                    ({
 
                        url     : "{{Url('systemManager/makeSignatureUnforced')}}",
                        type    : "post",
-                       data    : {'signatureId':signatureId , '_token' : token},
+                       data    : {'signatureId':signatureId ,'_token':token},
                        context : {'parent':parent,'td':td},
                        success : function (response) {
 //                           $(td).title = "تبدیل به اجباری";

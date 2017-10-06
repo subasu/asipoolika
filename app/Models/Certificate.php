@@ -30,7 +30,9 @@ class Certificate extends Model
         return $this->belongsTo('App\Models\Request2');
     }
 
-
-
-
+    //shiri : relation of user and certificate
+    public function user()
+    {
+        return $this->belongsTo('App\User','user_id');
+    }
 }

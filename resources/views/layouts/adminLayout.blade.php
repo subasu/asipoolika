@@ -100,7 +100,7 @@
                             <li><a><i class="fa fa-pencil-square-o"></i> مدیریت امضاء ها<span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('systemManager/signatures')}}"> لیست امضاء ها</a>
+                                    <li><a href="{{url('systemManager/signaturesList')}}"> لیست امضاء ها</a>
                                     </li>
                                     <li><a href="{{url('systemManager/add_signature')}}">درج امضاء جدید </a>
                                     </li>

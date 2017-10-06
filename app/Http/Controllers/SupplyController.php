@@ -257,7 +257,8 @@ class SupplyController extends Controller
                         'description'       =>trim($request->description),
                         'unit_id'           =>$request->unitId,
                         'is_supervisor'     => 1,
-                        'supervisor_id'     =>$supervisorId
+                        'supervisor_id'     =>$supervisorId,
+                        'created_at'        =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
 
                     ]);
                     if($userId)
@@ -294,7 +295,8 @@ class SupplyController extends Controller
                     'internal_phone'    =>trim($request->internal_phone),
                     'description'       =>trim($request->description),
                     'unit_id'           =>$request->unitId,
-                    'supervisor_id'     =>$supervisorId
+                    'supervisor_id'     =>$supervisorId,
+                    'created_at'        =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
                 ]);
                 if($userId)
                 {
@@ -315,7 +317,8 @@ class SupplyController extends Controller
                     'internal_phone'    =>trim($request->internal_phone),
                     'description'       =>trim($request->description),
                     'unit_id'           =>$request->unitId,
-                    'supervisor_id'     =>$supervisorId
+                    'supervisor_id'     =>$supervisorId,
+                    'created_at'        =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
 
                 ]);
                 if($userId)
@@ -338,7 +341,8 @@ class SupplyController extends Controller
                     'description'       =>trim($request->description),
                     'unit_id'           =>$request->unitId,
                     'is_supervisor'     =>1,
-                    'supervisor_id'     =>$supervisorId
+                    'supervisor_id'     =>$supervisorId,
+                    'created_at'        =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
 
                 ]);
                 if($userId)
@@ -359,16 +363,6 @@ class SupplyController extends Controller
 
     }
 
-    //
-    public function newUserWithUnitManager(UserCreateValidation $request)
-    {
-
-    }
-    //
-    public function newUserWithoutUnitManager(UserCreateValidation $request)
-    {
-
-    }
 
     //rayat//show user create form
     public function unitsCreateGet()
@@ -1157,19 +1151,31 @@ class SupplyController extends Controller
     //shiri : below function is related to export delivery and install certificate
     public function exportDeliveryInstallCertificate($id)
     {
+        $certificates = Certificate::where('id',$id)->get();
+        $shopComp  = '';
+        $requestId = 0;
+        foreach ($certificates as $certificate)
+        {
+            $shopComp  .= $certificate->shop_comp;
+            $requestId += $certificate->request_id;
+        }
         $pageTitle = 'صدور گواهی تحویل و نصب';
-        $certificateId        = Certificate::where('request_id',$id)->pluck('id');
-        $unitId               = Request2::where('id',$id)->value('unit_id');
+        //$certificateId        = Certificate::where('request_id',$id)->pluck('id');
+        $unitId               = Request2::where('id',$requestId)->value('unit_id');
         $unitSupervisorName   = User::where([['unit_id',$unitId],['is_supervisor',1],['supervisor_id' , '!=', null ]])->value('name');
         $unitSupervisorFamily = User::where([['unit_id',$unitId],['is_supervisor',1],['supervisor_id' , '!=', null ]])->value('family');
-        $certificateRecords = CertificateRecord::whereIn('certificate_id',$certificateId)->get();
-
+        $certificateRecords = CertificateRecord::where('certificate_id',$id)->get();
+        $unitName = Unit::where('id',$unitId)->value('title');
         $sum = 0;
+        $receiverName   = '';
+        $receiverFamily = '';
         foreach ($certificateRecords as $certificateRecord)
         {
             $sum += $certificateRecord->count * $certificateRecord->rate;
+            $receiverName   .= $certificateRecord->user->name;
+            $receiverFamily .= $certificateRecord->user->family;
         }
-        return view('admin.certificate.exportDeliveryInstallCertificate',compact('pageTitle','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily'));
+        return view('admin.certificate.exportDeliveryInstallCertificate',compact('pageTitle','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily'));
 
 
     }
@@ -1315,6 +1321,14 @@ class SupplyController extends Controller
         else
             return response('خطایی رخ داده با پشتیبانی تماس بگیرید');
 
+    }
+
+    //shiri : below function is related to show certificates
+    public function showCertificates($id)
+    {
+        $pageTitle    = 'لیست گواهی ها';
+        $certificates = Certificate::where('request_id',$id)->get();
+        return view('admin.certificate.showCertificates',compact('certificates','pageTitle'));
     }
 
 }

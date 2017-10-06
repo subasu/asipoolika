@@ -54,11 +54,11 @@
     <h4 dir="rtl" style="text-align: justify;">بدینوسیله گواهی می شود خدمات انجام شده به شرح زیر توسط
         شرکت/
         فروشگاه
-        .........................
+        {{$shopComp}}
         جهت واحد
-        .........................
+        {{$unitName}}
         به آقای/خانم
-        .........................
+        {{$receiverName .chr(10). $receiverFamily}}
         تحویل گردید و پرداخت شده است.</h4>
     <br>
     <table class="formTable col-md-12 width100 border-right" dir="rtl">
