@@ -6,6 +6,7 @@ use App\Http\Requests\AcceptServiceRequestValidation;
 use App\Http\Requests\UserCreateValidation;
 use App\Models\Certificate;
 use App\Models\CertificateRecord;
+use App\Models\Form;
 use App\Models\Message;
 use App\Models\Request2;
 use App\Models\RequestRecord;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use phpDocumentor\Reflection\Types\Null_;
+use function Sodium\increment;
 
 
 class SupplyController extends Controller
@@ -1171,6 +1173,33 @@ class SupplyController extends Controller
 
 
     }
+
+
+    //shiri : below function is related to save forms
+    public function formSave(Request $request)
+    {
+        $userId = Auth::user()->id;
+        $formId = DB::table('forms')->insertGetId
+        ([
+                'request_id'   => $request->requestId,
+                'content'      => $request->body,
+
+        ]);
+        if($formId)
+        {
+            $count = Form::where('id',$formId)->increment('print_count');
+            $formPrintId = DB::table('print_form')->insertGetId
+            ([
+                'form_id'    => $formId,
+                'printed_by' => $userId,
+            ]);
+            if($count && $formPrintId)
+            {
+                return response('اطلاعات فرم شما ذخیره گردید');
+            }
+
+        }
+
     public function confirmServiceRequestManagementGet()
     {
         $pageTitle="مدیریت درخواست ها";
@@ -1287,6 +1316,7 @@ class SupplyController extends Controller
         }
         else
             return response('خطایی رخ داده با پشتیبانی تماس بگیرید');
+
     }
 
 }

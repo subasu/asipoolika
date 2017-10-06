@@ -118,10 +118,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 
         Route::get('printProductRequest/{id}','SupplyController@printProductRequest');                           //96/7/11
-        Route::post('newUserCreate/{id}','SupplyController@newUserCreate');                                           //96/7/12
-        Route::post('newUserWithUnitManager','SupplyController@newUserWithUnitManager');                         //96/7/12
-        Route::post('newUserWithoutUnitManager','SupplyController@newUserWithoutUnitManager');                   //96/7/12
+        Route::post('newUserCreate/{id}','SupplyController@newUserCreate');                                      //96/7/12
         Route::get('exportDeliveryInstallCertificate/{id}','SupplyController@exportDeliveryInstallCertificate'); //96/7/13
+
+        Route::post('formSave','SupplyController@formSave');                                                     //96/7/14
 
 
 
