@@ -5,11 +5,32 @@
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
     <script>
         $(document).on('click','#print',function () {
-            window.print();
+
+            var body = $('#body')[0].innerHTML;
+            var token = $('#token').val();
+            var requestId = $('#requestId').val();
+            $.ajax
+            ({
+               url  : "{{url('admin/formSave')}}",
+               type : "post",
+               data : {'body':body ,'_token':token,'requestId':requestId},
+               success : function(response)
+               {
+                   alert(response);
+                   window.print();
+               },
+                error : function(error)
+                {
+                    console.log(error);
+                    alert('خطایی رخ داده است ، با بخش پشتیبانی تماس بگیرید');
+                }
+
+            });
         })
     </script>
 </head>
-<body>
+<body id="body">
+<input type="hidden" id="token" value="{{ csrf_token() }}">
 <div style="padding:1% 2.5%">
     <h3 class="text-center">
         دانشگاه علوم پزشکی و خدمات بهداشتی و درمانی استان اصفهان
@@ -54,6 +75,7 @@
             <td class="col-md-4" colspan="2">{{$certificateRecord->description}}</td>
             <td class="col-md-2">{{$certificateRecord->count}}</td>
             <td class="col-md-3">{{number_format($certificateRecord->price)}}</td>
+            <input type="hidden" id="requestId" value="{{$certificateRecord->certificate->request_id}}">
         </tr>
         @endforeach
         <tr>
