@@ -6,6 +6,8 @@ use App\Http\Requests\SendTicketValidation;
 use App\Http\Requests\ServiceRequestValidation;
 use App\Models\Conversation;
 use App\Models\Message;
+use App\Models\Request2;
+use App\Models\RequestRecord;
 use App\Models\RequestType;
 use App\Models\Ticket;
 use App\Models\Unit;
@@ -30,7 +32,7 @@ class RequestController extends Controller
         $pageTitle='درخواست کالا';
         return view('user.productRequest',compact('pageTitle','unit_counts'));
     }
-    //Kianfar :  add new request
+
     public function productRequestPost(Request $request)
     {
         if (!$request->ajax())
@@ -68,6 +70,22 @@ class RequestController extends Controller
         else
             return response()->json('is zero');
 
+    }
+    public function productRequestFollowGet()
+    {
+        $pageTitle='مدیریت درخواست های من';
+        $pageName='myProductRequests';
+        $requests=Request2::where([['user_id',Auth::user()->id],['request_type_id',3]])->get();
+        foreach($requests as $request)
+        {
+            //undecided records
+            $request->request_record_count=RequestRecord::where([['request_id',$request->id],['refuse_user_id',null],['step',1]])->count();
+            //in the process records
+            $request->request_record_count_accept=RequestRecord::where([['request_id',$request->id],['refuse_user_id',null],['step','>',1],['active',1]])->count();
+            //inactive records
+            $request->request_record_count_refused=RequestRecord::where([['request_id',$request->id],['refuse_user_id','!=',null]])->count();
+        }
+        return view('user.requestManagement',compact('pageTitle','pageName','requests'));
     }
     /*  shiri
       below function is related to register service request
@@ -113,6 +131,51 @@ class RequestController extends Controller
         }
         else
             return response()->json('is zero');
+    }
+    public function serviceRequestFollowGet()
+    {
+        $pageTitle='مدیریت درخواست های من';
+        $pageName='myServiceRequests';
+        $requests=Request2::where([['user_id',Auth::user()->id],['request_type_id',2]])->get();
+        foreach($requests as $request)
+        {
+            //undecided records
+            $request->request_record_count=RequestRecord::where([['request_id',$request->id],['refuse_user_id',null],['step',1]])->count();
+            //in the process records
+            $request->request_record_count_accept=RequestRecord::where([['request_id',$request->id],['refuse_user_id',null],['step','>',1],['active',1]])->count();
+            //inactive records
+            $request->request_record_count_refused=RequestRecord::where([['request_id',$request->id],['refuse_user_id','!=',null]])->count();
+        }
+        return view('user.requestManagement',compact('pageTitle','pageName','requests'));
+    }
+    public function myRequestRecordsGet($id)
+    {
+        $pageTitle='رکوردهای درخواست شماره : '.$id;
+        $pageName='';
+        $requestRecords=RequestRecord::where('request_id',$id)->get();
+        foreach($requestRecords as $requestRecord)
+        {
+            switch($requestRecord->step)
+            {
+                case 1: $step='تدارکات'; break;
+                case 2: $step='مسئول انبار'; break;
+                case 3: $step='مسئول اعتبار'; break;
+                case 4: $step='امور عمومی'; break;
+                case 5: $step='ریاست'; break;
+                case 6: $step='امورمالی'; break;
+                case 7: $step='تایید شده'; break;
+                case 8: $step='در حال صدور گواهی'; break;
+                default : $step='نامشخص';
+            }
+            $requestRecord->status=$step;
+        }
+//        dd($requestRecords[0]->request->user_id);
+        if($requestRecords[0]->request->user_id==Auth::user()->id)
+        {
+            return view('user.requestRecords',compact('pageTitle','requestRecords'));
+        }
+        else
+            return back();
     }
     /* shiri
        below function is related to ticket request

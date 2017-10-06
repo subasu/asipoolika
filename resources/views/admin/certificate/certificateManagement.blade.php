@@ -32,8 +32,8 @@
                     <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت گواهی های تازه ثبت شده</h2>
                 @elseif($pageName=='refusedProductRequestManagement')
                     <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های کالای رد شده</h2>
-                @elseif($pageName=='acceptProductRequestManagement')
-                    <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های کالا در حال پیگیری</h2>
+                @elseif($pageName=='acceptedCertificateManagement')
+                    <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های خدمت در حال پیگیری</h2>
                 @elseif($pageName=='confirmProductRequest')
                     <h2  style="color:#cc0099;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های تایید شده</h2>
                 @endif
@@ -63,8 +63,11 @@
                                 <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                 {{--<th class="col-md-2" style="text-align: center ;">رد شده</th>--}}
                                 <th class="col-md-1" style="text-align: center ;">عملیات</th>
-                            @elseif($pageName=='refusedProductRequestManagement')
-                                <th class="col-md-1" style="text-align: center ;">رکوردهای رد شده</th>
+                            @elseif($pageName=='acceptedCertificateManagement')
+                                <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
+                                <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
+                                {{--<th class="col-md-2" style="text-align: center ;">رد شده</th>--}}
+                                <th class="col-md-1" style="text-align: center ;">وضعیت</th>
                                 {{--<th style="text-align: center ;">عملیات</th>--}}
                             @elseif($pageName=='acceptProductRequestManagement')
                                 <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
@@ -89,44 +92,28 @@
                     @if($pageName=='certificateManagement')
                         @foreach($certificates as $certificate)
                             <tr>
-                                {{--@if($productRequest->request_record_count>0)--}}
                                     <td class="col-md-1">{{$certificate->id}}</td>
                                     <td class="col-md-2"> واحد {{$certificate->request->user->unit->title}}</td>
                                     <td class="col-md-2">{{$certificate->request->user->name .chr(10). $certificate->request->user->family}}</td>
                                     <td class="col-md-2">{{$certificate->request_id}}</td>
-                                    <td class="info col-md-2">{{$certificate->certificate_undecided_count}}</td>
-                                    <td class="success col-md-2">{{$certificate->certificate_accepted_count}}</td>
-                                    {{--<td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>--}}
+                                    <td class="info col-md-2">{{$certificate->certificate_record_count}}</td>
+                                    <td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>
                                     <td><a class="btn btn-info" href="{{url('admin/certificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
-                                {{--@endif--}}
                             </tr>
                         @endforeach
-                    @elseif($pageName=='refusedProductRequestManagement')
-                        @foreach($productRequests as $productRequest)
-                            {{--                                        @if($productRequest->request_refuse_count>0)--}}
-                            <tr>
-                                <td class="col-md-1">{{$productRequest->id}}</td>
-                                <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
-                                <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
-                                <td class="col-md-2 danger">{{$productRequest->refuse_record_count}}</td>
-                                {{--<td>بررسی مجدد</td>--}}
-                            </tr>
-                            {{--@endif--}}
-                        @endforeach
-                    @elseif($pageName=='acceptProductRequestManagement')
-                        @foreach($productRequests as $productRequest)
-                            @if($productRequest->request_record_count_accept>0)
+                    @elseif($pageName=='acceptedCertificateManagement')
+                        @foreach($certificates as $certificate)
+{{--                            @if($productRequest->request_record_count_accept>0)--}}
                                 <tr>
-                                    <td class="col-md-1">{{$productRequest->id}}</td>
-                                    <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
-                                    <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
-                                    <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
-                                    <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
-                                    <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                    <td class="col-md-2">@if($productRequest->active==1) Finish @else In Proccess @endif</td>
-                                    {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
+                                    <td class="col-md-1">{{$certificate->id}}</td>
+                                    <td class="col-md-2"> واحد {{$certificate->request->user->unit->title}}</td>
+                                    <td class="col-md-2">{{$certificate->request->user->name .chr(10). $certificate->request->user->family}}</td>
+                                    <td class="col-md-2">{{$certificate->request_id}}</td>
+                                    <td class="info col-md-2">{{$certificate->certificate_record_count}}</td>
+                                    <td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>
+                                    <td>@if($certificate->active==1) پایان یافته @else در حال رسیدگی @endif</td>
                                 </tr>
-                            @endif
+                            {{--@endif--}}
                         @endforeach
                     @elseif($pageName=='confirmProductRequest')
                         @foreach($productRequests as $productRequest)

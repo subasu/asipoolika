@@ -24,9 +24,17 @@ Route::group(['prefix'=>'user'],function() {
         'roles'=>['author','admin']
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
+    Route::get('/productRequestFollow','RequestController@productRequestFollowGet');
+
     //shiri
     Route::get('/serviceRequest','RequestController@serviceRequestGet');
     Route::post('serviceRequest','RequestController@serviceRequest');
+    Route::get('/serviceRequestFollow','RequestController@serviceRequestFollowGet');
+
+    Route::get('/myRequestRecords/{id}','RequestController@myRequestRecordsGet');
+
+
+
     Route::get('/ticketRequest','RequestController@ticketRequest');
     Route::get('/getUnits','RequestController@getUnits');
     Route::post('sendTicket','RequestController@sendTicket');
@@ -62,7 +70,7 @@ Route::group(['prefix'=>'systemManager'],function() {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix'=>'admin'],function() {
-        //Product Request Management
+        // Product Request Management
         Route::get('/productRequestManagement','SupplyController@productRequestManagement');
         Route::get('/productRequestRecords/{id}','SupplyController@productRequestRecords');
         Route::get('/acceptProductRequestManagement','SupplyController@acceptProductRequestManagementGet');
@@ -71,22 +79,30 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/refusedProductRequestManagement','SupplyController@refusedProductRequestManagementGet');
         Route::get('/confirmProductRequestManagement','SupplyController@confirmProductRequestManagementGet');
 
+        // Certificate
         Route::get('/impart/{id}','CertificateController@impartGet');
         Route::get('/impart','CertificateController@impart');
         Route::get('/certificate/{id}','CertificateController@execute_certificateGet');
         Route::post('/execute_certificate','CertificateController@execute_certificate');
         Route::get('/certificatesManagement','CertificateController@certificatesManagementGet');
+        Route::get('/acceptedCertificatesManagement','CertificateController@acceptedCertificatesManagementGet');
         Route::get('/certificateRecords/{id}','CertificateController@certificateRecordsGet');
         Route::post('/acceptCertificate','CertificateController@acceptCertificate');
-
-        //End Product Request Management
+        // End Product Request Management
+        // Service Request Management
         Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');
+        Route::get('/serviceRequestRecords/{id}','SupplyController@serviceRequestRecords');
+        Route::get('/acceptServiceRequestManagement','SupplyController@acceptServiceRequestManagementGet');
+        Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');
+        Route::get('/confirmServiceRequestManagement','SupplyController@confirmServiceRequestManagementGet');
+        //End Service Request Management
 
         //shiri
         Route::get('recentlyAddedService','SupplyController@recentlyAddedService');  //96/6/25
         Route::get('serviceRequestRecords/{id}','SupplyController@serviceRequestRecords'); //96/6/26
 
         Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');  //96/6/26
+
 
         Route::get('showToCreditManager','CertificateController@showToCreditManager');
         Route::get('workerCardCreate' ,'SupplyController@workerCardCreate');        //96/7/1
@@ -100,11 +116,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('adminSendMessage','SupplyController@adminSendMessage');                        //96/7/5
         Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
 
+
         Route::get('printProductRequest/{id}','SupplyController@printProductRequest');                           //96/7/11
         Route::post('newUserCreate/{id}','SupplyController@newUserCreate');                                      //96/7/12
         Route::get('exportDeliveryInstallCertificate/{id}','SupplyController@exportDeliveryInstallCertificate'); //96/7/13
+
         Route::post('formSave','SupplyController@formSave');                                                     //96/7/14
-        // Route::get('kiayanfar','RequestController@kiyanfar');
+
 
 
         //rayat - users manage:
