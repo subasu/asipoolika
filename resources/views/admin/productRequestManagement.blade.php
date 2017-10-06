@@ -131,7 +131,7 @@
                                         @if($productRequest->active==1)
                                     <tr>
                                         <td class="col-md-1">{{$productRequest->id}}</td>
-                                        <td class="col-md-1"> واحد {{$productRequest->user->unit->title}}</td>
+                                        <td class="col-md-1">{{$productRequest->user->unit->title}}</td>
                                         <td class="col-md-1">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
                                         <td class="info col-md-1">{{$productRequest->accept_count}}</td>
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
@@ -144,7 +144,7 @@
                                             @else
                                                 <span class="label label-success col-md-10" style="font-size:17px;padding:7px 0 7px 0;font-weight: lighter;margin-bottom: 5px;">ابلاغ شده</span>
                                             @endif
-                                            <a href="{{url('admin/impart/'.$productRequest->id)}}"  class="btn btn-warning col-md-10">چاپ گواهی</a>
+                                            <a href="{{url('admin/exportDeliveryInstallCertificate/'.$productRequest->id)}}"  class="btn btn-warning col-md-10">چاپ گواهی</a>
                                             {{--<button type="button" class="btn btn-default" data-toggle="tooltip" title="چاپ گواهی">--}}
                                              {{--<span class="fa fa-print" style="font-size: 20px;"></span>--}}
                                             {{--</button>--}}

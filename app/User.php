@@ -60,7 +60,7 @@ class User extends Authenticatable
 
     public function unit()
     {
-        return $this->belongsTo('App\Models\Unit');
+        return $this->belongsTo('App\Models\Unit','unit_id');
     }
 
 
@@ -77,10 +77,15 @@ class User extends Authenticatable
     }
 
     //rayat:This function use for manage users page
-    public function User()
+    public function user()
     {
         return $this->belongsTo('App\User','supervisor_id');
     }
+
+//    public function user2()
+//    {
+//        return $this->belongsTo('App\User','unit_id');
+//    }
 
     //shiri: this function is related to relation of user and worker
     public function worker()
@@ -94,4 +99,5 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Ticket');
     }
 
+    //shiri : relation
 }

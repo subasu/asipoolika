@@ -18,10 +18,10 @@
                 <div class="alert alert-info col-md-12 col-sm-12 col-xs-12"
                      style="direction:rtl;font-size:17px;color:white;">
                 </div>
-                <button id="user-send" type="button" class="col-md-2 btn btn-danger" style="font-weight: bold;"><i
+                <a href="{{url('admin/unitsCreate')}}" id="user-send" type="button" class="col-md-2 btn btn-info" style="font-weight: bold;"><i
                             class="fa fa-user-plus"></i>
                     افزودن واحد جدید
-                </button>
+                </a>
                 <div class="x_content">
                     <table style="direction:rtl;text-align: center" id="example"
                            class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
@@ -45,8 +45,12 @@
                                 <td>{{$val->title}}</td>
                                 <td>{{$val->phone}} </td>
                                 <td>{{$val->description}}</td>
-                                <td class="statusUnit" id="{{$val->id}}">
-                                    <button class="btn btn-success">{{($val->active===0)?'غیرفعال':'فعال'}}</button>
+                                <td>
+                                    @if($val->active ===1)
+                                        <button value="{{$val->active}}" id="{{$val->id}}" class="btn btn-success">فعال</button>
+                                    @else
+                                        <button value="{{$val->active}}" id="{{$val->id}}" class="btn btn-danger">غیرفعال</button>
+                                    @endif
                                 </td>
                                 <td id="{{$val->id}}">
                                     <a class="btn btn-info"
@@ -61,32 +65,76 @@
             </div>
         </div>
     {{--edit unit's status by unit-id --}}
-    <script>
-        $(document).on('click', '.statusUnit', function () {
-            var uid = $(this).attr('id');
-            var token = $('#token').val();
-            $.ajax
-            ({
-                url: "{{Url('admin/statusUnit')}}",
-                type: 'post',
-                data: {'id': uid, '_token': token},
-                dataType: 'json',
-                success: function (response) {
-                    swal({
-                        title: "",
-                        text: response,
-                        type: "info",
-                        confirmButtonText: "بستن"
-                    });
-                }
+        <script>
+            $(document).on('click','.btn-success',function () {
+                var unitId = $(this).attr('id');
+                var status = $(this).val();
+                var token  = $('#token').val();
+                var button = $(this);
+                $.ajax
+                ({
+                    url     : "{{Url('admin/changeUnitStatus')}}/{{1}}",
+                    type    : 'post',
+                    data    : {'unitId':unitId,'_token':token},
+                    context :  button,
+                    //dataType:'json',
+                    success : function (response)
+                    {
+                        $(button).text('غیر فعال');
+                        $(button).toggleClass('btn-success btn-danger');
+                        swal({
+                            title: "",
+                            text: response,
+                            type: "info",
+                            confirmButtonText: "بستن"
+                        });
+                    },
+                    error : function(error)
+                    {
+                        console.log(error);
+                        swal({
+                            title: "",
+                            text: "خطایی رخ داده است ، تماس با بخش پشتیبانی",
+                            type: "warning",
+                            confirmButtonText: "بستن"
+                        });
+                    }
+                });
+            })
+        </script>
+        <script>
+            $(document).on('click','.btn-danger',function () {
+                var unitId = $(this).attr('id');
+                var status = $(this).val();
+                var token = $('#token').val();
+                var button = $(this);
+                $.ajax
+                ({
+                    url: "{{Url('admin/changeUnitStatus')}}/{{2}}",
+                    type: 'post',
+                    data: {'unitId': unitId, '_token': token},
+                    context: button,
+                    //dataType:'json',
+                    success: function (response) {
+                        $(button).text('فعال');
+                        $(button).toggleClass('btn-success btn-danger');
+                        swal({
+                            title: "",
+                            text: response,
+                            type: "info",
+                            confirmButtonText: "بستن"
+                        });
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        swal({
+                            title: "",
+                            text: "خطایی رخ داده است ، تماس با بخش پشتیبانی",
+                            type: "warning",
+                            confirmButtonText: "بستن"
+                        });
+                    }
+                });
             });
-            var title = $(this).children('.btn-success').text();
-            if (title == 'فعال') {
-                $(this).children('.btn-success').text('غیرفعال');
-            }
-            else {
-                $(this).children('.btn-success').text('فعال');
-            }
-        })
-    </script>
+        </script>
 @endsection

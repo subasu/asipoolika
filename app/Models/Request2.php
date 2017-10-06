@@ -39,4 +39,17 @@ class Request2 extends Model
     {
         return $this->hasMany('App\Models\RequestRecord','request_id');
     }
+
+    //shiri : relation of request and unit
+    public function unit()
+    {
+        return $this->belongsTo('App\Models\Unit','unit_id');
+    }
+
+    //shiri : relatiaon of supplier
+    public function supplier()
+    {
+        return $this->belongsTo('App\User','supplier_id');
+    }
+
 }
