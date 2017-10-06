@@ -1181,25 +1181,23 @@ class SupplyController extends Controller
         $userId = Auth::user()->id;
         $formId = DB::table('forms')->insertGetId
         ([
-                'request_id'   => $request->requestId,
-                'content'      => $request->body,
+            'request_id' => $request->requestId,
+            'content' => $request->body,
 
         ]);
-        if($formId)
-        {
-            $count = Form::where('id',$formId)->increment('print_count');
+        if ($formId) {
+            $count = Form::where('id', $formId)->increment('print_count');
             $formPrintId = DB::table('print_form')->insertGetId
             ([
-                'form_id'    => $formId,
+                'form_id' => $formId,
                 'printed_by' => $userId,
             ]);
-            if($count && $formPrintId)
-            {
+            if ($count && $formPrintId) {
                 return response('اطلاعات فرم شما ذخیره گردید');
             }
 
         }
-
+    }
     public function confirmServiceRequestManagementGet()
     {
         $pageTitle="مدیریت درخواست ها";
