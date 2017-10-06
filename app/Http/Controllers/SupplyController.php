@@ -704,7 +704,7 @@ class SupplyController extends Controller
             $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
         }
 
-        $serviceRequests=$serviceRequests->merge($serviceRequests2);
+
         foreach($serviceRequests as $serviceRequest)
         {
             //undecided records
@@ -714,6 +714,7 @@ class SupplyController extends Controller
             //inactive records
             $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
         }
+        $serviceRequests=$serviceRequests->merge($serviceRequests2);
 //        dd($serviceRequests);
         return view('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
     }
@@ -743,12 +744,20 @@ class SupplyController extends Controller
             default: $step=1;
         }
         $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',$step]])->get();
+        foreach($requestRecords as $requestRecord)
+        {
+            $requestRecord->mine=0;
+        }
         //به عنوان مسئول واحد
         $request_id=Request2::where([['unit_id',$user->unit_id],['id',$id]])->pluck('id');
         $requestRecords2=RequestRecord::whereIn('request_id',$request_id)->where('step',5)->get();
+        foreach($requestRecords2 as $requestRecord)
+        {
+            $requestRecord->mine=1;
+        }
         $requestRecords=$requestRecords->merge($requestRecords2);
-
-        return view ('admin.productRequestRecords',compact('pageTitle','requestRecords','user'));
+//dd($requestRecords);
+        return view ('admin.serviceRequestRecords',compact('pageTitle','requestRecords','user'));
     }
 
     public function acceptServiceRequestManagementGet()
@@ -1091,4 +1100,78 @@ class SupplyController extends Controller
 //        dd($productRequests);
         return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
     }
+
+    public function acceptServiceRequest(Request $request)
+    {
+        if(!$request->ajax())
+        {
+            abort(403);
+        }
+        $id        = $request->id;
+        $rate      = $request->rate;
+        $price     = $request->price;
+        $requestId = $request->requestId;
+        $mine=$request->mine;
+        $user=Auth::user();
+        switch(trim($user->unit->title))
+        {
+            case 'تدارکات':
+                $step=2;
+                break;
+            case 'اعتبار':
+                $accept=0;
+                $step=3;
+                break;
+            case 'امور عمومی':
+                $accept=0;
+                $step=4;
+                break;
+            case 'ریاست':
+                $accept=0;
+                $step=5;
+                break;
+            case 'امور مالی':
+                $accept=1;
+                $step=7;
+                break;
+            default: $step=1;$accept=0;
+        }
+        //این درخواست ثبت شده توسط واحد منه
+        if($mine==1)
+        {
+            $step_record=RequestRecord::where('id',$id)->pluck('step');
+            if($step_record[0]==5)
+                $step=6;
+            else $step=$step_record[0]++;
+        }
+        //این درخواست توسط واحد من درج نشده است
+
+        if($user->unit->title=='تدارکات' and $user->is_supervisor==1)
+        {
+            $q=RequestRecord::where('id',$id)->update([
+                'rate'=>$rate,
+                'price'=>$price,
+                'step'=>$step,
+                'active'=>1,
+                'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+            ]);
+        }
+        else
+        {
+            $q=RequestRecord::where('id',$id)->update([
+                'step'=>$step,
+                'active'=>1,
+                'accept'=>$accept,
+                'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+            ]);
+        }
+
+        if($q)
+        {
+            return response('درخواست ثبت شد به مرحله بعد ارسال شد');
+        }
+        else
+            return response('خطایی رخ داده با پشتیبانی تماس بگیرید');
+    }
+
 }

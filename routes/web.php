@@ -93,6 +93,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');
         Route::get('/serviceRequestRecords/{id}','SupplyController@serviceRequestRecords');
         Route::get('/acceptServiceRequestManagement','SupplyController@acceptServiceRequestManagementGet');
+        Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');
         Route::get('/confirmServiceRequestManagement','SupplyController@confirmServiceRequestManagementGet');
         //End Service Request Management
 

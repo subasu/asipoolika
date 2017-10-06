@@ -66,7 +66,7 @@
                     <div class="form-group" id="return_button" style="display: none">
                         <div class="col-md-6 col-sm-9 col-xs-12 col-md-offset-4">
                             {{--<button type="submit" class="btn btn-primary col-md-6">Cancel</button>--}}
-                            <a href="{{url('admin/confirmServiceRequestManagement')}}" class="btn btn-danger col-md-7">بازگشت به درخواست های تایید شده</button>
+                            <a href="{{url('admin/confirmServiceRequestManagement')}}" class="btn btn-danger col-md-7">بازگشت به درخواست های تایید شده</a>
                         </div>
                     </div>
                 </div>
