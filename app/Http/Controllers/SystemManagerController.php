@@ -54,35 +54,39 @@ class SystemManagerController extends Controller
     //shiri : below function is to add new signature....
     public function addSignature(Request $request)
     {
-        if(!$request->ajax())
+        $checkSignatureExistence = Signature::where('user_id',$request->userId)->get();
+        if(count($checkSignatureExistence) == 0)
         {
-            abort(403);
-        }else
+            if(!$request->ajax())
+            {
+                abort(403);
+            }else
             {
                 $file = $request->file;
-
                 $file->move(public_path(), $request->file->getClientOriginalName());
-
                 $path = public_path() . '\\' . $request->file->getClientOriginalName();
-                //dd($path);
                 $file = file_get_contents($path);
-
                 File::delete($path);
-
                 $fileName = base64_encode($file);
 
                 $query = DB::table('signatures')->insert
                 ([
-                     'forced'     => $request->forced,
-                     'signature' => $fileName,
-                     'user_id'   => $request->userId,
-                     'unit_id'   => $request->unitId,
+                    'forced'     => $request->forced,
+                    'signature'  => $fileName,
+                    'user_id'    => $request->userId,
+                    'unit_id'    => $request->unitId,
+                    'created_at'  =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
                 ]);
                 if($query)
                 {
                     return response('اطلاعات  با موفقیت ثبت گردید');
                 }
             }
+        }else
+            {
+                return response('امضای مدیر این واحد قبلا ثبت شده است');
+            }
+
     }
 
     //shiri : below function is related to show signature in it's own page
@@ -103,8 +107,8 @@ class SystemManagerController extends Controller
 
         $query = Signature::where('id',$request->signatureId)->update
         ([
-            'forced' => 1,
-            'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+            'forced'      => 1,
+            'updated_at'  => Carbon::now(new \DateTimeZone('Asia/Tehran'))
         ]);
         if($query)
         {
@@ -117,10 +121,18 @@ class SystemManagerController extends Controller
     {
         $query = Signature::where('id',$request->signatureId)->update
         ([
-            'forced' => 0,
-            'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+            'forced'     => 0,
+            'updated_at' => Carbon::now(new \DateTimeZone('Asia/Tehran'))
         ]);
 
     }
 
+    //
+    public function signaturesList()
+    {
+        $pageTitle = 'لیست امضاها';
+        $signatures = Signature::all();
+        //dd($signatures);
+        return view('system_manager.signature',compact('signatures','pageTitle'));
+    }
 }

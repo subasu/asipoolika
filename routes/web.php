@@ -66,6 +66,7 @@ Route::group(['prefix'=>'systemManager'],function() {
     Route::get('showSignature/{id}','SystemManagerController@showSignature');                //96/7/6
     Route::post('makeSignatureForced' , 'SystemManagerController@makeSignatureForced');      //96/7/6
     route::post('makeSignatureUnforced' , 'SystemManagerController@makeSignatureUnforced');  //96/7/6
+    Route::get('signaturesList','SystemManagerController@signaturesList');                             //96/7/14
 });
 
 Route::group(['middleware' => 'auth'], function () {
@@ -123,6 +124,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('formSave','SupplyController@formSave');                                                     //96/7/14
 
+        Route::get('showCertificates/{id}','SupplyController@showCertificates');                                //96/7/14
 
 
         //rayat - users manage:

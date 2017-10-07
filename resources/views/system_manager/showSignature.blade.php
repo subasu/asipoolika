@@ -1,7 +1,6 @@
-@extends('layouts.adminLayout')
-@section('content')
-    <div>
+
+    <div align="center" style="width: 500px; height: 500px; margin-left: 34%; margin-top: 16%;">
     @foreach($signatures as $signature)
-        <img src="{{$signature->signature}}" style="width: 100%; height: 600px;"/>
+        <img src="{{$signature->signature}}" style=" width: 250px; height: 250px;"/>
     @endforeach
-@endsection
+    </div>

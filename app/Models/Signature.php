@@ -20,11 +20,11 @@ class Signature extends Model
     }
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User','user_id');
     }
     //shiri : relation of signature and unit
     public function unit()
     {
-         return $this->belongsTo('App\Models\Unit');
+         return $this->belongsTo('App\Models\Unit','unit_id');
     }
 }
