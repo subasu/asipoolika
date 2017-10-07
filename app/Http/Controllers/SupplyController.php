@@ -1167,14 +1167,12 @@ class SupplyController extends Controller
         $certificateRecords = CertificateRecord::where('certificate_id',$id)->get();
         $unitName = Unit::where('id',$unitId)->value('title');
         $sum = 0;
-        $receiverName   = '';
-        $receiverFamily = '';
         foreach ($certificateRecords as $certificateRecord)
         {
             $sum += $certificateRecord->count * $certificateRecord->rate;
-            $receiverName   .= $certificateRecord->user->name;
-            $receiverFamily .= $certificateRecord->user->family;
         }
+//        $receiverName   = $certificateRecord->user->name;
+//        $receiverFamily = $certificateRecord->user->family;
         return view('admin.certificate.exportDeliveryInstallCertificate',compact('pageTitle','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily'));
 
 

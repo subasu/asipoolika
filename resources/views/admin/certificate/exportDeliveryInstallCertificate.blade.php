@@ -58,13 +58,13 @@
         جهت واحد
         {{$unitName}}
         به آقای/خانم
-        {{$receiverName .chr(10). $receiverFamily}}
-        تحویل گردید و پرداخت شده است.</h4>
+        {{--{{$receiverName .chr(10). $receiverFamily}}--}}
+        تحویل گردید و پرداخت شده است.</h4> 
     <br>
     <table class="formTable col-md-12 width100 border-right" dir="rtl">
         <thead>
         <tr class=" padding-formTable">
-            <th class="col-md-4" colspan="2">شرح</th>
+            <th class="col-md-4" colspan="2">عنوان</th>
             <th class="col-md-2">تعداد</th>
             <th class="col-md-3"> مبلغ کل (ریال)</th>
         </tr>
@@ -72,7 +72,7 @@
         <tbody>
         @foreach($certificateRecords as $certificateRecord)
         <tr>
-            <td class="col-md-4" colspan="2">{{$certificateRecord->description}}</td>
+            <td class="col-md-4" colspan="2">{{$certificateRecord->requestRecord->title}}</td>
             <td class="col-md-2">{{$certificateRecord->count}}</td>
             <td class="col-md-3">{{number_format($certificateRecord->price)}}</td>
             <input type="hidden" id="requestId" value="{{$certificateRecord->certificate->request_id}}">
