@@ -26,6 +26,7 @@ Route::group(['prefix'=>'user'],function() {
     Route::post('/productRequest','RequestController@productRequestPost');
     Route::get('/productRequestFollow','RequestController@productRequestFollowGet');
 
+
     //shiri
     Route::get('/serviceRequest','RequestController@serviceRequestGet');
     Route::post('serviceRequest','RequestController@serviceRequest');

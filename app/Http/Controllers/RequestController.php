@@ -347,7 +347,7 @@ class RequestController extends Controller
             }
     }
 
-    //shiri : below  function to end ticket by user
+
     public function userEndTicket(Request $request)
     {
         $end = Ticket::where('id',$request->ticketId)->update

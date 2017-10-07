@@ -59,7 +59,7 @@
         {{$unitName}}
         به آقای/خانم
         {{--{{$receiverName .chr(10). $receiverFamily}}--}}
-        تحویل گردید و پرداخت شده است.</h4> 
+        تحویل گردید و پرداخت شده است.</h4>
     <br>
     <table class="formTable col-md-12 width100 border-right" dir="rtl">
         <thead>
