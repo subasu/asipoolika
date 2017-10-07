@@ -1,7 +1,4 @@
-@extends('layouts.adminLayout');
-@section('title')
-    ویرایش کاربر
-@endsection
+@extends('layouts.adminLayout')
 @section('content')
     <style>
         span {
@@ -177,7 +174,7 @@
                 <div class="col-md-3 col-sm-3 col-xs-12"></div>
             </div>
         </div>
-    </div>
+
     {{--update user's information by ajax--}}
     <script>
         $("#user-send").click(function () {
