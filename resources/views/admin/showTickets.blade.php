@@ -28,7 +28,7 @@
                                name="date2" placeholder=" تا تاریخ" min="1" max="5">
                     </div>
 
-                    <button id="search" type="button" class="col-md-2 btn btn-success" href="{{url('user/ticketRequest')}}" style="margin-left: 150px;">
+                    <button id="search" type="button" class="col-md-2 btn btn-success pull-right" href="{{url('user/ticketRequest')}}" style="margin-left: 150px;">
                         جستجو
                     </button>
 
@@ -64,17 +64,17 @@
                                 </td>
                                 <td style="border-left: 1px solid #ddd;">
                                     @if($ticket->active == 0)
-                                        <label  class="col-md-7 col-md-offset-3  label label-warning" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">در حال بررسی</label>
+                                        <label  class="col-md-8 col-md-offset-3  btn btn-warning" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">در حال بررسی</label>
                                     @endif
                                     @if($ticket->active == 1)
-                                        <span class="col-md-7 col-md-offset-3  label label-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف سایت</span>
+                                        <span class="col-md-8 col-md-offset-3  btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف سایت</span>
                                     @endif
                                     @if($ticket->active == 2)
-                                        <span class="col-md-7 col-md-offset-3  label label-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف کاربر</span>
+                                        <span class="col-md-8 col-md-offset-3  btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف کاربر</span>
                                     @endif
                                 </td>
                                 <td>
-                                    <a class="col-md-6 col-md-offset-3 btn btn-success" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
+                                    <a class="col-md-8 col-md-offset-2 btn btn-success" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
                                 </td>
                             </tr>
                         @endforeach

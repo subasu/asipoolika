@@ -67,13 +67,13 @@
                             </td>
                             <td style="border-left: 1px solid #ddd;">
                                 @if($ticket->active == 0)
-                                    <label  class="col-md-7 col-md-offset-3  label label-warning" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">در حال بررسی</label>
+                                    <label  class="col-md-7 col-md-offset-3 btn btn-warning" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">در حال بررسی</label>
                                 @endif
                                 @if($ticket->active == 1)
-                                    <span class="col-md-7 col-md-offset-3  label label-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف سایت</span>
+                                    <span class="col-md-7 col-md-offset-3 btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف سایت</span>
                                 @endif
                                 @if($ticket->active == 2)
-                                    <span class="col-md-7 col-md-offset-3  label label-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف کاربر</span>
+                                    <span class="col-md-7 col-md-offset-3 btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف کاربر</span>
                                 @endif
                             </td>
                             <td>
