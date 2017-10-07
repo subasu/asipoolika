@@ -439,7 +439,7 @@
                                                 //$(td).parentsUntil(DOM,'tr').hide();
                                                 console.log(response);
                                                 swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
-                                                setInterval(function(){ window.location.reload(true); }, 1000);
+                                                setInterval(function(){ window.location.reload(); }, 1000);
                                             },
                                             error: function (error) {
                                                 if (error.status === 422) {

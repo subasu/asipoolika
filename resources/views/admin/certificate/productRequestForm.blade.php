@@ -71,23 +71,23 @@
         @endforeach
     @endwhile
     <tr>
-        <td>جمع</td>
-        <td colspan="6" style="text-align: left; padding-left: 7.5%;">{{number_format($sum)}}</td>
+        <td colspan="6" style="text-align: left; padding-left: 4%;"> جمع</td>
+        <td colspan="6" style="text-align: left; padding-left: 3.5%;">{{number_format($sum)}}</td>
     </tr>
 
     <tr>
-        <td colspan="2">مسئول انبار</td>
-        <td>رئیس امور عمومی</td>
-        <td>مدیر / رئیس</td>
-        <td colspan="2">مسئول اعتبار / کد ردیابی اعتبار</td>
-        <td>مسئول امور مالی</td>
+        <td colspan="1" class="col-md-2"><span>مسئول انبار :</span><span>{{ chr(10) }}</span><span>{{$storageSupervisorFullName}}</span></td>
+        <td colspan="1" class="col-md-2"><span>رئیس امور عمومی :</span><span>{{ chr(10) }}</span><span>{{$originalJobSupervisorFullName}}</span></td>
+        <td colspan="1" class="col-md-2"><span>مدیر / رئیس :</span><span>{{ chr(10) }}</span><span>{{$bossFullName}}</span></td>
+        <td colspan="2" class="col-md-2"><span>مسئول اعتبار :</span><span>{{ chr(10) }}</span><span>{{$creditSupervisorFullName}}</span></td>
+        <td colspan="2" class="col-md-2"><span>مدیر امور مالی :</span><span>{{ chr(10) }}</span><span>{{$financeSupervisorFullName}}</span></td>
     </tr>
     <tr>
-        <td rowspan="2" colspan="2"><img style="width: 100px; height: 100px;" src="{{$storageSupervisorSignature}}"></td>
-        <td rowspan="2" style="text-align: right;"><img style="width: 100px; height: 100px;" src="{{$originalJobSupervisorSignature}}"></td>
-        <td rowspan="2"><img style="width: 100px; height: 100px;" src="{{$bossSignature}}"></td>
-        <td rowspan="2" colspan="2"><img style="width: 100px; height: 100px;" src="{{$creditSupervisorSignature}}"></td>
-        <td rowspan="2"><img style="width: 100px; height: 100px;" src="{{$financeSupervisorSignature}}"></td>
+        <td colspan="1" class="col-md-2"><img style="width: 100px; height: 100px;" src="{{$storageSupervisorSignature}}"></td>
+        <td colspan="1" class="col-md-2"><img style="width: 100px; height: 100px;" src="{{$originalJobSupervisorSignature}}"></td>
+        <td colspan="1" class="col-md-2"><img style="width: 100px; height: 100px;" src="{{$bossSignature}}"></td>
+        <td colspan="2" class="col-md-2"><img style="width: 100px; height: 100px;" src="{{$creditSupervisorSignature}}"></td>
+        <td colspan="2" class="col-md-2"><img style="width: 100px; height: 100px;" src="{{$financeSupervisorSignature}}"></td>
     </tr>
     </tbody>
 </table>
