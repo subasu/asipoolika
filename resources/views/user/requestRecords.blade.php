@@ -73,7 +73,11 @@
                             <td>{{number_format($requestRecord->rate)}} تومان</td>
                             <td>{{number_format($requestRecord->price)}} تومان</td>
                             <td>{{$requestRecord->description}}</td>
-                            <td>{{$requestRecord->status}}</td>
+                            <td>@if($requestRecord->refuse==0)
+                                {{$requestRecord->status}}
+                                    @else <span class="label label-danger" data-toggle="tooltip" data-placement="top" title="علت رد شدن : {{$requestRecord->why_not}}"> رد شده</span>
+                                    @endif
+                            </td>
                         </tr>
                     @endforeach
                     {{--</form>--}}
