@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'TestController@home');
+Route::get('/', 'IndexController@goToLoginPage');
 Route::post('save', 'TestController@save');
 Route::get('/unit_count','IndexController@unit_count');
 

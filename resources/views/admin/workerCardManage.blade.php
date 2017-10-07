@@ -31,7 +31,6 @@
                         </div>
                         <input type="hidden" id="token" value="{{ csrf_token() }}">
                         <button id="search" type="button" class="col-md-2 btn btn-info" style="font-weight: bold; margin-left: 30%">
-
                             جستجو
                         </button>
                     </div>

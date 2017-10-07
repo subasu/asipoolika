@@ -1,5 +1,4 @@
 @extends('layouts.adminLayout')
-
 @section('content')
     <div class="clearfix"></div>
     <div class="row">

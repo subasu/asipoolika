@@ -1,4 +1,4 @@
-@extends('layouts.adminLayout');
+@extends('layouts.adminLayout')
 @section('content')
     <!-- Modal -->
     <div id="messageModal" class="modal fade" role="dialog">
