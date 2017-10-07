@@ -168,7 +168,6 @@
                 </div>
             </div>
 
-    </div>
     @endif
     <!-- admin message script -->
     <script>
