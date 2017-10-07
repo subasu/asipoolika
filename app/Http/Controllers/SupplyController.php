@@ -507,7 +507,7 @@ class SupplyController extends Controller
     {
         $pageTitle='مدیریت کارت های کارگری';
         $userId = Auth::user()->id;
-        $workers = Workers::where([['active',0],['user_id' , $userId]])->orderBy('date')->get();
+        $workers = Workers::where([['user_id' , $userId]])->orderBy('date')->get();
         foreach ($workers as $worker) {
             $worker->date = $this->toPersian($worker->date);
             $worker->card = 'data:image/jpeg;base64,'.$worker->card;
