@@ -100,4 +100,8 @@ class User extends Authenticatable
     }
 
     //shiri : relation
+    public function signature()
+    {
+        return $this->hasOne('App\Models\Signature','user_id');
+    }
 }

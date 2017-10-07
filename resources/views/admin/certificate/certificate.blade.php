@@ -214,11 +214,11 @@
                                             data: formData,
                                             context : td,
                                             success: function (response) {
-                                                $(td).parentsUntil(DOM,'tr').hide();
+                                               // $(td).parentsUntil(DOM,'tr').hide();
                                                 console.log(response);
                                                 swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
-                                                //location.reload(true);
-//                                    window.location.href='';
+                                                setInterval(function(){ window.location.reload(); }, 1000);
+
                                             },
                                             error: function (error) {
                                                 if (error.status === 422) {
@@ -326,11 +326,10 @@
                                             data: formData,
                                             context : td,
                                             success: function (response) {
-                                                $(td).parentsUntil(DOM,'tr').hide();
+                                               // $(td).parentsUntil(DOM,'tr').hide();
                                                 console.log(response);
                                                 swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
-                                                //location.reload(true);
-//                                    window.location.href='';
+                                                setInterval(function(){ window.location.reload(); }, 1000);
                                             },
                                             error: function (error) {
                                                 if (error.status === 422) {
@@ -437,11 +436,10 @@
                                             data: formData,
                                             context : td,
                                             success: function (response) {
-                                                $(td).parentsUntil(DOM,'tr').hide();
+                                                //$(td).parentsUntil(DOM,'tr').hide();
                                                 console.log(response);
                                                 swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
-                                                //location.reload(true);
-//                                    window.location.href='';
+                                                setInterval(function(){ window.location.reload(true); }, 1000);
                                             },
                                             error: function (error) {
                                                 if (error.status === 422) {
