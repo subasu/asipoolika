@@ -155,18 +155,37 @@ class RequestController extends Controller
         $requestRecords=RequestRecord::where('request_id',$id)->get();
         foreach($requestRecords as $requestRecord)
         {
-            switch($requestRecord->step)
+            if($requestRecord->request->request_type_id==3)
             {
-                case 1: $step='تدارکات'; break;
-                case 2: $step='مسئول انبار'; break;
-                case 3: $step='مسئول اعتبار'; break;
-                case 4: $step='امور عمومی'; break;
-                case 5: $step='ریاست'; break;
-                case 6: $step='امورمالی'; break;
-                case 7: $step='تایید شده'; break;
-                case 8: $step='در حال صدور گواهی'; break;
-                default : $step='نامشخص';
+                switch($requestRecord->step)
+                {
+                    case 1: $step='تدارکات'; break;
+                    case 2: $step='مسئول انبار'; break;
+                    case 3: $step='مسئول اعتبار'; break;
+                    case 4: $step='امور عمومی'; break;
+                    case 5: $step='ریاست'; break;
+                    case 6: $step='امورمالی'; break;
+                    case 7: $step='تایید شده'; break;
+                    case 8: $step='در حال صدور گواهی'; break;
+                    default : $step='نامشخص';
+                }
             }
+            if($requestRecord->request->request_type_id==2)
+            {
+                switch($requestRecord->step)
+                {
+                    case 1: $step='تدارکات'; break;
+                    case 2: $step='مسئول اعتبار'; break;
+                    case 3: $step='امور عمومی'; break;
+                    case 4: $step='ریاست'; break;
+                    case 5: $step='مسئول واحد'; break;
+                    case 6: $step='امورمالی'; break;
+                    case 7: $step='تایید شده'; break;
+                    case 8: $step='در حال صدور گواهی'; break;
+                    default : $step='نامشخص';
+                }
+            }
+
             if($requestRecord->refuse_user_id!=null)
                 $requestRecord->refuse=1;
             else $requestRecord->refuse=0;
