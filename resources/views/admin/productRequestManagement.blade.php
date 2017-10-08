@@ -137,19 +137,25 @@
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
                                         <td class="col-md-2" style="font-size: 25px;">
                                             {{--<a href="" class="btn btn-danger">صدور صورتجلسه تحویل و نصب</a>--}}
-                                            <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-10  @if($productRequest->accept_count==0) disabled @endif"> صدور گواهی</a>
-                                            <a href="{{url('admin/printProductRequest/'.$productRequest->id)}}" class="btn btn-info col-md-10"> چاپ درخواست </a>
+                                            <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-10  @if($productRequest->accept_count==0 or $productRequest->supplier_id==null) disabled @endif"> صدور گواهی</a>
+                                            @if($productRequest->request_type_id == 3)
+                                             <a href="{{url('admin/printProductRequest/'.$productRequest->id)}}" class="btn btn-info col-md-10"> چاپ درخواست </a>
+                                            @endif
+                                            @if($productRequest->request_type_id == 2)
+                                                <a href="{{url('admin/printServiceRequest/'.$productRequest->id)}}" class="btn btn-info col-md-10"> چاپ درخواست </a>
+                                            @endif
                                             @if($productRequest->supplier_id==null)
                                             <a href="{{url('admin/impart/'.$productRequest->id)}}" class="btn btn-danger col-md-10"> ابلاغ به کارپرداز</a>
                                             @else
                                                 <span class="label label-success col-md-10" style="font-size:17px;padding:7px 0 7px 0;font-weight: lighter;margin-bottom: 5px;">ابلاغ شده</span>
                                             @endif
-                                            <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-10">مشاهده  گواهی ها</a>
+                                                <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-10">مشاهده  گواهی ها</a>
+
                                             {{--<button type="button" class="btn btn-default" data-toggle="tooltip" title="چاپ گواهی">--}}
                                              {{--<span class="fa fa-print" style="font-size: 20px;"></span>--}}
                                             {{--</button>--}}
                                         </td>
-                                </tr>
+                                    </tr>
                                         @endif
                                     @endforeach
                                 @endif

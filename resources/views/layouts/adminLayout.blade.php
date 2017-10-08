@@ -95,8 +95,9 @@
                         <h3 style="font-size: 16px;"><a href="{{url('/logout')}}" style="color:white">خروج</a></h3>
                         <ul class="nav side-menu">
                             //system manager menu
-                            <li><a><i class="fa fa-home"></i> مدیر سیستم<span></span></a>
-                            </li>
+                            {{--<li><a><i class="fa fa-home"></i> مدیر سیستم<span></span></a>--}}
+                            {{--</li>--}}
+                            @if($user->is_supervisor==1)
                             <li><a><i class="fa fa-pencil-square-o"></i> مدیریت امضاء ها<span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
@@ -106,6 +107,7 @@
                                     </li>
                                 </ul>
                             </li>
+                            @endif
                             //End system manager menu <br>
                             //Admin menu
                            <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
@@ -165,20 +167,20 @@
                                     {{--</li>--}}
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('admin/')}}">پیام های دریافتی</a>
-                                    </li>
-                                    <li><a href="{{url('admin/')}}">پیام های ارسالی</a>
-                                    </li>
-                                    <li><a href="{{url('admin/')}}">پیام های دریافتی</a>
-                                    </li>
-                                    <li><a href="{{url('admin/')}}">سطل زباله پیام ها</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a><i class="fa fa-cogs"></i>تنظیمات<span class="fa fa-chevron-down"></span></a>
-                            </li>
+                            {{--<li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>--}}
+                                {{--<ul class="nav child_menu" style="display: none">--}}
+                                    {{--<li><a href="{{url('admin/')}}">پیام های دریافتی</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="{{url('admin/')}}">پیام های ارسالی</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="{{url('admin/')}}">پیام های دریافتی</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="{{url('admin/')}}">سطل زباله پیام ها</a>--}}
+                                    {{--</li>--}}
+                                {{--</ul>--}}
+                            {{--</li>--}}
+                            {{--<li><a><i class="fa fa-cogs"></i>تنظیمات<span class="fa fa-chevron-down"></span></a>--}}
+                            {{--</li>--}}
                             //End Admin menu <br>
                             //User menu
 
@@ -202,7 +204,9 @@
 
                             <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('admin/certificatesManagement')}}"> تایید گواهی<span></span></a>
+                                    <li><a href="{{url('admin/productCertificatesManagement')}}"> تایید گواهی های کالا<span></span></a>
+                                    </li>
+                                    <li><a href="{{url('admin/serviceCertificatesManagement')}}"> تایید گواهی های خدمت<span></span></a>
                                     </li>
                                     <li><a href="{{url('admin/acceptedCertificatesManagement')}}"> وضعیت گواهی های تایید شده</a>
                                     </li>
@@ -216,19 +220,19 @@
                                     </li>
                                 </ul>
                             </li>
-                            </li>
-                            <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="#">صندوق پیام</a>
-                                    </li>
-                                    <li><a href="#">پیام های ارسالی</a>
-                                    </li>
-                                    <li><a href="#">پیام های دریافتی</a>
-                                    </li>
-                                    <li><a href="#">سطل زباله پیام ها</a>
-                                    </li>
-                                </ul>
-                            </li>
+
+                            {{--<li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>--}}
+                                {{--<ul class="nav child_menu" style="display: none">--}}
+                                    {{--<li><a href="#">صندوق پیام</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="#">پیام های ارسالی</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="#">پیام های دریافتی</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="#">سطل زباله پیام ها</a>--}}
+                                    {{--</li>--}}
+                                {{--</ul>--}}
+                            {{--</li>--}}
                             //End User menu
                             {{-- end user dashboard menu --}}
                         </ul>

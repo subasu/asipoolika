@@ -1,4 +1,4 @@
-@extends('layouts.adminLayout');
+@extends('layouts.adminLayout')
 @section('title')
     ویرایش واحد
 @endsection
@@ -76,7 +76,7 @@
                 <div class="col-md-3 col-sm-3 col-xs-12"></div>
             </div>
         </div>
-    </div>
+
     {{--edit unit's info by unit-id --}}
     <script>
         $("#unit-send").click(function () {

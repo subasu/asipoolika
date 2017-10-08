@@ -31,7 +31,7 @@ class Request2 extends Model
     //shiri relation of request and request_type
     public function requestType()
     {
-        return $this->hasOne('App\Models\RequestType');
+        return $this->belongsTo('App\Models\RequestType');
     }
 
     //shiri relation of request and request_records

@@ -17,10 +17,7 @@
                     <div class="clearfix"></div>
                 </div>
 
-                <div class="alert alert-info col-md-12 col-sm-12 col-xs-12"
-                     style="direction:rtl;font-size:17px;color:white;">
-                </div>
-                <a href="{{url('admin/usersCreate')}}" id="user-send" type="button" class="col-md-2 btn btn-info" style="font-weight: bold;"><i class="fa fa-user-plus"></i>                    افزودن کاربر جدید                </a>
+                <a href="{{url('admin/usersCreate')}}" id="user-send" type="button" class="col-md-2 btn btn-danger" style="font-weight: bold;"><i class="fa fa-user-plus"></i>                    افزودن کاربر جدید                </a>
 
                 <div class="x_content">
                     <table style="direction:rtl;text-align: center" id="example"

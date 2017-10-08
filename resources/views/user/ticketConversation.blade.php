@@ -31,21 +31,18 @@
         .ticketInfo {
             background-color: white !important;
         }
-
         .question {
             background-color: #5bc0de !important;
             padding: 10px 14px !important;
             margin-bottom: 0 !important;
             color: #fff;
         }
-
         .answer {
             background-color: #0275d8 !important;
             padding: 10px 14px !important;
             margin-bottom: 0 !important;
             color: #fff;
         }
-
         .font-size-30 {
             font-size: 30px;
             text-align: right;
@@ -103,7 +100,7 @@
                                 <div class="col-md-11 col-sm-8 col-xs-12">
                                     <div id="description" name="description" disabled
                                          style="padding: 2%;"
-                                              class="message-content form-control col-md-7 col-xs-10 ticketInfo">{{$ticket->description}}</div>
+                                         class="message-content form-control col-md-7 col-xs-10 ticketInfo">{{$ticket->description}}</div>
                                 </div>
                                 <label class="control-label col-md-1 col-sm-1 col-xs-2" for="description">متن
                                     تیکت</label>
@@ -219,10 +216,8 @@
             $(document).on('click', '#adminMessage', function () {
                 messageId = $(this).attr('content');
                 // alert(messageId);
-
                 var token = $('#token').val();
                 $('#messageModal').modal('show');
-
                 $('#sendMessage').click(function () {
                     var message = $('#message').val();
                     if (message == '' || message == null) {
@@ -239,7 +234,6 @@
                             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                         }
                     })
-
                     $.ajax
                     ({
                         url: "{{Url('admin/adminSendMessage')}}",
@@ -264,7 +258,6 @@
                         }
                     })
                 });
-
             });
         </script>
 
@@ -274,7 +267,6 @@
                 var ticketId = $(this).attr('content');
                 var token = $('#token').val();
                 $('#messageModal').modal('show');
-
                 $('#sendMessage').click(function () {
                     var message = $('#message').val();
                     if (message == '' || message == null) {
@@ -291,7 +283,6 @@
                             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                         }
                     })
-
                     $.ajax
                     ({
                         url: "{{Url('user/userSendMessage')}}",
@@ -385,7 +376,6 @@
                         console.log(error);
                     }
                 });
-
             });
         </script>
 @endsection

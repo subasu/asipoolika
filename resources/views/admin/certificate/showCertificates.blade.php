@@ -15,9 +15,9 @@
                     </ul>
                     <div class="clearfix"></div>
                 </div>
-                <div class="alert alert-info col-md-12 col-sm-12 col-xs-12"
-                     style="direction:rtl;font-size:17px;color:white;">
-                </div>
+                {{--<div class="alert alert-info col-md-12 col-sm-12 col-xs-12"--}}
+                     {{--style="direction:rtl;font-size:17px;color:white;">--}}
+                {{--</div>--}}
                 {{--<a href="{{url('admin/unitsCreate')}}" id="user-send" type="button" class="col-md-2 btn btn-info" style="font-weight: bold;"><i--}}
                             {{--class="fa fa-user-plus"></i>--}}
                     {{--افزودن واحد جدید--}}
@@ -44,7 +44,12 @@
                                 <td>{{$certificate->shop_comp}}</td>
 
                                 <td>
-                                    <a class="btn btn-info" href="{{url('admin/exportDeliveryInstallCertificate'.'/'.$certificate->id)}}">چاپ گواهی صادر شده</a>
+                                    @if($certificate->request->request_type_id == 3)
+                                        <a class="btn btn-info" href="{{url('admin/exportDeliveryInstallCertificate'.'/'.$certificate->id)}}">چاپ گواهی صادر شده</a>
+                                    @endif
+                                    @if($certificate->request->request_type_id == 2)
+                                       <a class="btn btn-info" href="{{url('admin/serviceDeliveryForm'.'/'.$certificate->id)}}">چاپ گواهی صادر شده</a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

@@ -1,7 +1,4 @@
 @extends('layouts.adminLayout')
-@section('title')
-    ایجاد واحد
-@endsection
 @section('content')
     <div class="clearfix"></div>
     <div class="row">

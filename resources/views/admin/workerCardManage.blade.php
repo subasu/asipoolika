@@ -5,7 +5,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2> مدیریت کاربران</h2>
+                    <h2> مدیریت کارت های کارگری</h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i
                                         class="fa fa-chevron-up"></i></a>
@@ -31,7 +31,6 @@
                         </div>
                         <input type="hidden" id="token" value="{{ csrf_token() }}">
                         <button id="search" type="button" class="col-md-2 btn btn-info" style="font-weight: bold; margin-left: 30%">
-
                             جستجو
                         </button>
                     </div>
