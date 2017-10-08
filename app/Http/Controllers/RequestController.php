@@ -173,7 +173,7 @@ class RequestController extends Controller
             $requestRecord->status=$step;
 
         }
-//        dd($requestRecords);
+
 //        dd($requestRecords[0]->request->user_id);
         if($requestRecords[0]->request->user_id==Auth::user()->id)
         {

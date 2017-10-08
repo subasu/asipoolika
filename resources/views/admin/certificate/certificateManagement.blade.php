@@ -58,6 +58,7 @@
                             <th style="text-align: center ;">نام واحد</th>
                             <th style="text-align: center ;">درخواست دهنده</th>
                             <th style="text-align: center ;">شماره درخواست</th>
+                            <th style="text-align: center ;">نوع درخواست</th>
                             @if($pageName=='certificateManagement')
                                 <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
                                 <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
@@ -96,6 +97,7 @@
                                     <td class="col-md-2"> واحد {{$certificate->request->user->unit->title}}</td>
                                     <td class="col-md-2">{{$certificate->request->user->name .chr(10). $certificate->request->user->family}}</td>
                                     <td class="col-md-2">{{$certificate->request_id}}</td>
+                                    <td class="col-md-2">{{$certificate->request_type}}</td>
                                     <td class="info col-md-2">{{$certificate->certificate_record_count}}</td>
                                     <td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>
                                     <td><a class="btn btn-info" href="{{url('admin/certificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
@@ -109,6 +111,7 @@
                                     <td class="col-md-2"> واحد {{$certificate->request->user->unit->title}}</td>
                                     <td class="col-md-2">{{$certificate->request->user->name .chr(10). $certificate->request->user->family}}</td>
                                     <td class="col-md-2">{{$certificate->request_id}}</td>
+                                    <td class="col-md-2">{{$certificate->request_type}}</td>
                                     <td class="info col-md-2">{{$certificate->certificate_record_count}}</td>
                                     <td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>
                                     <td>@if($certificate->active==1) پایان یافته @else در حال رسیدگی @endif</td>
