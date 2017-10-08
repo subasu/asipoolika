@@ -40,11 +40,11 @@
             <table class="col-md-12 " dir="rtl">
                 <tr class="col-md-12">
                     <th class="remove-border col-md-6 ">تاریخ :</th>
-                    <th class="remove-border col-md-6 ">......</th>
+                    <th class="remove-border col-md-6 ">{{$date}}</th>
                 </tr>
                 <tr>
                     <th class="remove-border col-md-6 ">شماره :</th>
-                    <th class="remove-border col-md-6 ">......</th>
+                    <th class="remove-border col-md-6 ">{{$certificateId}}</th>
                 </tr>
             </table>
         </div>
@@ -58,7 +58,9 @@
         جهت واحد
         {{$unitName}}
         به آقای/خانم
-        {{--{{$receiverName .chr(10). $receiverFamily}}--}}
+
+        {{$receiverName .chr(10). $receiverFamily}}
+
         تحویل گردید و پرداخت شده است.</h4>
     <br>
     <table class="formTable col-md-12 width100 border-right" dir="rtl">
@@ -84,19 +86,17 @@
             <td class="col-md-3">{{number_format($sum)}}</td>
         </tr>
         <tr>
-            <th class="col-md-3">تحویل گیرنده</th>
-            <th class="col-md-3">مسئول واحد</th>
-            <th class="col-md-3">کارپرداز</th>
-            <th class="col-md-3">رئیس واحد</th>
+            <th class="col-md-3">تحویل گیرنده:   {{$receiverFullName}}</th>
+            <th class="col-md-3"> مسئول واحد : {{$unitSupervisorFullName}} </th>
+            <th class="col-md-3">کارپرداز :{{$supplierFullName}}</th>
+            <th class="col-md-3">  رئیس واحد : {{$bossFullName}} </th>
         </tr>
-        @foreach($certificateRecords as $certificateRecord)
-            <tr>
-                <td class="col-md-3">{{$certificateRecord->user->name .chr(10). $certificateRecord->user->family}}</td>
-                <td class="col-md-3">{{$unitSupervisorName .chr(10).$unitSupervisorFamily}}</td>
-                <td class="col-md-3">{{$certificateRecord->requestRecord->request->supplier->name .chr(10).$certificateRecord->requestRecord->request->supplier->family}}</td>
-                <td class="col-md-3">رئیس سازمان</td>
-            </tr>
-        @endforeach
+        <tr>
+            <td class="col-md-3"><img style="height: 100px; width: 100px;" src="{{$receiverSignature}}"></td>
+            <td class="col-md-3"><img style="height: 100px; width: 100px;" src="{{$unitSupervisorSignature}}"></td>
+            <td class="col-md-3">@if(count($supplierSignature) > 22)<img src="{{$supplierSignature}}"> @endif @if(count($supplierSignature) <= 22)امضا ندارد @endif</td>
+            <td class="col-md-3"><img style="height: 100px; width: 100px;" src="{{$bossSignature}}"></td>
+        </tr>
         </tbody>
 
     </table>

@@ -126,6 +126,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('formSave','SupplyController@formSave');                                                     //96/7/14
 
         Route::get('showCertificates/{id}','SupplyController@showCertificates');                                //96/7/14
+        Route::get('printServiceRequest/{id}','SupplyController@printServiceRequest');                          //96/7/15
+        Route::get('serviceDeliveryForm/{id}','SupplyController@printServiceDeliveryForm');                        //96/7/15
 
 
         //rayat - users manage:
