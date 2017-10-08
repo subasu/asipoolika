@@ -223,7 +223,7 @@
                     if (message == '' || message == null) {
                         swal({
                             title: "",
-                            text: "لطفا پیام خود را تایپ نمایید سپس دکمه ثبت را بزنید.",
+                            text: "لطفا پیام  خود را تایپ نمایید سپس دکمه ثبت را بزنید.",
                             type: "warning",
                             confirmButtonText: "بستن"
                         });
