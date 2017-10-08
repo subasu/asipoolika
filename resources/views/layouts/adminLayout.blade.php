@@ -72,7 +72,7 @@
             <div class="left_col scroll-view">
                 <div class="clearfix"></div>
 
-                <!-- menu prile quick info -->
+                <!-- menu profile quick info -->
                 <div class="profile">
                     <div class="profile_pic">
                         <img src="{{URL::asset('public/dashboard/images/img.png')}}" alt="..."
@@ -83,7 +83,7 @@
                         <h2>{{$user_info->title}} {{$user_info->name}} {{$user_info->family}}</h2>
                     </div>
                 </div>
-                <!-- /menu prile quick info -->
+                <!-- /menu profile quick info -->
 
                 <br/>
 
@@ -114,9 +114,9 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/productRequestManagement')}}"> درخواست های جدید</a></li>
                                     @if($user->is_supervisor==1)
-                                    <li><a href="{{url('/admin/acceptProductRequestManagement')}}">بررسی شده</a><li>
+                                    <li><a href="{{url('/admin/acceptProductRequestManagement')}}">بررسی شده</a></li>
 {{--                                    <li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
-                                    <li><a href="{{url('/admin/confirmProductRequestManagement')}}">تایید شده</a><li>
+                                    <li><a href="{{url('/admin/confirmProductRequestManagement')}}">تایید شده</a></li>
                                     @endif
                                 </ul>
                             </li>
@@ -125,9 +125,9 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/serviceRequestManagement')}}"> درخواست های جدید</a></li>
                                     @if($user->is_supervisor==1)
-                                        <li><a href="{{url('/admin/acceptServiceRequestManagement')}}">بررسی شده</a><li>
+                                        <li><a href="{{url('/admin/acceptServiceRequestManagement')}}">بررسی شده</a></li>
                                         {{--<li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
-                                        <li><a href="{{url('/admin/confirmServiceRequestManagement')}}">تایید شده</a><li>
+                                        <li><a href="{{url('/admin/confirmServiceRequestManagement')}}">تایید شده</a></li>
                                     @endif
                                 </ul>
                             </li>
