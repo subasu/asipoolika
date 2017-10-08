@@ -839,7 +839,6 @@ class SupplyController extends Controller
                     $step=2;
                     $step2=1;
                 }
-                //the user is Karpardaz
                 else
                 {
                     $step=8;
@@ -870,7 +869,7 @@ class SupplyController extends Controller
         $service_request_id=Request2::where([['unit_id',$user->unit_id],['request_type_id',2]])->pluck('id');
         $requestRecords2=RequestRecord::where([['step','>=',6]],['active',1],['refuse_user_id',null])->whereIn('request_id',$service_request_id)->pluck('request_id');
         $serviceRequests2=Request2::whereIn('id',$requestRecords2)->get();
-//        dd();
+
         foreach($serviceRequests2 as $serviceRequest)
         {
             //undecided records
@@ -883,7 +882,6 @@ class SupplyController extends Controller
 
         $serviceRequests=$serviceRequests->merge($serviceRequests2);
 
-
         foreach($serviceRequests as $productRequest)
         {
             //undecided records
@@ -893,7 +891,7 @@ class SupplyController extends Controller
             //inactive records
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
         }
-//        dd($productRequests);
+//        dd($serviceRequests);
         return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
     }
 
@@ -1456,7 +1454,7 @@ class SupplyController extends Controller
     }
     public function confirmServiceRequestManagementGet()
     {
-        $pageTitle="مدیریت درخواست ها";
+        $pageTitle="مدیریت درخواست های تایید شده";
         $pageName='confirmProductRequest';
         $productRequests=Request2::where('request_type_id',2)->get();
 

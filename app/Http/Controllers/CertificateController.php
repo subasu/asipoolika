@@ -388,7 +388,6 @@ class CertificateController extends Controller
             {
                 $my_roll='supply_supervisor';
                 $step=3;
-                $step2=4;
                 $me='من مدیر تدارکاتم';
             }
             else
@@ -509,8 +508,7 @@ class CertificateController extends Controller
             elseif($user->unit_id==$unit_id_t[0])
             {
                 $my_roll='supply_supervisor';
-                $step=3;
-                $step2=4;
+                $step=4;
                 $me='من مدیر تدارکاتم';
             }
             else
@@ -556,7 +554,6 @@ class CertificateController extends Controller
                 $step2=1;
                 $me='من کارمند جز واحدم';
             }
-
         }
         elseif($user->is_supervisor==1)
         {

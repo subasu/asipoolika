@@ -120,7 +120,7 @@
                                     <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                     <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                     <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                    <td class="col-md-2">@if($productRequest->active==1) پایان یافته @else درحال رسیدگی @endif</td>
+                                    <td class="col-md-2" style="padding-top: 20px;">@if($productRequest->active==1)<span style="font-size: 16px;font-weight: lighter;" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter;" class="label label-warning">در حال رسیدگی </span>@endif</td>
                                     {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                 </tr>
                             @endif
