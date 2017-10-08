@@ -183,6 +183,9 @@ Route::get('/admin/form6', function () {
 Route::get('/admin/form4', function () {
     return view('admin.ceremonial');
 });
+route::get('/cost', function () {
+    return view('admin.costDocumentForm');
+});
 Route::get('logout',function(){
     Auth::logout();
     return redirect('/login');
