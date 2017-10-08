@@ -37,7 +37,7 @@ class Request2 extends Model
     //shiri relation of request and request_records
     public function requestRecord()
     {
-        return $this->hasMany('App\Models\RequestRecord','request_id');
+        return $this->hasMany('App\Models\RequestRecord');
     }
 
     //shiri : relation of request and unit

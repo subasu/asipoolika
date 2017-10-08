@@ -150,6 +150,7 @@
                                                 <span class="label label-success col-md-10" style="font-size:17px;padding:7px 0 7px 0;font-weight: lighter;margin-bottom: 5px;">ابلاغ شده</span>
                                             @endif
                                                 <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-10">مشاهده  گواهی ها</a>
+                                                <a href="{{url('admin/printFactors/'.$productRequest->id)}}" class="btn btn-info col-md-10">چاپ خلاصه تنظیمی</a>
 
                                             {{--<button type="button" class="btn btn-default" data-toggle="tooltip" title="چاپ گواهی">--}}
                                              {{--<span class="fa fa-print" style="font-size: 20px;"></span>--}}

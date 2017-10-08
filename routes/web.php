@@ -122,12 +122,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('newUserCreate/{id}','SupplyController@newUserCreate');                                      //96/7/12
         Route::get('exportDeliveryInstallCertificate/{id}','SupplyController@exportDeliveryInstallCertificate'); //96/7/13
 
-        Route::post('formSave','SupplyController@formSave');                                                     //96/7/14
+        Route::post('formSave/{id}','SupplyController@formSave');                                                     //96/7/14
 
         Route::get('showCertificates/{id}','SupplyController@showCertificates');                                //96/7/14
         Route::get('printServiceRequest/{id}','SupplyController@printServiceRequest');                          //96/7/15
-        Route::get('serviceDeliveryForm/{id}','SupplyController@printServiceDeliveryForm');                        //96/7/15
-
+        Route::get('serviceDeliveryForm/{id}','SupplyController@printServiceDeliveryForm');                     //96/7/15
+        Route::get('printFactors/{id}','SupplyController@printFactors');                                        //96/7/16
 
         //rayat - users manage:
         Route::get('usersManagement', 'SupplyController@usersManagementGet');

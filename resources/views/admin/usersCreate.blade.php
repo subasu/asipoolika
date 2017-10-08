@@ -37,9 +37,13 @@
                             {{ csrf_field() }}
                             <div class="item form-group">
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input id="title" class="form-control col-md-7 col-xs-12" name="title"
-                                           placeholder=""
-                                           required="required" type="text">
+                                    <select id="title" class="form-control col-md-7 col-xs-12" name="title">
+                                        <option>دکتر</option>
+                                        <option>مهندس</option>
+                                        <option>آقای</option>
+                                        <option>خانم</option>
+                                    </select>
+
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="title"> عنوان : <span
                                             class="required" title="پر کردن این فیلد الزامی است">*</span>
@@ -120,7 +124,7 @@
                                            class="form-control col-md-7 col-xs-12">
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="cellphone">شماره موبایل :
-                                    <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
+                                    {{--<span class="required" title="پر کردن این فیلد الزامی است">*</span></label>--}}
                                 @if ($errors->has('cellphone'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('cellphone') }}</strong>
@@ -133,7 +137,7 @@
                                            class="form-control col-md-7 col-xs-12">
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="internal_phone">تلفن داخلی :
-                                    <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
+                                    {{--<span class="required" title="پر کردن این فیلد الزامی است">*</span></label>--}}
                                 @if ($errors->has('internal_phone'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('internal_phone') }}</strong>
@@ -201,7 +205,7 @@
                 <div class="col-md-3 col-sm-3 col-xs-12"></div>
             </div>
         </div>
-    </div>
+
 
     {{--create user by AJAX and show result alert and redirect to usersList page --}}
     <script>
@@ -402,7 +406,7 @@
                                             type: "info",
                                             confirmButtonText: "بستن"
                                         });
-                                        setInterval(function(){ window.location.href= 'usersManagement'; }, 1000);
+                                       setInterval(function(){ window.location.href= 'usersManagement'; }, 1000);
                                     },error : function(error)
                                     {
                                         if (xhr.status === 422) {
