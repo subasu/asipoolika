@@ -28,10 +28,10 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                @if($pageName=='certificateManagement')
-                    <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت گواهی های تازه ثبت شده</h2>
-                @elseif($pageName=='refusedProductRequestManagement')
-                    <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های کالای رد شده</h2>
+                @if($pageName=='productCertificateManagement')
+                    <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت گواهی های کالا تازه ثبت شده</h2>
+                @elseif($pageName=='serviceCertificateManagement')
+                    <h2  style="color:#005ce6;direction: rtl"><i class="fa fa-ban"></i>  مدیریت گواهی های خدمت تازه ثبت شده</h2>
                 @elseif($pageName=='acceptedCertificateManagement')
                     <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های خدمت در حال پیگیری</h2>
                 @elseif($pageName=='confirmProductRequest')
@@ -50,7 +50,7 @@
             {{--</div>--}}
             <div class="x_content">
                 {{--<form id="serviceDetailForm">--}}
-                <table style="direction:rtl;text-align: center;" id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                <table style="direction:rtl;text-align: center;font-size:16px;" id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     @if(!empty($pageName))
                         <thead>
                         <tr>
@@ -59,21 +59,18 @@
                             <th style="text-align: center ;">درخواست دهنده</th>
                             <th style="text-align: center ;">شماره درخواست</th>
                             <th style="text-align: center ;">نوع درخواست</th>
-                            @if($pageName=='certificateManagement')
-                                <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
-                                <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
-                                {{--<th class="col-md-2" style="text-align: center ;">رد شده</th>--}}
+                            @if($pageName=='productCertificateManagement')
+                                {{--<th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>--}}
+                                {{--<th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>--}}
+                                <th class="col-md-1" style="text-align: center ;">عملیات</th>
+                            @elseif($pageName=='serviceCertificateManagement')
+                                {{--<th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>--}}
+                                {{--<th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>--}}
                                 <th class="col-md-1" style="text-align: center ;">عملیات</th>
                             @elseif($pageName=='acceptedCertificateManagement')
-                                <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
-                                <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
+                                {{--<th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>--}}
+                                {{--<th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>--}}
                                 {{--<th class="col-md-2" style="text-align: center ;">رد شده</th>--}}
-                                <th class="col-md-1" style="text-align: center ;">وضعیت</th>
-                                {{--<th style="text-align: center ;">عملیات</th>--}}
-                            @elseif($pageName=='acceptProductRequestManagement')
-                                <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
-                                <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
-                                <th class="col-md-2" style="text-align: center ;">رد شده</th>
                                 <th class="col-md-1" style="text-align: center ;">وضعیت</th>
                                 {{--<th class="col-md-2" style="text-align: center ;">مرحله</th>--}}
                                 {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
@@ -90,19 +87,36 @@
                     <tbody>
                     {{ csrf_field() }}
                     <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
-                    @if($pageName=='certificateManagement')
+                    @if($pageName=='productCertificateManagement')
                         @foreach($certificates as $certificate)
+                            @if($certificate->request->request_type_id==3)
                             <tr>
                                     <td class="col-md-1">{{$certificate->id}}</td>
                                     <td class="col-md-2"> واحد {{$certificate->request->user->unit->title}}</td>
                                     <td class="col-md-2">{{$certificate->request->user->name .chr(10). $certificate->request->user->family}}</td>
                                     <td class="col-md-2">{{$certificate->request_id}}</td>
                                     <td class="col-md-2">{{$certificate->request_type}}</td>
-                                    <td class="info col-md-2">{{$certificate->certificate_record_count}}</td>
-                                    <td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>
-                                    <td><a class="btn btn-info" href="{{url('admin/certificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
+                                    {{--<td class="info col-md-2">{{$certificate->certificate_record_count}}</td>--}}
+                                    {{--<td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>--}}
+                                    <td><a class="btn btn-info col-md-12" href="{{url('admin/productCertificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
                             </tr>
+                            @endif
                         @endforeach
+                        @elseif($pageName=='serviceCertificateManagement')
+                            @foreach($certificates as $certificate)
+                                @if($certificate->request->request_type_id==2)
+                                    <tr>
+                                        <td class="col-md-1">{{$certificate->id}}</td>
+                                        <td class="col-md-2"> واحد {{$certificate->request->user->unit->title}}</td>
+                                        <td class="col-md-2">{{$certificate->request->user->name .chr(10). $certificate->request->user->family}}</td>
+                                        <td class="col-md-2">{{$certificate->request_id}}</td>
+                                        <td class="col-md-2">{{$certificate->request_type}}</td>
+                                        {{--<td class="info col-md-2">{{$certificate->certificate_record_count}}</td>--}}
+                                        {{--<td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>--}}
+                                        <td><a class="btn btn-info col-md-12" href="{{url('admin/serviceCertificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
+                                    </tr>
+                                @endif
+                            @endforeach
                     @elseif($pageName=='acceptedCertificateManagement')
                         @foreach($certificates as $certificate)
 {{--                            @if($productRequest->request_record_count_accept>0)--}}
@@ -112,9 +126,9 @@
                                     <td class="col-md-2">{{$certificate->request->user->name .chr(10). $certificate->request->user->family}}</td>
                                     <td class="col-md-2">{{$certificate->request_id}}</td>
                                     <td class="col-md-2">{{$certificate->request_type}}</td>
-                                    <td class="info col-md-2">{{$certificate->certificate_record_count}}</td>
-                                    <td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>
-                                    <td>@if($certificate->active==1) پایان یافته @else در حال رسیدگی @endif</td>
+                                    {{--<td class="info col-md-2">{{$certificate->certificate_record_count}}</td>--}}
+                                    {{--<td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>--}}
+                                    <td>@if($certificate->active==1)<span style="font-size: 16px;font-weight: lighter" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter" class="label label-warning">در حال رسیدگی </span>@endif</td>
                                 </tr>
                             {{--@endif--}}
                         @endforeach

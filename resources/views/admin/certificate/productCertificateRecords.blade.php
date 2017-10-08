@@ -56,10 +56,8 @@
                             <td>{{number_format($certificateRecord->price)}} تومان</td>
                             <td>{{$certificateRecord->certificate->shop_comp}}</td>
                             <td>
-                            {{--<button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات--}}
-                                {{--</button>--}}
                                 <button id="acceptProductRequest" content="{{$certificateRecord->certificate_id}}" name="{{$certificateRecord->id}}" type="button" class="btn btn-success col-md-12" >تایید</button>
-                                {{--<button id="acceptServiceRequest" content="{{$certificateRecord->certificate_id}}" name="{{$certificateRecord->id}}" type="button" class="btn btn-success col-md-12" >تایید</button>--}}
+                                <button id="acceptServiceRequest" content="{{$certificateRecord->certificate_id}}" name="{{$certificateRecord->id}}" type="button" class="btn btn-success col-md-12" >تایید</button>
                             </td>
                             {{--<input id="refuseRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن" /></td>--}}
                         </tr>
@@ -143,6 +141,71 @@
             })
         });
 
+        $(document).on('click','#acceptServiceRequest',function(){
+            var certificate_id= $(this).attr('content');
+            var certificate_record_id = $(this).attr('name');
+
+            var token = $('#token').val();
+            var td = $(this);
+            var DOM = $('#table');
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+            $.ajax
+            ({
+                url: "{{url('admin/acceptServiceCertificate')}}",
+                type:"post",
+
+                data:{certificate_record_id:certificate_record_id,certificate_id:certificate_id,_token:token},
+                success:function(response)
+                {
+                    $(td).parentsUntil(DOM,'tr').fadeOut(2000);
+                    $(td).parentsUntil(DOM,'tr').empty();
+                    swal
+                    ({
+                        title: '',
+                        text: response,
+                        type:'success',
+                        confirmButtonText: 'بستن'
+                    });
+                },
+                error:function (error) {
+                    if(error.status === 500)
+                    {
+                        swal
+                        ({
+                            title: '',
+                            text: 'خطایی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید',
+                            type:'info',
+                            confirmButtonText: 'بستن'
+                        });
+                        console.log(error);
+                    }
+
+                    if(error.status === 422)
+                    {
+                        console.log(error);
+                        var errors = error.responseJSON; //this will get the errors response data.
+                        //show them somewhere in the markup
+                        //e.g
+                        var  errorsHtml = '';
+
+                        $.each(errors, function( key, value ) {
+                            errorsHtml +=  value[0] + '\n'; //showing only the first error.
+                        });
+                        swal({
+                            title: "",
+                            text: errorsHtml,
+                            type: "info",
+                            confirmButtonText: "بستن"
+                        });
+                    }
+                }
+            })
+        });
     </script>
 
     <script>

@@ -86,10 +86,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/impart','CertificateController@impart');
         Route::get('/certificate/{id}','CertificateController@execute_certificateGet');
         Route::post('/execute_certificate','CertificateController@execute_certificate');
-        Route::get('/certificatesManagement','CertificateController@certificatesManagementGet');
+        Route::get('/productCertificatesManagement','CertificateController@productCertificatesManagementGet');
+        Route::get('/serviceCertificatesManagement','CertificateController@serviceCertificatesManagementGet');
         Route::get('/acceptedCertificatesManagement','CertificateController@acceptedCertificatesManagementGet');
-        Route::get('/certificateRecords/{id}','CertificateController@certificateRecordsGet');
-        Route::post('/acceptCertificate','CertificateController@acceptCertificate');
+        Route::get('/productCertificateRecords/{id}','CertificateController@productCertificateRecordsGet');
+        Route::get('/serviceCertificateRecords/{id}','CertificateController@serviceCertificateRecordsGet');
+        Route::post('/acceptProductCertificate','CertificateController@acceptProductCertificate');
+        Route::post('/acceptServiceCertificate','CertificateController@acceptServiceCertificate');
         // End Product Request Management
         // Service Request Management
         Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');
