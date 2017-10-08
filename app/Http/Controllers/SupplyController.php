@@ -1406,7 +1406,7 @@ class SupplyController extends Controller
     }
     public function confirmServiceRequestManagementGet()
     {
-        $pageTitle="مدیریت درخواست ها";
+        $pageTitle="مدیریت درخواست های تایید شده";
         $pageName='confirmProductRequest';
         $productRequests=Request2::where('request_type_id',2)->get();
 

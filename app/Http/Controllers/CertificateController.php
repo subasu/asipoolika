@@ -554,7 +554,6 @@ class CertificateController extends Controller
                 $step2=1;
                 $me='من کارمند جز واحدم';
             }
-
         }
         elseif($user->is_supervisor==1)
         {

@@ -33,7 +33,7 @@
                 @elseif($pageName=='serviceCertificateManagement')
                     <h2  style="color:#005ce6;direction: rtl"><i class="fa fa-ban"></i>  مدیریت گواهی های خدمت تازه ثبت شده</h2>
                 @elseif($pageName=='acceptedCertificateManagement')
-                    <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های خدمت در حال پیگیری</h2>
+                    <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت گواهی های خدمت در حال پیگیری</h2>
                 @elseif($pageName=='confirmProductRequest')
                     <h2  style="color:#cc0099;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های تایید شده</h2>
                 @endif

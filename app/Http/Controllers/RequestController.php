@@ -189,6 +189,7 @@ class RequestController extends Controller
             if($requestRecord->refuse_user_id!=null)
                 $requestRecord->refuse=1;
             else $requestRecord->refuse=0;
+
             $requestRecord->status=$step;
 
         }
