@@ -74,7 +74,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a class="col-md-8 col-md-offset-2 btn btn-success" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
+                                    <a class="col-md-8" target="_blank" col-md-offset-2 btn btn-success" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
                                 </td>
                             </tr>
                         @endforeach
