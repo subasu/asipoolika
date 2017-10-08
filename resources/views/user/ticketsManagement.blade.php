@@ -193,7 +193,7 @@
                                         "<td   id='date'>" + value.title + "</td>" +
                                         "<td   id='date'>" + value.date + "</td>" +
                                         "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-warning' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>در حال بررسی</label></td>" +
-                                        "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
+                                        "<td   id='time2'><a class='btn btn-success' target='_blank' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
                                         "</tr>");
                                 }
                                 if(value.active == 1)
@@ -206,7 +206,7 @@
                                         "<td   id='date'>" + value.title + "</td>" +
                                         "<td   id='date'>" + value.date + "</td>" +
                                         "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-default' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>اتمام تیکت از طرف ادمین</label></td>" +
-                                        "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
+                                        "<td   id='time2'><a class='btn btn-success' target='_blank' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
                                         "</tr>");
                                 }
                                 if(value.active == 2)
@@ -219,7 +219,7 @@
                                         "<td   id='date'>" + value.title + "</td>" +
                                         "<td   id='date'>" + value.date + "</td>" +
                                         "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-default' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>اتمام تیکت از طرف ادمین</label></td>" +
-                                        "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
+                                        "<td   id='time2'><a class='btn btn-success' target='_blank' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
                                         "</tr>");
                                 }
 
