@@ -75,7 +75,6 @@ class CertificateController extends Controller
     public function execute_certificate(Request $request)
     {
         $record_count=$request->checked_count;
-//        return response()->json($request->new_price2);
         if($record_count!=0)
         {
             $certificate_id=DB::table('certificates')->insertGetId([
@@ -98,7 +97,6 @@ class CertificateController extends Controller
                 ]);
                 DB::table('request_records')->where('id',$request->record_id[$i])->update([
                     'step'=>8,
-                    'receiver_id'=>$request->receiver_id,
                     'receiver_id'=>$request->receiver_id,
                     'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
                 ]);
@@ -197,6 +195,7 @@ class CertificateController extends Controller
             $certificate->certificate_record_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',$step]])->count();
             //in the process records
             $certificate->certificate_record_count_accept=CertificateRecord::where([['certificate_id',$certificate->id],['step','>=',$step2],['active',1]])->count();
+            $certificate->request_type=$certificate->request->requestType->title;
         }
 //        dd($me.' / '.$step.' / '.$my_roll);
         return view('admin.certificate.certificateManagement',compact('pageTitle','pageName','certificates','title','certificates2'));
@@ -411,6 +410,7 @@ class CertificateController extends Controller
             $certificate->certificate_record_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',$step2]])->count();
             //in the process records
             $certificate->certificate_record_count_accept=CertificateRecord::where([['certificate_id',$certificate->id],['step','>=',$step],['active',1]])->count();
+            $certificate->request_type=$certificate->request->requestType->title;
         }
 //        dd($me.' / '.$step.' / '.$my_roll);
         return view('admin.certificate.certificateManagement',compact('pageTitle','pageName','certificates','title','certificates2'));

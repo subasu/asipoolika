@@ -45,11 +45,7 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            {{--<div class="alert alert-info col-md-12 col-sm-12 col-xs-12" style="direction:rtl;font-size:17px;color:white;">تعداد درخواست ها :  {{$productRequests->count()}} عدد--}}
-
-            {{--</div>--}}
             <div class="x_content">
-                {{--<form id="serviceDetailForm">--}}
                 <table style="direction:rtl;text-align: center;" id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     @if(!empty($pageName))
                         <thead>
@@ -150,7 +146,6 @@
                     @endif
                     </tbody>
                 </table>
-                {{--</form>--}}
             </div>
         </div>
     </div>

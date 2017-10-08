@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'TestController@home');
+Route::get('/', 'IndexController@goToLoginPage');
 Route::post('save', 'TestController@save');
 Route::get('/unit_count','IndexController@unit_count');
 
@@ -25,6 +25,7 @@ Route::group(['prefix'=>'user'],function() {
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
     Route::get('/productRequestFollow','RequestController@productRequestFollowGet');
+
 
     //shiri
     Route::get('/serviceRequest','RequestController@serviceRequestGet');

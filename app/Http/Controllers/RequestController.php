@@ -167,8 +167,13 @@ class RequestController extends Controller
                 case 8: $step='در حال صدور گواهی'; break;
                 default : $step='نامشخص';
             }
+            if($requestRecord->refuse_user_id!=null)
+                $requestRecord->refuse=1;
+            else $requestRecord->refuse=0;
             $requestRecord->status=$step;
+
         }
+
 //        dd($requestRecords[0]->request->user_id);
         if($requestRecords[0]->request->user_id==Auth::user()->id)
         {
@@ -347,7 +352,7 @@ class RequestController extends Controller
             }
     }
 
-    //shiri : below  function to end ticket by user
+
     public function userEndTicket(Request $request)
     {
         $end = Ticket::where('id',$request->ticketId)->update
