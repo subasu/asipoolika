@@ -4,6 +4,8 @@
         span {
             color: #ff0000;
             float: right;
+            padding-right:4px;
+            padding-left:4px;
         }
 
         input, label {

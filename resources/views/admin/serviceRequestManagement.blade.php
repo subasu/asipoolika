@@ -94,7 +94,7 @@
                                     <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                     <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                     <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                    <td><a class="btn btn-info" href="{{url('admin/serviceRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                    <td><a class="btn btn-info" target="_blank" href="{{url('admin/serviceRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
                                 @endif
                             </tr>
                         @endforeach

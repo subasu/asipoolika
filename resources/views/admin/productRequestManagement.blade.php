@@ -149,7 +149,9 @@
                                             @else
                                                 <a  class="btn btn-success col-md-5 pull-right">ابلاغ شده</a>
                                             @endif
-                                                <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-5 pull-right">مشاهده  گواهی ها</a>
+
+                                                <a href="{{url('admin/showCertificates/'.$productRequest->id)}}" target="_blank"  class="btn btn-warning col-md-10">مشاهده  گواهی ها</a>
+
 
                                             {{--<button type="button" class="btn btn-default" data-toggle="tooltip" title="چاپ گواهی">--}}
                                              {{--<span class="fa fa-print" style="font-size: 20px;"></span>--}}

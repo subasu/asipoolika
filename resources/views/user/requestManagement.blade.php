@@ -83,8 +83,10 @@
                                 <td class="info col-md-2">{{$request->request_record_count}}</td>
                                 <td class="success col-md-2">{{$request->request_record_count_accept}}</td>
                                 <td class="danger col-md-2">{{$request->request_record_count_refused}}</td>
-                                <td style="padding-top: 20px;">@if($request->active)<span class="label label-success" style="font-size:15px;font-weight: lighter"> انجام شده </span>@else<span class="label label-warning" style="font-size:15px;font-weight: lighter"> در حال رسیدگی </span>@endif</td>
-                                <td><a class="btn btn-info col-md-12" href="{{url('user/myRequestRecords/'.$request->id)}}">جزئیات بیشتر</a>
+
+                                <td style="padding-top: 20px;">@if($request->active)<span class="label label-success" style="font-size:15px;"> انجام شده </span>@else<span class="label label-warning" style="font-size:15px;"> در حال رسیدگی </span>@endif</td>
+                                <td><a class="btn btn-info" target="_blank" href="{{url('user/myRequestRecords/'.$request->id)}}">جزئیات بیشتر</a>
+
                             </tr>
                         @endforeach
                     @elseif($pageName=='myServiceRequests')
