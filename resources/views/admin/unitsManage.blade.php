@@ -43,15 +43,21 @@
                                 <td>{{$val->phone}} </td>
                                 <td>{{$val->description}}</td>
                                 <td>
+                                    @if($val->main==0)
                                     @if($val->active ===1)
                                         <button value="{{$val->active}}" id="{{$val->id}}" class="btn btn-success">فعال</button>
                                     @else
                                         <button value="{{$val->active}}" id="{{$val->id}}" class="btn btn-danger">غیرفعال</button>
                                     @endif
+                                        @else <span class="label label-warning" style="font-weight: lighter;font-size:13px;">غیر قابل تغییر</span>
+                                    @endif
                                 </td>
                                 <td id="{{$val->id}}">
+                                    @if($val->main==0)
                                     <a class="btn btn-info"
                                        href="{{url('admin/unitsUpdate'.'/'.$val->id)}}">ویرایش</a>
+                                    @else <span class="label label-warning" style="font-weight: lighter;font-size:13px;">غیرقابل ویرایش</span>
+                                        @endif
                                 </td>
                             </tr>
                         @endforeach

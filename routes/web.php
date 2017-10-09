@@ -44,7 +44,6 @@ Route::group(['prefix'=>'user'],function() {
     Route::post('userSendMessage','RequestController@userSendMessage');
     Route::post('userEndTicket' , 'RequestController@userEndTicket');
 
-
 });
 
 Route::group(['prefix'=>'systemManager'],function() {
@@ -67,6 +66,7 @@ Route::group(['prefix'=>'systemManager'],function() {
     Route::post('makeSignatureForced' , 'SystemManagerController@makeSignatureForced');      //96/7/6
     route::post('makeSignatureUnforced' , 'SystemManagerController@makeSignatureUnforced');  //96/7/6
     Route::get('signaturesList','SystemManagerController@signaturesList');                             //96/7/14
+    Route::get('access_level','SystemManagerController@access_levelGet');                             //96/7/14
 });
 
 Route::group(['middleware' => 'auth'], function () {

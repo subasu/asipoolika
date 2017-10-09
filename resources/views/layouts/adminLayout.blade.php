@@ -107,6 +107,8 @@
                                     </li>
                                 </ul>
                             </li>
+                                <li><a href="{{url('systemManager/access_level')}}"><i class="fa fa-users"></i> تعیین سطح دسترسی</a>
+                                </li>
                             @endif
                             //End system manager menu <br>
                             //Admin menu
