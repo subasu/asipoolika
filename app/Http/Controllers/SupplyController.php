@@ -1303,86 +1303,94 @@ class SupplyController extends Controller
     //shiri : below function is related to export delivery and install certificate
     public function exportDeliveryInstallCertificate($id)
     {
-        $bossUnitId = Unit::where('title','ریاست')->value('id');
-        $bossInfo = User::where([['unit_id',$bossUnitId],['is_supervisor',1]])->get();
-        $bossId = 0;
-        $bossName = '';
-        $bossFamily = '';
-        foreach ($bossInfo as $bossInf)
+        $oldCertificates = Form::where('certificate_id',$id)->get();
+        if(count($oldCertificates) > 0)
         {
-            $bossId += $bossInf->id;
-            $bossName .= $bossInf->name;
-            $bossFamily .= $bossInf->family;
+            $pageTitle = '???? ????? ????? ? ???';
+            return view('admin.certificate.exportDeliveryInstallCertificate',compact('pageTitle','oldCertificates'));
         }
-        $bossFullName = $bossName .chr(10).$bossFamily;
-        $bossSignature = Signature::where('user_id',$bossId)->value('signature');
-        $bossSignature = 'data:image/png;base64,'.$bossSignature;
-
-
-        $certificates = Certificate::where('id',$id)->get();
-        $shopComp  = '';
-        $requestId = 0;
-        $date      = '';
-        $certificateId = 0;
-        foreach ($certificates as $certificate)
+        else
         {
-            $shopComp       .= $certificate->shop_comp;
-            $requestId      += $certificate->request_id;
-            $date           .= $this->toPersian($certificate->created_at->toDateString());
-            $certificateId  += $certificate->id;
-        }
-        $pageTitle = 'صدور گواهی تحویل و نصب';
-        //$certificateId        = Certificate::where('request_id',$id)->pluck('id');
-        $unitId               = Request2::where('id',$requestId)->value('unit_id');
-        $certificateRecords = CertificateRecord::where('certificate_id',$id)->get();
-        $unitName = Unit::where('id',$unitId)->value('title');
-        $sum = 0;
-        $receiverId = 0;
-        $receiverName   = '';
-        $receiverFamily = '';
-        $supplierId     = 0;
-        foreach ($certificateRecords as $certificateRecord)
-        {
-            $sum += $certificateRecord->count * $certificateRecord->rate;
-            if($receiverName == '' && $receiverFamily == '')
+            $bossUnitId = Unit::where('title','?????')->value('id');
+            $bossInfo = User::where([['unit_id',$bossUnitId],['is_supervisor',1]])->get();
+            $bossId = 0;
+            $bossName = '';
+            $bossFamily = '';
+            foreach ($bossInfo as $bossInf)
             {
-                $receiverId     += $certificateRecord->user->id;
-                $receiverName   .= $certificateRecord->user->name;
-                $receiverFamily .= $certificateRecord->user->family;
-                $supplierId     += $certificateRecord->certificate->request->supplier_id;
+                $bossId += $bossInf->id;
+                $bossName .= $bossInf->name;
+                $bossFamily .= $bossInf->family;
+            }
+            $bossFullName = $bossName .chr(10).$bossFamily;
+            $bossSignature = Signature::where('user_id',$bossId)->value('signature');
+            $bossSignature = 'data:image/png;base64,'.$bossSignature;
+
+
+            $certificates = Certificate::where('id',$id)->get();
+            $shopComp  = '';
+            $requestId = 0;
+            $date      = '';
+            $certificateId = 0;
+            foreach ($certificates as $certificate)
+            {
+                $shopComp       .= $certificate->shop_comp;
+                $requestId      += $certificate->request_id;
+                $date           .= $this->toPersian($certificate->created_at->toDateString());
+                $certificateId  += $certificate->id;
+            }
+            $pageTitle = '???? ????? ????? ? ???';
+            //$certificateId        = Certificate::where('request_id',$id)->pluck('id');
+            $unitId               = Request2::where('id',$requestId)->value('unit_id');
+            $certificateRecords = CertificateRecord::where('certificate_id',$id)->get();
+            $unitName = Unit::where('id',$unitId)->value('title');
+            $sum = 0;
+            $receiverId = 0;
+            $receiverName   = '';
+            $receiverFamily = '';
+            $supplierId     = 0;
+            foreach ($certificateRecords as $certificateRecord)
+            {
+                $sum += $certificateRecord->count * $certificateRecord->rate;
+                if($receiverName == '' && $receiverFamily == '')
+                {
+                    $receiverId     += $certificateRecord->user->id;
+                    $receiverName   .= $certificateRecord->user->name;
+                    $receiverFamily .= $certificateRecord->user->family;
+                    $supplierId     += $certificateRecord->certificate->request->supplier_id;
+                }
+
             }
 
+            $receiverSignature = Signature::where('user_id',$receiverId)->value('signature');
+            $receiverSignature = 'data:image/png;base64,'.$receiverSignature;
+            $receiverFullName = $receiverName .chr(10).$receiverFamily;
+
+
+            $supplierName = User::where('id',$supplierId)->value('name');
+            $supplierFamily = User::where('id',$supplierId)->value('family');
+            $supplierFullName = $supplierName .chr(10).$supplierFamily;
+            $supplierSignature = Signature::where('user_id',$supplierId)->value('signature');
+            $supplierSignature = 'data:image/png;base64,'.$supplierSignature;
+
+            $unitSupervisorInfo = User::where([['unit_id',$unitId],['is_supervisor',1]])->get();
+            $unitSupervisorId = 0;
+            $unitSupervisorName = '';
+            $unitSupervisorFamily = '';
+            foreach ($unitSupervisorInfo as $unitSupervisorInf)
+            {
+                $unitSupervisorId     +=$unitSupervisorInf->id;
+                $unitSupervisorName   .= $unitSupervisorInf->name;
+                $unitSupervisorFamily .= $unitSupervisorInf->family;
+            }
+            $unitSupervisorFullName = $unitSupervisorName .chr(10).$unitSupervisorFamily;
+            $unitSupervisorSignature = Signature::where('user_id',$unitSupervisorId)->value('signature');
+            $unitSupervisorSignature = 'data:image/png;base64,'.$unitSupervisorSignature;
+            return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitle','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
         }
-
-        $receiverSignature = Signature::where('user_id',$receiverId)->value('signature');
-        $receiverSignature = 'data:image/png;base64,'.$receiverSignature;
-        $receiverFullName = $receiverName .chr(10).$receiverFamily;
-
-
-        $supplierName = User::where('id',$supplierId)->value('name');
-        $supplierFamily = User::where('id',$supplierId)->value('family');
-        $supplierFullName = $supplierName .chr(10).$supplierFamily;
-        $supplierSignature = Signature::where('user_id',$supplierId)->value('signature');
-        $supplierSignature = 'data:image/png;base64,'.$supplierSignature;
-
-        $unitSupervisorInfo = User::where([['unit_id',$unitId],['is_supervisor',1]])->get();
-        $unitSupervisorId = 0;
-        $unitSupervisorName = '';
-        $unitSupervisorFamily = '';
-        foreach ($unitSupervisorInfo as $unitSupervisorInf)
-        {
-            $unitSupervisorId     +=$unitSupervisorInf->id;
-            $unitSupervisorName   .= $unitSupervisorInf->name;
-            $unitSupervisorFamily .= $unitSupervisorInf->family;
-        }
-        $unitSupervisorFullName = $unitSupervisorName .chr(10).$unitSupervisorFamily;
-        $unitSupervisorSignature = Signature::where('user_id',$unitSupervisorId)->value('signature');
-        $unitSupervisorSignature = 'data:image/png;base64,'.$unitSupervisorSignature;
-        return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitle','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
 
 
     }
-
 
     //shiri : below function is related to save forms
     public function formSave(Request $request,$id)

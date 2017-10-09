@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>{{$pageTitle}}</title>
     <link href="{{ url('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
     <script>
@@ -9,14 +10,18 @@
             var body = $('#body')[0].innerHTML;
             var token = $('#token').val();
             var requestId = $('#requestId').val();
+            var button    = $(this);
+            var formId = $('#formId').val();
             $.ajax
             ({
-                url  : "{{url('admin/formSave')}}",
+                url  : "{{url('admin/formSave')}}/{{2}}",
                 type : "post",
-                data : {'body':body ,'_token':token , 'requestId' : requestId},
+                context : button,
+                data : {'body':body ,'_token':token , 'requestId' : requestId, 'formId' : formId},
                 success : function(response)
                 {
                     alert(response);
+                    $(button).css('display','none');
                     window.print();
                 },
                 error : function(error)
@@ -29,6 +34,7 @@
         })
     </script>
 </head>
+@if(!empty($productRequestRecords))
 <body id="body">
 <input type="hidden" id="token" value="{{ csrf_token() }}">
 
@@ -55,8 +61,7 @@
     </thead>
     <tbody>
     {{-- dynamic tr start--}}
-    <?php $i =0; $count = count($productRequestRecords); ?>
-    @while($i < $count)
+        <?php  $i=0; ?>
         @foreach($productRequestRecords as $productRequestRecord)
             <tr>
                 <td>{{ ++$i }}</td>
@@ -69,7 +74,7 @@
                 <input type="hidden" id="requestId" value="{{$productRequestRecord->request_id}}">
             </tr>
         @endforeach
-    @endwhile
+
     <tr>
         <td colspan="6" style="text-align: left; padding-left: 4%;"> جمع</td>
         <td colspan="6" style="text-align: left; padding-left: 3.5%;">{{number_format($sum)}}</td>
@@ -99,4 +104,15 @@
     <i class="fa-print"></i>
 </div>
 </body>
+@endif
+
+@if(!empty($formContents))
+    <body id="body">
+    @foreach($formContents as $formContent)
+        {!! $formContent->content  !!}
+        <input type="hidden" id="formId" value="{{$formContent->id}}">
+    @endforeach
+    </body>
+@endif
+
 </html>
