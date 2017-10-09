@@ -1393,8 +1393,6 @@ class SupplyController extends Controller
                 $unitSupervisorSignature = 'data:image/png;base64,'.$unitSupervisorSignature;
                 return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitle','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
             }
-
-
     }
 
 
@@ -1777,5 +1775,11 @@ class SupplyController extends Controller
                 return view ('admin.certificate.factorsForm',compact('pageTitle','productRequestRecords','sum','supplierFullName'));
             }
 
+    }
+
+    //shiri:
+    public function costDocumentForm()
+    {
+        return view('admin.certificate.costDocumentForm');
     }
 }
