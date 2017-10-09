@@ -129,7 +129,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('showCertificates/{id}','SupplyController@showCertificates');                                //96/7/14
         Route::get('printServiceRequest/{id}','SupplyController@printServiceRequest');                          //96/7/15
-        Route::get('serviceDeliveryForm/{id}','SupplyController@printServiceDeliveryForm');                        //96/7/15
+
+        Route::get('serviceDeliveryForm/{id}','SupplyController@printServiceDeliveryForm');                     //96/7/15
         Route::get('printFactors/{id}','SupplyController@printFactors');                                        //96/7/16
         Route::get('costDocumentForm','SupplyController@costDocumentForm');                                     //96/7/17
 

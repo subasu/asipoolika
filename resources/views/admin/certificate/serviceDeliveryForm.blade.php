@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>{{$pageTitle}}</title>
     <link href="{{ URL::asset('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
     <link href="{{ url('public/dashboard/css/bootstrap.min.css')}}" rel="stylesheet">
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
     <script>
         $(document).on('click','#print',function () {
 
-            var body = $('#body')[0].innerHTML;
-            var token = $('#token').val();
+            var body      = $('#body')[0].innerHTML;
+            var token     = $('#token').val();
             var requestId = $('#requestId').val();
+            var button    = $(this);
+            var formId    = $('#formId').val();
+            var certificateId = $('#certificateId').val();
             $.ajax
             ({
-                url  : "{{url('admin/formSave')}}",
+                url  : "{{url('admin/formSave')}}/{{4}}",
                 type : "post",
-                data : {'body':body ,'_token':token , 'requestId' : requestId},
+                context : button,
+                data : {'body':body ,'_token':token , 'requestId' : requestId , 'certificateId' : certificateId},
                 success : function(response)
                 {
                     alert(response);
+                    $(button).css('display' , 'none');
                     window.print();
                 },
                 error : function(error)
@@ -30,6 +36,7 @@
         })
     </script>
 </head>
+@if(!empty($certificateRecords))
 <body id="body">
 <input type="hidden" id="token" value="{{ csrf_token() }}">
 <div style="padding:1% 2.5%">
@@ -69,6 +76,7 @@
             <td class="col-md-2">{{$certificateRecord->count}}</td>
             <td class="col-md-3">{{number_format($certificateRecord->price)}}</td>
             <input type="hidden" id="requestId" value="{{$requestId}}">
+            <input type="hidden" id="certificateId" value="{{$certificateRecord->certificate_id}}">
         </tr>
         @endforeach
         <tr>
@@ -94,11 +102,21 @@
         </tr>
     </table>
     <br><br><br>
-    <div align="center">
-        <button   style="width: 20%; font-size: 150%;" id="print">چاپ</button>
+    <div align="center" >
+        <button   style="margin-top:2%;width: 20%; font-size: 150%;" id="print">چاپ</button>
         <i class="fa-print"></i>
     </div>
 </div>
 
 </body>
+@endif
+
+@if(!empty($formExistence))
+    <body id="body">
+    @foreach($formExistence as $form)
+        {!! $form->content  !!}
+        {{--<input type="hidden" id="formId" value="{{$form->id}}">--}}
+    @endforeach
+    </body>
+@endif
 </html>
