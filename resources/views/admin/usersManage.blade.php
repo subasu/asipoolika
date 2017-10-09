@@ -20,7 +20,6 @@
 
                 <a href="{{url('admin/usersCreate')}}" id="user-send" type="button" class="col-md-2 btn btn-danger" style="font-weight: bold;"><i class="fa fa-user-plus"></i>                    افزودن کاربر جدید                </a>
 
-
                 <div class="x_content">
                     <table style="direction:rtl;text-align: center" id="example"
                            class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
@@ -41,6 +40,7 @@
                         <tbody>
                         <?php $i = 0 ?>
                         @foreach($data as $val)
+{{--                            @if($val->unit_id!=3)--}}
                             <tr class="unit">
                                 <td>{{++$i}}</td>
                                 <td>{{$val->title. ' '.$val->name.' '.$val->family}}</td>
@@ -49,16 +49,21 @@
                                 <td>{{$val->unit->title}}</td>
                                 <td>{{$val->user->title.' '.$val->user->name .' '.$val->user->family }}</td>
                                 <td>
+                                    @if($val->unit_id!=3)
                                     @if($val->active === 0)
                                         <button  id="{{$val->id}}" value="{{$val->active}}" class="btn btn-danger">غیرفعال</button>
                                     @else
                                         <button  id="{{$val->id}}" value="{{$val->active}}" class="btn btn-success">فعال</button>
                                     @endif
+                                    @endif
                                 </td>
                                 <td id="{{$val->id}}">
-                                    <a class="btn btn-info" href="{{url('admin/usersUpdate'.'/'.$val->id)}}">ویرایش</a></td>
+{{--                                    @if($val->unit_id!=3)--}}
+                                    <a class="btn btn-info" href="{{url('admin/usersUpdate'.'/'.$val->id)}}">ویرایش</a>
+                                    {{--@endif--}}
                                 </td>
                             </tr>
+                            {{--@endif--}}
                         @endforeach
                         </tbody>
                     </table>

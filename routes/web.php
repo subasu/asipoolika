@@ -14,7 +14,9 @@
 Route::get('/', 'IndexController@goToLoginPage');
 Route::post('save', 'TestController@save');
 Route::get('/unit_count','IndexController@unit_count');
-
+Route::get('401',function(){
+    return view('errors.401');
+});
 Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
 Route::group(['prefix'=>'user'],function() {
@@ -126,7 +128,7 @@ Route::group(['prefix'=>'systemManager'],function() {
             'roles'=>['supplierManager','unitManager']
         ]);
 //        Route::get('/acceptProductRequestManagement','SupplyController@acceptProductRequestManagementGet');
-        Route::get('/productRequestRecords/{id}',[
+        Route::get('/acceptProductRequestManagement',[
             'uses'=>'SupplyController@acceptProductRequestManagementGet',
             'middleware' => 'roles',
             'roles'=>['supplierManager','unitManager']
@@ -225,26 +227,56 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('costDocumentForm','SupplyController@costDocumentForm');                                     //96/7/17
 
         //rayat - users manage:
-        Route::get('usersManagement', 'SupplyController@usersManagementGet');
-        Route::get('usersCreate', 'SupplyController@usersCreateGet');
+//        Route::get('usersManagement', 'SupplyController@usersManagementGet');
+        Route::get('/usersManagement',[
+            'uses'=>'SupplyController@usersManagementGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
+//        Route::get('usersCreate', 'SupplyController@usersCreateGet');
+        Route::get('/usersCreate',[
+            'uses'=>'SupplyController@usersCreateGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
         Route::post('checkUnitSupervisor', 'SupplyController@checkUnitSupervisor');
         Route::post('changeUserStatus/{id}', 'SupplyController@changeUserStatus');
-        Route::get('usersUpdate/{id}', 'SupplyController@usersUpdateShow');
+//        Route::get('usersUpdate/{id}', 'SupplyController@usersUpdateShow');
+        Route::get('/usersUpdate/{id}',[
+            'uses'=>'SupplyController@usersUpdateShow',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
         Route::post('usersUpdate', 'SupplyController@usersUpdate');
 
         //rayat - units manage:
-        Route::get('unitsManage', 'SupplyController@unitsManageGet');
-        Route::get('unitsCreate', 'SupplyController@unitsCreateGet');
+//        Route::get('unitsManage', 'SupplyController@unitsManageGet');
+        Route::get('/unitsManage',[
+            'uses'=>'SupplyController@unitsManageGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
+//        Route::get('unitsCreate', 'SupplyController@unitsCreateGet');
+        Route::get('/unitsCreate',[
+            'uses'=>'SupplyController@unitsCreateGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
         Route::post('unitsCreate', 'SupplyController@unitsCreatePost');
         Route::get('units', 'SupplyController@unitsGet');
         Route::post('changeUnitStatus/{id}', 'SupplyController@changeUnitStatus');
         Route::get('unitsUpdate/{id}', 'SupplyController@unitsUpdateShow');
+        Route::get('/unitsUpdate/{id}',[
+            'uses'=>'SupplyController@unitsUpdateShow',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
         Route::post('unitsUpdate', 'SupplyController@unitsUpdate');
         Route::post('usersSupervisor', 'SupplyController@usersSupervisor');
     });
 });
 
-Route::get('unit_signature','SystemManagerController@unit_user_list');
+//Route::get('unit_signature','SystemManagerController@unit_user_list');
 Route::get('price','IndexController@ajaxPrice');
 
 Route::get('/home', 'HomeController@index');

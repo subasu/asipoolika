@@ -58,8 +58,10 @@ class IndexController extends Controller
     {
         if (Auth::check()) {
             $me=Auth::user();
-            if($me->is_supervisor==1)
+            if($me->is_supervisor==1 and $me->unit_id!=3)
                 $redirect='admin/productRequestManagement';
+            elseif($me->is_supervisor==1 and $me->unit_id==3)
+                $redirect='systemManager/signaturesList';
             else $redirect='user/productRequest';
             return redirect($redirect);
         } else

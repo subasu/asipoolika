@@ -1,9 +1,8 @@
 @extends('layouts.adminLayout')
 @section('content')
     <style>
-        span {
-            color: #ff0000;
-            float: right;
+        .star {
+            color: #ff0000;float: right;
             padding-right:4px;
             padding-left:4px;
         }
@@ -43,7 +42,7 @@
                                                required="required" type="text">
                                     </div>
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12 " for="title"> عنوان <span
-                                                class="required" title="پر کردن این فیلد الزامی است" >*</span>
+                                                class="required star" title="پر کردن این فیلد الزامی است" >*</span>
                                     </label>
                                     @if ($errors->has('name'))
                                         <span class="help-block">
@@ -56,10 +55,10 @@
                                     <div class="col-md-8 col-sm-8 col-xs-12">
                                         <input id="name" class="form-control col-md-7 col-xs-12" name="name"
                                                value="{{$val->name}}"
-                                               required="required" type="text">
+                                               required="required " type="text">
                                     </div>
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12" for="name"> نام <span
-                                                class="required" title="پر کردن این فیلد الزامی است" >*</span>
+                                                class="required star" title="پر کردن این فیلد الزامی است" >*</span>
                                     </label>
                                     @if ($errors->has('name'))
                                         <span class="help-block">
@@ -73,7 +72,7 @@
                                                value="{{$val->family}}" required="required" type="text">
                                     </div>
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12" for="family"> نام خانوادگی
-                                        <span class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                        <span class="required star" title="پر کردن این فیلد الزامی است">*</span>
                                     </label>
                                     @if ($errors->has('family'))
                                         <span class="help-block">
@@ -87,7 +86,7 @@
                                                value="{{$val->email}}" class="form-control col-md-7 col-xs-12">
                                     </div>
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12" for="email"> ایمیل <span
-                                                class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                                class="required star" title="پر کردن این فیلد الزامی است">*</span>
                                     </label>
                                     @if ($errors->has('email'))
                                         <span class="help-block">
@@ -102,7 +101,7 @@
                                     </div>
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12" for="cellphone">شماره
                                         موبایل
-                                        <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
+                                        <span class="required star" title="پر کردن این فیلد الزامی است">*</span></label>
                                     @if ($errors->has('cellphone'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('cellphone') }}</strong>
@@ -117,7 +116,7 @@
                                     </div>
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12" for="internal_phone">تلفن
                                         داخلی
-                                        <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
+                                        <span class="required star" title="پر کردن این فیلد الزامی است">*</span></label>
                                     @if ($errors->has('internal_phone'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('internal_phone') }}</strong>

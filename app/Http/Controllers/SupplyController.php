@@ -405,7 +405,7 @@ class SupplyController extends Controller
     public function usersManagementGet()
     {
         $pageTitle='مدیریت کاربران';
-        $data = User::all();
+        $data = User::where('unit_id','!=',3)->get();
         //dd($data);
         return view('admin.usersManage', compact('data','pageTitle'));
     }
