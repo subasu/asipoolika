@@ -30,7 +30,7 @@
         <script type="text/javascript" src="{{ URL::asset('public/comingSoon/js/jquery.countdown.js')}}"></script>
         <script type="text/javascript" src="{{ URL::asset('public/comingSoon/js/lodash.min.js')}}"></script>
         <script type="text/template" id="main-example-template"/>
-        <div class="time">
+        <div class="time <%= label %>">
 				  <span class="count curr top"><%= curr %></span>
 				  <span class="count next top"><%= next %></span>
 				  <span class="count next bottom"><%= next %></span>
@@ -104,7 +104,7 @@
 				});
 			  });
 			</script>
-			<div class="progressbars" style="color:black" progress="10%"></div>
+			<div class="progressbars" progress="60%"></div>
 			<script src="{{ URL::asset('public/comingSoon/js/jprogress.js')}}" type="text/javascript"></script>
 				<script>
 					// activate jprogress

@@ -18,10 +18,11 @@ Route::get('/unit_count','IndexController@unit_count');
 Auth::routes();
 
 Route::group(['prefix'=>'user'],function() {
+
     Route::get('/productRequest',[
         'uses'=>'RequestController@productRequestGet',
-        'as'=>'productRequest',
-        'roles'=>['author','admin']
+        'middleware' => 'roles',
+        'roles'=>['supplierManager','unitManager','user']
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
     Route::get('/productRequestFollow','RequestController@productRequestFollowGet');
@@ -32,7 +33,6 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('/serviceRequestFollow','RequestController@serviceRequestFollowGet');
 
     Route::get('/myRequestRecords/{id}','RequestController@myRequestRecordsGet');
-
 
 
     Route::get('/ticketRequest','RequestController@ticketRequest');
@@ -47,26 +47,48 @@ Route::group(['prefix'=>'user'],function() {
 });
 
 Route::group(['prefix'=>'systemManager'],function() {
-    Route::get('/signatures',[
-        'uses'=>'SystemManagerController@getSignatures',
-        'as'=>'signature'
+
+//    Route::get('/signatures',[
+//        'uses'=>'SystemManagerController@getSignatures',
+//        'as'=>'signature',
+//        'roles'=>['systemManager']
+//    ]);
+
+//    Route::get('signaturesList','SystemManagerController@signaturesList');
+
+    Route::get('/signaturesList',[
+        'uses'=>'SystemManagerController@signaturesList',
+        'middleware' => 'roles',
+        'roles'=>['systemManager']
     ]);
+
     Route::get('add_signature',[
         'uses'=>'SystemManagerController@getAddSignature',
-        'as'=>'addSignature'
+        'middleware' => 'roles',
+        'roles'=>['systemManager']
     ]);
     Route::get('edit_signature/{id}',[
         'uses'=>'SystemManagerController@getEditSignature',
-        'as'=>'editSignature'
+        'middleware' => 'roles',
+        'roles'=>['systemManager']
     ]);
-
     //Shiri
     Route::post('addSignature','SystemManagerController@addSignature');                      //96/7/6
-    Route::get('showSignature/{id}','SystemManagerController@showSignature');                //96/7/6
+
+    Route::get('showSignature/{id}',[
+        'uses'=>'SystemManagerController@showSignature',
+        'middleware' => 'roles',
+        'roles'=>['systemManager']
+    ]);
+
     Route::post('makeSignatureForced' , 'SystemManagerController@makeSignatureForced');      //96/7/6
     route::post('makeSignatureUnforced' , 'SystemManagerController@makeSignatureUnforced');  //96/7/6
-    Route::get('signaturesList','SystemManagerController@signaturesList');                             //96/7/14
-    Route::get('access_level','SystemManagerController@access_levelGet');                             //96/7/14
+
+    Route::get('access_level',[
+        'uses'=>'SystemManagerController@access_levelGet',
+        'middleware' => 'roles',
+        'roles'=>['systemManager']
+    ]);
 });
 
 Route::group(['middleware' => 'auth'], function () {
