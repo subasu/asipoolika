@@ -16,7 +16,7 @@ Route::post('save', 'TestController@save');
 Route::get('/unit_count','IndexController@unit_count');
 
 Auth::routes();
-
+Route::group(['middleware' => 'auth'], function () {
 Route::group(['prefix'=>'user'],function() {
 
     Route::get('/productRequest',[
@@ -25,18 +25,37 @@ Route::group(['prefix'=>'user'],function() {
         'roles'=>['supplierManager','unitManager','user']
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
-    Route::get('/productRequestFollow','RequestController@productRequestFollowGet');
+//    Route::get('/productRequestFollow','RequestController@productRequestFollowGet');
+    Route::get('/productRequestFollow',[
+        'uses'=>'RequestController@productRequestFollowGet',
+        'middleware' => 'roles',
+        'roles'=>['supplierManager','unitManager','user']
+    ]);
 
     //shiri
-    Route::get('/serviceRequest','RequestController@serviceRequestGet');
+//    Route::get('/serviceRequest','RequestController@serviceRequestGet');
+    Route::get('/serviceRequest',[
+        'uses'=>'RequestController@serviceRequestGet',
+        'middleware' => 'roles',
+        'roles'=>['supplierManager','unitManager','user']
+    ]);
     Route::post('serviceRequest','RequestController@serviceRequest');
-    Route::get('/serviceRequestFollow','RequestController@serviceRequestFollowGet');
 
-    Route::get('/myRequestRecords/{id}','RequestController@myRequestRecordsGet');
-
+//    Route::get('/serviceRequestFollow','RequestController@serviceRequestFollowGet');
+    Route::get('/serviceRequestFollow',[
+        'uses'=>'RequestController@serviceRequestFollowGet',
+        'middleware' => 'roles',
+        'roles'=>['supplierManager','unitManager','user']
+    ]);
+//    Route::get('/myRequestRecords/{id}','RequestController@myRequestRecordsGet');
+    Route::get('/myRequestRecords/{id}',[
+        'uses'=>'RequestController@myRequestRecordsGet',
+        'middleware' => 'roles',
+        'roles'=>['supplierManager','unitManager','user']
+    ]);
 
     Route::get('/ticketRequest','RequestController@ticketRequest');
-    Route::get('/getUnits','RequestController@getUnits');
+//    Route::get('/getUnits','RequestController@getUnits');
     Route::post('sendTicket','RequestController@sendTicket');
     Route::get('ticketsManagement','RequestController@ticketsManagement');
     Route::post('searchOnDate/{id}','RequestController@searchOnDate');
@@ -91,22 +110,61 @@ Route::group(['prefix'=>'systemManager'],function() {
     ]);
 });
 
-Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix'=>'admin'],function() {
         // Product Request Management
-        Route::get('/productRequestManagement','SupplyController@productRequestManagement');
-        Route::get('/productRequestRecords/{id}','SupplyController@productRequestRecords');
-        Route::get('/acceptProductRequestManagement','SupplyController@acceptProductRequestManagementGet');
+//        Route::get('/productRequestManagement','SupplyController@productRequestManagement');
+        Route::get('/productRequestManagement',[
+            'uses'=>'SupplyController@productRequestManagement',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager','unitManager']
+        ]);
+
+//        Route::get('/productRequestRecords/{id}','SupplyController@productRequestRecords');
+        Route::get('/productRequestRecords/{id}',[
+            'uses'=>'SupplyController@productRequestRecords',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager','unitManager']
+        ]);
+//        Route::get('/acceptProductRequestManagement','SupplyController@acceptProductRequestManagementGet');
+        Route::get('/productRequestRecords/{id}',[
+            'uses'=>'SupplyController@acceptProductRequestManagementGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager','unitManager']
+        ]);
         Route::post('acceptProductRequest','SupplyController@acceptProductRequest');
         Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');
         Route::get('/refusedProductRequestManagement','SupplyController@refusedProductRequestManagementGet');
-        Route::get('/confirmProductRequestManagement','SupplyController@confirmProductRequestManagementGet');
+//        Route::get('/confirmProductRequestManagement','SupplyController@confirmProductRequestManagementGet');
+        Route::get('/confirmProductRequestManagement',[
+            'uses'=>'SupplyController@confirmProductRequestManagementGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
 
         // Certificate
         Route::get('/impart/{id}','CertificateController@impartGet');
-        Route::get('/impart','CertificateController@impart');
-        Route::get('/certificate/{id}','CertificateController@execute_certificateGet');
+
+        Route::get('/impart/{id}',[
+            'uses'=>'CertificateController@impartGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
+
+//        Route::get('/impart','CertificateController@impart');
+        Route::get('/impart',[
+            'uses'=>'CertificateController@impart',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
+
+//        Route::get('/certificate/{id}','CertificateController@execute_certificateGet');
+        Route::get('/certificate/{id}',[
+            'uses'=>'CertificateController@execute_certificateGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
         Route::post('/execute_certificate','CertificateController@execute_certificate');
+
         Route::get('/productCertificatesManagement','CertificateController@productCertificatesManagementGet');
         Route::get('/serviceCertificatesManagement','CertificateController@serviceCertificatesManagementGet');
         Route::get('/acceptedCertificatesManagement','CertificateController@acceptedCertificatesManagementGet');
@@ -135,9 +193,19 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
         Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');             //96/7/1
 
-        Route::get('workerCardManage' ,'SupplyController@workerCardManage');                         //96/7/2
+//        Route::get('workerCardManage' ,'SupplyController@workerCardManage');                         //96/7/2
+        Route::get('/workerCardManage',[
+            'uses'=>'SupplyController@workerCardManage',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
         Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');                           //96/7/2
-        Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');                         //96/7/2
+//        Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');                         //96/7/2
+        Route::get('/showWorkerCard/{id}',[
+            'uses'=>'SupplyController@showWorkerCard',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
         Route::get('showTickets','SupplyController@showTickets');                                    //96/7/5
         Route::post('adminSendMessage','SupplyController@adminSendMessage');                        //96/7/5
         Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
