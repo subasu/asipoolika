@@ -128,8 +128,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('printServiceRequest/{id}','SupplyController@printServiceRequest');                          //96/7/15
         Route::get('serviceDeliveryForm/{id}','SupplyController@printServiceDeliveryForm');                     //96/7/15
         Route::get('printFactors/{id}','SupplyController@printFactors');                                        //96/7/16
-        Route::get('costDocumentForm','SupplyController@costDocumentForm');                                     //96/7/17
-
+        Route::get('costDocumentForm/{id}','SupplyController@costDocumentForm');                                //96/7/17
+        Route::post('saveCostDocument','SupplyController@saveCostDocument');
         //rayat - users manage:
         Route::get('usersManagement', 'SupplyController@usersManagementGet');
         Route::get('usersCreate', 'SupplyController@usersCreateGet');

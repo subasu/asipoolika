@@ -6,6 +6,7 @@ use App\Http\Requests\AcceptServiceRequestValidation;
 use App\Http\Requests\UserCreateValidation;
 use App\Models\Certificate;
 use App\Models\CertificateRecord;
+use App\Models\CostDocument;
 use App\Models\Form;
 use App\Models\Message;
 use App\Models\Request2;
@@ -1399,133 +1400,175 @@ class SupplyController extends Controller
     //shiri : below function is related to save forms
     public function formSave(Request $request,$id)
     {
+
         $userId = Auth::user()->id;
-        //dd($request->formId);
-        if($request->formId != null)
-        {
-            $checkFormExistence = Form::where('id',$request->formId)->get();
-            $countFormExistence  = count($checkFormExistence);
-            if($countFormExistence > 0)
-            {
-                $count = Form::where('id', $request->formId)->increment('print_count');
-                $formPrintId = DB::table('print_form')->insertGetId
-                ([
-                    'form_id' => $request->formId,
-                    'printed_by' => $userId,
-                ]);
-                if ($count && $formPrintId) {
-                    return response('اطلاعات فرم شما ذخیره گردید');
-                }
-            }else
+        switch ($id) {
+            case 1:
+                if($request->formId)
                 {
-                    return response('در ثبت اطلاعات مشکلی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید');
-                }
+                    $checkFormExistence = Form::where('id',$request->formId)->get();
+                    $countFormExistence  = count($checkFormExistence);
+                    if($countFormExistence > 0)
+                    {
+                        $count = Form::where('id', $request->formId)->increment('print_count');
+                        $formPrintId = DB::table('print_form')->insertGetId
+                        ([
 
-        }else {
-            $formId = DB::table('forms')->insertGetId
-            ([
-                'request_id' => $request->requestId,
-                'content' => $request->body,
-
-            ]);
-            if ($formId) {
-                $count = Form::where('id', $formId)->increment('print_count');
-                $formPrintId = DB::table('print_form')->insertGetId
-                ([
-                    'form_id' => $formId,
-                    'printed_by' => $userId,
-                ]);
-                switch ($id) {
-                    case 1:
-                        $updateFormTitle = Form::where('id',$formId)->update(['title' => 'فرم خلاصه تنظیمی']);
-                        $updateRequestFactorFormId = Request2::where('id', $request->requestId)->update(['factor_form_id' => $formId]);
-                        if ($count && $formPrintId && $updateRequestFactorFormId && $updateFormTitle) {
+                            'form_id'    => $request->formId,
+                            'printed_by' => $userId,
+                        ]);
+                        if ($count && $formPrintId) {
                             return response('اطلاعات فرم شما ذخیره گردید');
                         }
-                        break;
-                    case 2:
-                        $updateFormTitle = Form::where('id',$formId)->update(['title' => 'فرم درخواست']);
-                        $updateRequestRequestFormId = Request2::where('id', $request->requestId)->update(['request_form_id' => $formId]);
-                        if ($count && $formPrintId && $updateRequestRequestFormId && $updateFormTitle) {
+                    }else
+                    {
+                        return response('در ثبت اطلاعات مشکلی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید');
+                    }
+
+                }
+                else {
+                    $formId = DB::table('forms')->insertGetId
+                    ([
+                        'title'      => 'خلاصه تنظیمی',
+                        'request_id' => $request->requestId,
+                        'content' => $request->body,
+
+                    ]);
+                    if ($formId) {
+                        $count = Form::where('id', $formId)->increment('print_count');
+                        $formPrintId = DB::table('print_form')->insertGetId
+                        ([
+                            'form_id' => $formId,
+                            'printed_by' => $userId,
+                        ]);
+
+                    }
+                    $updateRequestFactorFormId = Request2::where('id', $request->requestId)->update(['factor_form_id' => $formId]);
+                    if ($count && $formPrintId && $updateRequestFactorFormId) {
+                        return response('اطلاعات فرم شما ذخیره گردید');
+                    }
+                }
+                break;
+
+            case 2:
+                if($request->formId)
+                {
+                    $checkFormExistence = Form::where('id',$request->formId)->get();
+                    $countFormExistence  = count($checkFormExistence);
+                    if($countFormExistence > 0)
+                    {
+                        $count = Form::where('id', $request->formId)->increment('print_count');
+                        $formPrintId = DB::table('print_form')->insertGetId
+                        ([
+
+                            'form_id'    => $request->formId,
+                            'printed_by' => $userId,
+                        ]);
+                        if ($count && $formPrintId) {
                             return response('اطلاعات فرم شما ذخیره گردید');
                         }
-                        break;
-                    case 3:
-                        $formId = Form::where('certificate_id', $request->certificateId)->value('id');
-                        if ($formId > 0) {
-                            $count = Form::where('certificate_id', $request->certificateId)->increment('print_count');
-                            $formPrintId = DB::table('print_form')->insertGetId
-                            ([
-                                'form_id' => $formId,
-                                'printed_by' => $userId,
-                            ]);
-                            if ($count && $formPrintId) {
-                                return response('اطلاعات فرم شما ذخیره گردید');
+                    }else
+                    {
+                        return response('در ثبت اطلاعات مشکلی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید');
+                    }
 
-                            }
-                        } else {
-                            $formId = DB::table('forms')->insertGetId
-                            ([
-                                'request_id' => $request->requestId,
-                                'content' => $request->body,
-                                'title' => 'گواهی تحویل و نصب کالا',
-                                'certificate_id' => $request->certificateId
-                            ]);
-                            if ($formId) {
-                                $count = Form::where('id', $formId)->increment('print_count');
-                                $formPrintId = DB::table('print_form')->insertGetId
-                                ([
-                                    'form_id' => $formId,
-                                    'printed_by' => $userId,
-                                ]);
-                                if ($count && $formPrintId) {
-                                    return response('اطلاعات فرم شما ذخیره گردید');
-                                }
+                }
+                else {
+                    $formId = DB::table('forms')->insertGetId
+                    ([
+                        'title'      => 'فرم درخواست',
+                        'request_id' => $request->requestId,
+                        'content' => $request->body,
 
-                            }
+                    ]);
+                    if ($formId) {
+                        $count = Form::where('id', $formId)->increment('print_count');
+                        $formPrintId = DB::table('print_form')->insertGetId
+                        ([
+                            'form_id' => $formId,
+                            'printed_by' => $userId,
+                        ]);
+
+                    }
+                    $updateRequestFactorFormId = Request2::where('id', $request->requestId)->update(['request_form_id' => $formId]);
+                    if ($count && $formPrintId && $updateRequestFactorFormId) {
+                        return response('اطلاعات فرم شما ذخیره گردید');
+                    }
+                }
+                break;
+            case 3:
+                $formId = Form::where('certificate_id', $request->certificateId)->value('id');
+                if ($formId > 0) {
+                    $count = Form::where('certificate_id', $request->certificateId)->increment('print_count');
+                    $formPrintId = DB::table('print_form')->insertGetId
+                    ([
+                        'form_id' => $formId,
+                        'printed_by' => $userId,
+                    ]);
+                    if ($count && $formPrintId) {
+                        return response('اطلاعات فرم شما ذخیره گردید');
+
+                    }
+                } else {
+                    $formId = DB::table('forms')->insertGetId
+                    ([
+                        'request_id' => $request->requestId,
+                        'content' => $request->body,
+                        'title' => 'گواهی تحویل و نصب کالا',
+                        'certificate_id' => $request->certificateId
+                    ]);
+                    if ($formId) {
+                        $count = Form::where('id', $formId)->increment('print_count');
+                        $formPrintId = DB::table('print_form')->insertGetId
+                        ([
+                            'form_id' => $formId,
+                            'printed_by' => $userId,
+                        ]);
+                        if ($count && $formPrintId) {
+                            return response('اطلاعات فرم شما ذخیره گردید');
                         }
 
-                        break;
-                    case 4:
-                        $formId = Form::where('certificate_id', $request->certificateId)->value('id');
-                        if (count($formId) > 0) {
-                            $count = Form::where('certificate_id', $request->certificateId)->increment('print_count');
-                            $formPrintId = DB::table('print_form')->insertGetId
-                            ([
-                                'form_id' => $formId,
-                                'printed_by' => $userId,
-                            ]);
-                            if ($count && $formPrintId) {
-                                return response('اطلاعات فرم شما ذخیره گردید');
-                            }
-                        } else {
-                            $formId = DB::table('forms')->insertGetId
-                            ([
-                                'request_id' => $request->requestId,
-                                'content' => $request->body,
-                                'title' => 'گواهی تحویل خدمت',
-                                'certificate_id' => $request->certificateId
-                            ]);
-                            if ($formId) {
-                                $count = Form::where('id', $formId)->increment('print_count');
-                                $formPrintId = DB::table('print_form')->insertGetId
-                                ([
-                                    'form_id' => $formId,
-                                    'printed_by' => $userId,
-                                ]);
-                                if ($count && $formPrintId) {
-                                    return response('اطلاعات فرم شما ذخیره گردید');
-                                }
-
-                            }
-                        }
-                        break;
+                    }
                 }
 
+                break;
+            case 4:
+                $formId = Form::where('certificate_id', $request->certificateId)->value('id');
+                if (count($formId) > 0) {
+                    $count = Form::where('certificate_id', $request->certificateId)->increment('print_count');
+                    $formPrintId = DB::table('print_form')->insertGetId
+                    ([
+                        'form_id' => $formId,
+                        'printed_by' => $userId,
+                    ]);
+                    if ($count && $formPrintId) {
+                        return response('اطلاعات فرم شما ذخیره گردید');
+                    }
+                } else {
+                    $formId = DB::table('forms')->insertGetId
+                    ([
+                        'request_id' => $request->requestId,
+                        'content' => $request->body,
+                        'title' => 'گواهی تحویل خدمت',
+                        'certificate_id' => $request->certificateId
+                    ]);
+                    if ($formId) {
+                        $count = Form::where('id', $formId)->increment('print_count');
+                        $formPrintId = DB::table('print_form')->insertGetId
+                        ([
+                            'form_id' => $formId,
+                            'printed_by' => $userId,
+                        ]);
+                        if ($count && $formPrintId) {
+                            return response('اطلاعات فرم شما ذخیره گردید');
+                        }
 
-            }
+                    }
+                }
+                break;
+            case 5:
+                
         }
-
     }
     public function confirmServiceRequestManagementGet()
     {
@@ -1778,8 +1821,53 @@ class SupplyController extends Controller
     }
 
     //shiri:
-    public function costDocumentForm()
+    public function costDocumentForm($id)
     {
-        return view('admin.certificate.costDocumentForm');
+        return view('admin.certificate.costDocumentForm',compact('id'));
+    }
+
+    //
+    public function saveCostDocument(Request $request)
+    {
+        $oldCostDocument = CostDocument::where('request_id',$request->requestId)->get();
+        if(count($oldCostDocument) > 0)
+        {
+            return response('سند هزینه این درخواست قبلا ثبت ثبت گردیده است');
+        }else
+            {
+                $recordCount = $request->recordCount;
+                if($recordCount == "")
+                {
+                    return response('محتویات سند خالی است ، لطفا سند را پر نمایید سپس درخواست مجدد بدهید.');
+                }
+                else
+                    {
+                        $i = 0;
+                        while( $i < $recordCount )
+                        {
+                            $costDocuments = DB::table('cost_documents')->insert
+                            ([
+                                'request_id'    => $request->requestId,
+                                'code'          => $request->code[$i],
+                                'description'   => $request->description[$i],
+                                'moein_office'  => $request->moeinOffice[$i],
+                                'general_price' => $request->generalPrice[$i],
+                                'deduction'     => $request->deduction[$i],
+                                'payed_price'   => $request->payedPrice[$i],
+                                'page'          => $request->page[$i],
+                                'row'           => $request->row[$i]
+                            ]);
+                            $i++;
+
+                        }
+                        if($costDocuments)
+                        {
+                            return response('اطلاعات با موفقیت ثبت شد');
+                        }
+                    }
+
+            }
+
+
     }
 }
