@@ -33,7 +33,7 @@
                         @elseif($pageName=='refusedProductRequestManagement')
                             <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های کالای رد شده</h2>
                         @elseif($pageName=='acceptProductRequestManagement')
-                            <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های کالا در حال پیگیری</h2>
+                            <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های کالا در حال پیگیری</h2>ss
                         @elseif($pageName=='confirmProductRequest')
                             <h2  style="color:#cc0099;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های تایید شده</h2>
                         @endif
@@ -120,7 +120,7 @@
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                            <td class="col-md-2">@if($productRequest->active==1) پایان یافته @else درحال رسیدگی @endif</td>
+                                            <td class="col-md-2">@if($productRequest->active==1)<span style="font-size: 16px;font-weight: lighter" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter" class="label label-warning">در حال رسیدگی </span>@endif</td>
                                             {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                         </tr>
                                         @endif
@@ -137,21 +137,23 @@
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
                                         <td class="col-md-2" style="font-size: 25px;">
                                             {{--<a href="" class="btn btn-danger">صدور صورتجلسه تحویل و نصب</a>--}}
-                                            <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-10  @if($productRequest->accept_count==0) disabled @endif"> صدور گواهی</a>
+                                            <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right @if($productRequest->accept_count==0 or $productRequest->supplier_id==null) disabled @endif"> صدور گواهی</a>
                                             @if($productRequest->request_type_id == 3)
-                                             <a href="{{url('admin/printProductRequest/'.$productRequest->id)}}" class="btn btn-info col-md-10"> چاپ درخواست </a>
+                                             <a href="{{url('admin/printProductRequest/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right"> چاپ درخواست </a>
                                             @endif
                                             @if($productRequest->request_type_id == 2)
-                                                <a href="{{url('admin/printServiceRequest/'.$productRequest->id)}}" class="btn btn-info col-md-10"> چاپ درخواست </a>
+                                                <a href="{{url('admin/printServiceRequest/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right"> چاپ درخواست </a>
                                             @endif
                                             @if($productRequest->supplier_id==null)
-                                            <a href="{{url('admin/impart/'.$productRequest->id)}}" class="btn btn-danger col-md-10"> ابلاغ به کارپرداز</a>
+                                            <a href="{{url('admin/impart/'.$productRequest->id)}}" class="btn btn-danger col-md-5 pull-right"> ابلاغ به کارپرداز</a>
                                             @else
-                                                <span class="label label-success col-md-10" style="font-size:17px;padding:7px 0 7px 0;font-weight: lighter;margin-bottom: 5px;">ابلاغ شده</span>
+                                                <a  class="btn btn-success col-md-5 pull-right">ابلاغ شده</a>
                                             @endif
+
                                                 <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-10">مشاهده  گواهی ها</a>
                                                 <a href="{{url('admin/printFactors/'.$productRequest->id)}}" class="btn btn-info col-md-10">چاپ خلاصه تنظیمی</a>
                                                 <a href="{{url('admin/costDocumentForm')}}" class="btn btn-info col-md-10">سند هزینه</a>
+
 
                                             {{--<button type="button" class="btn btn-default" data-toggle="tooltip" title="چاپ گواهی">--}}
                                              {{--<span class="fa fa-print" style="font-size: 20px;"></span>--}}

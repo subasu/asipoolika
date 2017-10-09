@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'TestController@home');
+Route::get('/', 'IndexController@goToLoginPage');
 Route::post('save', 'TestController@save');
 Route::get('/unit_count','IndexController@unit_count');
 
@@ -85,10 +85,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/impart','CertificateController@impart');
         Route::get('/certificate/{id}','CertificateController@execute_certificateGet');
         Route::post('/execute_certificate','CertificateController@execute_certificate');
-        Route::get('/certificatesManagement','CertificateController@certificatesManagementGet');
+        Route::get('/productCertificatesManagement','CertificateController@productCertificatesManagementGet');
+        Route::get('/serviceCertificatesManagement','CertificateController@serviceCertificatesManagementGet');
         Route::get('/acceptedCertificatesManagement','CertificateController@acceptedCertificatesManagementGet');
-        Route::get('/certificateRecords/{id}','CertificateController@certificateRecordsGet');
-        Route::post('/acceptCertificate','CertificateController@acceptCertificate');
+        Route::get('/productCertificateRecords/{id}','CertificateController@productCertificateRecordsGet');
+        Route::get('/serviceCertificateRecords/{id}','CertificateController@serviceCertificateRecordsGet');
+        Route::post('/acceptProductCertificate','CertificateController@acceptProductCertificate');
+        Route::post('/acceptServiceCertificate','CertificateController@acceptServiceCertificate');
         // End Product Request Management
         // Service Request Management
         Route::get('/serviceRequestManagement','SupplyController@serviceRequestManagement');
@@ -126,6 +129,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('showCertificates/{id}','SupplyController@showCertificates');                                //96/7/14
         Route::get('printServiceRequest/{id}','SupplyController@printServiceRequest');                          //96/7/15
+
         Route::get('serviceDeliveryForm/{id}','SupplyController@printServiceDeliveryForm');                     //96/7/15
         Route::get('printFactors/{id}','SupplyController@printFactors');                                        //96/7/16
         Route::get('costDocumentForm','SupplyController@costDocumentForm');                                     //96/7/17
@@ -185,6 +189,9 @@ Route::get('/admin/form6', function () {
 });
 Route::get('/admin/form4', function () {
     return view('admin.ceremonial');
+});
+route::get('/cost', function () {
+    return view('admin.costDocumentForm');
 });
 Route::get('logout',function(){
     Auth::logout();

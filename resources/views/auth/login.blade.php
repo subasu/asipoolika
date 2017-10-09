@@ -28,7 +28,7 @@
             </span>
         @endif
 
-        <a href="{{ url('/password/reset') }}">رمز عبور خود را فراموش کرده اید؟</a>
+{{--        <a href="{{ url('/password/reset') }}">رمز عبور خود را فراموش کرده اید؟</a>--}}
 
         <button>
             {{--<i class="spinner"></i>--}}
