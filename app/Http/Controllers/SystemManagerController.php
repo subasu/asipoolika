@@ -30,17 +30,15 @@ class SystemManagerController extends Controller
         $units=Unit::where('active',1)->get();
         return view('system_manager.add_signature',compact('units','pageTitle'));
     }
-    //Kianfar : load user's of the unit that has been selected in add signature view
+
     public function unit_user_list(Request $request)
     {
         if (!$request->ajax())
         {
             abort(403);
         }
-        $unit_id=$request->unit_id;
-        $userIds = Signature::where('active',1)->pluck('user_id');
-        //dd($userIds);
-        $users =User::where([['unit_id',$unit_id],['is_supervisor',1]])->whereNotIn('id',$userIds)->get();
+
+        $users =User::where('unit_id',$request->unit_id)->get();
         return response()->json(compact('users'));
     }
     public function getEditSignature($id)
@@ -132,7 +130,7 @@ class SystemManagerController extends Controller
     {
         $pageTitle = 'لیست امضاها';
         $signatures = Signature::all();
-        //dd($signatures);
+//        dd($signatures);
         return view('system_manager.signature',compact('signatures','pageTitle'));
     }
 
