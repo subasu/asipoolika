@@ -133,7 +133,6 @@ class CertificateController extends Controller
                 $step2=2;
                 $me='من کارمند جز واحدم';
             }
-
         }
         elseif($user->is_supervisor==1)
         {
@@ -168,7 +167,7 @@ class CertificateController extends Controller
                 $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
                 $certificate_records = CertificateRecord::where('step', 1)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
                 $certificates = Certificate::whereIn('id', $certificate_records)->get();
-//                dd($user->id);
+//                dd($request_id);
                 break;
             case 'boss':
                 $certificate_id = CertificateRecord::where('step', 4)->pluck('certificate_id');

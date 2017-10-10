@@ -100,15 +100,12 @@
                                     @endforeach
                                 @elseif($pageName=='refusedProductRequestManagement')
                                     @foreach($productRequests as $productRequest)
-{{--                                        @if($productRequest->request_refuse_count>0)--}}
                                      <tr>
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                         <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
                                         <td class="col-md-2 danger">{{$productRequest->refuse_record_count}}</td>
-                                        {{--<td>بررسی مجدد</td>--}}
                                      </tr>
-                                     {{--@endif--}}
                                     @endforeach
                                 @elseif($pageName=='acceptProductRequestManagement')
                                     @foreach($productRequests as $productRequest)
@@ -147,17 +144,11 @@
                                             @if($productRequest->supplier_id==null)
                                             <a href="{{url('admin/impart/'.$productRequest->id)}}" class="btn btn-danger col-md-5 pull-right"> ابلاغ به کارپرداز</a>
                                             @else
-                                                <a  class="btn btn-success col-md-5 pull-right">ابلاغ شده</a>
+                                                <a  class="btn btn-success disabled col-md-5 pull-right">ابلاغ شده</a>
                                             @endif
-
-                                                <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-10">مشاهده  گواهی ها</a>
-                                                <a href="{{url('admin/printFactors/'.$productRequest->id)}}" class="btn btn-info col-md-10">چاپ خلاصه تنظیمی</a>
-                                                <a href="{{url('admin/costDocumentForm/'.$productRequest->id)}}" class="btn btn-info col-md-10">سند هزینه</a>
-
-
-                                            {{--<button type="button" class="btn btn-default" data-toggle="tooltip" title="چاپ گواهی">--}}
-                                             {{--<span class="fa fa-print" style="font-size: 20px;"></span>--}}
-                                            {{--</button>--}}
+                                                <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-5  pull-right">مشاهده  گواهی ها</a>
+                                                <a href="{{url('admin/printFactors/'.$productRequest->id)}}" class="btn btn-info col-md-5  pull-right">چاپ خلاصه تنظیمی</a>
+                                                <a href="{{url('admin/costDocumentForm/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right">سند هزینه</a>
                                         </td>
                                     </tr>
                                         @endif
