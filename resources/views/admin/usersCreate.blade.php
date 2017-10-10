@@ -1,7 +1,7 @@
 @extends('layouts.adminLayout')
 @section('content')
     <style>
-        span {
+        .star {
             color: #ff0000;
             float: right;
             padding-right:4px;
@@ -45,7 +45,7 @@
 
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="title"> عنوان : <span
-                                            class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                            class="required star" title="پر کردن این فیلد الزامی است">*</span>
                                 </label>
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -59,7 +59,7 @@
                                            required="required" type="text">
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="name"> نام : <span
-                                            class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                            class="required star" title="پر کردن این فیلد الزامی است">*</span>
                                 </label>
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -73,7 +73,7 @@
                                            placeholder="" required="required" type="text">
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="family"> نام خانوادگی :
-                                    <span class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                    <span class="required star" title="پر کردن این فیلد الزامی است">*</span>
                                 </label>
                                 @if ($errors->has('family'))
                                     <span class="help-block">
@@ -87,7 +87,7 @@
                                            class="form-control col-md-7 col-xs-12">
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="email"> ایمیل : <span
-                                            class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                            class="required star" title="پر کردن این فیلد الزامی است">*</span>
                                 </label>
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -101,7 +101,7 @@
                                            class="form-control col-md-7 col-xs-12" required="required">
                                 </div>
                                 <label for="password" class="control-label col-md-4">رمز عبور:
-                                    <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
+                                    <span class="required star" title="پر کردن این فیلد الزامی است">*</span></label>
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
@@ -115,7 +115,7 @@
                                 </div>
                                 <label for="password-confirm" class="control-label col-md-4 col-sm-4 col-xs-12"> تکرار
                                     رمز عبور:
-                                    <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
+                                    <span class="required star" title="پر کردن این فیلد الزامی است">*</span></label>
                             </div>
                             <div class="item form-group {{ $errors->has('cellphone') ? ' has-error' : '' }}">
                                 <div class="col-md-8 col-sm-6 col-xs-12">
@@ -155,7 +155,7 @@
                                     </select>
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="unit_id"> واحد :
-                                    <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
+                                    <span class="required star" title="پر کردن این فیلد الزامی است">*</span></label>
                             </div>
 
                             {{--<div class="item form-group">--}}

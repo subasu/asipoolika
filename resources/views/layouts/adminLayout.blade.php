@@ -79,7 +79,7 @@
                              class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
-                        <span>@if($user_info->is_supervisor==1)@if($user_info->unit_id!=4) مدیر @endif @endif{{$user->unit->description}}</span>
+                        <span>@if($user_info->is_supervisor==1)@if($user_info->unit_id!=4) مدیر @endif @endif{{$user->unit->description}}</span><br>
                         <h2>{{$user_info->title}} {{$user_info->name}} {{$user_info->family}}</h2>
                     </div>
                 </div>
@@ -117,7 +117,9 @@
                                     @if($user->is_supervisor==1)
                                     <li><a href="{{url('/admin/acceptProductRequestManagement')}}">بررسی شده</a></li>
 {{--                                    <li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
+                                        @if($user->is_supervisor==1 and $user->unit_id==6)
                                     <li><a href="{{url('/admin/confirmProductRequestManagement')}}">تایید شده</a></li>
+                                    @endif
                                     @endif
                                 </ul>
                             </li>
@@ -128,7 +130,9 @@
                                     @if($user->is_supervisor==1)
                                         <li><a href="{{url('/admin/acceptServiceRequestManagement')}}">بررسی شده</a></li>
                                         {{--<li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
+                                        @if($user->is_supervisor==1 and $user->unit_id==6)
                                         <li><a href="{{url('/admin/confirmServiceRequestManagement')}}">تایید شده</a></li>
+                                    @endif
                                     @endif
                                 </ul>
                             </li>
@@ -217,7 +221,6 @@
                                     </li>
                                 </ul>
                             </li>
-                            @if($user->is_supervisor==1 and $user->unit_id!=6)
                             <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>
@@ -226,7 +229,6 @@
                                     </li>
                                 </ul>
                             </li>
-                                @endif
 
                             {{--<li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>--}}
                                 {{--<ul class="nav child_menu" style="display: none">--}}
@@ -274,29 +276,29 @@
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     </div>
 
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="">
-                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
-                               aria-expanded="false">
-                                <img src="{{url('public/dashboard/images/img.png')}}" alt=""> {{$user_info->name}} {{$user_info->family}}
-                                <span class=" fa fa-angle-down"></span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-                                <li><a href="javascript:;"> مشخصات کاربری من</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">راهنما</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <span class="badge bg-red pull-right">50%</span>
-                                        <span>تنظیمات</span>
-                                    </a>
-                                </li>
-                                <li><a href="{{url('/logout')}}"><i class="fa fa-sign-out pull-right"></i> خروج</a>
-                                </li>
-                            </ul>
-                        </li>
+                    {{--<ul class="nav navbar-nav navbar-right">--}}
+                        {{--<li class="">--}}
+                            {{--<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"--}}
+                               {{--aria-expanded="false">--}}
+                                {{--<img src="{{url('public/dashboard/images/img.png')}}" alt=""> {{$user_info->name}} {{$user_info->family}}--}}
+                                {{--<span class=" fa fa-angle-down"></span>--}}
+                            {{--</a>--}}
+                            {{--<ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">--}}
+                                {{--<li><a href="javascript:;"> مشخصات کاربری من</a>--}}
+                                {{--</li>--}}
+                                {{--<li>--}}
+                                    {{--<a href="javascript:;">راهنما</a>--}}
+                                {{--</li>--}}
+                                {{--<li>--}}
+                                    {{--<a href="javascript:;">--}}
+                                        {{--<span class="badge bg-red pull-right">50%</span>--}}
+                                        {{--<span>تنظیمات</span>--}}
+                                    {{--</a>--}}
+                                {{--</li>--}}
+                                {{--<li><a href="{{url('/logout')}}"><i class="fa fa-sign-out pull-right"></i> خروج</a>--}}
+                                {{--</li>--}}
+                            {{--</ul>--}}
+                        {{--</li>--}}
 
                         {{--<li role="presentation" class="dropdown">--}}
                             {{--<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"--}}
@@ -376,7 +378,7 @@
                             {{--</ul>--}}
                         {{--</li>--}}
 
-                    </ul>
+                    {{--</ul>--}}
                 </nav>
             </div>
 
