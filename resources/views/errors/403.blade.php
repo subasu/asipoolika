@@ -54,7 +54,7 @@
                         <img class="img-responsive col-md-2 col-md-offset-5" src="{{ URL::asset('public/dashboard/images/forbidden.png')}}" alt="Chania">
                     </div>
 
-                    <h1 class="error-number">401</h1>
+                    <h1 class="error-number">403</h1>
                     <h1>شما اجازه دسترسی به این صفحه را ندارید</h1>
                     <br>
                     <h2><a href="{{url('/login')}}" style="color: white">بازگشت</a>
