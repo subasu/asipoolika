@@ -14,8 +14,8 @@
 Route::get('/', 'IndexController@goToLoginPage');
 Route::post('save', 'TestController@save');
 Route::get('/unit_count','IndexController@unit_count');
-Route::get('401',function(){
-    return view('errors.401');
+Route::get('403',function(){
+    return view('errors.403');
 });
 Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
