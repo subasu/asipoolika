@@ -365,7 +365,7 @@
                 swal( "لطفا سطری را انتخاب نمایید");
                 return false;
             }
-        })
+        });
 
 
         $(document).on('click','#service_certificate',function(){
@@ -475,7 +475,7 @@
                 swal( "لطفا سطری را انتخاب نمایید");
                 return false;
             }
-        })
+        });
 
 
     </script>

@@ -276,7 +276,7 @@ Route::group(['prefix'=>'systemManager'],function() {
     });
 });
 
-//Route::get('unit_signature','SystemManagerController@unit_user_list');
+Route::get('unit_signature','SystemManagerController@unit_user_list');
 Route::get('price','IndexController@ajaxPrice');
 
 Route::get('/home', 'HomeController@index');

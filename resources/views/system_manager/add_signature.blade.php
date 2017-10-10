@@ -90,7 +90,30 @@
                 </div>
             </div>
         </div>
-
+        <script>
+            $("#unit_signature").change(function () {
+                var $this = $(this);
+                var id = $this.val();
+                $.ajax({
+                    url: "{{ url('unit_signature') }}",
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {unit_id: id},
+                    success: function (response) {
+                        var html;
+                        html += '<option value="">صاحب امضاء را انتخاب کنید</option>';
+                        $.each(response.users, function (index, value) {
+                            html += '<option name="users" value="' + value['id'] + '">' + value['name'] + ' ' + value['family'] + '</option>';
+                        });
+                        $("#user_signature").html(html);
+                    },
+                    error: function (error) {
+                        var errors = error.responseJSON;
+                        console.log(errors);
+                    }
+                });
+            });
+        </script>
     <script>
         $('#signature_priority').change(function() {
             $('#forced').val(0);
