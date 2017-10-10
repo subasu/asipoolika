@@ -37,7 +37,7 @@
                                 </label>
                                 {{--<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback pull-right">--}}
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
-                                    <select class="form-control" id="unit_signature" name="unit_signature">
+                                    <select class="form-control" id="unit_signature" name="unit_id">
                                         <option readonly>انتخاب واحد</option>
                                         @foreach($units as $unit)
                                             <option name="unit_id" value="{{$unit->id}}">{{$unit->title}}</option>
@@ -46,7 +46,7 @@
                                 </div>
                                 {{--</div>--}}
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                    <select class="form-control" id="user_signature" name="user_signature">
+                                    <select class="form-control" id="user_signature" name="users">
                                     </select>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback pull-right">
@@ -121,7 +121,7 @@
     </script>
     <script>
         $(document).on('click','#add_signature',function () {
-                var formData = new FormData($('#dealForm')[0]);
+
                 var unitId = "";
                 $("[name='unit_id']:selected").each(function(){
                     unitId +=$(this).val();
@@ -168,7 +168,7 @@
                 }else
                     {
 
-
+                        var formData = new FormData($('#dealForm')[0]);
                         $.ajaxSetup({
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
