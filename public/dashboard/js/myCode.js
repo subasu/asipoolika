@@ -26,7 +26,7 @@ $(function() {
         html:true,
         title: "<strong>پیش نمایش</strong>"+$(closebtn)[0].outerHTML,
         content: "هیچ تصویری نیست",
-        placement:'bottom'
+        placement:'right'
     });
     // Clear event
     $('.image-preview-clear').click(function(){
@@ -41,8 +41,8 @@ $(function() {
     $(".image-preview-input input:file").change(function (){
         var img = $('<img/>', {
             id: 'dynamic',
-            width:250,
-            height:200
+            width:150,
+            height:150
         });
         var file = this.files[0];
         var reader = new FileReader();
