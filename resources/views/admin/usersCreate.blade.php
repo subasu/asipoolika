@@ -1,12 +1,11 @@
-@extends('layouts.adminLayout');
-@section('title')
-    ایجاد کاربر
-@endsection
+@extends('layouts.adminLayout')
 @section('content')
     <style>
         span {
             color: #ff0000;
             float: right;
+            padding-right:4px;
+            padding-left:4px;
         }
 
         input, label {

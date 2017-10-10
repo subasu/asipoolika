@@ -72,31 +72,30 @@
             <div class="left_col scroll-view">
                 <div class="clearfix"></div>
 
-                <!-- menu prile quick info -->
+                <!-- menu profile quick info -->
                 <div class="profile">
                     <div class="profile_pic">
                         <img src="{{URL::asset('public/dashboard/images/img.png')}}" alt="..."
                              class="img-circle profile_img">
                     </div>
                     <div class="profile_info">
-                        <span>@if($user_info->is_supervisor==1) مدیر @endif{{$user->unit->description}}</span>
+                        <span>@if($user_info->is_supervisor==1)@if($user_info->unit_id!=4) مدیر @endif @endif{{$user->unit->description}}</span>
                         <h2>{{$user_info->title}} {{$user_info->name}} {{$user_info->family}}</h2>
                     </div>
                 </div>
-                <!-- /menu prile quick info -->
+                <!-- /menu profile quick info -->
 
                 <br/>
 
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-
                     <div class="menu_section">
-
                         <h3 style="font-size: 16px;"><a href="{{url('/logout')}}" style="color:white">خروج</a></h3>
                         <ul class="nav side-menu">
-                            //system manager menu
-                            <li><a><i class="fa fa-home"></i> مدیر سیستم<span></span></a>
-                            </li>
+                            {{--//system manager menu--}}
+                            {{--<li><a><i class="fa fa-home"></i> مدیر سیستم<span></span></a>--}}
+                            {{--</li>--}}
+                            @if($user->is_supervisor==1 and $user->unit_id==3)
                             <li><a><i class="fa fa-pencil-square-o"></i> مدیریت امضاء ها<span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
@@ -106,15 +105,19 @@
                                     </li>
                                 </ul>
                             </li>
-                            //End system manager menu <br>
-                            //Admin menu
+                                <li><a href="{{url('systemManager/access_level')}}"><i class="fa fa-users"></i> تعیین سطح دسترسی</a>
+                                </li>
+                            @endif
+                            {{--//End system manager menu <br>--}}
+                            {{--//Admin menu--}}
+                            @if($user->is_supervisor==1 and $user->unit_id!=3)
                            <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/productRequestManagement')}}"> درخواست های جدید</a></li>
                                     @if($user->is_supervisor==1)
-                                    <li><a href="{{url('/admin/acceptProductRequestManagement')}}">بررسی شده</a><li>
+                                    <li><a href="{{url('/admin/acceptProductRequestManagement')}}">بررسی شده</a></li>
 {{--                                    <li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
-                                    <li><a href="{{url('/admin/confirmProductRequestManagement')}}">تایید شده</a><li>
+                                    <li><a href="{{url('/admin/confirmProductRequestManagement')}}">تایید شده</a></li>
                                     @endif
                                 </ul>
                             </li>
@@ -123,13 +126,14 @@
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/serviceRequestManagement')}}"> درخواست های جدید</a></li>
                                     @if($user->is_supervisor==1)
-                                        <li><a href="{{url('/admin/acceptServiceRequestManagement')}}">بررسی شده</a><li>
+                                        <li><a href="{{url('/admin/acceptServiceRequestManagement')}}">بررسی شده</a></li>
                                         {{--<li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
-                                        <li><a href="{{url('/admin/confirmServiceRequestManagement')}}">تایید شده</a><li>
+                                        <li><a href="{{url('/admin/confirmServiceRequestManagement')}}">تایید شده</a></li>
                                     @endif
                                 </ul>
                             </li>
                             {{-- Rayat Start --}}
+                                @if($user->is_supervisor==1 and $user->unit_id==6)
                             <li><a><i class="fa fa-users"></i> مدیریت کاربران <span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
@@ -165,24 +169,27 @@
                                     {{--</li>--}}
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('admin/')}}">پیام های دریافتی</a>
-                                    </li>
-                                    <li><a href="{{url('admin/')}}">پیام های ارسالی</a>
-                                    </li>
-                                    <li><a href="{{url('admin/')}}">پیام های دریافتی</a>
-                                    </li>
-                                    <li><a href="{{url('admin/')}}">سطل زباله پیام ها</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a><i class="fa fa-cogs"></i>تنظیمات<span class="fa fa-chevron-down"></span></a>
-                            </li>
-                            //End Admin menu <br>
-                            //User menu
+                            {{--<li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>--}}
+                                {{--<ul class="nav child_menu" style="display: none">--}}
+                                    {{--<li><a href="{{url('admin/')}}">پیام های دریافتی</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="{{url('admin/')}}">پیام های ارسالی</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="{{url('admin/')}}">پیام های دریافتی</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="{{url('admin/')}}">سطل زباله پیام ها</a>--}}
+                                    {{--</li>--}}
+                                {{--</ul>--}}
+                            {{--</li>--}}
+                            {{--<li><a><i class="fa fa-cogs"></i>تنظیمات<span class="fa fa-chevron-down"></span></a>--}}
+                            {{--</li>--}}
+                            @endif
+                            @endif
+                            {{--//End Admin menu <br>--}}
+                            {{--//User menu--}}
 
                             {{-- user dashboard menu --}}
+                            @if(($user->is_supervisor==1 or $user->is_supervisor==0) and $user->unit_id!=3)
                             <li><a><i class="fa fa-dropbox "></i> درخواست کالا <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/productRequest')}}">ارسال درخواست کالا</a>
@@ -202,12 +209,15 @@
 
                             <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('admin/certificatesManagement')}}"> تایید گواهی<span></span></a>
+                                    <li><a href="{{url('admin/productCertificatesManagement')}}"> تایید گواهی های کالا<span></span></a>
+                                    </li>
+                                    <li><a href="{{url('admin/serviceCertificatesManagement')}}"> تایید گواهی های خدمت<span></span></a>
                                     </li>
                                     <li><a href="{{url('admin/acceptedCertificatesManagement')}}"> وضعیت گواهی های تایید شده</a>
                                     </li>
                                 </ul>
                             </li>
+                            @if($user->is_supervisor==1 and $user->unit_id!=6)
                             <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>
@@ -216,20 +226,22 @@
                                     </li>
                                 </ul>
                             </li>
-                            </li>
-                            <li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="#">صندوق پیام</a>
-                                    </li>
-                                    <li><a href="#">پیام های ارسالی</a>
-                                    </li>
-                                    <li><a href="#">پیام های دریافتی</a>
-                                    </li>
-                                    <li><a href="#">سطل زباله پیام ها</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            //End User menu
+                                @endif
+
+                            {{--<li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>--}}
+                                {{--<ul class="nav child_menu" style="display: none">--}}
+                                    {{--<li><a href="#">صندوق پیام</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="#">پیام های ارسالی</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="#">پیام های دریافتی</a>--}}
+                                    {{--</li>--}}
+                                    {{--<li><a href="#">سطل زباله پیام ها</a>--}}
+                                    {{--</li>--}}
+                                {{--</ul>--}}
+                            {{--</li>--}}
+                            @endif
+                            {{--//End User menu--}}
                             {{-- end user dashboard menu --}}
                         </ul>
                     </div>
@@ -286,83 +298,83 @@
                             </ul>
                         </li>
 
-                        <li role="presentation" class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"
-                               aria-expanded="false">
-                                <i class="fa fa-envelope-o"></i>
-                                <span class="badge bg-green">6</span>
-                            </a>
-                            <ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
-                                <li>
-                                    <a>
-                      <span class="image">
-                                        <img src="{{URL::asset('public/dashboard/images/img.png')}}"
-                                             alt="Profile Image"/>
-                                    </span>
-                                        <span>
-                                        <span>John Smith</span>
-                      <span class="time">3 mins ago</span>
-                      </span>
-                                        <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                      <span class="image">
-                                        <img src="{{URL::asset('public/dashboard/images/img.png')}}"
-                                             alt="Profile Image"/>
-                                    </span>
-                                        <span>
-                                        <span>John Smith</span>
-                      <span class="time">3 mins ago</span>
-                      </span>
-                                        <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                      <span class="image">
-                                        <img src="{{URL::asset('public/dashboard/images/img.png')}}"
-                                             alt="Profile Image"/>
-                                    </span>
-                                        <span>
-                                        <span>John Smith</span>
-                      <span class="time">3 mins ago</span>
-                      </span>
-                                        <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a>
-                      <span class="image">
-                                        <img src="{{URL::asset('public/dashboard/images/img.png')}}"
-                                             alt="Profile Image"/>
-                                    </span>
-                                        <span>
-                                        <span>John Smith</span>
-                      <span class="time">3 mins ago</span>
-                      </span>
-                                        <span class="message">
-                                        Film festivals used to be do-or-die moments for movie makers. They were where...
-                                    </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="text-center">
-                                        <a href="inbox.html">
-                                            <strong>See All Alerts</strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
+                        {{--<li role="presentation" class="dropdown">--}}
+                            {{--<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"--}}
+                               {{--aria-expanded="false">--}}
+                                {{--<i class="fa fa-envelope-o"></i>--}}
+                                {{--<span class="badge bg-green">6</span>--}}
+                            {{--</a>--}}
+                            {{--<ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">--}}
+                                {{--<li>--}}
+                                    {{--<a>--}}
+                      {{--<span class="image">--}}
+                                        {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
+                                             {{--alt="Profile Image"/>--}}
+                                    {{--</span>--}}
+                                        {{--<span>--}}
+                                        {{--<span>John Smith</span>--}}
+                      {{--<span class="time">3 mins ago</span>--}}
+                      {{--</span>--}}
+                                        {{--<span class="message">--}}
+                                        {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
+                                    {{--</span>--}}
+                                    {{--</a>--}}
+                                {{--</li>--}}
+                                {{--<li>--}}
+                                    {{--<a>--}}
+                      {{--<span class="image">--}}
+                                        {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
+                                             {{--alt="Profile Image"/>--}}
+                                    {{--</span>--}}
+                                        {{--<span>--}}
+                                        {{--<span>John Smith</span>--}}
+                      {{--<span class="time">3 mins ago</span>--}}
+                      {{--</span>--}}
+                                        {{--<span class="message">--}}
+                                        {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
+                                    {{--</span>--}}
+                                    {{--</a>--}}
+                                {{--</li>--}}
+                                {{--<li>--}}
+                                    {{--<a>--}}
+                      {{--<span class="image">--}}
+                                        {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
+                                             {{--alt="Profile Image"/>--}}
+                                    {{--</span>--}}
+                                        {{--<span>--}}
+                                        {{--<span>John Smith</span>--}}
+                      {{--<span class="time">3 mins ago</span>--}}
+                      {{--</span>--}}
+                                        {{--<span class="message">--}}
+                                        {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
+                                    {{--</span>--}}
+                                    {{--</a>--}}
+                                {{--</li>--}}
+                                {{--<li>--}}
+                                    {{--<a>--}}
+                      {{--<span class="image">--}}
+                                        {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
+                                             {{--alt="Profile Image"/>--}}
+                                    {{--</span>--}}
+                                        {{--<span>--}}
+                                        {{--<span>John Smith</span>--}}
+                      {{--<span class="time">3 mins ago</span>--}}
+                      {{--</span>--}}
+                                        {{--<span class="message">--}}
+                                        {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
+                                    {{--</span>--}}
+                                    {{--</a>--}}
+                                {{--</li>--}}
+                                {{--<li>--}}
+                                    {{--<div class="text-center">--}}
+                                        {{--<a href="inbox.html">--}}
+                                            {{--<strong>See All Alerts</strong>--}}
+                                            {{--<i class="fa fa-angle-right"></i>--}}
+                                        {{--</a>--}}
+                                    {{--</div>--}}
+                                {{--</li>--}}
+                            {{--</ul>--}}
+                        {{--</li>--}}
 
                     </ul>
                 </nav>

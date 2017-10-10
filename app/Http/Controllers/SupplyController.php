@@ -66,7 +66,7 @@ class SupplyController extends Controller
         {
             case 'تدارکات':
 //                if($user->is_supervisor==1)
-                    $step=2;
+                $step=2;
 //                else
 //                    $step=8;
                 break;
@@ -157,33 +157,33 @@ class SupplyController extends Controller
         }
         $update=
             DB::table('request_records')->where('id',$request->request_record_id)->update([
-            'why_not'=>$request->whyNot,
-            'step'=> $step,
-            'refuse_user_id' => $user->id,
-            'active'=>0,
-            'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
-        ]);
+                'why_not'=>$request->whyNot,
+                'step'=> $step,
+                'refuse_user_id' => $user->id,
+                'active'=>0,
+                'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+            ]);
         if($update==1)
         {
             $q=DB::table('requests')->where('id',$request->requestId)->increment('refuse_record_count');
-           if($q)
-           {
-               $class='success';
-               return response()->json(['msg'=>'درخواست مربوطه با ثبت دلیل رد شد',
-               'class'=>$class]);
-           } else
-           {
-               $class='danger';
-               return response()->json(['msg'=>'خطا رخ داده',
-                   'class'=>$class]);
-           }
+            if($q)
+            {
+                $class='success';
+                return response()->json(['msg'=>'درخواست مربوطه با ثبت دلیل رد شد',
+                    'class'=>$class]);
+            } else
+            {
+                $class='danger';
+                return response()->json(['msg'=>'خطا رخ داده',
+                    'class'=>$class]);
+            }
         }
-       else
-       {
-           $class='info';
-           return response()->json(['msg'=>'آپدیت نشد',
-               'class'=>$class]);
-       }
+        else
+        {
+            $class='info';
+            return response()->json(['msg'=>'آپدیت نشد',
+                'class'=>$class]);
+        }
     }
 
 
@@ -212,7 +212,7 @@ class SupplyController extends Controller
     //rayat//create user by AJAX
     public function checkUnitSupervisor(UserCreateValidation $request)
     {
-       // dd($request->unitManager);
+        // dd($request->unitManager);
         $unitSupervisor = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->get();
         //dd(count($unitSupervisor));
         if(count($unitSupervisor) > 0 && $request->unitManager === '1' )
@@ -220,17 +220,17 @@ class SupplyController extends Controller
             return response('مدیر این واحد قبلا انتخاب شده ، آیا در نظر دارید که ایشان را جایگزین مدیر قبلی نمایید؟');
         }
         elseif(count($unitSupervisor) > 0 && $request->unitManager === null)
-            {
-                return response('آیا از ثبت کاربر جدید اطمینان دارید؟');
-            }
-            elseif(count($unitSupervisor) ==  0 && $request->unitManager === null)
-            {
-                return response('بنابراینکه واحد مربوطه مدیری ندارد ، مدیر تدارکات بعنوان مدیر این واحد در نظر گرفته میشود.آیا تمایل دارید؟');
-            }
-            elseif(count($unitSupervisor)== 0 && $request->unitManager === '1')
-            {
-              return response('آیا از ثبت این کاربر به عنوان مدیر واحد انتخاب شده اطمینان دارید؟');
-            }
+        {
+            return response('آیا از ثبت کاربر جدید اطمینان دارید؟');
+        }
+        elseif(count($unitSupervisor) ==  0 && $request->unitManager === null)
+        {
+            return response('بنابراینکه واحد مربوطه مدیری ندارد ، مدیر تدارکات بعنوان مدیر این واحد در نظر گرفته میشود.آیا تمایل دارید؟');
+        }
+        elseif(count($unitSupervisor)== 0 && $request->unitManager === '1')
+        {
+            return response('آیا از ثبت این کاربر به عنوان مدیر واحد انتخاب شده اطمینان دارید؟');
+        }
 
 
     }
@@ -406,7 +406,7 @@ class SupplyController extends Controller
     public function usersManagementGet()
     {
         $pageTitle='مدیریت کاربران';
-        $data = User::all();
+        $data = User::where('unit_id','!=',3)->get();
         //dd($data);
         return view('admin.usersManage', compact('data','pageTitle'));
     }
@@ -574,9 +574,9 @@ class SupplyController extends Controller
             );
             return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
         }else
-            {
-                return response('لطفا فایل عکس کارگری خود را انتخاب نمایید ، سپس درخواست خود را وارد نمایید');
-            }
+        {
+            return response('لطفا فایل عکس کارگری خود را انتخاب نمایید ، سپس درخواست خود را وارد نمایید');
+        }
     }
 
     public function jalaliToGregorian($year, $month, $day)
@@ -639,10 +639,10 @@ class SupplyController extends Controller
             case 'تدارکات':
 //                if($me->is_supervisor==1)
 //                {
-                    $step=1;
-                    $step2=2;
+                $step=1;
+                $step2=2;
 //                }
-                    //the user is Karpardaz
+                //the user is Karpardaz
 //                else
 //                {
 //                    $step=7;
@@ -696,7 +696,7 @@ class SupplyController extends Controller
         {
             case 'تدارکات':
 //                if($me->is_supervisor==1)
-                    $step=1;
+                $step=1;
                 //the user is Karpardaz
 //                else
 //                    $step=7;
@@ -840,7 +840,6 @@ class SupplyController extends Controller
                     $step=2;
                     $step2=1;
                 }
-                //the user is Karpardaz
                 else
                 {
                     $step=8;
@@ -871,7 +870,7 @@ class SupplyController extends Controller
         $service_request_id=Request2::where([['unit_id',$user->unit_id],['request_type_id',2]])->pluck('id');
         $requestRecords2=RequestRecord::where([['step','>=',6]],['active',1],['refuse_user_id',null])->whereIn('request_id',$service_request_id)->pluck('request_id');
         $serviceRequests2=Request2::whereIn('id',$requestRecords2)->get();
-//        dd();
+
         foreach($serviceRequests2 as $serviceRequest)
         {
             //undecided records
@@ -884,7 +883,6 @@ class SupplyController extends Controller
 
         $serviceRequests=$serviceRequests->merge($serviceRequests2);
 
-
         foreach($serviceRequests as $productRequest)
         {
             //undecided records
@@ -894,7 +892,7 @@ class SupplyController extends Controller
             //inactive records
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
         }
-//        dd($productRequests);
+//        dd($serviceRequests);
         return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
     }
 
@@ -1010,7 +1008,7 @@ class SupplyController extends Controller
     public function showTickets()
     {
         $pageTitle = 'تیکت های فعال';
-      //  $userId = Auth::user()->id;
+        //  $userId = Auth::user()->id;
         $unitId = Auth::user()->unit_id;
         //dd($unitId);
         $tickets = Ticket::where('unit_id' , $unitId)->get();
@@ -1039,14 +1037,14 @@ class SupplyController extends Controller
                 return response('پاسخ شما با موفقیت ثبت گردید');
             }
             else
-                {
-                    return response('خطا در ثبت اطلاعات ، لطفا با بخش پشتیبانی تماس بگیرید');
-                }
+            {
+                return response('خطا در ثبت اطلاعات ، لطفا با بخش پشتیبانی تماس بگیرید');
+            }
         }
         else
-            {
-                return response('قبلا به این پیام پاسخ داده اید،لطفا درخواست مجدد نفرمائید');
-            }
+        {
+            return response('قبلا به این پیام پاسخ داده اید،لطفا درخواست مجدد نفرمائید');
+        }
 
     }
 
@@ -1055,15 +1053,15 @@ class SupplyController extends Controller
     {
         $end = Ticket::where('id',$request->ticketId)->update
         ([
-           'active'  => 1
+            'active'  => 1
         ]);
         if($end)
         {
             return response('تیکت مورد نظر غیر فعال گردید');
         }else
-            {
-                return response('خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید');
-            }
+        {
+            return response('خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید');
+        }
     }
 
     public function confirmProductRequestManagementGet()
@@ -1398,7 +1396,7 @@ class SupplyController extends Controller
 
 
     //shiri : below function is related to save forms
-    public function formSave(Request $request,$id)
+   public function formSave(Request $request,$id)
     {
 
         $userId = Auth::user()->id;
@@ -1567,12 +1565,13 @@ class SupplyController extends Controller
                 }
                 break;
             case 5:
-                
+                break;
+
         }
     }
     public function confirmServiceRequestManagementGet()
     {
-        $pageTitle="مدیریت درخواست ها";
+        $pageTitle="مدیریت درخواست های تایید شده";
         $pageName='confirmProductRequest';
         $productRequests=Request2::where('request_type_id',2)->get();
 
@@ -1696,8 +1695,8 @@ class SupplyController extends Controller
         $certificates = Certificate::where('request_id',$id)->get();
         return view('admin.certificate.showCertificates',compact('certificates','pageTitle'));
     }
-
-    //
+   
+  //
     public function printServiceDeliveryForm($id)
     {
         //dd($id);
@@ -1786,7 +1785,7 @@ class SupplyController extends Controller
             return view('admin.certificate.serviceDeliveryForm', compact('supplySupervisorFullName', 'bossFullName', 'bossSignature', 'supplySupervisorSignature', 'unitSupervisorFullName', 'unitSupervisorSignature', 'certificateRecords', 'shopComp', 'requestId', 'pageTitle', 'unitName', 'receiverFullName', 'sum', 'receiverSignature', 'requestId'));
         }
     }
-
+  
     //shiri : below function is related to print summary of requests
     public function printFactors($id)
     {
@@ -1870,4 +1869,5 @@ class SupplyController extends Controller
 
 
     }
+
 }

@@ -19,7 +19,8 @@ class CheckRole
         //if you are not logged in
         if ($request->user() === null) {
             //UnAuthorized
-            return response("Insufficient permissions", 401);
+//            return response("Insufficient permissions", 401);
+            return redirect('401');
         }
         //route() is the current route that we are trying to access in
         //it gets the action of the route and the actions is the [] array in web.php
@@ -35,6 +36,7 @@ class CheckRole
             //it means every things is fine you may go on
             return $next($request);
         }
-        return response("Insufficient permissions", 401);
+//        return response("Insufficient permissions", 401);
+        return redirect('401');
     }
 }

@@ -1,7 +1,4 @@
-@extends('layouts.panelLayout');
-@section('title')
-    ایجاد کاربر
-@endsection
+@extends('layouts.panelLayout')
 @section('content')
     <div class="clearfix"></div>
     <div class="row">
