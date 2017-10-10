@@ -6,6 +6,7 @@ use App\Http\Requests\AcceptServiceRequestValidation;
 use App\Http\Requests\UserCreateValidation;
 use App\Models\Certificate;
 use App\Models\CertificateRecord;
+use App\Models\CostDocument;
 use App\Models\Form;
 use App\Models\Message;
 use App\Models\Request2;
@@ -1395,7 +1396,7 @@ class SupplyController extends Controller
 
 
     //shiri : below function is related to save forms
-    public function formSave(Request $request,$id)
+   public function formSave(Request $request,$id)
     {
 
         $userId = Auth::user()->id;
@@ -1563,6 +1564,9 @@ class SupplyController extends Controller
                     }
                 }
                 break;
+            case 5:
+                break;
+
         }
     }
     public function confirmServiceRequestManagementGet()
@@ -1816,9 +1820,54 @@ class SupplyController extends Controller
     }
 
     //shiri:
-    public function costDocumentForm()
+    public function costDocumentForm($id)
     {
-        return view('admin.certificate.costDocumentForm');
+        return view('admin.certificate.costDocumentForm',compact('id'));
+    }
+
+    //
+    public function saveCostDocument(Request $request)
+    {
+        $oldCostDocument = CostDocument::where('request_id',$request->requestId)->get();
+        if(count($oldCostDocument) > 0)
+        {
+            return response('سند هزینه این درخواست قبلا ثبت ثبت گردیده است');
+        }else
+            {
+                $recordCount = $request->recordCount;
+                if($recordCount == "")
+                {
+                    return response('محتویات سند خالی است ، لطفا سند را پر نمایید سپس درخواست مجدد بدهید.');
+                }
+                else
+                    {
+                        $i = 0;
+                        while( $i < $recordCount )
+                        {
+                            $costDocuments = DB::table('cost_documents')->insert
+                            ([
+                                'request_id'    => $request->requestId,
+                                'code'          => $request->code[$i],
+                                'description'   => $request->description[$i],
+                                'moein_office'  => $request->moeinOffice[$i],
+                                'general_price' => $request->generalPrice[$i],
+                                'deduction'     => $request->deduction[$i],
+                                'payed_price'   => $request->payedPrice[$i],
+                                'page'          => $request->page[$i],
+                                'row'           => $request->row[$i]
+                            ]);
+                            $i++;
+
+                        }
+                        if($costDocuments)
+                        {
+                            return response('اطلاعات با موفقیت ثبت شد');
+                        }
+                    }
+
+            }
+
+
     }
 
 }

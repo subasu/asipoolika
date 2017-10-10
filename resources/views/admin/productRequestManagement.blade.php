@@ -152,7 +152,7 @@
 
                                                 <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-10">مشاهده  گواهی ها</a>
                                                 <a href="{{url('admin/printFactors/'.$productRequest->id)}}" class="btn btn-info col-md-10">چاپ خلاصه تنظیمی</a>
-                                                <a href="{{url('admin/costDocumentForm')}}" class="btn btn-info col-md-10">سند هزینه</a>
+                                                <a href="{{url('admin/costDocumentForm/'.$productRequest->id)}}" class="btn btn-info col-md-10">سند هزینه</a>
 
 
                                             {{--<button type="button" class="btn btn-default" data-toggle="tooltip" title="چاپ گواهی">--}}
