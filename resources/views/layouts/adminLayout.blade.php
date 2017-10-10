@@ -89,11 +89,11 @@
 
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                    <div class="menu_section">
-                        <h3 style="font-size: 16px;"><a href="{{url('/logout')}}" style="color:white">خروج</a></h3>
+                    <div class="menu_section" style="margin-bottom:10px;">
+                        <h3 style="font-size: 16px;"><a href="" onclick="alert('این هم چیز واسه تست! ادد باید همینو بزنین :)')" style="color:white">پروفایل</a></h3>
                         <ul class="nav side-menu">
                             {{--//system manager menu--}}
-                            {{--<li><a><i class="fa fa-home"></i> مدیر سیستم<span></span></a>--}}
+                            {{--<li><a><i class="fa f a-home"></i> مدیر سیستم<span></span></a>--}}
                             {{--</li>--}}
                             @if($user->is_supervisor==1 and $user->unit_id==3)
                             <li><a><i class="fa fa-pencil-square-o"></i> مدیریت امضاء ها<span
@@ -105,12 +105,13 @@
                                     </li>
                                 </ul>
                             </li>
-                                <li><a href="{{url('systemManager/access_level')}}"><i class="fa fa-users"></i> تعیین سطح دسترسی</a>
+                                <li><a href="{{url('systemManager/access_level')}}"><i class="fa fa-users-p"></i> تعیین سطح دسترسی</a>
                                 </li>
                             @endif
                             {{--//End system manager menu <br>--}}
                             {{--//Admin menu--}}
-                            @if($user->is_supervisor==1 and $user->unit_id!=3)
+
+                           @if($user->is_supervisor==1 and $user->unit_id!=3)
                            <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('/admin/productRequestManagement')}}"> درخواست های جدید</a></li>
@@ -136,8 +137,9 @@
                                     @endif
                                 </ul>
                             </li>
+                            @endif
                             {{-- Rayat Start --}}
-                                @if($user->is_supervisor==1 and $user->unit_id==6)
+                            @if($user->is_supervisor==1 and $user->unit_id==3)
                             <li><a><i class="fa fa-users"></i> مدیریت کاربران <span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
@@ -155,6 +157,8 @@
                                     </li>
                                 </ul>
                             </li>
+                            @endif
+                            @if($user->is_supervisor==1 and $user->unit_id==6)
                             <li><a><i class="fa fa-address-card"></i> مدیریت کارت های کارگری<span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
@@ -164,6 +168,8 @@
                                     </li>
                                 </ul>
                             </li>
+                            @endif
+                            @if(($user->is_supervisor==1 and $user->unit_id==6) or ($user->is_supervisor==1 and $user->unit_id==3))
                             <li><a><i class="fa fa-envelope-open-o"></i> مدیریت تیکت ها <span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
@@ -188,7 +194,6 @@
                             {{--<li><a><i class="fa fa-cogs"></i>تنظیمات<span class="fa fa-chevron-down"></span></a>--}}
                             {{--</li>--}}
                             @endif
-                            @endif
                             {{--//End Admin menu <br>--}}
                             {{--//User menu--}}
 
@@ -209,7 +214,7 @@
                                     <li><a href="{{url('user/serviceRequestFollow')}}">پیگیری درخواست خدمت</a>
                                     </li>
                                 </ul>
-                            </li>
+                           </li>
 
                             <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
@@ -245,6 +250,9 @@
                             @endif
                             {{--//End User menu--}}
                             {{-- end user dashboard menu --}}
+                            <li><a href="{{url('/logout')}}" style="font-size:20px;padding:3px 0 3px 0"
+                                   class="btn btn-danger col-md-10 col-md-offset-1"><i class="fa fa-sign-out" aria-hidden="true"></i>خروج</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

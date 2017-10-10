@@ -231,13 +231,13 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('/usersManagement',[
             'uses'=>'SupplyController@usersManagementGet',
             'middleware' => 'roles',
-            'roles'=>['supplierManager']
+            'roles'=>['systemManager']
         ]);
 //        Route::get('usersCreate', 'SupplyController@usersCreateGet');
         Route::get('/usersCreate',[
             'uses'=>'SupplyController@usersCreateGet',
             'middleware' => 'roles',
-            'roles'=>['supplierManager']
+            'roles'=>['systemManager']
         ]);
         Route::post('checkUnitSupervisor', 'SupplyController@checkUnitSupervisor');
         Route::post('changeUserStatus/{id}', 'SupplyController@changeUserStatus');
@@ -245,7 +245,7 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('/usersUpdate/{id}',[
             'uses'=>'SupplyController@usersUpdateShow',
             'middleware' => 'roles',
-            'roles'=>['supplierManager']
+            'roles'=>['systemManager']
         ]);
         Route::post('usersUpdate', 'SupplyController@usersUpdate');
 
@@ -254,13 +254,13 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('/unitsManage',[
             'uses'=>'SupplyController@unitsManageGet',
             'middleware' => 'roles',
-            'roles'=>['supplierManager']
+            'roles'=>['systemManager']
         ]);
 //        Route::get('unitsCreate', 'SupplyController@unitsCreateGet');
         Route::get('/unitsCreate',[
             'uses'=>'SupplyController@unitsCreateGet',
             'middleware' => 'roles',
-            'roles'=>['supplierManager']
+            'roles'=>['systemManager']
         ]);
         Route::post('unitsCreate', 'SupplyController@unitsCreatePost');
         Route::get('units', 'SupplyController@unitsGet');

@@ -135,7 +135,7 @@
                                     <input type="tel" id="	internal_phone" name="internal_phone" required="required"
                                            class="form-control col-md-7 col-xs-12">
                                 </div>
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="internal_phone">تلفن داخلی :
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="internal_phone">تلفن داخلی :</label>
                                     {{--<span class="required" title="پر کردن این فیلد الزامی است">*</span></label>--}}
                                 @if ($errors->has('internal_phone'))
                                     <span class="help-block">
