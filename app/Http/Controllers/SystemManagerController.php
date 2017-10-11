@@ -140,7 +140,7 @@ class SystemManagerController extends Controller
         $pageTitle='تعیین سطح دسترسی';
         $roles=Role::all();
         $myRoles=DB::table('user_role')->where('user_id',$id)->get();
-        dd($myRoles);
+
         return view('system_manager.access_level',compact('pageTitle','roles'));
 //        return view('comingSoon',compact('pageTitle'));
     }
