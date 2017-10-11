@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 //use Illuminate\Http\File;
 use App\Http\Requests\AcceptServiceRequestValidation;
+use App\Http\Requests\CostDocumentValidation;
 use App\Http\Requests\UserCreateValidation;
 use App\Models\Certificate;
 use App\Models\CertificateRecord;
 use App\Models\CostDocument;
+use App\Models\CostDocumentsRecord;
 use App\Models\Form;
 use App\Models\Message;
 use App\Models\Request2;
@@ -1565,6 +1567,20 @@ class SupplyController extends Controller
                 }
                 break;
             case 5:
+                $printCount = CostDocument::where('id',$request->costDocumentId)->increment('print_count',1);
+                if($printCount > 0)
+                {
+                    $formPrint = DB::table('print_form')->insert
+                    ([
+                        'cost_document_id' => $request->costDocumentId,
+                        'printed_by'       => $userId
+                    ]);
+                    if($formPrint)
+                    {
+                        return response('لطفا برای چاپ فرم کلیک نمایید');
+                    }
+                }
+
                 break;
 
         }
@@ -1822,11 +1838,21 @@ class SupplyController extends Controller
     //shiri:
     public function costDocumentForm($id)
     {
-        return view('admin.certificate.costDocumentForm',compact('id'));
+        $pageTitle = 'سند هزینه';
+        $oldCostDocumentsId = CostDocument::where('request_id',$id)->value('id');
+        if($oldCostDocumentsId > 0)
+        {
+            $costDocumentsRecords = CostDocumentsRecord::where('cost_document_id',$oldCostDocumentsId)->get();
+            return view('admin.certificate.costDocumentForm',compact('costDocumentsRecords','pageTitle'));
+        }else
+            {
+                return view('admin.certificate.costDocumentForm',compact('id','pageTitle'));
+            }
+
     }
 
     //
-    public function saveCostDocument(Request $request)
+    public function saveCostDocument(CostDocumentValidation $request)
     {
         $oldCostDocument = CostDocument::where('request_id',$request->requestId)->get();
         if(count($oldCostDocument) > 0)
@@ -1841,25 +1867,37 @@ class SupplyController extends Controller
                 }
                 else
                     {
-                        $i = 0;
-                        while( $i < $recordCount )
+                        $costDocumentId = DB::table('cost_documents')->insertGetId
+                        ([
+                               'request_id'  => $request->requestId,
+                             //  'content'     => $request->bodyContent,
+                               'created_at'  => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                        ]);
+                        if($costDocumentId)
                         {
-                            $costDocuments = DB::table('cost_documents')->insert
-                            ([
-                                'request_id'    => $request->requestId,
-                                'code'          => $request->code[$i],
-                                'description'   => $request->description[$i],
-                                'moein_office'  => $request->moeinOffice[$i],
-                                'general_price' => $request->generalPrice[$i],
-                                'deduction'     => $request->deduction[$i],
-                                'payed_price'   => $request->payedPrice[$i],
-                                'page'          => $request->page[$i],
-                                'row'           => $request->row[$i]
-                            ]);
-                            $i++;
+                            $i = 0;
+                            while( $i < $recordCount )
+                            {
+                                $costDocumentRecords = DB::table('cost_document_records')->insert
+                                ([
+                                    'cost_document_id' => $costDocumentId,
+                                    'code'             => $request->code[$i],
+                                    'description'      => $request->description[$i],
+                                    'moein_office'     => $request->moeinOffice[$i],
+                                    'general_price'    => $request->generalPrice[$i],
+                                    'deduction'        => $request->deduction[$i],
+                                    'payed_price'      => $request->payedPrice[$i],
+                                    'page'             => $request->page[$i],
+                                    'row'              => $request->row[$i],
+                                    'created_at'       => Carbon::now(new \DateTimeZone('Asia/Tehran'))
 
+                                ]);
+                                $i++;
+
+                            }
                         }
-                        if($costDocuments)
+
+                        if($costDocumentRecords)
                         {
                             return response('اطلاعات با موفقیت ثبت شد');
                         }
