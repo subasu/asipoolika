@@ -105,7 +105,7 @@ Route::group(['prefix'=>'systemManager'],function() {
     Route::post('makeSignatureForced' , 'SystemManagerController@makeSignatureForced');      //96/7/6
     route::post('makeSignatureUnforced' , 'SystemManagerController@makeSignatureUnforced');  //96/7/6
 
-    Route::get('access_level',[
+    Route::get('access_level/{id}',[
         'uses'=>'SystemManagerController@access_levelGet',
         'middleware' => 'roles',
         'roles'=>['systemManager']

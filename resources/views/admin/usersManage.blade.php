@@ -33,7 +33,8 @@
                             <th style="text-align: center">واحد</th>
                             <th style="text-align: center">سرپرست</th>
                             <th style="text-align: center">غیرفعال/ فعال</th>
-                            <th style="text-align: center">ویرایش</th>
+                            <th style="text-align: center">عملیات</th>
+                            <th style="text-align: center">سطح دسترسی</th>
                         </tr>
                         </thead>
 
@@ -61,6 +62,9 @@
 {{--                                    @if($val->unit_id!=3)--}}
                                     <a class="btn btn-info" href="{{url('admin/usersUpdate'.'/'.$val->id)}}">ویرایش</a>
                                     {{--@endif--}}
+                                </td>
+                                <td>
+                                    <a href="{{url('systemManager/access_level/'.$val->id)}}" class="btn btn-danger">سطح دسترسی</a>
                                 </td>
                             </tr>
                             {{--@endif--}}

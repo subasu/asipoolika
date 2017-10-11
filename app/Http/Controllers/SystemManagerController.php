@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\Signature;
 use App\Models\Unit;
 use App\Models\UnitCount;
@@ -134,10 +135,13 @@ class SystemManagerController extends Controller
         return view('system_manager.signature',compact('signatures','pageTitle'));
     }
 
-    public function access_levelGet()
+    public function access_levelGet($id)
     {
         $pageTitle='تعیین سطح دسترسی';
-        return view('system_manager.access_level',compact('pageTitle'));
+        $roles=Role::all();
+        $myRoles=DB::table('user_role')->where('user_id',$id)->get();
+        dd($myRoles);
+        return view('system_manager.access_level',compact('pageTitle','roles'));
 //        return view('comingSoon',compact('pageTitle'));
     }
 }
