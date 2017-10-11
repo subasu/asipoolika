@@ -283,6 +283,12 @@
                     <div class="nav toggle">
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     </div>
+                    <div class="toggle" style="width: 37px !important;">
+                        <a><i id="back" class="fa fa-arrow-circle-left"></i></a>
+                    </div>
+                    <div class="toggle" style="width: 37px !important;">
+                        <a><i id="forward" class="fa fa-arrow-circle-right"></i></a>
+                    </div>
 
                     {{--<ul class="nav navbar-nav navbar-right">--}}
                         {{--<li class="">--}}
@@ -691,7 +697,15 @@
         {{--});--}}
     {{--}--}}
 {{--</script>--}}
-
-
+<script>
+    $(document).ready(function () {
+        $('#back').click(function () {
+            window.history.back();
+        });
+        $('#forward').click(function () {
+            window.history.forward();
+        });
+    });
+</script>
 </body>
 </html>
