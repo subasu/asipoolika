@@ -1,0 +1,62 @@
+.image-preview-input {
+    position: relative;
+    overflow: hidden;
+    margin: 0px;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.image-preview-input input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.image-preview-input-title {
+    margin-left:2px;
+}
+.table tbody tr > td.success {
+    background-color: #5cb85c !important;
+    font-size:30px;
+    color:white;
+}
+.table tbody tr > td.success:a {
+    background-color: #5cb85c !important;
+    font-size:30px;
+    color:white;
+}
+.table tbody tr > td.danger {
+    background-color: #d9534f !important;
+    font-size:30px;
+    color:white;
+}
+.table tbody tr > td.info {
+    background-color: #4da6ff !important;
+    font-size:30px;
+    color:white;
+}
+.table tbody tr > td.gray1 {
+    background-color: #004080 !important;
+    font-size:16px;
+    color:white;
+}
+.table tbody tr > td.gray2 {
+    background-color: #0066cc !important;
+    font-size:16px;
+    color:white;
+}
+.table tbody tr > td.gray3 {
+    background-color: #3399ff !important;
+    font-size:16px;
+    color:white;
+}
+input {direction: rtl;
+text-align: right}
+textarea {direction: rtl;
+    text-align: right;
+    resize: vertical;}
