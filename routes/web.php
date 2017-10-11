@@ -107,7 +107,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('showToCreditManager','CertificateController@showToCreditManager');
         Route::get('workerCardCreate' ,'SupplyController@workerCardCreate');        //96/7/1
-        Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
+        //Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
         Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');             //96/7/1
 
         Route::get('workerCardManage' ,'SupplyController@workerCardManage');                         //96/7/2
@@ -142,6 +142,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('unitsManage', 'SupplyController@unitsManageGet');
         Route::get('unitsCreate', 'SupplyController@unitsCreateGet');
         Route::post('unitsCreate', 'SupplyController@unitsCreatePost');
+        Route::get('units', 'SupplyController@unitsGet');
         Route::get('units', 'SupplyController@unitsGet');
         Route::post('changeUnitStatus/{id}', 'SupplyController@changeUnitStatus');
         Route::get('unitsUpdate/{id}', 'SupplyController@unitsUpdateShow');

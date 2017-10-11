@@ -148,13 +148,13 @@
                         },
                         success:function(response)
                         {
-//                            swal({
-//                                title: "",
-//                                text: response,
-//                                type: "info",
-//                                confirmButtonText: "بستن"
-//                            });
-                            window.location.href = "workerCardManage";
+                            swal({
+                                title: "",
+                                text: response,
+                                type: "info",
+                                confirmButtonText: "بستن"
+                            });
+                           // window.location.href = "workerCardManage";
                         },error:function(error)
                         {
                             swal({
