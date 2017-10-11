@@ -79,7 +79,7 @@
                     if (error.status === 422) {
                         var x = error.responseJSON;
                         var errorsHtml = '';
-                        var count = 0;
+                       // var count = 0;
                         $.each(x, function (key, value) {
                             errorsHtml += value[0] + '\n'; //showing only the first error.
                         });
@@ -375,7 +375,7 @@
             <td colspan="1" class="col-md-1">3</td>
             <td colspan="1" class="col-md-1">4</td>
             <td colspan="1" class="col-md-1">5</td>
-            <td colspan="1" class="col-md-1"></td>
+
         </tr>
         <tr>
             <td colspan="6" class="col-md-6 text-justify">

@@ -200,20 +200,20 @@ class RequestController extends Controller
      *  */
     public function sendTicket(SendTicketValidation $request)
     {
-        //$reciverId = Unit::where('title',$request->unit)->value('supervisor_id');
+        $receiverId = Unit::where('title',$request->unit)->value('supervisor_id');
         $unitId    = Unit::where('title',$request->unit)->value('id');
         $now  = new Carbon();
         $date = $now->toDateString();
         $time = $now->toTimeString();
         $ticketId = DB::table('tickets')->insertGetId
         ([
-           'title'           => $request->title,
-           'description'     => $request->description,
-           'date'            => $date,
-           'time'            => $time,
-           'unit_id'         => $unitId,
-           'user_id'         => Auth::user()->id
-
+           'title'                  => $request->title,
+           'description'            => $request->description,
+           'date'                   => $date,
+           'time'                   => $time,
+           'sender_user_id'         => Auth::user()->id,
+           'unit_id'                => $unitId,
+           'receiver_user_id'       => $receiverId
         ]);
         if($ticketId)
         {
@@ -226,7 +226,11 @@ class RequestController extends Controller
                'date'       => $date,
                'time'       => $time
             ]);
-            return response('اطلاعات شما با موفقیت ثبت گردید');
+            if($query)
+            {
+                return response('اطلاعات شما با موفقیت ثبت گردید');
+            }
+
         }else
             {
                 return response('خطایی در ثبت اطلاعات رخ داده است،لطفا با واححد پشتیبانی تماس بگیرید');
@@ -235,16 +239,32 @@ class RequestController extends Controller
     }
 
     //shiri : below function is to return all tickets to the view to check the status
-    public function ticketsManagement()
+    public function ticketsManagement($id)
     {
-        $pageTitle = 'بررسی تیکت ها';
-        $userId = Auth::user()->id;
-        $tickets = Ticket::where('user_id' , $userId)->get();
-        foreach ($tickets as $ticket)
+        switch ($id)
         {
-            $ticket->date = $this->toPersian($ticket->date);
+            case 1:
+                $pageTitle = 'بررسی تیکت های ارسالی';
+                $userId = Auth::user()->id;
+                $tickets = Ticket::where('sender_user_id' , $userId)->get();
+                foreach ($tickets as $ticket)
+                {
+                $ticket->date = $this->toPersian($ticket->date);
+                }
+                return view ('user.ticketsManagement',compact('tickets' , 'pageTitle'));
+            break;
+            case 2:
+                $pageTitle = 'بررسی تیکت های دریافتی';
+                $unitId = Auth::user()->unit_id;
+                $tickets = Ticket::where('unit_id' , $unitId)->get();
+                foreach ($tickets as $ticket)
+                {
+                    $ticket->date = $this->toPersian($ticket->date);
+                }
+                return view ('user.ticketsManagement',compact('tickets' , 'pageTitle'));
+
         }
-        return view ('user.ticketsManagement',compact('tickets' , 'pageTitle'));
+
     }
 
 
@@ -348,11 +368,11 @@ class RequestController extends Controller
     }
 
     //shiri : below  function to end ticket by user
-    public function userEndTicket(Request $request)
+    public function endTicket(Request $request)
     {
         $end = Ticket::where('id',$request->ticketId)->update
         ([
-            'active'  => 2
+            'active'  => 1
         ]);
         if($end)
         {

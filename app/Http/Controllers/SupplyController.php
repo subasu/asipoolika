@@ -1053,20 +1053,20 @@ class SupplyController extends Controller
     }
 
     //shiri : below  function to end ticket by admin
-    public function adminEndTicket(Request $request)
-    {
-        $end = Ticket::where('id',$request->ticketId)->update
-        ([
-           'active'  => 1
-        ]);
-        if($end)
-        {
-            return response('تیکت مورد نظر غیر فعال گردید');
-        }else
-            {
-                return response('خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید');
-            }
-    }
+//    public function adminEndTicket(Request $request)
+//    {
+//        $end = Ticket::where('id',$request->ticketId)->update
+//        ([
+//           'active'  => 1
+//        ]);
+//        if($end)
+//        {
+//            return response('تیکت مورد نظر غیر فعال گردید');
+//        }else
+//            {
+//                return response('خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید');
+//            }
+//    }
 
     public function confirmProductRequestManagementGet()
     {
@@ -1853,7 +1853,7 @@ class SupplyController extends Controller
     }
 
     //
-    public function saveCostDocument(CostDocumentValidation $request)
+    public function saveCostDocument(Request $request)
     {
         $oldCostDocument = CostDocument::where('request_id',$request->requestId)->get();
         if(count($oldCostDocument) > 0)
@@ -1882,14 +1882,14 @@ class SupplyController extends Controller
                                 $costDocumentRecords = DB::table('cost_document_records')->insert
                                 ([
                                     'cost_document_id' => $costDocumentId,
-                                    'code'             => $request->code[$i],
-                                    'description'      => $request->description[$i],
-                                    'moein_office'     => $request->moeinOffice[$i],
-                                    'general_price'    => $request->generalPrice[$i],
-                                    'deduction'        => $request->deduction[$i],
-                                    'payed_price'      => $request->payedPrice[$i],
-                                    'page'             => $request->page[$i],
-                                    'row'              => $request->row[$i],
+                                    'code'             => trim($request->code[$i]),
+                                    'description'      => trim($request->description[$i]),
+                                    'moein_office'     => trim($request->moeinOffice[$i]),
+                                    'general_price'    => trim($request->generalPrice[$i]),
+                                    'deduction'        => trim($request->deduction[$i]),
+                                    'payed_price'      => trim($request->payedPrice[$i]),
+                                    'page'             => trim($request->page[$i]),
+                                    'row'              => trim($request->row[$i]),
                                     'created_at'       => Carbon::now(new \DateTimeZone('Asia/Tehran'))
 
                                 ]);

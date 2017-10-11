@@ -38,11 +38,11 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('/ticketRequest','RequestController@ticketRequest');
     Route::get('/getUnits','RequestController@getUnits');
     Route::post('sendTicket','RequestController@sendTicket');
-    Route::get('ticketsManagement','RequestController@ticketsManagement');
+    Route::get('ticketsManagement/{id}','RequestController@ticketsManagement');
     Route::post('searchOnDate/{id}','RequestController@searchOnDate');
     Route::get('ticketConversation/{id}','RequestController@ticketConversation');
     Route::post('userSendMessage','RequestController@userSendMessage');
-    Route::post('userEndTicket' , 'RequestController@userEndTicket');
+    Route::post('endTicket' , 'RequestController@endTicket');
 
 
 });
@@ -113,9 +113,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('workerCardManage' ,'SupplyController@workerCardManage');                         //96/7/2
         Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');                           //96/7/2
         Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');                         //96/7/2
-        Route::get('showTickets','SupplyController@showTickets');                                    //96/7/5
+        //Route::get('showTickets','SupplyController@showTickets');                                    //96/7/5
         Route::post('adminSendMessage','SupplyController@adminSendMessage');                        //96/7/5
-        Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
+        //Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
 
 
         Route::get('printProductRequest/{id}','SupplyController@printProductRequest');                           //96/7/11

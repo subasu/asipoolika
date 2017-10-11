@@ -38,7 +38,7 @@ class SendTicketValidation extends FormRequest
             [
               //'units.required'=>'لطفا فیلد واحد را انتخاب نمایید',
               'title.required'=>'لطفا فیلد عنوان را پر  نمایید',
-              'description.required'=>'لطفا فیلد توضیحات را پر  نمایید',
+              'description.required'=>'لطفا فیلد متن تیکت را پر  نمایید',
               'title.max'=>'تعداد  کارکترهای وارد شده در فیلد عنوان بیش از حد مجاز میباشد',
               'description.max'=>'تعداد  کارکترهای وارد شده در فیلد توضیحات بیش از حد مجاز میباشد',
             ];

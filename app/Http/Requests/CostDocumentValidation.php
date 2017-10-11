@@ -26,7 +26,7 @@ class CostDocumentValidation extends FormRequest
         return [
                    'code'         => 'int',
                    //'description'  => 'required',
-                   'moeinOffice[]'  => 'int',
+                   'moeinOffice'  => 'int',
                    'generalPrice' => 'int',
                    'deduction'    => 'int',
                    'payedPrice'   => 'int',
@@ -34,21 +34,16 @@ class CostDocumentValidation extends FormRequest
                    'row'          => 'int'
                ];
 
-        foreach($this->request->get('items') as $key => $val)
-        {
-            $rules['items.'.$key] = 'int';
-        }
 
-        return $rules;
     }
 
     public function messages()
     {
         return
             [
-                 'code.number'             => 'لطفا فیلد کد را از نوع عدد صحیح وارد نمایید',
+                 'code.int'             => 'لطفا فیلد کد را از نوع عدد صحیح وارد نمایید',
                  //'description.required' => 'پر کردن فیلد شرح الزامی است',
-                 'mainOffice[].int'       => 'لطفا فیلد دفتر معین را از نوع عدد صحیح وارد نمایید',
+                 'moeinOffice.int'      => 'لطفا فیلد دفتر معین را از نوع عدد صحیح وارد نمایید',
                  'deduction.int'        => 'لطفا فیلد کسور را از نوع عدد صحیح وارد نمایید',
                  'generalPrice.int'     => 'لطفا فیلد قیمت اصلی را از نوع عدد صحیح وارد نمایید',
                  'payedPrice.int'       => 'لطفا فیلد هزینه پرداختی  را از نوع عدد صحیح وارد نمایید',
