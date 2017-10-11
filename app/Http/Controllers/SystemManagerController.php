@@ -137,7 +137,7 @@ class SystemManagerController extends Controller
     public function access_levelGet()
     {
         $pageTitle='تعیین سطح دسترسی';
-//        return view('system_manager.access_level',compact('pageTitle'));
-        return view('comingSoon',compact('pageTitle'));
+        return view('system_manager.access_level',compact('pageTitle'));
+//        return view('comingSoon',compact('pageTitle'));
     }
 }
