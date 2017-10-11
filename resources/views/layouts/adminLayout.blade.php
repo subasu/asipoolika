@@ -199,7 +199,7 @@
                             {{--//User menu--}}
 
                             {{-- user dashboard menu --}}
-                            @if(($user->is_supervisor==1 or $user->is_supervisor==0) and $user->unit_id!=3)
+
                             <li><a><i class="fa fa-dropbox "></i> درخواست کالا <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/productRequest')}}">ارسال درخواست کالا</a>
@@ -216,7 +216,7 @@
                                     </li>
                                 </ul>
                            </li>
-
+                            @if(($user->is_supervisor==1 or $user->is_supervisor==0) and $user->unit_id!=3)
                             <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/productCertificatesManagement')}}"> تایید گواهی های کالا<span></span></a>

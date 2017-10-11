@@ -24,14 +24,14 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('/productRequest',[
         'uses'=>'RequestController@productRequestGet',
         'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
+        'roles'=>['supplierManager','unitManager','user','systemManager']
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
 //    Route::get('/productRequestFollow','RequestController@productRequestFollowGet');
     Route::get('/productRequestFollow',[
         'uses'=>'RequestController@productRequestFollowGet',
         'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
+        'roles'=>['supplierManager','unitManager','user','systemManager']
     ]);
 
     //shiri
@@ -39,7 +39,7 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('/serviceRequest',[
         'uses'=>'RequestController@serviceRequestGet',
         'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
+        'roles'=>['supplierManager','unitManager','user','systemManager']
     ]);
     Route::post('serviceRequest','RequestController@serviceRequest');
 
@@ -47,13 +47,13 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('/serviceRequestFollow',[
         'uses'=>'RequestController@serviceRequestFollowGet',
         'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
+        'roles'=>['supplierManager','unitManager','user','systemManager']
     ]);
 //    Route::get('/myRequestRecords/{id}','RequestController@myRequestRecordsGet');
     Route::get('/myRequestRecords/{id}',[
         'uses'=>'RequestController@myRequestRecordsGet',
         'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
+        'roles'=>['supplierManager','unitManager','user','systemManager']
     ]);
 
     Route::get('/ticketRequest','RequestController@ticketRequest');
