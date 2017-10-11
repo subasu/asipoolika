@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Site Meta Info -->
@@ -11,11 +10,8 @@
     <meta name="keywords" content="املاک آنلاین خمینی شهر،خمینی شهر،املاک آنلاین،خرید و فروش آنلاین ملک،لیست املاک خمینی شهر،املاک خمینی شهر،مشاور املاک در خمینی شهر،مشاور املاک منظریه،مشاور املاک پاسدارن،مشاور املاک هفتصد دستگاه">
     <meta name="author" content="www.melkomalek.ir">
     <title>اجازه دسترسی ندارید!</title>
-
     <!-- Bootstrap core CSS -->
-
     <link href="{{ URL::asset('public/dashboard/css/bootstrap.min.css')}}" rel="stylesheet">
-
     <link href="{{ URL::asset('public/dashboard/fonts/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{ URL::asset('public/dashboard/css/animate.min.css')}}" rel="stylesheet">
     {{--My Style Code--}}
@@ -26,9 +22,7 @@
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('public/dashboard/css/maps/jquery-jvectormap-2.0.3.css')}}" />
     <link href="{{ URL::asset('public/dashboard/css/icheck/flat/green.css')}}" rel="stylesheet" />
     <link href="{{ URL::asset('public/dashboard/css/floatexamples.css')}}" rel="stylesheet" type="text/css" />
-
     <script src="{{ URL::asset('public/js/jquery.min.js')}}"></script>
-
     <!--[if lt IE 9]>
     <script src="../assets/js/ie8-responsive-file-warning.js"></script>
     <![endif]-->

@@ -40,10 +40,7 @@
     <![endif]-->
     <style> div {font-family:"Yekan";}</style>
 </head>
-
-
 <body class="nav-md">
-
 <div class="container body">
     <div class="main_container">
         <!-- page content -->

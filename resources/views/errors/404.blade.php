@@ -60,11 +60,9 @@
             </div>
         </div>
         <!-- /page content -->
-
     </div>
     <!-- footer content -->
 </div>
-
 <div id="custom_notifications" class="custom-notifications dsp_none">
     <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group">
     </ul>
@@ -72,5 +70,4 @@
     <div id="notif-group" class="tabbed_notifications"></div>
 </div>
 </body>
-
 </html>
