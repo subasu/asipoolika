@@ -47,9 +47,8 @@
                                         <span class="label label-danger col-md-12">اجباری</span>
                                         @else
                                         <span class="label label-info col-md-12">اختیاری</span>
-                                    @endif
+                                        @endif
                                     </td>
-                                    {{--<td><img class="col-md-2" src="http://s9.picofile.com/file/8306682392/blesing_cover_.jpg" style="padding:0;"/></td>--}}
                                     <td>
                                         <a href="{{URL::asset('systemManager/showSignature')}}/{{$signature->id}}" target="_blank" type="button"
                                            class="btn btn-round btn-default" data-toggle="tooltip" title="نمایش امضا">

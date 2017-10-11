@@ -34,8 +34,8 @@
                                    placeholder="" required="required" type="text" style="width: 20%;padding:2px 5px 2px 5px;"> به واحد
                             <span style="color:red">{{$users[0]->unit->title}}</span> به آقای / خانم
                             <select name="receiver_id" id="" style="font-size: 18px;padding:2px 5px 2px 5px;">
-                                @foreach($users as $user)
-                                    <option value="{{$user->id}}">{{$user->name}} {{$user->family}}</option>
+                                @foreach($users as $user2)
+                                    <option value="{{$user2->id}}">{{$user2->name}} {{$user2->family}}</option>
                                 @endforeach
                             </select> تحویل گردید و پرداخت شده است.
                         </div>
@@ -200,8 +200,8 @@
                                     if (isConfirm) {
                                         //serialize() send all form input values
                                         var formData = $('#form_certificate').serialize();
-                    //                    console.log(formData);
-                    //                    return false;
+//                                        console.log(formData);
+//                                        return false;
                                         $.ajaxSetup({
                                             headers: {
                                                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -254,7 +254,7 @@
                     swal( "لطفا سطری را انتخاب نمایید");
                     return false;
                 }
-        })
+        });
 
 
 
@@ -365,7 +365,7 @@
                 swal( "لطفا سطری را انتخاب نمایید");
                 return false;
             }
-        })
+        });
 
 
         $(document).on('click','#service_certificate',function(){
@@ -475,7 +475,7 @@
                 swal( "لطفا سطری را انتخاب نمایید");
                 return false;
             }
-        })
+        });
 
 
     </script>
