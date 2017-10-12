@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- Meta, title, CSS, favicons, etc. -->
 <meta charset="utf-8">
@@ -42,7 +43,9 @@
       type="text/css"/>
 <link href="{{ URL::asset('public/dashboard/js/datatables/scroller.bootstrap.min.css')}}" rel="stylesheet"
       type="text/css"/>
-
+<style>
+    div,h2 {font-family:Yekan}
+</style>
 
 <!--End Data table-->
 
@@ -96,6 +99,8 @@
                             {{--<li><a><i class="fa f a-home"></i> مدیر سیستم<span></span></a>--}}
                             {{--</li>--}}
                             @if($user->is_supervisor==1 and $user->unit_id==3)
+                                <li><a href="{{url('systemManager/access_level')}}"><i class="fa fa-align-left"></i> تعیین سطح دسترسی</a>
+                                </li>
                             <li><a><i class="fa fa-pencil-square-o"></i> مدیریت امضاء ها<span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
@@ -105,8 +110,7 @@
                                     </li>
                                 </ul>
                             </li>
-                                <li><a href="{{url('systemManager/access_level')}}"><i class="fa fa-users-p"></i> تعیین سطح دسترسی</a>
-                                </li>
+
                             @endif
                             {{--//End system manager menu <br>--}}
                             {{--//Admin menu--}}
@@ -198,7 +202,7 @@
                             {{--//User menu--}}
 
                             {{-- user dashboard menu --}}
-                            @if(($user->is_supervisor==1 or $user->is_supervisor==0) and $user->unit_id!=3)
+
                             <li><a><i class="fa fa-dropbox "></i> درخواست کالا <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/productRequest')}}">ارسال درخواست کالا</a>
@@ -215,7 +219,7 @@
                                     </li>
                                 </ul>
                            </li>
-
+                            @if(($user->is_supervisor==1 or $user->is_supervisor==0) and $user->unit_id!=3)
                             <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/productCertificatesManagement')}}"> تایید گواهی های کالا<span></span></a>
@@ -250,8 +254,8 @@
                             @endif
                             {{--//End User menu--}}
                             {{-- end user dashboard menu --}}
-                            <li><a href="{{url('/logout')}}" style="font-size:20px;padding:3px 0 3px 0"
-                                   class="btn btn-danger col-md-10 col-md-offset-1"><i class="fa fa-sign-out" aria-hidden="true"></i>خروج</a>
+                            <li style="margin-top:15px;"><a href="{{url('/logout')}}" style="font-size:20px;padding:3px 0 3px 0"
+                               class="btn btn-danger col-md-10 col-md-offset-1"><i class="fa fa-sign-out" aria-hidden="true"></i>خروج</a>
                             </li>
                         </ul>
                     </div>

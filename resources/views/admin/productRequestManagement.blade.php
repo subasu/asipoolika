@@ -60,7 +60,7 @@
                                     @if($pageName=='productRequestManagement')
                                         <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
                                         <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
-                                        <th class="col-md-2" style="text-align: center ;">رد شده</th>
+                                        <th class="col-md-2" style="text-align: center;border-left: 1px solid #8eb4cb">رد شده</th>
                                         <th class="col-md-1" style="text-align: center ;">عملیات</th>
                                     @elseif($pageName=='refusedProductRequestManagement')
                                         <th class="col-md-1" style="text-align: center ;">رکوردهای رد شده</th>
@@ -77,7 +77,7 @@
                                         <th class="col-md-1" style="text-align: center ;">دارای گواهی</th>
                                         <th class="col-md-3" style="text-align: center ;"> عملیات</th>
                                     @endif
-
+                                    {{--<td></td>--}}
                             </tr>
                             </thead>
                             @endif
@@ -95,6 +95,7 @@
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
                                             <td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                            <td></td>
                                         @endif
                                     </tr>
                                     @endforeach

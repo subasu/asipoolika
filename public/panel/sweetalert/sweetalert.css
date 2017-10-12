@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Yekan";
+  src: url("public/dashboard/fonts/Yekan.eot");
+  src: local( "?" ), url( "../fonts/W_YEKAN_0.TTF" )format( "truetype" );
+}
+*{
+  font-family:Yekan;
+}
 body.stop-scrolling {
   height: 100%;
   overflow: hidden; }
@@ -18,7 +26,7 @@ body.stop-scrolling {
 
 .sweet-alert {
   background-color: white;
-  /*font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
+  /*font-family:Yekan;*/
   width: 478px;
   padding: 17px;
   border-radius: 5px;
