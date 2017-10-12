@@ -61,12 +61,12 @@
                         @if($ticket->active == 0)
                             <h1 class="col-md-1 pull-right font-size-30 text-success">فعال</h1>
                         @endif
+
                         @if($ticket->active == 1)
                             <h1 class="col-md-3 pull-right font-size-30 text-dander">بسته شده</h1>
                         @endif
-                        {{--@if($ticket->active == 1)--}}
-                            {{--<h1 class="col-md-3 pull-right font-size-30 text-danger">اتمام از طرف ادمین</h1>--}}
-                        {{--@endif--}}
+    
+
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>
@@ -81,12 +81,16 @@
                         <div class="x_content " style="float: none;" dir="rtl">
                             <div class="item form-group">
                                 <div class="col-md-5 col-sm-7 col-xs-12">
+
                                     <input id="title" value="{{$ticket->user->unit->title}}"
+
                                            class="form-control col-md-7 col-xs-10 ticketInfo" name="title" disabled
                                            type="text">
                                 </div>
                                 <label class="control-label col-md-1 col-sm-1 col-xs-2 text-center" for="unit_id">
+
                                     واحد ارسال کننده</label>
+
                             </div>
                             <div class="item form-group">
                                 <div class="col-md-5 col-sm-8 col-xs-12">
@@ -152,7 +156,9 @@
                                         </div>
                                     @endif
                                 </div>
+
                                 @if($message->ticket->unit_id === \Illuminate\Support\Facades\Auth::user()->unit_id && !count($message->answer) && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1  && $ticket->active == 0)
+
                                     <div class="col-md-12">
                                         <br>
                                         <button id="adminMessage" content="{{$message->id}}" type="button"
@@ -168,6 +174,7 @@
                              style="float: none !important; padding-top: 1%;">{{-- AdminConversation--}}
                             <div class="item form-group col-md-12" dir="rtl">
                                 <hr>
+
                                 <div class="col-md-12 col-xs-12">
                                     @if($ticket->sender_user_id === \Illuminate\Support\Facades\Auth::user()->id && $ticket->active == 0)
 
@@ -193,6 +200,24 @@
                                     {{--</button>--}}
                                 {{--@endif--}}
                                 </div>
+
+                                {{--<div class="col-md-12 col-xs-12">--}}
+                                @if($ticket->user_id === \Illuminate\Support\Facades\Auth::user()->id && $ticket->active == 0)
+
+                                    <button id="userMessage" style="" content="{{$message->ticket_id}}"
+                                            class="btn btn-info col-md-2 ">ارسال پیام جدید
+                                    </button>
+                                    <button id="userEndTicket" content="{{$message->ticket_id}}"
+                                            class="btn btn-danger  col-md-2">بستن تیکت
+                                    </button>
+                                @endif
+                               {{--@if($ticket->user_id !== \Illuminate\Support\Facades\Auth::user()->id && $ticket->active == 0)--}}
+                                    {{--<button id="adminEndTicket" content="{{$message->ticket_id}}"--}}
+                                            {{--style="" class="btn btn-danger col-md-2">بستن تیکت--}}
+                                    {{--</button>--}}
+                                {{--@endif--}}
+                                {{--</div>--}}
+
                             </div>
                         </div>
                     </div>
@@ -319,7 +344,9 @@
             });
         </script>
         <script>
+
             $(document).on('click', '#endTicket', function () {
+
                 var ticketId = $(this).attr('content');
                 var token = $('#token').val();
                 $.ajaxSetup({
@@ -329,7 +356,9 @@
                 })
                 $.ajax
                 ({
+
                     url: "{{Url('user/endTicket')}}",
+
                     type: "post",
                     data: {'ticketId': ticketId, '_token': token},
                     success: function (response) {
@@ -350,6 +379,7 @@
                         console.log(error);
                     }
                 });
+
             });
         </script>
 

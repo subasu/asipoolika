@@ -1,12 +1,10 @@
-@extends('layouts.adminLayout');
-@section('title')
-    ویرایش کاربر
-@endsection
+@extends('layouts.adminLayout')
 @section('content')
     <style>
-        span {
-            color: #ff0000;
-            float: right;
+        .star {
+            color: #ff0000;float: right;
+            padding-right:4px;
+            padding-left:4px;
         }
 
         input, label {
@@ -15,7 +13,7 @@
     </style>
     <div class="clearfix"></div>
     <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
             <div class="x_panel">
                 <div class="x_title">
                     <h2> فرم ویرایش کاربر
@@ -30,7 +28,7 @@
                 </div>
                 {{-- table --}}
                 <div class="col-md-3 col-sm-3 col-xs-12"></div>
-                <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-10 col-sm-6 col-xs-12 col-md-offset-1">
                     <div class="x_content">
                         @foreach($user as $val)
                             <form class="form-horizontal form-label-left" id="user-send-form" method="POST"
@@ -38,13 +36,13 @@
                                 {{ csrf_field() }}
                                 <input value="{{$val->id}}" name="user_id" type="hidden">
                                 <div class="item form-group">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
                                         <input id="title" class="form-control col-md-7 col-xs-12" name="title"
                                                value="{{$val->title}}"
                                                required="required" type="text">
                                     </div>
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="title"> عنوان <span
-                                                class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12 " for="title"> عنوان <span
+                                                class="required star" title="پر کردن این فیلد الزامی است" >*</span>
                                     </label>
                                     @if ($errors->has('name'))
                                         <span class="help-block">
@@ -54,13 +52,13 @@
                                 </div>
                                 <input value="{{$val->id}}" name="unit_id" type="hidden">
                                 <div class="item form-group">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
                                         <input id="name" class="form-control col-md-7 col-xs-12" name="name"
                                                value="{{$val->name}}"
-                                               required="required" type="text">
+                                               required="required " type="text">
                                     </div>
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name"> نام <span
-                                                class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="name"> نام <span
+                                                class="required star" title="پر کردن این فیلد الزامی است" >*</span>
                                     </label>
                                     @if ($errors->has('name'))
                                         <span class="help-block">
@@ -69,12 +67,12 @@
                                     @endif
                                 </div>
                                 <div class="item form-group {{ $errors->has('family') ? ' has-error' : '' }}">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
                                         <input id="family" class="form-control col-md-7 col-xs-12" name="family"
                                                value="{{$val->family}}" required="required" type="text">
                                     </div>
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="family"> نام خانوادگی
-                                        <span class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="family"> نام خانوادگی
+                                        <span class="required star" title="پر کردن این فیلد الزامی است">*</span>
                                     </label>
                                     @if ($errors->has('family'))
                                         <span class="help-block">
@@ -83,12 +81,12 @@
                                     @endif
                                 </div>
                                 <div class="item form-group {{ $errors->has('email') ? ' has-error' : '' }}">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
                                         <input type="email" id="email" name="email" required="required"
                                                value="{{$val->email}}" class="form-control col-md-7 col-xs-12">
                                     </div>
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email"> ایمیل <span
-                                                class="required" title="پر کردن این فیلد الزامی است">*</span>
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="email"> ایمیل <span
+                                                class="required star" title="پر کردن این فیلد الزامی است">*</span>
                                     </label>
                                     @if ($errors->has('email'))
                                         <span class="help-block">
@@ -97,13 +95,13 @@
                                     @endif
                                 </div>
                                 <div class="item form-group {{ $errors->has('cellphone') ? ' has-error' : '' }}">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
                                         <input type="tel" id="cellphone" name="cellphone" required="required"
                                                value="{{$val->cellphone}}" class="form-control col-md-7 col-xs-12">
                                     </div>
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="cellphone">شماره
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="cellphone">شماره
                                         موبایل
-                                        <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
+                                        <span class="required star" title="پر کردن این فیلد الزامی است">*</span></label>
                                     @if ($errors->has('cellphone'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('cellphone') }}</strong>
@@ -111,14 +109,14 @@
                                     @endif
                                 </div>
                                 <div class="item form-group {{ $errors->has('internal_phone') ? ' has-error' : '' }}">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
                                         <input type="tel" id="internal_phone" name="internal_phone"
                                                value="{{$val->internal_phone}}" required="required"
                                                class="form-control col-md-7 col-xs-12">
                                     </div>
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="internal_phone">تلفن
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="internal_phone">تلفن
                                         داخلی
-                                        <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
+                                        <span class="required star" title="پر کردن این فیلد الزامی است">*</span></label>
                                     @if ($errors->has('internal_phone'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('internal_phone') }}</strong>
@@ -127,7 +125,7 @@
                                 </div>
 
                                 {{--<div class="item form-group">--}}
-                                    {{--<div class="col-md-6 col-sm-6 col-xs-12">--}}
+                                    {{--<div class="col-md-8 col-sm-8 col-xs-12">--}}
                                         {{--<select class="form-control col-md-7 col-xs-12" name="unit_id" id="unit_id">--}}
                                             {{--<option value="{{$val->unit_id}}">{{$val->unit->title}}</option>--}}
                                             {{--@foreach($units as $unit)--}}
@@ -136,26 +134,26 @@
                                             {{--@endforeach--}}
                                         {{--</select>--}}
                                     {{--</div>--}}
-                                    {{--<label class="control-label col-md-3 col-sm-3 col-xs-12" for="unit_id"> واحد--}}
+                                    {{--<label class="control-label col-md-4 col-sm-4 col-xs-12" for="unit_id"> واحد--}}
                                         {{--<span class="required" title="پر کردن این فیلد الزامی است">*</span></label>--}}
                                 {{--</div>--}}
 
                                 {{--<div class="item form-group">--}}
-                                    {{--<div class="col-md-6 col-sm-6 col-xs-12">--}}
+                                    {{--<div class="col-md-8 col-sm-8 col-xs-12">--}}
                                         {{--<select class="form-control col-md-7 col-xs-12" name="supervisor_id"--}}
                                                 {{--id="supervisor_id">--}}
                                             {{--<option value="{{$val->supervisor_id}}">{{$val->user->title. ' '.$val->user->name.' '.$val->user->family}}</option>--}}
                                         {{--</select>--}}
                                     {{--</div>--}}
-                                    {{--<label class="control-label col-md-3 col-sm-3 col-xs-12" for="supervisor_id">سرپرست--}}
+                                    {{--<label class="control-label col-md-4 col-sm-4 col-xs-12" for="supervisor_id">سرپرست--}}
                                         {{--<span class="required" title="پر کردن این فیلد الزامی است">*</span></label>--}}
                                 {{--</div>--}}
                                 <div class="item form-group">
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
                                     <textarea id="description" required="required" name="description"
                                               class="form-control col-md-7 col-xs-12">{{$val->description}}</textarea>
                                     </div>
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="description">توضیحات
+                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="description">توضیحات
                                     </label>
                                     @if ($errors->has('description'))
                                         <span class="help-block">
@@ -165,8 +163,8 @@
                                 </div>
                                 <div class="ln_solid"></div>
                                 <div class="form-group">
-                                    <div class="col-md-6">
-                                        <button id="user-send" type="button" class="col-md-3 btn btn-primary">ثبت
+                                    <div class="col-md-8">
+                                        <button id="user-send" type="button" class="col-md-12 btn btn-primary">ثبت
                                         </button>
                                     </div>
                                 </div>
@@ -174,10 +172,10 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-12"></div>
+                <div class="col-md-4 col-sm-3 col-xs-12"></div>
             </div>
         </div>
-    </div>
+
     {{--update user's information by ajax--}}
     <script>
         $("#user-send").click(function () {

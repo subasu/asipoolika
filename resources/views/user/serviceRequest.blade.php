@@ -267,6 +267,4 @@
                         });
             });
         </script>
-
-
 @endsection

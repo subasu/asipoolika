@@ -63,7 +63,7 @@
                                     <tr>
                                         <td>{{$request->user->unit->title}}</td>
                                         <td>{{$request->user->name .chr(10). $request->user->family}}</td>
-                                        <td><a href="{{URL::asset('admin/serviceShowDetails')}}/{{$request->id}}">مشاهده جزییات</a>
+                                        <td><a target="_blank" href="{{URL::asset('admin/serviceShowDetails')}}/{{$request->id}}">مشاهده جزییات</a>
                                     </tr>
                                 @endforeach()
                             </form>
