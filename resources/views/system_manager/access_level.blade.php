@@ -38,8 +38,11 @@
                                 <label class="control-label col-md-4 col-sm-3 col-xs-12  pull-right" for="phone"><i class="fa fa-align-right"></i> سطح دسترسی های فعلی :
                                 </label>
                                 <div class="col-md-8 col-sm-6 col-xs-12">
+
                                     <label class="control-label" for="phone"></i>
                                         {{$userRoles}}
+
+
                                     </label>
                                 </div>
                             </div>
@@ -57,7 +60,7 @@
                             <div class="ln_solid"></div>
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <button id="newRole" type="button" class="col-md-9 btn btn-primary">ثبت</button>
+                                    <button id="newRole" type="button" class="col-md-8 btn btn-primary">ثبت</button>
                                 </div>
                             </div>
                             <input type="hidden" value="{{$id}}" name="userId">

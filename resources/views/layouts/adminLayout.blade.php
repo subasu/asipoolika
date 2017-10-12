@@ -81,7 +81,7 @@
                         <img src="{{URL::asset('public/dashboard/images/img.png')}}" alt="..."
                              class="img-circle profile_img">
                     </div>
-                    <div class="profile_info">
+                    <div class="profile_info" style="text-align: left">
                         <span>@if($user_info->is_supervisor==1)@if($user_info->unit_id!=4) مدیر @endif @endif{{$user->unit->description}}</span><br>
                         <h2>{{$user_info->title}} {{$user_info->name}} {{$user_info->family}}</h2>
                     </div>
@@ -96,84 +96,83 @@
                         <h3 style="font-size: 16px;"><a href="" onclick="alert('این هم چیز واسه تست! ادد باید همینو بزنین :)')" style="color:white">پروفایل</a></h3>
                         <ul class="nav side-menu">
                             {{--//system manager menu--}}
-                            {{--<li><a><i class="fa f a-home"></i> مدیر سیستم<span></span></a>--}}
-                            {{--</li>--}}
+                         
                             @if($user->is_supervisor==1 and $user->unit_id==3)
-                                <li><a href="{{url('systemManager/access_level')}}"><i class="fa fa-align-left"></i> تعیین سطح دسترسی</a>
+                                <li><a><i class="fa fa-pencil-square-o"></i> مدیریت امضاء ها<span
+                                                class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li><a href="{{url('systemManager/signaturesList')}}"> لیست امضاء ها</a>
+                                        </li>
+                                        <li><a href="{{url('systemManager/add_signature')}}">درج امضاء جدید </a>
+                                        </li>
+                                    </ul>
                                 </li>
-                            <li><a><i class="fa fa-pencil-square-o"></i> مدیریت امضاء ها<span
-                                            class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('systemManager/signaturesList')}}"> لیست امضاء ها</a>
-                                    </li>
-                                    <li><a href="{{url('systemManager/add_signature')}}">درج امضاء جدید </a>
-                                    </li>
-                                </ul>
-                            </li>
-
+  
                             @endif
                             {{--//End system manager menu <br>--}}
                             {{--//Admin menu--}}
 
-                           @if($user->is_supervisor==1 and $user->unit_id!=3)
-                           <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('/admin/productRequestManagement')}}"> درخواست های جدید</a></li>
-                                    @if($user->is_supervisor==1)
-                                    <li><a href="{{url('/admin/acceptProductRequestManagement')}}">بررسی شده</a></li>
-{{--                                    <li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
-                                        @if($user->is_supervisor==1 and $user->unit_id==6)
-                                    <li><a href="{{url('/admin/confirmProductRequestManagement')}}">تایید شده</a></li>
-                                    @endif
-                                    @endif
-                                </ul>
-                            </li>
-                            <li><a><i class="fa fa-edit"></i> مدیریت درخواست خدمت<span
-                                            class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('/admin/serviceRequestManagement')}}"> درخواست های جدید</a></li>
-                                    @if($user->is_supervisor==1)
-                                        <li><a href="{{url('/admin/acceptServiceRequestManagement')}}">بررسی شده</a></li>
-                                        {{--<li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
-                                        @if($user->is_supervisor==1 and $user->unit_id==6)
-                                        <li><a href="{{url('/admin/confirmServiceRequestManagement')}}">تایید شده</a></li>
-                                    @endif
-                                    @endif
-                                </ul>
-                            </li>
+                            @if($user->is_supervisor==1 and $user->unit_id!=3)
+                                <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li><a href="{{url('/admin/productRequestManagement')}}"> درخواست های جدید</a></li>
+                                        @if($user->is_supervisor==1)
+                                            <li><a href="{{url('/admin/acceptProductRequestManagement')}}">بررسی شده</a></li>
+                                            {{--                                    <li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
+                                            @if($user->is_supervisor==1 and $user->unit_id==6)
+                                                <li><a href="{{url('/admin/confirmProductRequestManagement')}}">تایید شده</a></li>
+                                            @endif
+                                        @endif
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-edit"></i> مدیریت درخواست خدمت<span
+                                                class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li><a href="{{url('/admin/serviceRequestManagement')}}"> درخواست های جدید</a></li>
+                                        @if($user->is_supervisor==1)
+                                            <li><a href="{{url('/admin/acceptServiceRequestManagement')}}">بررسی شده</a></li>
+                                            {{--<li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
+                                            @if($user->is_supervisor==1 and $user->unit_id==6)
+                                                <li><a href="{{url('/admin/confirmServiceRequestManagement')}}">تایید شده</a></li>
+                                            @endif
+                                        @endif
+                                    </ul>
+                                </li>
                             @endif
                             {{-- Rayat Start --}}
                             @if($user->is_supervisor==1 and $user->unit_id==3)
-                            <li><a><i class="fa fa-users"></i> مدیریت کاربران <span
-                                            class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('admin/usersManagement')}}">مدیریت کاربران</a>
-                                    </li>
-                                    <li><a href="{{url('admin/usersCreate')}}">درج کاربر جدید</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a><i class="fa fa-th-list"></i> مدیریت واحدها <span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('admin/unitsManage')}}">مدیریت واحد ها</a>
-                                    </li>
-                                    <li><a href="{{url('admin/unitsCreate')}}">درج واحد جدید</a>
-                                    </li>
-                                </ul>
-                            </li>
+                                <li><a><i class="fa fa-users"></i> مدیریت کاربران <span
+                                                class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li><a href="{{url('admin/usersManagement')}}">مدیریت کاربران</a>
+                                        </li>
+                                        <li><a href="{{url('admin/usersCreate')}}">درج کاربر جدید</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-th-list"></i> مدیریت واحدها <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li><a href="{{url('admin/unitsManage')}}">مدیریت واحد ها</a>
+                                        </li>
+                                        <li><a href="{{url('admin/unitsCreate')}}">درج واحد جدید</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             @endif
                             @if($user->is_supervisor==1 and $user->unit_id==6)
-                            <li><a><i class="fa fa-address-card"></i> مدیریت کارت های کارگری<span
-                                            class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('admin/workerCardCreate')}}">آپلود کارت کارگری</a>
-                                    </li>
-                                    <li><a href="{{url('admin/workerCardManage')}}">کارتهای کارگری صادر شده</a>
-                                    </li>
-                                </ul>
-                            </li>
+                                <li><a><i class="fa fa-address-card"></i> مدیریت کارت های کارگری<span
+                                                class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li><a href="{{url('admin/workerCardCreate')}}">آپلود کارت کارگری</a>
+                                        </li>
+                                        <li><a href="{{url('admin/workerCardManage')}}">کارتهای کارگری صادر شده</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             @endif
                             @if(($user->is_supervisor==1 and $user->unit_id==6) or ($user->is_supervisor==1 and $user->unit_id==3))
+
+
                             <li><a><i class="fa fa-envelope-open-o"></i> مدیریت تیکت ها <span
                                             class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
@@ -184,24 +183,26 @@
                                 </ul>
                             </li>
                             {{--<li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>--}}
+
                                 {{--<ul class="nav child_menu" style="display: none">--}}
-                                    {{--<li><a href="{{url('admin/')}}">پیام های دریافتی</a>--}}
-                                    {{--</li>--}}
-                                    {{--<li><a href="{{url('admin/')}}">پیام های ارسالی</a>--}}
-                                    {{--</li>--}}
-                                    {{--<li><a href="{{url('admin/')}}">پیام های دریافتی</a>--}}
-                                    {{--</li>--}}
-                                    {{--<li><a href="{{url('admin/')}}">سطل زباله پیام ها</a>--}}
-                                    {{--</li>--}}
+                                {{--<li><a href="{{url('admin/')}}">پیام های دریافتی</a>--}}
+                                {{--</li>--}}
+                                {{--<li><a href="{{url('admin/')}}">پیام های ارسالی</a>--}}
+                                {{--</li>--}}
+                                {{--<li><a href="{{url('admin/')}}">پیام های دریافتی</a>--}}
+                                {{--</li>--}}
+                                {{--<li><a href="{{url('admin/')}}">سطل زباله پیام ها</a>--}}
+                                {{--</li>--}}
                                 {{--</ul>--}}
-                            {{--</li>--}}
-                            {{--<li><a><i class="fa fa-cogs"></i>تنظیمات<span class="fa fa-chevron-down"></span></a>--}}
-                            {{--</li>--}}
+                                {{--</li>--}}
+                                {{--<li><a><i class="fa fa-cogs"></i>تنظیمات<span class="fa fa-chevron-down"></span></a>--}}
+                                {{--</li>--}}
                             @endif
                             {{--//End Admin menu <br>--}}
                             {{--//User menu--}}
 
                             {{-- user dashboard menu --}}
+
 
                             <li><a><i class="fa fa-dropbox "></i> درخواست کالا <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
@@ -230,33 +231,38 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>
-                                    </li>
-                                    <li><a href="{{url('user/ticketsManagement/1')}}">پیگیری تیکت</a>
-                                    </li>
-                                </ul>
-                            </li>
 
-                            {{--<li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>--}}
+                                <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>
+                                        </li>
+                                        <li><a href="{{url('user/ticketsManagement')}}">پیگیری تیکت</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--<li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>--}}
                                 {{--<ul class="nav child_menu" style="display: none">--}}
-                                    {{--<li><a href="#">صندوق پیام</a>--}}
-                                    {{--</li>--}}
-                                    {{--<li><a href="#">پیام های ارسالی</a>--}}
-                                    {{--</li>--}}
-                                    {{--<li><a href="#">پیام های دریافتی</a>--}}
-                                    {{--</li>--}}
-                                    {{--<li><a href="#">سطل زباله پیام ها</a>--}}
-                                    {{--</li>--}}
+                                {{--<li><a href="#">صندوق پیام</a>--}}
+                                {{--</li>--}}
+                                {{--<li><a href="#">پیام های ارسالی</a>--}}
+                                {{--</li>--}}
+                                {{--<li><a href="#">پیام های دریافتی</a>--}}
+                                {{--</li>--}}
+                                {{--<li><a href="#">سطل زباله پیام ها</a>--}}
+                                {{--</li>--}}
                                 {{--</ul>--}}
-                            {{--</li>--}}
+                                {{--</li>--}}
                             @endif
                             {{--//End User menu--}}
                             {{-- end user dashboard menu --}}
-                            <li style="margin-top:15px;"><a href="{{url('/logout')}}" style="font-size:20px;padding:3px 0 3px 0"
-                               class="btn btn-danger col-md-10 col-md-offset-1"><i class="fa fa-sign-out" aria-hidden="true"></i>خروج</a>
+
+                            <li><a style="background-color: rgba(231, 76, 60, 0.88)" href="{{url('/logout')}}"><i class="fa fa-sign-out"></i>خروج</a>
+
                             </li>
+                            {{--<li><a href="{{url('/logout')}}" style="font-size:20px;padding:3px 0 3px 0"--}}
+                                   {{--class="btn btn-danger col-md-10 col-md-offset-1"><i class="fa fa-sign-out" aria-hidden="true"></i>خروج</a>--}}
+                            {{--</li>--}}
                         </ul>
                     </div>
                 </div>
@@ -287,108 +293,111 @@
                     <div class="nav toggle">
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     </div>
+                    <div class="" style="float: right;padding: 1% 2% 0 0 !important;">
+                        <a id="back" class="btn btn-info">بازگشت به صفحه قبل</a>
+                    </div>
 
                     {{--<ul class="nav navbar-nav navbar-right">--}}
-                        {{--<li class="">--}}
-                            {{--<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"--}}
-                               {{--aria-expanded="false">--}}
-                                {{--<img src="{{url('public/dashboard/images/img.png')}}" alt=""> {{$user_info->name}} {{$user_info->family}}--}}
-                                {{--<span class=" fa fa-angle-down"></span>--}}
-                            {{--</a>--}}
-                            {{--<ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">--}}
-                                {{--<li><a href="javascript:;"> مشخصات کاربری من</a>--}}
-                                {{--</li>--}}
-                                {{--<li>--}}
-                                    {{--<a href="javascript:;">راهنما</a>--}}
-                                {{--</li>--}}
-                                {{--<li>--}}
-                                    {{--<a href="javascript:;">--}}
-                                        {{--<span class="badge bg-red pull-right">50%</span>--}}
-                                        {{--<span>تنظیمات</span>--}}
-                                    {{--</a>--}}
-                                {{--</li>--}}
-                                {{--<li><a href="{{url('/logout')}}"><i class="fa fa-sign-out pull-right"></i> خروج</a>--}}
-                                {{--</li>--}}
-                            {{--</ul>--}}
-                        {{--</li>--}}
+                    {{--<li class="">--}}
+                    {{--<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"--}}
+                    {{--aria-expanded="false">--}}
+                    {{--<img src="{{url('public/dashboard/images/img.png')}}" alt=""> {{$user_info->name}} {{$user_info->family}}--}}
+                    {{--<span class=" fa fa-angle-down"></span>--}}
+                    {{--</a>--}}
+                    {{--<ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">--}}
+                    {{--<li><a href="javascript:;"> مشخصات کاربری من</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                    {{--<a href="javascript:;">راهنما</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                    {{--<a href="javascript:;">--}}
+                    {{--<span class="badge bg-red pull-right">50%</span>--}}
+                    {{--<span>تنظیمات</span>--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--<li><a href="{{url('/logout')}}"><i class="fa fa-sign-out pull-right"></i> خروج</a>--}}
+                    {{--</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
 
-                        {{--<li role="presentation" class="dropdown">--}}
-                            {{--<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"--}}
-                               {{--aria-expanded="false">--}}
-                                {{--<i class="fa fa-envelope-o"></i>--}}
-                                {{--<span class="badge bg-green">6</span>--}}
-                            {{--</a>--}}
-                            {{--<ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">--}}
-                                {{--<li>--}}
-                                    {{--<a>--}}
-                      {{--<span class="image">--}}
-                                        {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
-                                             {{--alt="Profile Image"/>--}}
-                                    {{--</span>--}}
-                                        {{--<span>--}}
-                                        {{--<span>John Smith</span>--}}
-                      {{--<span class="time">3 mins ago</span>--}}
-                      {{--</span>--}}
-                                        {{--<span class="message">--}}
-                                        {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                                    {{--</span>--}}
-                                    {{--</a>--}}
-                                {{--</li>--}}
-                                {{--<li>--}}
-                                    {{--<a>--}}
-                      {{--<span class="image">--}}
-                                        {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
-                                             {{--alt="Profile Image"/>--}}
-                                    {{--</span>--}}
-                                        {{--<span>--}}
-                                        {{--<span>John Smith</span>--}}
-                      {{--<span class="time">3 mins ago</span>--}}
-                      {{--</span>--}}
-                                        {{--<span class="message">--}}
-                                        {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                                    {{--</span>--}}
-                                    {{--</a>--}}
-                                {{--</li>--}}
-                                {{--<li>--}}
-                                    {{--<a>--}}
-                      {{--<span class="image">--}}
-                                        {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
-                                             {{--alt="Profile Image"/>--}}
-                                    {{--</span>--}}
-                                        {{--<span>--}}
-                                        {{--<span>John Smith</span>--}}
-                      {{--<span class="time">3 mins ago</span>--}}
-                      {{--</span>--}}
-                                        {{--<span class="message">--}}
-                                        {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                                    {{--</span>--}}
-                                    {{--</a>--}}
-                                {{--</li>--}}
-                                {{--<li>--}}
-                                    {{--<a>--}}
-                      {{--<span class="image">--}}
-                                        {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
-                                             {{--alt="Profile Image"/>--}}
-                                    {{--</span>--}}
-                                        {{--<span>--}}
-                                        {{--<span>John Smith</span>--}}
-                      {{--<span class="time">3 mins ago</span>--}}
-                      {{--</span>--}}
-                                        {{--<span class="message">--}}
-                                        {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                                    {{--</span>--}}
-                                    {{--</a>--}}
-                                {{--</li>--}}
-                                {{--<li>--}}
-                                    {{--<div class="text-center">--}}
-                                        {{--<a href="inbox.html">--}}
-                                            {{--<strong>See All Alerts</strong>--}}
-                                            {{--<i class="fa fa-angle-right"></i>--}}
-                                        {{--</a>--}}
-                                    {{--</div>--}}
-                                {{--</li>--}}
-                            {{--</ul>--}}
-                        {{--</li>--}}
+                    {{--<li role="presentation" class="dropdown">--}}
+                    {{--<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"--}}
+                    {{--aria-expanded="false">--}}
+                    {{--<i class="fa fa-envelope-o"></i>--}}
+                    {{--<span class="badge bg-green">6</span>--}}
+                    {{--</a>--}}
+                    {{--<ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">--}}
+                    {{--<li>--}}
+                    {{--<a>--}}
+                    {{--<span class="image">--}}
+                    {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
+                    {{--alt="Profile Image"/>--}}
+                    {{--</span>--}}
+                    {{--<span>--}}
+                    {{--<span>John Smith</span>--}}
+                    {{--<span class="time">3 mins ago</span>--}}
+                    {{--</span>--}}
+                    {{--<span class="message">--}}
+                    {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
+                    {{--</span>--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                    {{--<a>--}}
+                    {{--<span class="image">--}}
+                    {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
+                    {{--alt="Profile Image"/>--}}
+                    {{--</span>--}}
+                    {{--<span>--}}
+                    {{--<span>John Smith</span>--}}
+                    {{--<span class="time">3 mins ago</span>--}}
+                    {{--</span>--}}
+                    {{--<span class="message">--}}
+                    {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
+                    {{--</span>--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                    {{--<a>--}}
+                    {{--<span class="image">--}}
+                    {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
+                    {{--alt="Profile Image"/>--}}
+                    {{--</span>--}}
+                    {{--<span>--}}
+                    {{--<span>John Smith</span>--}}
+                    {{--<span class="time">3 mins ago</span>--}}
+                    {{--</span>--}}
+                    {{--<span class="message">--}}
+                    {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
+                    {{--</span>--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                    {{--<a>--}}
+                    {{--<span class="image">--}}
+                    {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
+                    {{--alt="Profile Image"/>--}}
+                    {{--</span>--}}
+                    {{--<span>--}}
+                    {{--<span>John Smith</span>--}}
+                    {{--<span class="time">3 mins ago</span>--}}
+                    {{--</span>--}}
+                    {{--<span class="message">--}}
+                    {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
+                    {{--</span>--}}
+                    {{--</a>--}}
+                    {{--</li>--}}
+                    {{--<li>--}}
+                    {{--<div class="text-center">--}}
+                    {{--<a href="inbox.html">--}}
+                    {{--<strong>See All Alerts</strong>--}}
+                    {{--<i class="fa fa-angle-right"></i>--}}
+                    {{--</a>--}}
+                    {{--</div>--}}
+                    {{--</li>--}}
+                    {{--</ul>--}}
+                    {{--</li>--}}
 
                     {{--</ul>--}}
                 </nav>
@@ -511,21 +520,20 @@
                 this.api().columns([0, 1, 3, 4]).every(function () {
                     var column = this;
                     var select = $('<select><option value=""></option></select>')
-                            .appendTo($(column.footer()).empty())
-                            .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                        $(this).val()
-                                );
-                                column
-                                        .search(val ? '^' + val + '$' : '', true, false)
-                                        .draw();
-                            });
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
                     column.data().unique().sort().each(function (d, j) {
                         select.append('<option value="' + d + '">' + d + '</option>')
                     });
                 });
             }
-
         });
     });
 </script>
@@ -549,14 +557,13 @@
             $('#descr').val($('#editor').html());
         });
     });
-
     $(function () {
         function initToolbarBootstrapBindings() {
             var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
-                        'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
-                        'Times New Roman', 'Verdana'
-                    ],
-                    fontTarget = $('[title=Font]').siblings('.dropdown-menu');
+                    'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
+                    'Times New Roman', 'Verdana'
+                ],
+                fontTarget = $('[title=Font]').siblings('.dropdown-menu');
             $.each(fonts, function (idx, fontName) {
                 fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
             });
@@ -564,19 +571,18 @@
                 container: 'body'
             });
             $('.dropdown-menu input').click(function () {
-                        return false;
-                    })
-                    .change(function () {
-                        $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
-                    })
-                    .keydown('esc', function () {
-                        this.value = '';
-                        $(this).change();
-                    });
-
+                return false;
+            })
+                .change(function () {
+                    $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
+                })
+                .keydown('esc', function () {
+                    this.value = '';
+                    $(this).change();
+                });
             $('[data-role=magic-overlay]').each(function () {
                 var overlay = $(this),
-                        target = $(overlay.data('target'));
+                    target = $(overlay.data('target'));
                 overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
             });
             if ("onwebkitspeechchange" in document.createElement("input")) {
@@ -589,7 +595,6 @@
                 $('#voiceBtn').hide();
             }
         };
-
         function showErrorAlert(reason, detail) {
             var msg = '';
             if (reason === 'unsupported-file-type') {
@@ -598,7 +603,7 @@
                 console.log("error uploading file", reason, detail);
             }
             $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
-                    '<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
+                '<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
         };
         initToolbarBootstrapBindings();
         $('#editor').wysiwyg({
@@ -611,21 +616,17 @@
 <script>
     // initialize the validator function
     validator.message['date'] = 'not a real date';
-
     // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
     $('form')
-            .on('blur', 'input[required], input.optional, select.required', validator.checkField)
-            .on('change', 'select.required', validator.checkField)
-            .on('keypress', 'input[required][pattern]', validator.keypress);
-
+        .on('blur', 'input[required], input.optional, select.required', validator.checkField)
+        .on('change', 'select.required', validator.checkField)
+        .on('keypress', 'input[required][pattern]', validator.keypress);
     $('.multi.required')
-            .on('keyup blur', 'input', function () {
-                validator.checkField.apply($(this).siblings().last()[0]);
-            });
-
+        .on('keyup blur', 'input', function () {
+            validator.checkField.apply($(this).siblings().last()[0]);
+        });
     // bind the validation to the form submit event
     //$('#send').click('submit');//.prop('disabled', true);
-
     $('form').submit(function (e) {
         e.preventDefault();
         var submit = true;
@@ -633,17 +634,14 @@
         if (!validator.checkAll($(this))) {
             submit = false;
         }
-
         if (submit)
             this.submit();
         return false;
     });
-
     /* FOR DEMO ONLY */
     $('#vfields').change(function () {
         $('form').toggleClass('mode2');
     }).prop('checked', false);
-
     $('#alerts').change(function () {
         validator.defaults.alerts = (this.checked) ? false : true;
         if (this.checked)
@@ -656,46 +654,51 @@
 <!-- /datepicker -->
 <!-- /footer content -->
 {{--<script>--}}
-    {{--function unit_count() {--}}
-        {{--$.ajax({--}}
-            {{--url: "{{ url('/unit_count') }}",--}}
-            {{--type: 'GET',--}}
-            {{--dataType: 'json',--}}
-            {{--success: function (response) {--}}
-                {{--var html;--}}
-                {{--$.each(response.unit_counts, function (index, value) {--}}
-                    {{--html += '<option value="' + value + '">' + value['title'] + '</option>';--}}
-                {{--});--}}
-                {{--$("#unit_count").html(html);--}}
-            {{--},--}}
-            {{--error: function (error) {--}}
-                {{--var errors = error.responseJSON;--}}
-                {{--console.log(errors);--}}
-            {{--}--}}
-        {{--});--}}
-    {{--}--}}
-    {{--var record_count = 0;--}}
-    {{--function unit_count_each_record(select_id) {--}}
-        {{--$.ajax({--}}
-            {{--url: "{{ url('/unit_count') }}",--}}
-            {{--type: 'GET',--}}
-            {{--dataType: 'json',--}}
-            {{--success: function (response) {--}}
-                {{--var html;--}}
-                {{--$.each(response.unit_counts, function (index, value) {--}}
+{{--function unit_count() {--}}
+{{--$.ajax({--}}
+{{--url: "{{ url('/unit_count') }}",--}}
+{{--type: 'GET',--}}
+{{--dataType: 'json',--}}
+{{--success: function (response) {--}}
+{{--var html;--}}
+{{--$.each(response.unit_counts, function (index, value) {--}}
+{{--html += '<option value="' + value + '">' + value['title'] + '</option>';--}}
+{{--});--}}
+{{--$("#unit_count").html(html);--}}
+{{--},--}}
+{{--error: function (error) {--}}
+{{--var errors = error.responseJSON;--}}
+{{--console.log(errors);--}}
+{{--}--}}
+{{--});--}}
+{{--}--}}
+{{--var record_count = 0;--}}
+{{--function unit_count_each_record(select_id) {--}}
+{{--$.ajax({--}}
+{{--url: "{{ url('/unit_count') }}",--}}
+{{--type: 'GET',--}}
+{{--dataType: 'json',--}}
+{{--success: function (response) {--}}
+{{--var html;--}}
+{{--$.each(response.unit_counts, function (index, value) {--}}
 {{--//                   html += '<option value="' + value + '">' +  value['title'] + '</option>';--}}
-                    {{--html += '<option value="' + value + '">' + value['title'] + '</option>';--}}
-                {{--});--}}
-                {{--$("#" + select_id).html(html);--}}
-            {{--},--}}
-            {{--error: function (error) {--}}
-                {{--var errors = error.responseJSON;--}}
-                {{--console.log(errors);--}}
-            {{--}--}}
-        {{--});--}}
-    {{--}--}}
+{{--html += '<option value="' + value + '">' + value['title'] + '</option>';--}}
+{{--});--}}
+{{--$("#" + select_id).html(html);--}}
+{{--},--}}
+{{--error: function (error) {--}}
+{{--var errors = error.responseJSON;--}}
+{{--console.log(errors);--}}
+{{--}--}}
+{{--});--}}
+{{--}--}}
 {{--</script>--}}
-
-
+<script>
+    $(document).ready(function () {
+        $('#back').click(function () {
+            window.history.back();
+        });
+    });
+</script>
 </body>
 </html>

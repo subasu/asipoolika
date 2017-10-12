@@ -325,7 +325,7 @@ var defaultParams = {
   closeOnCancel: true,
   confirmButtonText: 'بسیار خوب !',
   confirmButtonColor: '#8CD4F5',
-  cancelButtonText: 'Cancel',
+  cancelButtonText: 'انصراف',
   imageUrl: null,
   imageSize: null,
   timer: null,
