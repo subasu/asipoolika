@@ -1,6 +1,21 @@
 @extends('layouts.adminLayout')
 @section('content')
+<style>
+    input[type=checkbox] {
+        margin-top: 20%;
+        -ms-transform: scale(1.5); /* IE */
+        -moz-transform: scale(1.5); /* FF */
+        -webkit-transform: scale(1.5); /* Safari and Chrome */
+        -o-transform: scale(1.5); /* Opera */
 
+        ms-filter: contrast(150%);
+        -moz-filter: contrast(150%);
+        -webkit-filter: contrast(150%);
+        -o-filter: contrast(150%);
+        filter: contrast(150%);
+    }
+
+</style>
 <div class="clearfix"></div>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -40,7 +55,7 @@
                             </select> تحویل گردید و پرداخت شده است.
                         </div>
                     </div>
-                <table style="direction:rtl;text-align: center;font-size: 16px;" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                <table style="direction:rtl;text-align: center;font-size: 16px;" id="table" class="table table-responsive table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     <thead>
                     <tr>
                         <th class="col-md-1" style="text-align: center ;">انتخاب</th>
@@ -216,7 +231,13 @@
                                             success: function (response) {
                                                // $(td).parentsUntil(DOM,'tr').hide();
                                                 console.log(response);
-                                                swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
+                                                swal
+                                                ({
+                                                    title: 'گواهی ثبت شد',
+                                                    text:'گواهی به لیست گواهی ها اضافه شد',
+                                                    type:'success',
+                                                    confirmButtonText: "بستن"
+                                                });
                                                 setInterval(function(){ window.location.reload(); }, 1000);
 
                                             },
@@ -232,15 +253,33 @@
                                                     });
                                                     errorsHtml += '</ul></div>';
                                                     $('fieldset').append(errorsHtml);
-                                                    swal("خطاهای زیر را برطرف کنید !", '', "error");
+                                                    swal
+                                                    ({
+                                                        title: 'خطاهای زیر را برطرف کنید !',
+                                                        text: '',
+                                                        type:'error',
+                                                        confirmButtonText: "بستن"
+                                                    });
                                                 } else if (error.status === 500) {
-                                                    swal('لطفا با بخش پشتیبانی تماس بگیرید', 'خطایی رخ داده است', 'success');
+                                                    swal
+                                                    ({
+                                                        title: 'لطفا با بخش پشتیبانی تماس بگیرید',
+                                                        text: 'خطایی رخ داده است',
+                                                        type:'error',
+                                                        confirmButtonText: "بستن"
+                                                    });
                                                     console.log(error);
                                                 }
                                             }
                                         });
                                     } else {
-                                        swal("منصرف شدید", "درخواست ثبت نشد", "error");
+                                        swal
+                                        ({
+                                            title: 'منصرف شدید',
+                                            text: 'درخواست ثبت نشد',
+                                            type:'error',
+                                            confirmButtonText: "بستن"
+                                        });
                                     }
                                 });
 
@@ -251,7 +290,13 @@
 
             }else
                 {
-                    swal( "لطفا سطری را انتخاب نمایید");
+                    swal
+                    ({
+                        title: 'لطفا سطری را انتخاب نمایید',
+                        text: '',
+                        type:'',
+                        confirmButtonText: "بستن"
+                    });
                     return false;
                 }
         });
@@ -328,7 +373,13 @@
                                             success: function (response) {
                                                // $(td).parentsUntil(DOM,'tr').hide();
                                                 console.log(response);
-                                                swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
+                                                swal
+                                                ({
+                                                    title: 'گواهی ثبت شد',
+                                                    text:'گواهی به لیست گواهی ها اضافه شد',
+                                                    type:'success',
+                                                    confirmButtonText: "بستن"
+                                                });
                                                 setInterval(function(){ window.location.reload(); }, 1000);
                                             },
                                             error: function (error) {
@@ -343,15 +394,33 @@
                                                     });
                                                     errorsHtml += '</ul></div>';
                                                     $('fieldset').append(errorsHtml);
-                                                    swal("خطاهای زیر را برطرف کنید !", '', "error");
+                                                    swal
+                                                    ({
+                                                        title: 'خطاهای زیر را برطرف کنید !',
+                                                        text: '',
+                                                        type:'error',
+                                                        confirmButtonText: "بستن"
+                                                    });
                                                 } else if (error.status === 500) {
-                                                    swal('لطفا با بخش پشتیبانی تماس بگیرید', 'خطایی رخ داده است', 'success');
+                                                    swal
+                                                    ({
+                                                        title: 'لطفا با بخش پشتیبانی تماس بگیرید',
+                                                        text: 'خطایی رخ داده است',
+                                                        type:'error',
+                                                        confirmButtonText: "بستن"
+                                                    });
                                                     console.log(error);
                                                 }
                                             }
                                         });
                                     } else {
-                                        swal("منصرف شدید", "درخواست ثبت نشد", "error");
+                                        swal
+                                        ({
+                                            title: 'منصرف شدید',
+                                            text: 'درخواست ثبت نشد',
+                                            type:'error',
+                                            confirmButtonText: "بستن"
+                                        });
                                     }
                                 });
 
@@ -362,7 +431,13 @@
 
             }else
             {
-                swal( "لطفا سطری را انتخاب نمایید");
+                swal
+                ({
+                    title: 'لطفا سطری را انتخاب نمایید',
+                    text: '',
+                    type:'',
+                    confirmButtonText: "بستن"
+                });
                 return false;
             }
         });
@@ -438,7 +513,13 @@
                                             success: function (response) {
                                                 //$(td).parentsUntil(DOM,'tr').hide();
                                                 console.log(response);
-                                                swal('گواهی ثبت شد', 'گواهی به لیست گواهی ها اضافه شد', 'success');
+                                                swal
+                                                ({
+                                                    title: 'گواهی ثبت شد',
+                                                    text:'گواهی به لیست گواهی ها اضافه شد',
+                                                    type:'success',
+                                                    confirmButtonText: "بستن"
+                                                });
                                                 setInterval(function(){ window.location.reload(); }, 1000);
                                             },
                                             error: function (error) {
@@ -453,30 +534,49 @@
                                                     });
                                                     errorsHtml += '</ul></div>';
                                                     $('fieldset').append(errorsHtml);
-                                                    swal("خطاهای زیر را برطرف کنید !", '', "error");
+                                                    swal
+                                                    ({
+                                                        title: 'خطاهای زیر را برطرف کنید !',
+                                                        text: '',
+                                                        type:'error',
+                                                        confirmButtonText: "بستن"
+                                                    });
                                                 } else if (error.status === 500) {
-                                                    swal('لطفا با بخش پشتیبانی تماس بگیرید', 'خطایی رخ داده است', 'success');
+                                                    swal
+                                                    ({
+                                                        title: 'لطفا با بخش پشتیبانی تماس بگیرید',
+                                                        text: 'خطایی رخ داده است',
+                                                        type:'error',
+                                                        confirmButtonText: "بستن"
+                                                    });
                                                     console.log(error);
                                                 }
                                             }
                                         });
                                     } else {
-                                        swal("منصرف شدید", "درخواست ثبت نشد", "error");
+                                        swal
+                                        ({
+                                            title: 'منصرف شدید',
+                                            text: 'درخواست ثبت نشد',
+                                            type:'error',
+                                            confirmButtonText: "بستن"
+                                        });
                                     }
                                 });
-
                     }
-
-
                 });
 
             }else
             {
-                swal( "لطفا سطری را انتخاب نمایید");
+                swal
+                ({
+                    title: 'لطفا سطری را انتخاب نمایید',
+                    text: '',
+                    type:'',
+                    confirmButtonText: "بستن"
+                });
                 return false;
             }
         });
-
-
     </script>
 @endsection

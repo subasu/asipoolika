@@ -30,7 +30,7 @@
                 <div class="col-md-12 col-sm-8 col-xs-12">
                     <div class="x_content">
                         {{--<input type="hidden" value="3" name="request_type_id" id="request_type_id">--}}
-                        <table class="table table-bordered mytable" dir="rtl">
+                        <table class="table table-bordered mytable" dir="rtl" >
                             <thead>
                             <tr>
                                 {{--<th>کد کالا</th>--}}
@@ -41,7 +41,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                            <tr id="addingTableTr">
                                 {{--<td>--}}
                                 {{--<input id="name" class="form-control col-md-7 col-xs-12" name="name"--}}
                                 {{--placeholder="" required="required" type="text">--}}
@@ -174,6 +174,8 @@
         <script>
             var count=0;
             var record_count=0;
+            $('#product_title').keydown(function(){ $('#product_title').css('border-color','#ccc');});
+            $('#product_count').keydown(function(){ $('#product_count').css('border-color','#ccc');});
             $('#add_to_list').click(function(){
                 count++;
                 var row_id='row'+count;
@@ -218,6 +220,12 @@
                     $('#table-row').append(row);
                     record_count++;
                     $('#record_count').val(record_count);
+                    //rayat:make inputs empty
+                    $("#addingTableTr").children("td").children("input").each(function(){
+                        $(this).val('');
+                    });
+                    return false;
+                    //rayat:make inputs empty end...
                 }
             });
             $(document).on('click','.remove_row', function(){
@@ -228,11 +236,15 @@
         </script>
 
         <script>
+
             $('#save_request').click(function () {
-                swal({
-                        title: "آیا از ثبت درخواست مطمئن هستید؟",
-                        text: "",
-                        type: "warning",
+                var table = document.getElementById("table-row");
+                var rows = table.getElementsByTagName("tr");
+                if (rows.length) {
+                    swal({
+                        title: "توجه کنید!",
+                        text: "آیا از ثبت درخواست مطمئن هستید؟",
+                        type: "",
                         showCancelButton: true,
                         confirmButtonColor: "	#5cb85c",
                         cancelButtonText: "خیر ، منصرف شدم",
@@ -275,8 +287,19 @@
                                     }
                                 },
                                 success: function (response) {
-                                    swal('درخواست ثبت شد', 'درخواست به لیست درخواست های شما اضافه شد', 'success');
-//                                    window.location.href='';
+                                    swal
+                                    ({
+                                        title: 'درخواست ثبت شد',
+                                        text:'درخواست به لیست درخواست های شما اضافه شد',
+                                        type:'success',
+                                        confirmButtonText: "بستن"
+                                    });
+                                    //rayat: refresh page after showing alert
+                                    setInterval(myTimer, 1500);
+                                    function myTimer() {
+                                        location.reload()
+                                    }
+                                    //rayat: refresh page after showing alert END ...
                                 },
                                 error: function (error) {
                                     if (error.status === 422) {
@@ -290,17 +313,42 @@
                                         });
                                         errorsHtml += '</ul></div>';
                                         $('fieldset').append(errorsHtml);
-                                        swal("خطاهای زیر را برطرف کنید !", '', "error");
+                                        swal
+                                        ({
+                                            title: 'خطاهای زیر را برطرف کنید !',
+                                            text: '',
+                                            type:'error',
+                                            confirmButtonText: "بستن"
+                                        });
                                     } else if (error.status === 500) {
-                                        swal('لطفا با بخش پشتیبانی تماس بگیرید', 'خطایی رخ داده است', 'success');
+                                        swal
+                                        ({
+                                            title: 'لطفا با بخش پشتیبانی تماس بگیرید',
+                                            text: 'خطایی رخ داده است',
+                                            type:'error',
+                                            confirmButtonText: "بستن"
+                                        });
                                         console.log(error);
                                     }
                                 }
                             });
                         } else {
-                            swal("منصرف شدید", "درخواست ثبت نشد", "error");
+                            swal
+                            ({
+                                title: 'منصرف شدید',
+                                text: 'درخواست ثبت نشد',
+                                type:'error',
+                                confirmButtonText: "بستن"
+                            });
                         }
                     });
+            }else
+                swal({
+                    title: "توجه کنید!",
+                    text: "شما هنوز درخواستی ثبت نکرده اید",
+                    type: "",
+                    confirmButtonText: "بستن"
+                });
             });
         </script>
 @endsection

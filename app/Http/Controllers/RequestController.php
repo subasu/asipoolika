@@ -195,12 +195,12 @@ class RequestController extends Controller
         }
 
 //        dd($requestRecords[0]->request->user_id);
-        if($requestRecords[0]->request->user_id==Auth::user()->id)
-        {
+//        if($requestRecords[0]->request->user_id==Auth::user()->id)
+//        {
             return view('user.requestRecords',compact('pageTitle','requestRecords'));
-        }
-        else
-            return back();
+//        }
+//        else
+//            return back();
     }
     /* shiri
        below function is related to ticket request
