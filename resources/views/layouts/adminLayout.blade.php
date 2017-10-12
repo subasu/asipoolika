@@ -256,13 +256,12 @@
                             @endif
                             {{--//End User menu--}}
                             {{-- end user dashboard menu --}}
+                           {{--<a class="btn btn-default col-md-12" style="color:white;" href="{{url('/logout')}}">خروج</a>--}}
 
-                            <li><a style="background-color: rgba(231, 76, 60, 0.88)" href="{{url('/logout')}}"><i class="fa fa-sign-out"></i>خروج</a>
-
-                            </li>
-                            {{--<li><a href="{{url('/logout')}}" style="font-size:20px;padding:3px 0 3px 0"--}}
-                                   {{--class="btn btn-danger col-md-10 col-md-offset-1"><i class="fa fa-sign-out" aria-hidden="true"></i>خروج</a>--}}
+                            {{--<li style="font-size:20px;"><a style="background-color: rgba(231, 76, 60, 0.88);padding:3px 10px 3px 0" href="{{url('/logout')}}"><i class="fa fa-sign-out" style="margin-left:20px;"></i>خروج</a>--}}
                             {{--</li>--}}
+                            <li style="background-color: rgba(231, 76, 60, 0.88)"><a href="{{url('/logout')}}"><i class="fa fa-sign-out"></i> خروج</a>
+                            </li>
                         </ul>
                     </div>
                 </div>

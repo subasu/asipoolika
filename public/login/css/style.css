@@ -114,7 +114,7 @@ body {
 
 .login input:focus + i.fa {
     opacity: 1;
-    left: 30px;
+    left: 27px;
     transition: all 0.25s ease-out;
 }
 
