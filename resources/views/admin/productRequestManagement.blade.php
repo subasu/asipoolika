@@ -69,6 +69,7 @@
                                         <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
                                         <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                         <th class="col-md-2" style="text-align: center ;">رد شده</th>
+                                        <th class="col-md-1" style="text-align: center ;"></th>
                                         <th class="col-md-1" style="text-align: center ;">وضعیت</th>
                                         {{--<th class="col-md-2" style="text-align: center ;">مرحله</th>--}}
                                         {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
@@ -118,7 +119,8 @@
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                            <td class="col-md-2">@if($productRequest->active==1)<span style="font-size: 16px;font-weight: lighter" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter" class="label label-warning">در حال رسیدگی </span>@endif</td>
+                                            <td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                            <td class="col-md-2" style="padding-top: 17px;">@if($productRequest->active==1)<span style="font-size: 15px;padding: 4px 7px 4px 7px;font-weight: lighter;" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter" class="label label-warning">در حال رسیدگی </span>@endif</td>
                                             {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                         </tr>
                                         @endif

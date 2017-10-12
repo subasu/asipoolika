@@ -31,7 +31,7 @@
                 @if($pageName=='myProductRequests')
                     <h2 style="color:#009999;direction: rtl"><i class="fa fa-dropbox"></i> مدیریت درخواست های کالای من</h2>
                 @elseif($pageName=='myServiceRequests')
-                    <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های سرویس من</h2>
+                    <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های خدمت من</h2>
                 @elseif($pageName=='acceptProductRequestManagement')
                     <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های کالا در حال پیگیری</h2>
                 @elseif($pageName=='confirmProductRequest')
