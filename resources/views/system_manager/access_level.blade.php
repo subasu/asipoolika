@@ -23,10 +23,11 @@
                             {{ csrf_field() }}
                             <div class="item form-group" {{ $errors->has('title') ? ' has-error' : '' }}>
                                 <label class="control-label col-md-4 col-sm-3 col-xs-12 pull-right" for="title"><i class="fa fa-user"></i> کاربر :
+
                                 </label>
                                 <div class="col-md-8 col-sm-6 col-xs-12">
                                     <input id="title" class="form-control col-md-7 col-xs-12" name="title"
-                                           placeholder=""
+                                           placeholder="" value="{{$userFullName}}"
                                            required="required" type="text">
                                 </div>
                                 @if ($errors->has('title'))
@@ -40,6 +41,7 @@
                                 </label>
                                 <div class="col-md-8 col-sm-6 col-xs-12">
                                     <label class="control-label" for="phone"><i class="fa fa-align-right"></i> سطح دسترسی های فعلی :
+                                        {{$userRoles}}
                                     </label>
                                 </div>
                             </div>
@@ -47,9 +49,9 @@
                                 <label class="control-label col-md-4 col-sm-3 col-xs-12  pull-right" for="phone"><i class="fa fa-plus"></i> افزودن سطح دسترسی :
                                 </label>
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <select class="form-control" id="level">
+                                    <select class="form-control" id="level" name="level">
                                         @foreach($roles as $role)
-                                            <option value="{{$role->id}}">{{$role->description}}</option>
+                                            <option value="{{$role->id}}">{{$userRoles,0,-1}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -57,9 +59,10 @@
                             <div class="ln_solid"></div>
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <button id="unit-send" type="button" class="col-md-9 btn btn-primary">ثبت</button>
+                                    <button id="newRole" type="button" class="col-md-9 btn btn-primary">ثبت</button>
                                 </div>
                             </div>
+                            <input type="hidden" value="{{$id}}" name="userId">
                         </form>
                     </div>
                 </div>
@@ -68,25 +71,25 @@
         </div>
 
         <script>
-            $("#unit-send").click(function () {
+            $("#newRole").click(function () {
                 var formData = new FormData($('#unit-send-form')[0]);
                 $.ajax({
                     type: 'post',
                     cache: false,
-                    url: "{{URL::asset('admin/unitsCreate')}}",
+                    url: "{{URL::asset('systemManager/newRole')}}",
                     data: formData,
-                    dataType: 'json',
+                   // dataType: 'json',
                     contentType: false,//very important for upload file
                     processData: false,//very important for upload file
                     success: function (data) {
                         swal({
                             title: "",
-                            text: "اطلاعات شما با مؤفقیت ثبت شد",
+                            text: data,
                             type: "info",
                             confirmButtonText: "بستن"
                         });
                         setInterval(function () {
-                            top.location = '{{URL::asset('admin/unitsManage')}}';
+                            window.location.reload();
                         }, 3000);
                     },
                     error: function (xhr) {
@@ -105,17 +108,6 @@
                                 confirmButtonText: "بستن"
                             });
                         }
-                        else if (xhr.status === 421) {
-                            swal({
-                                title: "",
-                                text: "اطلاعات شما با مؤفقیت ثبت شد",
-                                type: "info",
-                                confirmButtonText: "بستن"
-                            });
-                            setInterval(function () {
-                                top.location = '{{URL::asset('admin/unitsManage')}}';
-                            }, 3000);
-                        }
                         else if (xhr.status === 500){
                             swal({
                                 title: "",
@@ -129,6 +121,5 @@
                 });
 
             });
-
         </script>
 @endsection
