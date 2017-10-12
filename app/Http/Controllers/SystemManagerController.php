@@ -155,10 +155,41 @@ class SystemManagerController extends Controller
     public function access_levelGet($id)
     {
         $pageTitle='تعیین سطح دسترسی';
-        $roles=Role::all();
-        $myRoles=DB::table('user_role')->where('user_id',$id)->get();
-
-        return view('system_manager.access_level',compact('pageTitle','roles'));
+        $forbiddenRoles = DB::table('user_role')->where('user_id',$id)->pluck('role_id');
+        $roles=Role::whereNotIn('id',$forbiddenRoles)->get();
+        $users=User::find($id);
+        //dd($users);
+        $userRoles = '';
+        if(!empty($users))
+        {
+            $userFullName = $users->title .' '. $users->name .' '. $users->family;
+            foreach ($users->roles as $user)
+            {
+                $userRoles  .=   $user->description .'-';
+            }
+            $userRoles = strval($userRoles);
+            $userRoles = substr($userRoles,0,-1);
+        }
+        return view('system_manager.access_level',compact('pageTitle','roles','userRoles','userFullName','id'));
 //        return view('comingSoon',compact('pageTitle'));
+    }
+
+    //shiri :
+    public function newRole(Request $request)
+    {
+        $newRole = DB::table('user_role')->insertGetId
+        ([
+            'role_id'       => $request->level,
+            'user_id'       => $request->userId,
+            'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+        ]);
+        if($newRole)
+        {
+            return response('درخواست شما با موفقیت ثبت شد');
+        }
+        else
+            {
+                return response('خطا در ثبت اطلاعات ، با بخش پشتیبانی تماس بگیرید');
+            }
     }
 }

@@ -64,40 +64,7 @@
                 </table>
             </div>
         </div>
-        <br>
-        <h3 class="text-center">« صورت جلسه تحویل کالا و نصب »</h3><br>
-        <h4 dir="rtl" style="text-align: justify;">بدینوسیله گواهی می شود خدمات انجام شده به شرح زیر توسط
-            شرکت/
-            فروشگاه
-            {{$shopComp}}
-            جهت واحد
-            {{$unitName}}
-            به آقای/خانم
-            {{$receiverName .chr(10). $receiverFamily}}
-            تحویل گردید و پرداخت شده است.</h4>
-        <br>
-        <table class="formTable col-md-12 width100 border-right" dir="rtl">
-            <thead>
-            <tr class=" padding-formTable">
-                <th class="col-md-4" colspan="2">عنوان</th>
-                <th class="col-md-2">تعداد</th>
-                <th class="col-md-3"> مبلغ کل (ریال)</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($certificateRecords as $certificateRecord)
-                <tr>
-                    <td class="col-md-4" colspan="2">{{$certificateRecord->requestRecord->title}}</td>
-                    <td class="col-md-2">{{$certificateRecord->count}}</td>
-                    <td class="col-md-3">{{number_format($certificateRecord->price)}}</td>
-                    <input type="hidden" id="requestId" value="{{$certificateRecord->certificate->request_id}}">
-                    <input type="hidden" id="certificateId" value="{{$certificateRecord->certificate_id}}">
-                </tr>
 
-            </table>
-        </div>
-    </div>
-    <br>
     @if(!empty($certificateRecords[0]))
         @if($certificateRecords[0]->certificate->certificate_type_id == 1)
             <h3 class="text-center">« صورت جلسه تحویل کالا و نصب »</h3>
@@ -169,9 +136,7 @@
         </tr>
         </tbody>
 
-            @endforeach
-           
-            </tbody>
+
 
 
         </table>

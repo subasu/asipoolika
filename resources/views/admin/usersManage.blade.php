@@ -62,14 +62,11 @@
                                 </td>
                                 <td id="{{$val->id}}">
 
-                                    <a class="btn btn-info" href="">تعیین سطح دسترسی</a></td>
+                                    <a class="btn btn-info" href="{{url('systemManager/access_level/'.$val->id)}}">تعیین سطح دسترسی</a></td>
                                 </td>
                                 <td id="{{$val->id}}">
                                     <a class="btn btn-info" href="{{url('admin/usersUpdate'.'/'.$val->id)}}">ویرایش</a></td>
 
-                                </td>
-                                <td>
-                                    <a href="{{url('systemManager/access_level/'.$val->id)}}" class="btn btn-danger">سطح دسترسی</a>
                                 </td>
                             </tr>
                             {{--@endif--}}

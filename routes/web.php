@@ -77,6 +77,8 @@ Route::group(['prefix'=>'systemManager'],function() {
 
 //    Route::get('signaturesList','SystemManagerController@signaturesList');
 
+    Route::post('newRole','SystemManagerController@newRole');
+
     Route::get('/signaturesList',[
         'uses'=>'SystemManagerController@signaturesList',
         'middleware' => 'roles',
