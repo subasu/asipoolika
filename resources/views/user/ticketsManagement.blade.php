@@ -5,7 +5,10 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2> بررسی تیکت ها</h2>
+                    <h2>
+                         @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id)بررسی تیکت های دریافتی @endif
+                         @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id)بررسی تیکت های ارسالی     @endif
+                    </h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i
                                         class="fa fa-chevron-up"></i></a>
@@ -43,11 +46,12 @@
                         <thead>
                         <tr>
                             <th style="text-align: center" class="">شناسه</th>
-                            <th style="text-align: center" class="">نام واحد</th>
+                            <th style="text-align: center" class=""> نام واحد درخواست دهنده</th>
+                            <th style="text-align: center" class="">نام و نام خانوادگی درخواست دهنده</th>
                             <th style="text-align: center;" > عنوان تیکت</th>
                             <th style="text-align: center;" class="col-md-2">تاریخ ثبت تیکت</th>
                             <th style="text-align: center;border-left: 1px solid #ddd;">وضعیت</th>
-                            <th style="text-align: center;" class="col-md-3">عملیات</th>
+                            <th style="text-align: center;" class="col-md-2">عملیات</th>
                         </tr>
                         </thead>
                         <tbody id="change">
@@ -57,7 +61,10 @@
                                 {{$ticket->id}}
                             </td>
                             <td>
-                                {{$ticket->unit->title}}
+                                {{$ticket->user->unit->title}}
+                            </td>
+                            <td>
+                                {{$ticket->user->title .chr(10).$ticket->user->name .chr(10). $ticket->user->family}}
                             </td>
                             <td>
                                 {{$ticket->title}}
@@ -70,14 +77,14 @@
                                     <label  class="col-md-7 col-md-offset-3 btn btn-warning" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">در حال بررسی</label>
                                 @endif
                                 @if($ticket->active == 1)
-                                    <span class="col-md-7 col-md-offset-3 btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف سایت</span>
-                                @endif
-                                @if($ticket->active == 2)
-                                    <span class="col-md-7 col-md-offset-3 btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">اتمام تیکت از طرف کاربر</span>
+
+                                    <span class="col-md-9 col-md-offset-1 btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">بسته شده</span>
                                 @endif
                             </td>
+             
                             <td>
                                 <a class="col-md-6 col-md-offset-3 btn btn-success" target="_blank" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
+
                             </td>
                         </tr>
                         @endforeach

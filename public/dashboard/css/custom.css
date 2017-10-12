@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Yekan";
-  src: url("public/dashboard/fonts/Yekan.eot");
+  src: url("../fonts/Yekan.eot");
   src: local( "?" ), url( "../fonts/W_YEKAN_0.TTF" )format( "truetype" );
 }
 *{

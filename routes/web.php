@@ -59,11 +59,11 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('/ticketRequest','RequestController@ticketRequest');
 //    Route::get('/getUnits','RequestController@getUnits');
     Route::post('sendTicket','RequestController@sendTicket');
-    Route::get('ticketsManagement','RequestController@ticketsManagement');
+    Route::get('ticketsManagement/{id}','RequestController@ticketsManagement');
     Route::post('searchOnDate/{id}','RequestController@searchOnDate');
     Route::get('ticketConversation/{id}','RequestController@ticketConversation');
     Route::post('userSendMessage','RequestController@userSendMessage');
-    Route::post('userEndTicket' , 'RequestController@userEndTicket');
+    Route::post('endTicket' , 'RequestController@endTicket');
 
 });
 
@@ -192,7 +192,7 @@ Route::group(['prefix'=>'systemManager'],function() {
 
         Route::get('showToCreditManager','CertificateController@showToCreditManager');
         Route::get('workerCardCreate' ,'SupplyController@workerCardCreate');        //96/7/1
-        Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
+        //Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
         Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');             //96/7/1
 
 //        Route::get('workerCardManage' ,'SupplyController@workerCardManage');                         //96/7/2
@@ -202,6 +202,10 @@ Route::group(['prefix'=>'systemManager'],function() {
             'roles'=>['supplierManager']
         ]);
         Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');                           //96/7/2
+
+       // Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');                         //96/7/2
+        //Route::get('showTickets','SupplyController@showTickets');                                    //96/7/5
+
 //        Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');                         //96/7/2
         Route::get('/showWorkerCard/{id}',[
             'uses'=>'SupplyController@showWorkerCard',
@@ -209,8 +213,9 @@ Route::group(['prefix'=>'systemManager'],function() {
             'roles'=>['supplierManager']
         ]);
         Route::get('showTickets','SupplyController@showTickets');                                    //96/7/5
+
         Route::post('adminSendMessage','SupplyController@adminSendMessage');                        //96/7/5
-        Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
+        //Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
 
 
         Route::get('printProductRequest/{id}','SupplyController@printProductRequest');                           //96/7/11
@@ -263,6 +268,7 @@ Route::group(['prefix'=>'systemManager'],function() {
             'roles'=>['systemManager']
         ]);
         Route::post('unitsCreate', 'SupplyController@unitsCreatePost');
+        Route::get('units', 'SupplyController@unitsGet');
         Route::get('units', 'SupplyController@unitsGet');
         Route::post('changeUnitStatus/{id}', 'SupplyController@changeUnitStatus');
         Route::get('unitsUpdate/{id}', 'SupplyController@unitsUpdateShow');

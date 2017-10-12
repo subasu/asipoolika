@@ -11,13 +11,13 @@ class Ticket extends Model
     //shiri : this function is related to relation of user and ticket
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User','sender_user_id');
     }
 
     // shiri : this function is related to relation of ticket and unit
     public function unit()
     {
-        return $this->belongsTo('App\Models\Unit');
+        return $this->belongsTo('App\Models\Unit','unit_id');
     }
 
     //shiri : this function is related to relation of ticket and conversation

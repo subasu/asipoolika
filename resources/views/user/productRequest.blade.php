@@ -303,6 +303,4 @@
                     });
             });
         </script>
-
-
 @endsection
