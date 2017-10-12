@@ -231,17 +231,19 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('printFactors/{id}','SupplyController@printFactors');                                        //96/7/16
         Route::get('costDocumentForm/{id}','SupplyController@costDocumentForm');                                //96/7/17
         Route::post('saveCostDocument','SupplyController@saveCostDocument');
+        Route::get('productDeliveryAndUseForm/{id}','SupplyController@productDeliveryAndUseForm');
+
         //rayat - users manage:
 //        Route::get('usersManagement', 'SupplyController@usersManagementGet');
         Route::get('/usersManagement',[
             'uses'=>'SupplyController@usersManagementGet',
-            'middleware' => 'roles',
+            //'middleware' => 'roles',//meeeeeee
             'roles'=>['systemManager']
         ]);
 //        Route::get('usersCreate', 'SupplyController@usersCreateGet');
         Route::get('/usersCreate',[
             'uses'=>'SupplyController@usersCreateGet',
-            'middleware' => 'roles',
+           // 'middleware' => 'roles',///////meeeeeeeeee
             'roles'=>['systemManager']
         ]);
         Route::post('checkUnitSupervisor', 'SupplyController@checkUnitSupervisor');
