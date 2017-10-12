@@ -1,5 +1,8 @@
 @extends('layouts.adminLayout')
 @section('content')
+    <style>
+        .padding-right-1px{padding-right: 1px !important;}
+    </style>
     <!-- page content -->
     <div class="" role="main">
         <div class="">
@@ -37,17 +40,25 @@
                                 </label>
                                 {{--<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback pull-right">--}}
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
-                                    <select class="form-control" id="unit_signature" name="unit_id">
+
+                                    <select class="col-md-10 col-xs-12" id="unit_signature" name="unit_id">
                                         <option readonly>انتخاب واحد</option>
                                         @foreach($units as $unit)
                                             <option name="unit_id" value="{{$unit->id}}">{{$unit->title}}</option>
                                         @endforeach
                                     </select>
+                                    <label class="control-label col-md-2 col-sm-4 col-xs-12 padding-right-1px" for="unit_id"> واحد :
+                                        {{--<span class="required star" title="پر کردن این فیلد الزامی است">*</span--}}
+                                    </label>
                                 </div>
                                 {{--</div>--}}
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                    <select class="form-control" id="user_signature" name="users">
+                                    <select class="col-md-10 col-xs-12" id="user_signature" name="users">
                                     </select>
+                                    <label class="padding-right-1px control-label col-md-2 col-sm-4 col-xs-12" for="unit_id"> کاربر :
+                                        {{--<span class="required star" title="پر کردن این فیلد الزامی است">*</span--}}
+                                    </label>
+
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback pull-right">
                                     <input type="checkbox"   style="text-align:right;" id="signature_priority" name="signature_priority" placeholder="درجه اهمیت" >
@@ -55,8 +66,8 @@
                                     <lable style="font-size: 120%;">در صورت اختیاری بودن امضاء کاربر تیک را بزنید.</lable>
                                     {{--<span class="fa fa-info-circle form-control-feedback right" aria-hidden="true"></span>--}}
                                 </div>
-                                <div class="row">
-                                    <div class="input-group image-preview col-md-12">
+                                <div class="col-md-12">
+                                    <div class="input-group image-preview ">
                                         <input type="text" class="form-control image-preview-filename" disabled="disabled">
                                         <!-- don't give a name === doesn't send on POST/GET -->
                                         <span class="input-group-btn">

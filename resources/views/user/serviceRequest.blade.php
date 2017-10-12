@@ -40,7 +40,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                            <tr id="addingTableTr">
                                 <td class="col-md-4">
                                     <input id="service_title" class="form-control req" name="product_title"
                                            placeholder="" required="required" type="text"></td>
@@ -142,6 +142,8 @@
         <script>
             var count=0;
             var record_count=0;
+            $('#service_title').keydown(function(){ $('#service_title').css('border-color','#ccc');});
+            $('#service_count').keydown(function(){ $('#service_count').css('border-color','#ccc');});
             $('#add_to_list').click(function(){
                 count++;
                 var row_id='row'+count;
@@ -183,6 +185,12 @@
                     $('#table-row').append(row);
                     record_count++;
                     $('#record_count').val(record_count);
+                    //rayat:make inputs empty
+                    $("#addingTableTr").children("td").children("input").each(function(){
+                        $(this).val('');
+                    });
+                    return false;
+                    //rayat:make inputs empty end...
                 }
             });
             $(document).on('click','.remove_row', function(){
@@ -194,77 +202,120 @@
 
         <script>
             $('#save_request').click(function () {
-                swal({
-                            title: "آیا از ثبت درخواست مطمئن هستید؟",
-                            text: "",
-                            type: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "	#5cb85c",
-                            cancelButtonText: "خیر ، منصرف شدم",
-                            confirmButtonText: "بله ثبت شود",
-                            closeOnConfirm: false,
-                            closeOnCancel: false
-                        },
-                        function (isConfirm) {
-                            if (isConfirm) {
-                                //serialize() send all form input values
-                                var formData = $('#service').serialize();
+                var table = document.getElementById("table-row");
+                var rows = table.getElementsByTagName("tr");
+                if (rows.length)
+                {
+                    console.log(rows.length)
+                    swal({
+                        title: "توجه کنید!",
+                        text: "آیا از ثبت درخواست مطمئن هستید؟",
+                        type: "",
+                        showCancelButton: true,
+                        confirmButtonColor: "	#5cb85c",
+                        cancelButtonText: "خیر ، منصرف شدم",
+                        confirmButtonText: "بله ثبت شود",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            //serialize() send all form input values
+                            var formData = $('#service').serialize();
 //                        console.log(formData);
-                                $.ajaxSetup({
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                                    }
-                                });
-                                $.ajax({
-                                    url: "{{ url('user/serviceRequest') }}",
-                                    type: 'POST',
-                                    dataType: 'json',
-                                    data: formData,
-                                    beforeSend:function () {
-                                        var counter = 0;
-                                        $(".required").each(function() {
-                                            if ($(this).val() === "") {
-                                                $(this).css("border-color" , "red");
-                                                counter++;
-                                            }
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                }
+                            });
+                            $.ajax({
+                                url: "{{ url('user/serviceRequest') }}",
+                                type: 'POST',
+                                dataType: 'json',
+                                data: formData,
+                                beforeSend: function () {
+                                    var counter = 0;
+                                    $(".required").each(function () {
+                                        if ($(this).val() === "") {
+                                            $(this).css("border-color", "red");
+                                            counter++;
+                                        }
+                                    });
+                                    if (counter > 0) {
+                                        swal
+                                        ({
+                                            title: '',
+                                            text: 'تعدادی از فیلدهای فرم خالی است.لطفا فیلدها را پر نمایید سپس ثبت نهایی را بزنید',
+                                            type: 'warning',
+                                            confirmButtonText: "بستن"
                                         });
-                                        if(counter > 0){
-                                            swal
-                                            ({
-                                                title: '',
-                                                text: 'تعدادی از فیلدهای فرم خالی است.لطفا فیلدها را پر نمایید سپس ثبت نهایی را بزنید',
-                                                type:'warning',
-                                                confirmButtonText: "بستن"
-                                            });
-                                            return false;
-                                        }
-                                    },
-                                    success: function (response) {
-                                        swal('درخواست ثبت شد', 'درخواست به لیست درخواست های شما اضافه شد', 'success');
-                                    },
-                                    error: function (error) {
-                                        if (error.status === 422) {
-                                            $errors = error.responseJSON; //this will get the errors response data.
-                                            //show them somewhere in the markup
-                                            //e.g
-                                            var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
-//
-                                            $.each($errors, function (key, value) {
-                                                errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
-                                            });
-                                            errorsHtml += '</ul></div>';
-                                            $('fieldset').append(errorsHtml);
-                                            swal("خطاهای زیر را برطرف کنید !", '', "error");
-                                        } else if (error.status === 500) {
-                                            swal('لطفا با بخش پشتیبانی تماس بگیرید', 'خطایی رخ داده است', 'success');
-                                            console.log(error);
-                                        }
+                                        return false;
                                     }
-                                });
-                            } else {
-                                swal("منصرف شدید", "درخواست ثبت نشد", "error");
-                            }
-                        });
+                                },
+                                success: function (response) {
+                                    swal
+                                    ({
+                                        title: 'درخواست ثبت شد',
+                                        text: 'درخواست به لیست درخواست های شما اضافه شد',
+                                        type: 'success',
+                                        confirmButtonText: "بستن"
+                                    });
+                                    //rayat: refresh page after showing alert
+                                    setInterval(myTimer, 1500);
+                                    function myTimer() {
+                                        location.reload()
+                                    }
+
+                                    //rayat: refresh page after showing alert END ...
+                                },
+                                error: function (error) {
+                                    if (error.status === 422) {
+                                        $errors = error.responseJSON; //this will get the errors response data.
+                                        //show them somewhere in the markup
+                                        //e.g
+                                        var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
+//
+                                        $.each($errors, function (key, value) {
+                                            errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                        });
+                                        errorsHtml += '</ul></div>';
+                                        $('fieldset').append(errorsHtml);
+                                        swal
+                                        ({
+                                            title: '',
+                                            text: 'خطاهای زیر را برطرف کنید !',
+                                            type: 'error',
+                                            confirmButtonText: "بستن"
+                                        });
+                                    } else if (error.status === 500) {
+                                        swal
+                                        ({
+                                            title: 'لطفا با بخش پشتیبانی تماس بگیرید',
+                                            text: 'خطایی رخ داده است',
+                                            type: 'error',
+                                            confirmButtonText: "بستن"
+                                        });
+                                        console.log(error);
+                                    }
+                                }
+                            });
+                        } else {
+                            swal
+                            ({
+                                title: 'منصرف شدید',
+                                text: 'درخواست ثبت نشد',
+                                type: 'error',
+                                confirmButtonText: "بستن"
+                            });
+                        }
+                    });
+            }else
+                    swal({
+                        title: "توجه کنید!",
+                        text: "شما هنوز درخواستی ثبت نکرده اید",
+                        type: "",
+                        confirmButtonText: "بستن"
+                    });
             });
         </script>
 @endsection
