@@ -25,8 +25,15 @@
                                 <div class="col-md-9 col-sm-6 col-xs-12">
                                     <select class="form-control col-md-7 col-xs-12" style="direction: rtl;" name="units" id="units">
                                         <option value="واحد مربوطه را انتخاب نمایید" class="text-right">واحد مربوطه را انتخاب نمایید</option>
-                                        <option value="تدارکات" class="text-right">تدارکات</option>
-                                        <option value="انفورماتیک" class="text-right">انفورماتیک</option>
+                                            @if(\Illuminate\Support\Facades\Auth::user()->unit_id === 7 && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1)
+                                                <option value="تدارکات" class="text-right">تدارکات</option>
+                                            @elseif(\Illuminate\Support\Facades\Auth::user()->unit_id == 14 && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1)
+                                                <option value="انفورماتیک" class="text-right">انفورماتیک</option>
+                                            @else
+                                                <option value="تدارکات" class="text-right">تدارکات</option>
+                                                <option value="انفورماتیک" class="text-right">انفورماتیک</option>
+                                            @endif
+
                                     </select>
                                 </div>
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="unit_id"> واحد
@@ -139,7 +146,7 @@
 //                            type: "info",
 //                            confirmButtonText: "بستن"
 //                        });
-                        window.location.href = 'ticketsManagement';
+                        window.location.href = 'ticketsManagement/1';
 
                     },error:function(error)
                     {

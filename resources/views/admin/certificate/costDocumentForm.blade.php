@@ -16,14 +16,14 @@
             $('.change tr:first').after
             (
                 "<tr>"+
-                "<td colspan='1' class='col-md-1'><input type='text' class='form-control required'  name='code[]' placeholder='کد هزینه'></td>"+
-                "<td colspan='3' class='col-md-3'><input type='text' class='form-control required'  name='description[]' placeholder='شرح'></td>"+
-                "<td colspan='2' class='col-md-2'><input type='text' class='form-control required'  name='moeinOffice[]' placeholder='دفتر معین'></td>"+
-                "<td colspan='2' class='col-md-2'><input type='text' class='form-control required'  name='generalPrice[]' placeholder='اصل مبلغ'></td>"+
-                "<td colspan='1' class='col-md-1'><input type='text' class='form-control required'  name='deduction[]' placeholder='کسور'></td>"+
-                "<td colspan='1' class='col-md-1'><input type='text' class='form-control required'  name='payedPrice[]' placeholder='مبلغ پرداختی'></td>"+
-                "<td colspan='1' class='col-md-1'><input type='text' class='form-control required'  name='page[]' placeholder='صفحه'></td>"+
-                "<td colspan='1' class='col-md-1'><input type='text' class='form-control required'  name='row[]' placeholder='ردیف'></td>"+
+                "<td colspan='1' class='col-md-1'><input type='number' class='form-control required'  name='code[]' placeholder='کد هزینه'></td>"+
+                "<td colspan='3' class='col-md-3'><input type='text'   class='form-control required'  name='description[]' placeholder='شرح'></td>"+
+                "<td colspan='2' class='col-md-2'><input type='number' class='form-control required'  name='moeinOffice[]' placeholder='دفتر معین'></td>"+
+                "<td colspan='2' class='col-md-2'><input type='number' class='form-control required'  name='generalPrice[]' placeholder='اصل مبلغ'></td>"+
+                "<td colspan='1' class='col-md-1'><input type='number' class='form-control required'  name='deduction[]' placeholder='کسور'></td>"+
+                "<td colspan='1' class='col-md-1'><input type='number' class='form-control required'  name='payedPrice[]' placeholder='مبلغ پرداختی'></td>"+
+                "<td colspan='1' class='col-md-1'><input type='number' class='form-control required'  name='page[]' placeholder='صفحه'></td>"+
+                "<td colspan='1' class='col-md-1'><input type='number' class='form-control required'  name='row[]' placeholder='ردیف'></td>"+
                 "<td colspan='1' class='col-md-1'><a class='glyphicon glyphicon-remove-sign' data-toggle='tooltip' title='حذف' style='font-size:18px;'></td>"+
                 "</tr>"
 
@@ -79,7 +79,7 @@
                     if (error.status === 422) {
                         var x = error.responseJSON;
                         var errorsHtml = '';
-                        var count = 0;
+                       // var count = 0;
                         $.each(x, function (key, value) {
                             errorsHtml += value[0] + '\n'; //showing only the first error.
                         });
@@ -226,11 +226,11 @@
             <td colspan="2" class="col-md-2">مدارک پیوست</td>
             <td colspan="2" class="col-md-2"> ...</td>
             <td colspan="2" class="col-md-2">جمع</td>
-            <td colspan="2" class="col-md-2">1</td>
-            <td colspan="1" class="col-md-1">2</td>
-            <td colspan="1" class="col-md-1">3</td>
-            <td colspan="1" class="col-md-1">4</td>
-            <td colspan="1" class="col-md-1">5</td>
+            <td colspan="2" class="col-md-2">-</td>
+            <td colspan="1" class="col-md-1">-</td>
+            <td colspan="1" class="col-md-1">-</td>
+            <td colspan="1" class="col-md-1">-</td>
+            <td colspan="1" class="col-md-1">-</td>
             <td colspan="1" class="col-md-1"></td>
         </tr>
         <tr>
@@ -370,12 +370,12 @@
             <td colspan="2" class="col-md-2">مدارک پیوست</td>
             <td colspan="2" class="col-md-2"> ...</td>
             <td colspan="2" class="col-md-2">جمع</td>
-            <td colspan="2" class="col-md-2">1</td>
-            <td colspan="1" class="col-md-1">2</td>
-            <td colspan="1" class="col-md-1">3</td>
-            <td colspan="1" class="col-md-1">4</td>
-            <td colspan="1" class="col-md-1">5</td>
-            <td colspan="1" class="col-md-1"></td>
+            <td colspan="2" class="col-md-2">{{number_format($sumGeneralPrice)}}</td>
+            <td colspan="1" class="col-md-1">{{number_format($sumDeduction)}}</td>
+            <td colspan="1" class="col-md-1">{{number_format($sumPayedPrice)}}</td>
+            <td colspan="1" class="col-md-1">-</td>
+            <td colspan="1" class="col-md-1">-</td>
+
         </tr>
         <tr>
             <td colspan="6" class="col-md-6 text-justify">

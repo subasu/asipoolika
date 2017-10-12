@@ -96,7 +96,7 @@ class User extends Authenticatable
     //shiri : this function is related to relation of user and ticket
     public function ticket()
     {
-        return $this->hasMany('App\Models\Ticket');
+        return $this->hasMany('App\Models\Ticket','sender_user_id');
     }
 
     //shiri : relation

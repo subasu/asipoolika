@@ -24,14 +24,14 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('/productRequest',[
         'uses'=>'RequestController@productRequestGet',
         'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
+        'roles'=>['supplierManager','unitManager','user','systemManager']
     ]);
     Route::post('/productRequest','RequestController@productRequestPost');
 //    Route::get('/productRequestFollow','RequestController@productRequestFollowGet');
     Route::get('/productRequestFollow',[
         'uses'=>'RequestController@productRequestFollowGet',
         'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
+        'roles'=>['supplierManager','unitManager','user','systemManager']
     ]);
 
     //shiri
@@ -39,7 +39,7 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('/serviceRequest',[
         'uses'=>'RequestController@serviceRequestGet',
         'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
+        'roles'=>['supplierManager','unitManager','user','systemManager']
     ]);
     Route::post('serviceRequest','RequestController@serviceRequest');
 
@@ -47,23 +47,23 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('/serviceRequestFollow',[
         'uses'=>'RequestController@serviceRequestFollowGet',
         'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
+        'roles'=>['supplierManager','unitManager','user','systemManager']
     ]);
 //    Route::get('/myRequestRecords/{id}','RequestController@myRequestRecordsGet');
     Route::get('/myRequestRecords/{id}',[
         'uses'=>'RequestController@myRequestRecordsGet',
         'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
+        'roles'=>['supplierManager','unitManager','user','systemManager']
     ]);
 
     Route::get('/ticketRequest','RequestController@ticketRequest');
 //    Route::get('/getUnits','RequestController@getUnits');
     Route::post('sendTicket','RequestController@sendTicket');
-    Route::get('ticketsManagement','RequestController@ticketsManagement');
+    Route::get('ticketsManagement/{id}','RequestController@ticketsManagement');
     Route::post('searchOnDate/{id}','RequestController@searchOnDate');
     Route::get('ticketConversation/{id}','RequestController@ticketConversation');
     Route::post('userSendMessage','RequestController@userSendMessage');
-    Route::post('userEndTicket' , 'RequestController@userEndTicket');
+    Route::post('endTicket' , 'RequestController@endTicket');
 
 });
 
@@ -105,7 +105,7 @@ Route::group(['prefix'=>'systemManager'],function() {
     Route::post('makeSignatureForced' , 'SystemManagerController@makeSignatureForced');      //96/7/6
     route::post('makeSignatureUnforced' , 'SystemManagerController@makeSignatureUnforced');  //96/7/6
 
-    Route::get('access_level',[
+    Route::get('access_level/{id}',[
         'uses'=>'SystemManagerController@access_levelGet',
         'middleware' => 'roles',
         'roles'=>['systemManager']
@@ -192,7 +192,7 @@ Route::group(['prefix'=>'systemManager'],function() {
 
         Route::get('showToCreditManager','CertificateController@showToCreditManager');
         Route::get('workerCardCreate' ,'SupplyController@workerCardCreate');        //96/7/1
-        Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
+        //Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');            //96/7/1
         Route::post('addWorkerCard' ,'SupplyController@addWorkerCard');             //96/7/1
 
 //        Route::get('workerCardManage' ,'SupplyController@workerCardManage');                         //96/7/2
@@ -202,6 +202,10 @@ Route::group(['prefix'=>'systemManager'],function() {
             'roles'=>['supplierManager']
         ]);
         Route::post('searchOnDate/{id}' ,'SupplyController@searchOnDate');                           //96/7/2
+
+       // Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');                         //96/7/2
+        //Route::get('showTickets','SupplyController@showTickets');                                    //96/7/5
+
 //        Route::get('showWorkerCard/{id}','SupplyController@showWorkerCard');                         //96/7/2
         Route::get('/showWorkerCard/{id}',[
             'uses'=>'SupplyController@showWorkerCard',
@@ -209,8 +213,9 @@ Route::group(['prefix'=>'systemManager'],function() {
             'roles'=>['supplierManager']
         ]);
         Route::get('showTickets','SupplyController@showTickets');                                    //96/7/5
+
         Route::post('adminSendMessage','SupplyController@adminSendMessage');                        //96/7/5
-        Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
+        //Route::post('adminEndTicket','SupplyController@adminEndTicket');                            //96/7/5
 
 
         Route::get('printProductRequest/{id}','SupplyController@printProductRequest');                           //96/7/11
@@ -226,6 +231,8 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('printFactors/{id}','SupplyController@printFactors');                                        //96/7/16
         Route::get('costDocumentForm/{id}','SupplyController@costDocumentForm');                                //96/7/17
         Route::post('saveCostDocument','SupplyController@saveCostDocument');
+        Route::get('productDeliveryAndUseForm/{id}','SupplyController@productDeliveryAndUseForm');
+
         //rayat - users manage:
 //        Route::get('usersManagement', 'SupplyController@usersManagementGet');
         Route::get('/usersManagement',[
@@ -263,6 +270,7 @@ Route::group(['prefix'=>'systemManager'],function() {
             'roles'=>['systemManager']
         ]);
         Route::post('unitsCreate', 'SupplyController@unitsCreatePost');
+        Route::get('units', 'SupplyController@unitsGet');
         Route::get('units', 'SupplyController@unitsGet');
         Route::post('changeUnitStatus/{id}', 'SupplyController@changeUnitStatus');
         Route::get('unitsUpdate/{id}', 'SupplyController@unitsUpdateShow');

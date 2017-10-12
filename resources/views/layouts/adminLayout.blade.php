@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- Meta, title, CSS, favicons, etc. -->
 <meta charset="utf-8">
@@ -42,7 +43,9 @@
       type="text/css"/>
 <link href="{{ URL::asset('public/dashboard/js/datatables/scroller.bootstrap.min.css')}}" rel="stylesheet"
       type="text/css"/>
-
+<style>
+    div,h2 {font-family:Yekan}
+</style>
 
 <!--End Data table-->
 
@@ -93,8 +96,7 @@
                         <h3 style="font-size: 16px;"><a href="" onclick="alert('این هم چیز واسه تست! ادد باید همینو بزنین :)')" style="color:white">پروفایل</a></h3>
                         <ul class="nav side-menu">
                             {{--//system manager menu--}}
-                            {{--<li><a><i class="fa f a-home"></i> مدیر سیستم<span></span></a>--}}
-                            {{--</li>--}}
+                         
                             @if($user->is_supervisor==1 and $user->unit_id==3)
                                 <li><a><i class="fa fa-pencil-square-o"></i> مدیریت امضاء ها<span
                                                 class="fa fa-chevron-down"></span></a>
@@ -105,8 +107,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a href="{{url('systemManager/access_level')}}"><i class="fa fa-users-p"></i> تعیین سطح دسترسی</a>
-                                </li>
+  
                             @endif
                             {{--//End system manager menu <br>--}}
                             {{--//Admin menu--}}
@@ -170,16 +171,19 @@
                                 </li>
                             @endif
                             @if(($user->is_supervisor==1 and $user->unit_id==6) or ($user->is_supervisor==1 and $user->unit_id==3))
-                                <li><a><i class="fa fa-envelope-open-o"></i> مدیریت تیکت ها <span
-                                                class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" style="display: none">
-                                        <li><a href="{{url('admin/showTickets')}}"> مشاهده تیکت ها</a>
-                                        </li>
-                                        {{--<li><a href="{{url('admin/deactiveTickets')}}">بسته شده ها</a>--}}
-                                        {{--</li>--}}
-                                    </ul>
-                                </li>
-                                {{--<li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>--}}
+
+
+                            <li><a><i class="fa fa-envelope-open-o"></i> مدیریت تیکت ها <span
+                                            class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>
+                                    <li><a href="{{url('user/ticketsManagement/1')}}">مشاهده تیکت های ارسالی</a> </li>
+                                    <li><a href="{{url('user/ticketsManagement/2')}}">مشاهده تیکت های دریافتی</a> </li>
+                                    {{--</li>--}}
+                                </ul>
+                            </li>
+                            {{--<li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>--}}
+
                                 {{--<ul class="nav child_menu" style="display: none">--}}
                                 {{--<li><a href="{{url('admin/')}}">پیام های دریافتی</a>--}}
                                 {{--</li>--}}
@@ -198,23 +202,43 @@
                             {{--//User menu--}}
 
                             {{-- user dashboard menu --}}
+
+
+                            <li><a><i class="fa fa-dropbox "></i> درخواست کالا <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="{{url('user/productRequest')}}">ارسال درخواست کالا</a>
+                                    </li>
+                                    <li><a href="{{url('user/productRequestFollow')}}">پیگیری درخواست کالا</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-edit"></i>درخواست خدمت <span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="{{url('user/serviceRequest')}}">ارسال درخواست خدمت</a>
+                                    </li>
+                                    <li><a href="{{url('user/serviceRequestFollow')}}">پیگیری درخواست خدمت</a>
+                                    </li>
+                                </ul>
+                           </li>
                             @if(($user->is_supervisor==1 or $user->is_supervisor==0) and $user->unit_id!=3)
-                                <li><a><i class="fa fa-dropbox "></i> درخواست کالا <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" style="display: none">
-                                        <li><a href="{{url('user/productRequest')}}">ارسال درخواست کالا</a>
-                                        </li>
-                                        <li><a href="{{url('user/productRequestFollow')}}">پیگیری درخواست کالا</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-edit"></i>درخواست خدمت <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" style="display: none">
-                                        <li><a href="{{url('user/serviceRequest')}}">ارسال درخواست خدمت</a>
-                                        </li>
-                                        <li><a href="{{url('user/serviceRequestFollow')}}">پیگیری درخواست خدمت</a>
-                                        </li>
-                                    </ul>
-                                </li>
+                            <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="{{url('admin/productCertificatesManagement')}}"> تایید گواهی های کالا<span></span></a>
+                                    </li>
+                                    <li><a href="{{url('admin/serviceCertificatesManagement')}}"> تایید گواهی های خدمت<span></span></a>
+                                    </li>
+                                    <li><a href="{{url('admin/acceptedCertificatesManagement')}}"> وضعیت گواهی های تایید شده</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
+                                <ul class="nav child_menu" style="display: none">
+                                    <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>
+                                    </li>
+                                    <li><a href="{{url('user/ticketsManagement/1')}}">پیگیری تیکت</a>
+                                    </li>
+                                </ul>
+                            </li>
 
                                 <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
@@ -250,7 +274,9 @@
                             @endif
                             {{--//End User menu--}}
                             {{-- end user dashboard menu --}}
+
                             <li><a style="background-color: rgba(231, 76, 60, 0.88)" href="{{url('/logout')}}"><i class="fa fa-sign-out"></i>خروج</a>
+
                             </li>
                             {{--<li><a href="{{url('/logout')}}" style="font-size:20px;padding:3px 0 3px 0"--}}
                                    {{--class="btn btn-danger col-md-10 col-md-offset-1"><i class="fa fa-sign-out" aria-hidden="true"></i>خروج</a>--}}

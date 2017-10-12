@@ -550,31 +550,51 @@ class SupplyController extends Controller
         //dd('hello');
         if($request->hasFile('image'))
         {
-            $jDate = $request->date;
-            if ($date = explode('/', $jDate)) {
-                $year  = $date[0];
-                $month = $date[1];
-                $day   = $date[2];
-            }
-            $gDate = $this->jalaliToGregorian($year, $month, $day);
-            $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
-            $file = $request->image;
-            $file->move(public_path(), $request->image->getClientOriginalName());
-            $path = public_path() . '\\' . $request->image->getClientOriginalName();
-            //dd($path);
-            $image = file_get_contents($path);
-            File::delete($path);
-            $fileName = base64_encode($image);
-            DB::table('workers')->insert(
-                [
-                    'card'    => $fileName,
-                    'user_id' => Auth::user()->id,
-                    'date'    => $gDate1,
-                    'name'    => $request->name,
-                    'family'  => $request->family
-                ]
-            );
-            return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
+            $extension = $request->image->getClientOriginalExtension();
+            $fileSize  = $request->image->getClientSize();
+            //  dd($fileSize);
+            if($fileSize < 150000)
+            {
+                if($extension == 'png' || $extension == 'PNG')
+                {
+                    $jDate = $request->date;
+                    if ($date = explode('/', $jDate)) {
+                        $year = $date[0];
+                        $month = $date[1];
+                        $day = $date[2];
+                    }
+                    $gDate = $this->jalaliToGregorian($year, $month, $day);
+                    $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
+                    $file = $request->image;
+                    $file->move(public_path(), $request->image->getClientOriginalName());
+                    $path = public_path() . '\\' . $request->image->getClientOriginalName();
+                    //dd($path);
+                    $image = file_get_contents($path);
+                    File::delete($path);
+                    $fileName = base64_encode($image);
+                    $q =  DB::table('workers')->insert
+                    ([
+                            'card' => $fileName,
+                            'user_id' => Auth::user()->id,
+                            'date' => $gDate1,
+                            'name' => $request->name,
+                            'family' => $request->family
+                    ]);
+                    if($q)
+                    {
+                        return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
+                    }
+
+                }
+                else
+                    {
+                        return response('پسوند فایل امضا باید از نوع png باشد');
+                    }
+            }else
+                {
+                    return response('حجم فایل امضا نباید بیش از 1مگابایت باشد');
+                }
+
         }else
         {
             return response('لطفا فایل عکس کارگری خود را انتخاب نمایید ، سپس درخواست خود را وارد نمایید');
@@ -1051,20 +1071,22 @@ class SupplyController extends Controller
     }
 
     //shiri : below  function to end ticket by admin
-    public function adminEndTicket(Request $request)
-    {
-        $end = Ticket::where('id',$request->ticketId)->update
-        ([
-            'active'  => 1
-        ]);
-        if($end)
-        {
-            return response('تیکت مورد نظر غیر فعال گردید');
-        }else
-        {
-            return response('خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید');
-        }
-    }
+
+//    public function adminEndTicket(Request $request)
+//    {
+//        $end = Ticket::where('id',$request->ticketId)->update
+//        ([
+//           'active'  => 1
+//        ]);
+//        if($end)
+//        {
+//            return response('تیکت مورد نظر غیر فعال گردید');
+//        }else
+//            {
+//                return response('خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید');
+//            }
+//    }
+
 
     public function confirmProductRequestManagementGet()
     {
@@ -1309,11 +1331,12 @@ class SupplyController extends Controller
     //shiri : below function is related to export delivery and install certificate
     public function exportDeliveryInstallCertificate($id)
     {
+        $pageTitleInstall = 'صدور گواهی تحویل و نصب';
+        $pageTitleUse     = 'صدور گواهی تحویل و نصب';
         $oldCertificates = Form::where('certificate_id',$id)->get();
         if(count($oldCertificates) > 0)
         {
-            $pageTitle = 'صدور گواهی تحویل و نصب';
-            return view('admin.certificate.exportDeliveryInstallCertificate',compact('pageTitle','oldCertificates'));
+            return view('admin.certificate.exportDeliveryInstallCertificate',compact('pageTitleInstall','oldCertificates','pageTitleUse'));
         }
         else
             {
@@ -1345,7 +1368,6 @@ class SupplyController extends Controller
                     $date           .= $this->toPersian($certificate->created_at->toDateString());
                     $certificateId  += $certificate->id;
                 }
-                $pageTitle = 'صدور گواهی تحویل و نصب';
                 //$certificateId        = Certificate::where('request_id',$id)->pluck('id');
                 $unitId               = Request2::where('id',$requestId)->value('unit_id');
                 $certificateRecords = CertificateRecord::where('certificate_id',$id)->get();
@@ -1392,7 +1414,7 @@ class SupplyController extends Controller
                 $unitSupervisorFullName = $unitSupervisorName .chr(10).$unitSupervisorFamily;
                 $unitSupervisorSignature = Signature::where('user_id',$unitSupervisorId)->value('signature');
                 $unitSupervisorSignature = 'data:image/png;base64,'.$unitSupervisorSignature;
-                return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitle','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
+                return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitleInstall','pageTitleUse','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
             }
     }
 
@@ -1514,7 +1536,7 @@ class SupplyController extends Controller
                     ([
                         'request_id' => $request->requestId,
                         'content' => $request->body,
-                        'title' => 'گواهی تحویل و نصب کالا',
+                        'title' => $request->title,
                         'certificate_id' => $request->certificateId
                     ]);
                     if ($formId) {
@@ -1840,10 +1862,20 @@ class SupplyController extends Controller
     {
         $pageTitle = 'سند هزینه';
         $oldCostDocumentsId = CostDocument::where('request_id',$id)->value('id');
+
         if($oldCostDocumentsId > 0)
         {
+            $sumGeneralPrice = 0;
+            $sumDeduction    = 0;
+            $sumPayedPrice   = 0;
             $costDocumentsRecords = CostDocumentsRecord::where('cost_document_id',$oldCostDocumentsId)->get();
-            return view('admin.certificate.costDocumentForm',compact('costDocumentsRecords','pageTitle'));
+            foreach ($costDocumentsRecords as $costDocumentsRecord)
+            {
+                $sumGeneralPrice += $costDocumentsRecord->general_price;
+                $sumDeduction    += $costDocumentsRecord->deduction;
+                $sumPayedPrice   += $costDocumentsRecord->payed_price;
+            }
+            return view('admin.certificate.costDocumentForm',compact('costDocumentsRecords','pageTitle','sumDeduction','sumPayedPrice','sumGeneralPrice'));
         }else
             {
                 return view('admin.certificate.costDocumentForm',compact('id','pageTitle'));
@@ -1881,14 +1913,14 @@ class SupplyController extends Controller
                                 $costDocumentRecords = DB::table('cost_document_records')->insert
                                 ([
                                     'cost_document_id' => $costDocumentId,
-                                    'code'             => $request->code[$i],
-                                    'description'      => $request->description[$i],
-                                    'moein_office'     => $request->moeinOffice[$i],
-                                    'general_price'    => $request->generalPrice[$i],
-                                    'deduction'        => $request->deduction[$i],
-                                    'payed_price'      => $request->payedPrice[$i],
-                                    'page'             => $request->page[$i],
-                                    'row'              => $request->row[$i],
+                                    'code'             => trim($request->code[$i]),
+                                    'description'      => trim($request->description[$i]),
+                                    'moein_office'     => trim($request->moeinOffice[$i]),
+                                    'general_price'    => trim($request->generalPrice[$i]),
+                                    'deduction'        => trim($request->deduction[$i]),
+                                    'payed_price'      => trim($request->payedPrice[$i]),
+                                    'page'             => trim($request->page[$i]),
+                                    'row'              => trim($request->row[$i]),
                                     'created_at'       => Carbon::now(new \DateTimeZone('Asia/Tehran'))
 
                                 ]);
@@ -1907,5 +1939,6 @@ class SupplyController extends Controller
 
 
     }
+
 
 }
