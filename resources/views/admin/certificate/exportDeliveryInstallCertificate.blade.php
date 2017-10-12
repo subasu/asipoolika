@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    @if($certificateRecords[0]->certificate->certificate_type_id == 1)
-        <title>{{$pageTitleInstall}}</title>
-    @endif
-    @if($certificateRecords[0]->certificate->certificate_type_id == 2)
-        <title>{{$pageTitleUse}}</title>
+    @if(!empty($certificateRecord[0]))
+        @if($certificateRecords[0]->certificate->certificate_type_id == 1)
+            <title>{{$pageTitleInstall}}</title>
+        @endif
+        @if($certificateRecords[0]->certificate->certificate_type_id == 2)
+            <title>{{$pageTitleUse}}</title>
+        @endif
     @endif
     <link href="{{ URL::asset('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
     <script>
         $(document).on('click','#print',function () {
 
-            var body = $('#body')[0].innerHTML;
-            var token = $('#token').val();
+            var body      = $('#body')[0].innerHTML;
+            var token     = $('#token').val();
             var requestId = $('#requestId').val();
             var button    = $(this);
             var certificateId = $('#certificateId').val();
+            var title         = $('#title').val();
             $.ajax
             ({
                url  : "{{url('admin/formSave')}}/{{3}}",
                type : "post",
                context : button,
-               data : {'body':body ,'_token':token,'requestId':requestId , 'certificateId' : certificateId},
+               data : {'body':body ,'_token':token,'requestId':requestId , 'certificateId' : certificateId ,'title':title},
                success : function(response)
                {
                    alert(response);
@@ -61,34 +64,38 @@
         </div>
     </div>
     <br>
-    @if($certificateRecords[0]->certificate->certificate_type_id == 1)
-        <h3 class="text-center">« صورت جلسه تحویل کالا و نصب »</h3>
-    @endif
-    @if($certificateRecords[0]->certificate->certificate_type_id == 2)
-        <h3 class="text-center">« صورت جلسه تحویل کالا و مصرف »</h3>
-    @endif
-    <br>
-    @if($certificateRecords[0]->certificate->certificate_type_id == 1)
-        <h4 dir="rtl" style="text-align: justify;">بدینوسیله گواهی می شود خدمات انجام شده به شرح زیر توسط
-            شرکت/
-            فروشگاه
-            {{$shopComp}}
-            جهت واحد
-            {{$unitName}}
-            به آقای/خانم
-            {{$receiverName .chr(10). $receiverFamily}}
-            تحویل گردید و پرداخت شده است.</h4>
-    @endif
-    @if($certificateRecords[0]->certificate->certificate_type_id == 2)
-        <h4 dir="rtl" style="text-align: justify;">بدینوسیله گواهی می شود خدمات انجام شده به شرح زیر توسط
-            شرکت/
-            فروشگاه
-            {{$shopComp}}
-            جهت واحد
-            {{$unitName}}
-            به آقای/خانم
-            {{$receiverName .chr(10). $receiverFamily}}
-            تحویل گردید و پرداخت بلامانع است.</h4>
+    @if(!empty($certificateRecords[0]))
+        @if($certificateRecords[0]->certificate->certificate_type_id == 1)
+            <h3 class="text-center">« صورت جلسه تحویل کالا و نصب »</h3>
+            <input type="hidden" id="title" value="گواهی تحویل و نصب کالا">
+        @endif
+        @if($certificateRecords[0]->certificate->certificate_type_id == 2)
+            <h3 class="text-center">« صورت جلسه تحویل کالا و مصرف »</h3>
+                <input type="hidden" id="title" value="گواهی تحویل و مصرف کالا">
+        @endif
+        <br>
+        @if($certificateRecords[0]->certificate->certificate_type_id == 1)
+            <h4 dir="rtl" style="text-align: justify;">بدینوسیله گواهی می شود خدمات انجام شده به شرح زیر توسط
+                شرکت/
+                فروشگاه
+                {{$shopComp}}
+                جهت واحد
+                {{$unitName}}
+                به آقای/خانم
+                {{$receiverName .chr(10). $receiverFamily}}
+                تحویل گردید و پرداخت شده است.</h4>
+        @endif
+        @if($certificateRecords[0]->certificate->certificate_type_id == 2)
+            <h4 dir="rtl" style="text-align: justify;">بدینوسیله گواهی می شود خدمات انجام شده به شرح زیر توسط
+                شرکت/
+                فروشگاه
+                {{$shopComp}}
+                جهت واحد
+                {{$unitName}}
+                به آقای/خانم
+                {{$receiverName .chr(10). $receiverFamily}}
+                تحویل گردید و پرداخت بلامانع است.</h4>
+        @endif
     @endif
     <br>
     <table class="formTable col-md-12 width100 border-right" dir="rtl">
@@ -121,9 +128,9 @@
             <th class="col-md-3">  رئیس واحد : {{$bossFullName}} </th>
         </tr>
         <tr>
-            <td class="col-md-3">@if(count($receiverSignature) > 0)<img style="height: 100px; width: 100px;" src="{{$receiverSignature}}"> @elseامضا ندارد @endif</td>
+            <td class="col-md-3">@if(strlen($receiverSignature) > 25)<img style="height: 100px; width: 100px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
             <td class="col-md-3"><img style="height: 100px; width: 100px;" src="{{$unitSupervisorSignature}}"></td>
-            <td class="col-md-3">@if(count($supplierSignature) > 22)<img src="{{$supplierSignature}}"> @endif @if(count($supplierSignature) < 22)امضا ندارد @endif</td>
+            <td class="col-md-3">@if(strlen($supplierSignature) > 25)<img src="{{$supplierSignature}}"> @endif @if(strlen($supplierSignature) < 25)امضا ندارد @endif</td>
             <td class="col-md-3"><img style="height: 100px; width: 100px;" src="{{$bossSignature}}"></td>
         </tr>
         </tbody>

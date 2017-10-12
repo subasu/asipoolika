@@ -1536,7 +1536,7 @@ class SupplyController extends Controller
                     ([
                         'request_id' => $request->requestId,
                         'content' => $request->body,
-                        'title' => 'گواهی تحویل و نصب کالا',
+                        'title' => $request->title,
                         'certificate_id' => $request->certificateId
                     ]);
                     if ($formId) {
@@ -1939,8 +1939,4 @@ class SupplyController extends Controller
 
     }
 
-    public function productDeliveryAndUseForm($id)
-    {
-        return view ('admin.certificate.productDeliveryAndUseForm');
-    }
 }
