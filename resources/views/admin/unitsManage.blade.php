@@ -15,7 +15,7 @@
                     </ul>
                     <div class="clearfix"></div>
                 </div>
-                <a href="{{url('admin/unitsCreate')}}" id="user-send" type="button" class="col-md-2 btn btn-danger" style="font-weight: bold;"><i
+                <a href="{{url('admin/unitsCreate')}}" id="user-send" type="button" class="col-md-2 btn btn-primary" style="font-weight: bold;"><i
                             class="fa fa-plus"></i>
                     افزودن واحد جدید
                 </a>
