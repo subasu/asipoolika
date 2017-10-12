@@ -6,8 +6,10 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>
+                        @if(!empty($tickets[0]))
                          @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id)بررسی تیکت های دریافتی @endif
                          @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id)بررسی تیکت های ارسالی     @endif
+                         @endif
                     </h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i
@@ -81,7 +83,7 @@
                                     <span class="col-md-9 col-md-offset-1 btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">بسته شده</span>
                                 @endif
                             </td>
-             
+
                             <td>
                                 <a class="col-md-6 col-md-offset-3 btn btn-success" target="_blank" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
 

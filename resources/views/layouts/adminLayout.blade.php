@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!-- Meta, title, CSS, favicons, etc. -->
 <meta charset="utf-8">
@@ -42,7 +43,9 @@
       type="text/css"/>
 <link href="{{ URL::asset('public/dashboard/js/datatables/scroller.bootstrap.min.css')}}" rel="stylesheet"
       type="text/css"/>
-
+<style>
+    div,h2 {font-family:Yekan}
+</style>
 
 <!--End Data table-->
 
