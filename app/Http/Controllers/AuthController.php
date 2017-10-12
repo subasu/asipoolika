@@ -34,7 +34,7 @@ class AuthController extends Controller
 
     public function postSignIn(Request $request)
     {
-        if (Auth::attempt(['email' => $request['email'], 'password' => $request['password']])) {
+        if (Auth::attempt(['email' => $request['email'], 'password' => $request['password'],'active' =>1])) {
             return redirect()->route('main');
         }
         return redirect()->back();

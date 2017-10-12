@@ -15,11 +15,8 @@
                     </ul>
                     <div class="clearfix"></div>
                 </div>
-                <div class="alert alert-info col-md-12 col-sm-12 col-xs-12"
-                     style="direction:rtl;font-size:17px;color:white;">
-                </div>
-                <a href="{{url('admin/unitsCreate')}}" id="user-send" type="button" class="col-md-2 btn btn-info" style="font-weight: bold;"><i
-                            class="fa fa-user-plus"></i>
+                <a href="{{url('admin/unitsCreate')}}" id="user-send" type="button" class="col-md-2 btn btn-danger" style="font-weight: bold;"><i
+                            class="fa fa-plus"></i>
                     افزودن واحد جدید
                 </a>
                 <div class="x_content">
@@ -46,15 +43,21 @@
                                 <td>{{$val->phone}} </td>
                                 <td>{{$val->description}}</td>
                                 <td>
+                                    @if($val->main==0)
                                     @if($val->active ===1)
                                         <button value="{{$val->active}}" id="{{$val->id}}" class="btn btn-success">فعال</button>
                                     @else
                                         <button value="{{$val->active}}" id="{{$val->id}}" class="btn btn-danger">غیرفعال</button>
                                     @endif
+                                        @else <span class="label label-warning" style="font-weight: lighter;font-size:13px;">غیر قابل تغییر</span>
+                                    @endif
                                 </td>
                                 <td id="{{$val->id}}">
+                                    @if($val->main==0)
                                     <a class="btn btn-info"
                                        href="{{url('admin/unitsUpdate'.'/'.$val->id)}}">ویرایش</a>
+                                    @else <span class="label label-warning" style="font-weight: lighter;font-size:13px;">غیرقابل ویرایش</span>
+                                        @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -71,35 +74,49 @@
                 var status = $(this).val();
                 var token  = $('#token').val();
                 var button = $(this);
-                $.ajax
-                ({
-                    url     : "{{Url('admin/changeUnitStatus')}}/{{1}}",
-                    type    : 'post',
-                    data    : {'unitId':unitId,'_token':token},
-                    context :  button,
-                    //dataType:'json',
-                    success : function (response)
-                    {
-                        $(button).text('غیر فعال');
-                        $(button).toggleClass('btn-success btn-danger');
-                        swal({
-                            title: "",
-                            text: response,
-                            type: "info",
-                            confirmButtonText: "بستن"
-                        });
+                swal({
+                        title: "",
+                        text: "آیا از غیرفعال کردن واحد اطمینان دارید؟",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "	#5cb85c",
+                        cancelButtonText: "خیر ، منصرف شدم",
+                        confirmButtonText: "بله غیرفعال شود",
+                        closeOnConfirm: true,
+                        closeOnCancel: true
                     },
-                    error : function(error)
-                    {
-                        console.log(error);
-                        swal({
-                            title: "",
-                            text: "خطایی رخ داده است ، تماس با بخش پشتیبانی",
-                            type: "warning",
-                            confirmButtonText: "بستن"
+                    function () {
+                        $.ajax
+                        ({
+                            url     : "{{Url('admin/changeUnitStatus')}}/{{1}}",
+                            type    : 'post',
+                            data    : {'unitId':unitId,'_token':token},
+                            context :  button,
+                            //dataType:'json',
+                            success : function (response)
+                            {
+                                $(button).text('غیر فعال');
+                                $(button).toggleClass('btn-success btn-danger');
+                                swal({
+                                    title: "",
+                                    text: response,
+                                    type: "info",
+                                    confirmButtonText: "بستن"
+                                });
+                            },
+                            error : function(error)
+                            {
+                                console.log(error);
+                                swal({
+                                    title: "",
+                                    text: "خطایی رخ داده است ، تماس با بخش پشتیبانی",
+                                    type: "warning",
+                                    confirmButtonText: "بستن"
+                                });
+                            }
                         });
-                    }
-                });
+                    });
+
             })
         </script>
         <script>
@@ -108,33 +125,48 @@
                 var status = $(this).val();
                 var token = $('#token').val();
                 var button = $(this);
-                $.ajax
-                ({
-                    url: "{{Url('admin/changeUnitStatus')}}/{{2}}",
-                    type: 'post',
-                    data: {'unitId': unitId, '_token': token},
-                    context: button,
-                    //dataType:'json',
-                    success: function (response) {
-                        $(button).text('فعال');
-                        $(button).toggleClass('btn-success btn-danger');
-                        swal({
-                            title: "",
-                            text: response,
-                            type: "info",
-                            confirmButtonText: "بستن"
-                        });
+                swal({
+                        title: "",
+                        text: "آیا از غیرفعال کردن واحد اطمینان دارید؟",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "	#5cb85c",
+                        cancelButtonText: "خیر ، منصرف شدم",
+                        confirmButtonText: "بله غیرفعال شود",
+                        closeOnConfirm: true,
+                        closeOnCancel: true
                     },
-                    error: function (error) {
-                        console.log(error);
-                        swal({
-                            title: "",
-                            text: "خطایی رخ داده است ، تماس با بخش پشتیبانی",
-                            type: "warning",
-                            confirmButtonText: "بستن"
+                    function () {
+                        $.ajax
+                        ({
+                            url: "{{Url('admin/changeUnitStatus')}}/{{2}}",
+                            type: 'post',
+                            data: {'unitId': unitId, '_token': token},
+                            context: button,
+                            //dataType:'json',
+                            success: function (response) {
+                                $(button).text('فعال');
+                                $(button).toggleClass('btn-success btn-danger');
+                                swal({
+                                    title: "",
+                                    text: response,
+                                    type: "info",
+                                    confirmButtonText: "بستن"
+                                });
+                            },
+                            error: function (error) {
+                                console.log(error);
+                                swal({
+                                    title: "",
+                                    text: "خطایی رخ داده است ، تماس با بخش پشتیبانی",
+                                    type: "warning",
+                                    confirmButtonText: "بستن"
+                                });
+                            }
                         });
-                    }
-                });
+                    });
+
+
             });
         </script>
 @endsection

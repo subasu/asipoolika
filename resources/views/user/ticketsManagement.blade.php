@@ -6,6 +6,7 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>
+
                         @if(!empty($tickets[0]))
                             @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id)بررسی تیکت های دریافتی @endif
                             @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id)بررسی تیکت های ارسالی     @endif
@@ -57,38 +58,38 @@
                         </tr>
                         </thead>
                         <tbody id="change">
-                        @foreach($tickets as $ticket)
-                            <tr class="unit">
-                                <td>
-                                    {{$ticket->id}}
-                                </td>
-                                <td>
-                                    {{$ticket->user->unit->title}}
-                                </td>
-                                <td>
-                                    {{$ticket->user->title .chr(10).$ticket->user->name .chr(10). $ticket->user->family}}
-                                </td>
-                                <td>
-                                    {{$ticket->title}}
-                                </td>
-                                <td>
-                                    {{$ticket->date}}
-                                </td>
-                                <td style="border-left: 1px solid #ddd;">
-                                    @if($ticket->active == 0)
-                                        <label  class="col-md-7 col-md-offset-3 btn btn-warning" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">در حال بررسی</label>
-                                    @endif
-                                    @if($ticket->active == 1)
+                         @foreach($tickets as $ticket)
+                        <tr class="unit">
+                            <td>
+                                {{$ticket->id}}
+                            </td>
+                            <td>
+                                {{$ticket->user->unit->title}}
+                            </td>
+                            <td>
+                                {{$ticket->user->title .chr(10).$ticket->user->name .chr(10). $ticket->user->family}}
+                            </td>
+                            <td>
+                                {{$ticket->title}}
+                            </td>
+                            <td>
+                                {{$ticket->date}}
+                            </td>
+                            <td style="border-left: 1px solid #ddd;">
+                                @if($ticket->active == 0)
+                                    <label  class="col-md-7 col-md-offset-3 btn btn-warning" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">در حال بررسی</label>
+                                @endif
+                                @if($ticket->active == 1)
 
-                                        <span class="col-md-9 col-md-offset-1 btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">بسته شده</span>
-                                    @endif
-                                </td>
+                                    <span class="col-md-9 col-md-offset-1 btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">بسته شده</span>
+                                @endif
+                            </td>
 
-                                <td>
-                                    <a class="col-md-6 col-md-offset-3 btn btn-success" target="_blank" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
+                            <td>
+                                <a class="col-md-6 col-md-offset-3 btn btn-success" target="_blank" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
 
-                                </td>
-                            </tr>
+                            </td>
+                        </tr>
                         @endforeach
                         </tbody>
                     </table>

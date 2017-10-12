@@ -6,6 +6,7 @@ use App\Models\RequestRecord;
 use App\Models\UnitCount;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
@@ -52,5 +53,18 @@ class IndexController extends Controller
         $request_record_count=$request->record_count;
         $price=$rate*$request_record_count;
         return response()->json(compact('price'));
+    }
+    public function goToLoginPage()
+    {
+        if (Auth::check()) {
+            $me=Auth::user();
+            if($me->is_supervisor==1 and $me->unit_id!=3)
+                $redirect='admin/productRequestManagement';
+            elseif($me->is_supervisor==1 and $me->unit_id==3)
+                $redirect='systemManager/signaturesList';
+            else $redirect='user/productRequest';
+            return redirect($redirect);
+        } else
+        return redirect('/login');
     }
 }

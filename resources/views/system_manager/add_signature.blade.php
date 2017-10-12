@@ -37,7 +37,7 @@
                                 </label>
                                 {{--<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback pull-right">--}}
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
-                                    <select class="form-control" id="unit_signature" name="unit_signature">
+                                    <select class="form-control" id="unit_signature" name="unit_id">
                                         <option readonly>انتخاب واحد</option>
                                         @foreach($units as $unit)
                                             <option name="unit_id" value="{{$unit->id}}">{{$unit->title}}</option>
@@ -46,7 +46,7 @@
                                 </div>
                                 {{--</div>--}}
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                    <select class="form-control" id="user_signature" name="user_signature">
+                                    <select class="form-control" id="user_signature" name="users">
                                     </select>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback pull-right">
@@ -65,7 +65,7 @@
                                         <span class="glyphicon glyphicon-remove"></span> پاک کردن
                                     </button>
                                             <!-- image-preview-input -->
-                                    <div class="btn btn-default image-preview-input ">
+                                    <div class="btn btn-default image-preview-input">
                                         <span class="glyphicon glyphicon-folder-open"></span>
                                         <span class="image-preview-input-title">انتخاب تصویر امضاء</span>
                                         <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
@@ -90,7 +90,30 @@
                 </div>
             </div>
         </div>
-
+        <script>
+            $("#unit_signature").change(function () {
+                var $this = $(this);
+                var id = $this.val();
+                $.ajax({
+                    url: "{{ url('unit_signature') }}",
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {unit_id: id},
+                    success: function (response) {
+                        var html;
+                        html += '<option value="">صاحب امضاء را انتخاب کنید</option>';
+                        $.each(response.users, function (index, value) {
+                            html += '<option name="users" value="' + value['id'] + '">' + value['name'] + ' ' + value['family'] + '</option>';
+                        });
+                        $("#user_signature").html(html);
+                    },
+                    error: function (error) {
+                        var errors = error.responseJSON;
+                        console.log(errors);
+                    }
+                });
+            });
+        </script>
     <script>
         $('#signature_priority').change(function() {
             $('#forced').val(0);
@@ -98,7 +121,7 @@
     </script>
     <script>
         $(document).on('click','#add_signature',function () {
-                var formData = new FormData($('#dealForm')[0]);
+
                 var unitId = "";
                 $("[name='unit_id']:selected").each(function(){
                     unitId +=$(this).val();
@@ -145,7 +168,7 @@
                 }else
                     {
 
-
+                        var formData = new FormData($('#dealForm')[0]);
                         $.ajaxSetup({
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
