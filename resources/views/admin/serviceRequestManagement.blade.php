@@ -61,7 +61,7 @@
                                 <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
                                 <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                 <th class="col-md-2" style="text-align: center ;">رد شده</th>
-                                <th class="col-md-1" style="text-align: center ;">عملیات</th>
+                                <th class="col-md-1" style="text-align: center ;border-right: 1px solid #e0e0d1">عملیات</th>
                             @elseif($pageName=='refusedProductRequestManagement')
                                 <th class="col-md-1" style="text-align: center ;">رکوردهای رد شده</th>
                                 {{--<th style="text-align: center ;">عملیات</th>--}}
@@ -69,13 +69,14 @@
                                 <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
                                 <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                 <th class="col-md-2" style="text-align: center ;">رد شده</th>
-                                <th class="col-md-1" style="text-align: center ;">وضعیت</th>
+                                <th class="col-md-2" style="text-align: center ;"></th>
+                                <th class="col-md-1" style="text-align: center ;border-right: 1px solid #e0e0d1">وضعیت</th>
                                 {{--<th class="col-md-2" style="text-align: center ;">مرحله</th>--}}
                                 {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
                             @elseif($pageName=='confirmProductRequest')
                                 <th class="col-md-1" style="text-align: center ;">در انتظار بررسی</th>
                                 <th class="col-md-1" style="text-align: center ;">دارای گواهی</th>
-                                <th class="col-md-3" style="text-align: center ;"> عملیات</th>
+                                <th class="col-md-3" style="text-align: center ;border-right: 1px solid #e0e0d1"> عملیات</th>
                             @endif
 
                         </tr>
@@ -94,7 +95,7 @@
                                     <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                     <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                     <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                    <td><a class="btn btn-info" target="_blank" href="{{url('admin/serviceRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                    <td style="border-right: 1px solid #e0e0d1"><a class="btn btn-info" target="_blank" href="{{url('admin/serviceRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
                                 @endif
                             </tr>
                         @endforeach
@@ -120,7 +121,8 @@
                                     <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                     <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                     <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                    <td class="col-md-2" style="padding-top: 20px;">@if($productRequest->active==1)<span style="font-size: 16px;font-weight: lighter;" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter;" class="label label-warning">در حال رسیدگی </span>@endif</td>
+                                    <td><a class="btn btn-info" target="_blank" href="{{url('admin/acceptedRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                    <td class="col-md-2" style="padding-top: 20px;border-right: 1px solid #e0e0d1">@if($productRequest->active==1)<span style="font-size: 16px;font-weight: lighter;" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter;" class="label label-warning">در حال رسیدگی </span>@endif</td>
                                     {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                 </tr>
                             @endif
@@ -135,7 +137,7 @@
                                     <td class="col-md-1">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
                                     <td class="info col-md-1">{{$productRequest->accept_count}}</td>
                                     <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
-                                    <td class="col-md-2" style="font-size: 25px;">
+                                    <td class="col-md-2" style="font-size: 25px;border-right: 1px solid #e0e0d1">
                                         {{--<a href="" class="btn btn-danger">صدور صورتجلسه تحویل و نصب</a>--}}
                                         <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-10  @if($productRequest->accept_count==0 or $productRequest->supplier_id==null) disabled @endif"> صدور گواهی</a>
 

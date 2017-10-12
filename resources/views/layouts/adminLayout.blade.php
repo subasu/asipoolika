@@ -81,7 +81,7 @@
                         <img src="{{URL::asset('public/dashboard/images/img.png')}}" alt="..."
                              class="img-circle profile_img">
                     </div>
-                    <div class="profile_info">
+                    <div class="profile_info" style="text-align: left">
                         <span>@if($user_info->is_supervisor==1)@if($user_info->unit_id!=4) مدیر @endif @endif{{$user->unit->description}}</span><br>
                         <h2>{{$user_info->title}} {{$user_info->name}} {{$user_info->family}}</h2>
                     </div>
@@ -231,25 +231,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>
-                                    </li>
-                                    <li><a href="{{url('user/ticketsManagement/1')}}">پیگیری تیکت</a>
-                                    </li>
-                                </ul>
-                            </li>
 
-                                <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" style="display: none">
-                                        <li><a href="{{url('admin/productCertificatesManagement')}}"> تایید گواهی های کالا<span></span></a>
-                                        </li>
-                                        <li><a href="{{url('admin/serviceCertificatesManagement')}}"> تایید گواهی های خدمت<span></span></a>
-                                        </li>
-                                        <li><a href="{{url('admin/acceptedCertificatesManagement')}}"> وضعیت گواهی های تایید شده</a>
-                                        </li>
-                                    </ul>
-                                </li>
                                 <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>

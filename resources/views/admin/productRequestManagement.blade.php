@@ -60,8 +60,9 @@
                                     @if($pageName=='productRequestManagement')
                                         <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
                                         <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
-                                        <th class="col-md-2" style="text-align: center;border-left: 1px solid #8eb4cb">رد شده</th>
-                                        <th class="col-md-1" style="text-align: center ;">عملیات</th>
+                                        <th class="col-md-2" style="text-align: center;">رد شده</th>
+                                        <th class="col-md-1" style="text-align: center;border-right: 1px solid #d6d6c2">عملیات</th>
+                                        {{--<td></td>--}}
                                     @elseif($pageName=='refusedProductRequestManagement')
                                         <th class="col-md-1" style="text-align: center ;">رکوردهای رد شده</th>
                                         {{--<th style="text-align: center ;">عملیات</th>--}}
@@ -70,13 +71,15 @@
                                         <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                         <th class="col-md-2" style="text-align: center ;">رد شده</th>
                                         <th class="col-md-1" style="text-align: center ;"></th>
-                                        <th class="col-md-1" style="text-align: center ;">وضعیت</th>
+                                        <th class="col-md-1" style="text-align: center ;border-right: 1px solid #e0e0d1">وضعیت</th>
+                                        {{--<td></td>--}}
                                         {{--<th class="col-md-2" style="text-align: center ;">مرحله</th>--}}
                                         {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
                                     @elseif($pageName=='confirmProductRequest')
                                         <th class="col-md-1" style="text-align: center ;">در انتظار بررسی</th>
                                         <th class="col-md-1" style="text-align: center ;">دارای گواهی</th>
-                                        <th class="col-md-3" style="text-align: center ;"> عملیات</th>
+                                        <th class="col-md-3" style="text-align: center ;border-right: 1px solid #e0e0d1"> عملیات</th>
+                                        {{--<td></td>--}}
                                     @endif
                                     {{--<td></td>--}}
                             </tr>
@@ -96,7 +99,7 @@
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
                                             <td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
-                                            <td></td>
+                                            {{--<td></td>--}}
                                         @endif
                                     </tr>
                                     @endforeach
@@ -119,8 +122,9 @@
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                            <td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
-                                            <td class="col-md-2" style="padding-top: 17px;">@if($productRequest->active==1)<span style="font-size: 15px;padding: 4px 7px 4px 7px;font-weight: lighter;" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter" class="label label-warning">در حال رسیدگی </span>@endif</td>
+                                            <td><a class="btn btn-info" target="_blank" href="{{url('admin/acceptedRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                            <td class="col-md-2" style="padding-top: 17px;border-right: 1px solid #e0e0d1">@if($productRequest->active==1)<span style="font-size: 15px;padding: 4px 7px 4px 7px;font-weight: lighter;" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter" class="label label-warning">در حال رسیدگی </span>@endif</td>
+                                            {{--<td></td>--}}
                                             {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                         </tr>
                                         @endif

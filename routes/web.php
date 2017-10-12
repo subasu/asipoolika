@@ -56,6 +56,8 @@ Route::group(['prefix'=>'user'],function() {
         'roles'=>['supplierManager','unitManager','user','systemManager']
     ]);
 
+
+
     Route::get('/ticketRequest','RequestController@ticketRequest');
 //    Route::get('/getUnits','RequestController@getUnits');
     Route::post('sendTicket','RequestController@sendTicket');
@@ -132,6 +134,11 @@ Route::group(['prefix'=>'systemManager'],function() {
             'uses'=>'SupplyController@acceptProductRequestManagementGet',
             'middleware' => 'roles',
             'roles'=>['supplierManager','unitManager']
+        ]);
+        Route::get('/acceptedRequestRecords/{id}',[
+            'uses'=>'RequestController@myRequestRecordsGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager','unitManager','systemManager']
         ]);
         Route::post('acceptProductRequest','SupplyController@acceptProductRequest');
         Route::post('refuseRequestRecord','SupplyController@refuseRequestRecord');
