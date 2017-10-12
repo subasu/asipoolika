@@ -1331,11 +1331,12 @@ class SupplyController extends Controller
     //shiri : below function is related to export delivery and install certificate
     public function exportDeliveryInstallCertificate($id)
     {
+        $pageTitleInstall = 'صدور گواهی تحویل و نصب';
+        $pageTitleUse     = 'صدور گواهی تحویل و نصب';
         $oldCertificates = Form::where('certificate_id',$id)->get();
         if(count($oldCertificates) > 0)
         {
-            $pageTitle = 'صدور گواهی تحویل و نصب';
-            return view('admin.certificate.exportDeliveryInstallCertificate',compact('pageTitle','oldCertificates'));
+            return view('admin.certificate.exportDeliveryInstallCertificate',compact('pageTitleInstall','oldCertificates','pageTitleUse'));
         }
         else
             {
@@ -1367,7 +1368,6 @@ class SupplyController extends Controller
                     $date           .= $this->toPersian($certificate->created_at->toDateString());
                     $certificateId  += $certificate->id;
                 }
-                $pageTitle = 'صدور گواهی تحویل و نصب';
                 //$certificateId        = Certificate::where('request_id',$id)->pluck('id');
                 $unitId               = Request2::where('id',$requestId)->value('unit_id');
                 $certificateRecords = CertificateRecord::where('certificate_id',$id)->get();
@@ -1414,7 +1414,7 @@ class SupplyController extends Controller
                 $unitSupervisorFullName = $unitSupervisorName .chr(10).$unitSupervisorFamily;
                 $unitSupervisorSignature = Signature::where('user_id',$unitSupervisorId)->value('signature');
                 $unitSupervisorSignature = 'data:image/png;base64,'.$unitSupervisorSignature;
-                return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitle','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
+                return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitleInstall','pageTitleUse','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
             }
     }
 
@@ -1937,5 +1937,10 @@ class SupplyController extends Controller
             }
 
 
+    }
+
+    public function productDeliveryAndUseForm($id)
+    {
+        return view ('admin.certificate.productDeliveryAndUseForm');
     }
 }

@@ -130,6 +130,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('printFactors/{id}','SupplyController@printFactors');                                        //96/7/16
         Route::get('costDocumentForm/{id}','SupplyController@costDocumentForm');                                //96/7/17
         Route::post('saveCostDocument','SupplyController@saveCostDocument');
+        Route::get('productDeliveryAndUseForm/{id}','SupplyController@productDeliveryAndUseForm');
+
         //rayat - users manage:
         Route::get('usersManagement', 'SupplyController@usersManagementGet');
         Route::get('usersCreate', 'SupplyController@usersCreateGet');

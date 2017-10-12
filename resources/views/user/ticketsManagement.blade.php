@@ -6,7 +6,7 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>
-                         @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id)بررسی تیکت های دریافتی @endif
+                         @if($tickets[0]->unit_id       ==  ()->unit_id)بررسی تیکت های دریافتی @endif
                          @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id)بررسی تیکت های ارسالی     @endif
                     </h2>
                     <ul class="nav navbar-right panel_toolbox">
