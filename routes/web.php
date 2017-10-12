@@ -19,55 +19,55 @@ Route::get('403',function(){
 });
 Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
-Route::group(['prefix'=>'user'],function() {
+    Route::group(['prefix'=>'user'],function() {
 
-    Route::get('/productRequest',[
-        'uses'=>'RequestController@productRequestGet',
-        'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
-    ]);
-    Route::post('/productRequest','RequestController@productRequestPost');
+        Route::get('/productRequest',[
+            'uses'=>'RequestController@productRequestGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager','unitManager','user']
+        ]);
+        Route::post('/productRequest','RequestController@productRequestPost');
 //    Route::get('/productRequestFollow','RequestController@productRequestFollowGet');
-    Route::get('/productRequestFollow',[
-        'uses'=>'RequestController@productRequestFollowGet',
-        'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
-    ]);
+        Route::get('/productRequestFollow',[
+            'uses'=>'RequestController@productRequestFollowGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager','unitManager','user']
+        ]);
 
-    //shiri
+        //shiri
 //    Route::get('/serviceRequest','RequestController@serviceRequestGet');
-    Route::get('/serviceRequest',[
-        'uses'=>'RequestController@serviceRequestGet',
-        'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
-    ]);
-    Route::post('serviceRequest','RequestController@serviceRequest');
+        Route::get('/serviceRequest',[
+            'uses'=>'RequestController@serviceRequestGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager','unitManager','user']
+        ]);
+        Route::post('serviceRequest','RequestController@serviceRequest');
 
 //    Route::get('/serviceRequestFollow','RequestController@serviceRequestFollowGet');
-    Route::get('/serviceRequestFollow',[
-        'uses'=>'RequestController@serviceRequestFollowGet',
-        'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
-    ]);
+        Route::get('/serviceRequestFollow',[
+            'uses'=>'RequestController@serviceRequestFollowGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager','unitManager','user']
+        ]);
 //    Route::get('/myRequestRecords/{id}','RequestController@myRequestRecordsGet');
-    Route::get('/myRequestRecords/{id}',[
-        'uses'=>'RequestController@myRequestRecordsGet',
-        'middleware' => 'roles',
-        'roles'=>['supplierManager','unitManager','user']
-    ]);
+        Route::get('/myRequestRecords/{id}',[
+            'uses'=>'RequestController@myRequestRecordsGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager','unitManager','user']
+        ]);
 
-    Route::get('/ticketRequest','RequestController@ticketRequest');
+        Route::get('/ticketRequest','RequestController@ticketRequest');
 //    Route::get('/getUnits','RequestController@getUnits');
-    Route::post('sendTicket','RequestController@sendTicket');
-    Route::get('ticketsManagement','RequestController@ticketsManagement');
-    Route::post('searchOnDate/{id}','RequestController@searchOnDate');
-    Route::get('ticketConversation/{id}','RequestController@ticketConversation');
-    Route::post('userSendMessage','RequestController@userSendMessage');
-    Route::post('userEndTicket' , 'RequestController@userEndTicket');
+        Route::post('sendTicket','RequestController@sendTicket');
+        Route::get('ticketsManagement','RequestController@ticketsManagement');
+        Route::post('searchOnDate/{id}','RequestController@searchOnDate');
+        Route::get('ticketConversation/{id}','RequestController@ticketConversation');
+        Route::post('userSendMessage','RequestController@userSendMessage');
+        Route::post('userEndTicket' , 'RequestController@userEndTicket');
 
-});
+    });
 
-Route::group(['prefix'=>'systemManager'],function() {
+    Route::group(['prefix'=>'systemManager'],function() {
 
 //    Route::get('/signatures',[
 //        'uses'=>'SystemManagerController@getSignatures',
@@ -77,40 +77,40 @@ Route::group(['prefix'=>'systemManager'],function() {
 
 //    Route::get('signaturesList','SystemManagerController@signaturesList');
 
-    Route::get('/signaturesList',[
-        'uses'=>'SystemManagerController@signaturesList',
-        'middleware' => 'roles',
-        'roles'=>['systemManager']
-    ]);
+        Route::get('/signaturesList',[
+            'uses'=>'SystemManagerController@signaturesList',
+            'middleware' => 'roles',
+            'roles'=>['systemManager']
+        ]);
 
-    Route::get('add_signature',[
-        'uses'=>'SystemManagerController@getAddSignature',
-        'middleware' => 'roles',
-        'roles'=>['systemManager']
-    ]);
-    Route::get('edit_signature/{id}',[
-        'uses'=>'SystemManagerController@getEditSignature',
-        'middleware' => 'roles',
-        'roles'=>['systemManager']
-    ]);
-    //Shiri
-    Route::post('addSignature','SystemManagerController@addSignature');                      //96/7/6
+        Route::get('add_signature',[
+            'uses'=>'SystemManagerController@getAddSignature',
+            'middleware' => 'roles',
+            'roles'=>['systemManager']
+        ]);
+        Route::get('edit_signature/{id}',[
+            'uses'=>'SystemManagerController@getEditSignature',
+            'middleware' => 'roles',
+            'roles'=>['systemManager']
+        ]);
+        //Shiri
+        Route::post('addSignature','SystemManagerController@addSignature');                      //96/7/6
 
-    Route::get('showSignature/{id}',[
-        'uses'=>'SystemManagerController@showSignature',
-        'middleware' => 'roles',
-        'roles'=>['systemManager']
-    ]);
+        Route::get('showSignature/{id}',[
+            'uses'=>'SystemManagerController@showSignature',
+            'middleware' => 'roles',
+            'roles'=>['systemManager']
+        ]);
 
-    Route::post('makeSignatureForced' , 'SystemManagerController@makeSignatureForced');      //96/7/6
-    route::post('makeSignatureUnforced' , 'SystemManagerController@makeSignatureUnforced');  //96/7/6
+        Route::post('makeSignatureForced' , 'SystemManagerController@makeSignatureForced');      //96/7/6
+        route::post('makeSignatureUnforced' , 'SystemManagerController@makeSignatureUnforced');  //96/7/6
 
-    Route::get('access_level',[
-        'uses'=>'SystemManagerController@access_levelGet',
-        'middleware' => 'roles',
-        'roles'=>['systemManager']
-    ]);
-});
+        Route::get('access_level',[
+            'uses'=>'SystemManagerController@access_levelGet',
+            'middleware' => 'roles',
+            'roles'=>['systemManager']
+        ]);
+    });
 
     Route::group(['prefix'=>'admin'],function() {
         // Product Request Management
@@ -230,13 +230,13 @@ Route::group(['prefix'=>'systemManager'],function() {
 //        Route::get('usersManagement', 'SupplyController@usersManagementGet');
         Route::get('/usersManagement',[
             'uses'=>'SupplyController@usersManagementGet',
-            'middleware' => 'roles',//meeeeeee
+            'middleware' => 'roles',
             'roles'=>['systemManager']
         ]);
 //        Route::get('usersCreate', 'SupplyController@usersCreateGet');
         Route::get('/usersCreate',[
             'uses'=>'SupplyController@usersCreateGet',
-            'middleware' => 'roles',///////meeeeeeeeee
+            'middleware' => 'roles',
             'roles'=>['systemManager']
         ]);
         Route::post('checkUnitSupervisor', 'SupplyController@checkUnitSupervisor');
