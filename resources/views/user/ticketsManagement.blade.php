@@ -7,12 +7,10 @@
                 <div class="x_title">
                     <h2>
 
-
                         @if(!empty($tickets[0]))
-                         @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id)بررسی تیکت های دریافتی @endif
-
-                         @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id)بررسی تیکت های ارسالی     @endif
-                         @endif
+                            @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id)بررسی تیکت های دریافتی @endif
+                            @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id)بررسی تیکت های ارسالی     @endif
+                        @endif
                     </h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i
@@ -40,7 +38,7 @@
                         ارسال تیکت جدید
                     </a>
                     <button id="search" type="button" class="col-md-2 btn btn-success" href="{{url('user/ticketRequest')}}" style="margin-left: 150px;">
-                            جستجو
+                        جستجو
                     </button>
 
                 </div>

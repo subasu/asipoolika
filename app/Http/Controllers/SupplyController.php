@@ -1536,7 +1536,7 @@ class SupplyController extends Controller
                     ([
                         'request_id' => $request->requestId,
                         'content' => $request->body,
-                        'title' => 'گواهی تحویل و نصب کالا',
+                        'title' => $request->title,
                         'certificate_id' => $request->certificateId
                     ]);
                     if ($formId) {
