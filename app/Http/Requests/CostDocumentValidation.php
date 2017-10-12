@@ -24,36 +24,31 @@ class CostDocumentValidation extends FormRequest
     public function rules()
     {
         return [
-                   'code'         => 'int',
-                   //'description'  => 'required',
-                   'moeinOffice[]'  => 'int',
-                   'generalPrice' => 'int',
-                   'deduction'    => 'int',
-                   'payedPrice'   => 'int',
-                   'page'         => 'int',
-                   'row'          => 'int'
+                   'code[]'         => 'numeric',
+                   //'description[]'  => 'required',
+                   'moeinOffice[]'  => 'numeric',
+                   'generalPrice[]' => 'numeric',
+                   'deduction[]'    => 'numeric',
+                   'payedPrice[]'   => 'numeric',
+                   'page[]'         => 'numeric',
+                   'row[]'          => 'numeric'
                ];
 
-        foreach($this->request->get('items') as $key => $val)
-        {
-            $rules['items.'.$key] = 'int';
-        }
 
-        return $rules;
     }
 
     public function messages()
     {
         return
             [
-                 'code.number'             => 'لطفا فیلد کد را از نوع عدد صحیح وارد نمایید',
-                 //'description.required' => 'پر کردن فیلد شرح الزامی است',
-                 'mainOffice[].int'       => 'لطفا فیلد دفتر معین را از نوع عدد صحیح وارد نمایید',
-                 'deduction.int'        => 'لطفا فیلد کسور را از نوع عدد صحیح وارد نمایید',
-                 'generalPrice.int'     => 'لطفا فیلد قیمت اصلی را از نوع عدد صحیح وارد نمایید',
-                 'payedPrice.int'       => 'لطفا فیلد هزینه پرداختی  را از نوع عدد صحیح وارد نمایید',
-                 'page.int'             => 'لطفا فیلد صفحه را از نوع عدد صحیح وارد نمایید',
-                 'row.int'              => 'لطفا فیلد ردیف را از نوع عدد صحیح وارد نمایید',
+                 'code[].numeric'             => 'لطفا فیلد کد را از نوع عدد  وارد نمایید',
+                 //'description[].required'     => 'پر کردن فیلد شرح الزامی است',
+                 'moeinOffice[].numeric'      => 'لطفا فیلد دفتر معین را از نوع عدد صحیح وارد نمایید',
+                 'deduction[].numeric'        => 'لطفا فیلد کسور را از نوع عدد صحیح وارد نمایید',
+                 'generalPrice.numeric'     => 'لطفا فیلد قیمت اصلی را از نوع عدد صحیح وارد نمایید',
+                 'payedPrice.numeric'       => 'لطفا فیلد هزینه پرداختی  را از نوع عدد صحیح وارد نمایید',
+                 'page.numeric'             => 'لطفا فیلد صفحه را از نوع عدد صحیح وارد نمایید',
+                 'row.numeric'              => 'لطفا فیلد ردیف را از نوع عدد صحیح وارد نمایید',
             ];
     }
 }

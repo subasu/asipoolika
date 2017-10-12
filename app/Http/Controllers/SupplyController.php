@@ -550,31 +550,51 @@ class SupplyController extends Controller
         //dd('hello');
         if($request->hasFile('image'))
         {
-            $jDate = $request->date;
-            if ($date = explode('/', $jDate)) {
-                $year  = $date[0];
-                $month = $date[1];
-                $day   = $date[2];
-            }
-            $gDate = $this->jalaliToGregorian($year, $month, $day);
-            $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
-            $file = $request->image;
-            $file->move(public_path(), $request->image->getClientOriginalName());
-            $path = public_path() . '\\' . $request->image->getClientOriginalName();
-            //dd($path);
-            $image = file_get_contents($path);
-            File::delete($path);
-            $fileName = base64_encode($image);
-            DB::table('workers')->insert(
-                [
-                    'card'    => $fileName,
-                    'user_id' => Auth::user()->id,
-                    'date'    => $gDate1,
-                    'name'    => $request->name,
-                    'family'  => $request->family
-                ]
-            );
-            return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
+            $extension = $request->image->getClientOriginalExtension();
+            $fileSize  = $request->image->getClientSize();
+            //  dd($fileSize);
+            if($fileSize < 150000)
+            {
+                if($extension == 'png' || $extension == 'PNG')
+                {
+                    $jDate = $request->date;
+                    if ($date = explode('/', $jDate)) {
+                        $year = $date[0];
+                        $month = $date[1];
+                        $day = $date[2];
+                    }
+                    $gDate = $this->jalaliToGregorian($year, $month, $day);
+                    $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
+                    $file = $request->image;
+                    $file->move(public_path(), $request->image->getClientOriginalName());
+                    $path = public_path() . '\\' . $request->image->getClientOriginalName();
+                    //dd($path);
+                    $image = file_get_contents($path);
+                    File::delete($path);
+                    $fileName = base64_encode($image);
+                    $q =  DB::table('workers')->insert
+                    ([
+                            'card' => $fileName,
+                            'user_id' => Auth::user()->id,
+                            'date' => $gDate1,
+                            'name' => $request->name,
+                            'family' => $request->family
+                    ]);
+                    if($q)
+                    {
+                        return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
+                    }
+
+                }
+                else
+                    {
+                        return response('پسوند فایل امضا باید از نوع png باشد');
+                    }
+            }else
+                {
+                    return response('حجم فایل امضا نباید بیش از 1مگابایت باشد');
+                }
+
         }else
         {
             return response('لطفا فایل عکس کارگری خود را انتخاب نمایید ، سپس درخواست خود را وارد نمایید');
@@ -1051,20 +1071,22 @@ class SupplyController extends Controller
     }
 
     //shiri : below  function to end ticket by admin
-    public function adminEndTicket(Request $request)
-    {
-        $end = Ticket::where('id',$request->ticketId)->update
-        ([
-            'active'  => 1
-        ]);
-        if($end)
-        {
-            return response('تیکت مورد نظر غیر فعال گردید');
-        }else
-        {
-            return response('خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید');
-        }
-    }
+
+//    public function adminEndTicket(Request $request)
+//    {
+//        $end = Ticket::where('id',$request->ticketId)->update
+//        ([
+//           'active'  => 1
+//        ]);
+//        if($end)
+//        {
+//            return response('تیکت مورد نظر غیر فعال گردید');
+//        }else
+//            {
+//                return response('خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید');
+//            }
+//    }
+
 
     public function confirmProductRequestManagementGet()
     {
@@ -1840,10 +1862,20 @@ class SupplyController extends Controller
     {
         $pageTitle = 'سند هزینه';
         $oldCostDocumentsId = CostDocument::where('request_id',$id)->value('id');
+
         if($oldCostDocumentsId > 0)
         {
+            $sumGeneralPrice = 0;
+            $sumDeduction    = 0;
+            $sumPayedPrice   = 0;
             $costDocumentsRecords = CostDocumentsRecord::where('cost_document_id',$oldCostDocumentsId)->get();
-            return view('admin.certificate.costDocumentForm',compact('costDocumentsRecords','pageTitle'));
+            foreach ($costDocumentsRecords as $costDocumentsRecord)
+            {
+                $sumGeneralPrice += $costDocumentsRecord->general_price;
+                $sumDeduction    += $costDocumentsRecord->deduction;
+                $sumPayedPrice   += $costDocumentsRecord->payed_price;
+            }
+            return view('admin.certificate.costDocumentForm',compact('costDocumentsRecords','pageTitle','sumDeduction','sumPayedPrice','sumGeneralPrice'));
         }else
             {
                 return view('admin.certificate.costDocumentForm',compact('id','pageTitle'));
@@ -1881,14 +1913,14 @@ class SupplyController extends Controller
                                 $costDocumentRecords = DB::table('cost_document_records')->insert
                                 ([
                                     'cost_document_id' => $costDocumentId,
-                                    'code'             => $request->code[$i],
-                                    'description'      => $request->description[$i],
-                                    'moein_office'     => $request->moeinOffice[$i],
-                                    'general_price'    => $request->generalPrice[$i],
-                                    'deduction'        => $request->deduction[$i],
-                                    'payed_price'      => $request->payedPrice[$i],
-                                    'page'             => $request->page[$i],
-                                    'row'              => $request->row[$i],
+                                    'code'             => trim($request->code[$i]),
+                                    'description'      => trim($request->description[$i]),
+                                    'moein_office'     => trim($request->moeinOffice[$i]),
+                                    'general_price'    => trim($request->generalPrice[$i]),
+                                    'deduction'        => trim($request->deduction[$i]),
+                                    'payed_price'      => trim($request->payedPrice[$i]),
+                                    'page'             => trim($request->page[$i]),
+                                    'row'              => trim($request->row[$i]),
                                     'created_at'       => Carbon::now(new \DateTimeZone('Asia/Tehran'))
 
                                 ]);

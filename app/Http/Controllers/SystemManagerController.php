@@ -60,25 +60,42 @@ class SystemManagerController extends Controller
                 abort(403);
             }else
             {
-                $file = $request->file;
-                $file->move(public_path(), $request->file->getClientOriginalName());
-                $path = public_path() . '\\' . $request->file->getClientOriginalName();
-                $file = file_get_contents($path);
-                File::delete($path);
-                $fileName = base64_encode($file);
-
-                $query = DB::table('signatures')->insert
-                ([
-                    'forced'     => $request->forced,
-                    'signature'  => $fileName,
-                    'user_id'    => $request->userId,
-                    'unit_id'    => $request->unitId,
-                    'created_at'  =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
-                ]);
-                if($query)
+                $extension = $request->file->getClientOriginalExtension();
+                $fileSize  = $request->file->getClientSize();
+              //  dd($fileSize);
+                if($fileSize < 150000)
                 {
-                    return response('اطلاعات  با موفقیت ثبت گردید');
-                }
+                    if($extension == 'png' || $extension == 'PNG')
+                    {
+                        $file = $request->file;
+                        $file->move(public_path(), $request->file->getClientOriginalName());
+                        $path = public_path() . '\\' . $request->file->getClientOriginalName();
+                        $file = file_get_contents($path);
+                        File::delete($path);
+                        $fileName = base64_encode($file);
+
+                        $query = DB::table('signatures')->insert
+                        ([
+                            'forced'     => $request->forced,
+                            'signature'  => $fileName,
+                            'user_id'    => $request->userId,
+                            'unit_id'    => $request->unitId,
+                            'created_at'  =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                        ]);
+                        if($query)
+                        {
+                            return response('اطلاعات  با موفقیت ثبت گردید');
+                        }
+                    }else
+                    {
+                        return response('پسوند فایل امضا باید از نوع png باشد');
+                    }
+                }else
+                    {
+                        return response('حجم فایل امضا نباید بیش از 1مگابایت باشد');
+                    }
+
+
             }
         }else
             {
