@@ -1,21 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <style>
-        .state {
-            font-family: BNazanin;
-        }
-        @font-face
-        {
-            font-family:'dotsfont';
-            src:url('public/dashboard/fonts/dotsfont.eot');
-            src:url('public/dashboard/fonts/dotsfont.eot?#iefix')  format('embedded-opentype'),
-            url('public/dashboard/fonts/dotsfont.svg#font')    format('svg'),
-            url('public/dashboard/fonts/dotsfont.woff')        format('woff'),
-            url('public/dashboard/fonts/dotsfont.ttf')         format('truetype');
-            font-weight:normal;
-            font-style:normal;
-        }
-    </style>
     <form class="login form-horizontal col-md-3 col-sm-7 col-xs-7" role="form" method="POST"
           action="{{ url('/login') }}" autocomplete="off">
         {{ csrf_field() }}

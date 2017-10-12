@@ -250,9 +250,11 @@
                             @endif
                             {{--//End User menu--}}
                             {{-- end user dashboard menu --}}
-                            <li><a href="{{url('/logout')}}" style="font-size:20px;padding:3px 0 3px 0"
-                                   class="btn btn-danger col-md-10 col-md-offset-1"><i class="fa fa-sign-out" aria-hidden="true"></i>خروج</a>
+                            <li><a style="background-color: rgba(231, 76, 60, 0.88)" href="{{url('/logout')}}"><i class="fa fa-sign-out"></i>خروج</a>
                             </li>
+                            {{--<li><a href="{{url('/logout')}}" style="font-size:20px;padding:3px 0 3px 0"--}}
+                                   {{--class="btn btn-danger col-md-10 col-md-offset-1"><i class="fa fa-sign-out" aria-hidden="true"></i>خروج</a>--}}
+                            {{--</li>--}}
                         </ul>
                     </div>
                 </div>
@@ -687,9 +689,6 @@
     $(document).ready(function () {
         $('#back').click(function () {
             window.history.back();
-        });
-        $('#forward').click(function () {
-            window.history.forward();
         });
     });
 </script>
