@@ -85,7 +85,7 @@ Route::group(['prefix'=>'systemManager'],function() {
 
     Route::get('add_signature',[
         'uses'=>'SystemManagerController@getAddSignature',
-        'middleware' => 'roles',
+//        'middleware' => 'roles',
         'roles'=>['systemManager']
     ]);
     Route::get('edit_signature/{id}',[
