@@ -6,8 +6,11 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>
+
+
                         @if(!empty($tickets[0]))
                          @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id)بررسی تیکت های دریافتی @endif
+
                          @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id)بررسی تیکت های ارسالی     @endif
                          @endif
                     </h2>
