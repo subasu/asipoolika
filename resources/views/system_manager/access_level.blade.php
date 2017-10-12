@@ -22,12 +22,11 @@
                         <form class="form-horizontal form-label-left" id="unit-send-form" method="POST" style="text-align: right;direction: rtl;font-size: 15px;">
                             {{ csrf_field() }}
                             <div class="item form-group" {{ $errors->has('title') ? ' has-error' : '' }}>
-                                <label class="control-label col-md-4 col-sm-3 col-xs-12  pull-right" for="phone"><i class="fa fa-user"></i>کاربر:
+                                <label class="control-label col-md-4 col-sm-3 col-xs-12  pull-right" for="phone"><i class="fa fa-user"></i> کاربر:
                                 </label>
                                 <label class="control-label" for="title"></i>
                                     {{$userFullName}}
                                 </label>
-
                                 @if ($errors->has('title'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('title') }}</strong>
@@ -38,11 +37,8 @@
                                 <label class="control-label col-md-4 col-sm-3 col-xs-12  pull-right" for="phone"><i class="fa fa-align-right"></i> سطح دسترسی های فعلی :
                                 </label>
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-
                                     <label class="control-label" for="phone"></i>
                                         {{$userRoles}}
-
-
                                     </label>
                                 </div>
                             </div>

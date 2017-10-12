@@ -12,6 +12,7 @@ use App\Models\RequestType;
 use App\Models\Ticket;
 use App\Models\Unit;
 use App\Models\UnitCount;
+use App\User;
 use Carbon\Carbon;
 use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
@@ -187,8 +188,17 @@ class RequestController extends Controller
             }
 
             if($requestRecord->refuse_user_id!=null)
+            {
                 $requestRecord->refuse=1;
-            else $requestRecord->refuse=0;
+                $unit_id=User::where('id',$requestRecord->refuse_user_id)->pluck('unit_id');
+                $unit=Unit::where('id',$unit_id[0])->pluck('title');
+                $requestRecord->refuseBy=$unit[0];
+            }
+            else
+            {
+                $requestRecord->refuse=0;
+                $requestRecord->refuseBy='';
+            }
 
             $requestRecord->status=$step;
 
