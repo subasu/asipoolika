@@ -39,7 +39,7 @@
                                 </label>
                                 <div class="col-md-8 col-sm-6 col-xs-12">
                                     <label class="control-label" for="phone"></i>
-                                        {{$userRoles}}
+                                        {!!  $userRoles !!}
                                     </label>
                                 </div>
                             </div>
@@ -60,7 +60,8 @@
                                     <button id="newRole" type="button" class="col-md-9 btn btn-primary">ثبت</button>
                                 </div>
                             </div>
-                            <input type="hidden" value="{{$id}}" name="userId">
+                            <input type="hidden" id="userId" value="{{$id}}" name="userId">
+                            <input type="hidden" id="token" value="{{ csrf_token() }}">
                         </form>
                     </div>
                 </div>
@@ -120,4 +121,57 @@
 
             });
         </script>
+        <script>
+            $(document).on('click','#deleteLevel',function () {
+                var roleId = $(this).attr('content');
+                var userId = $('#userId').val();
+                var token  = $('#token').val();
+                swal({
+                        title: "",
+                        text: 'آیا از پاک کردن سطح دسترسی مطمئن هستید',
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "	#5cb85c",
+                        cancelButtonText: "خیر ، منصرف شدم",
+                        confirmButtonText: "بله ",
+                        closeOnConfirm: true,
+                        closeOnCancel: true
+                    },
+                    function (isConfirm) {
+                        if (isConfirm)
+                        {
+                            $.ajax
+                            ({
+                                url: "{{url('systemManager/deleteRole')}}",
+                                type: "post",
+                                data: {'userId': userId, 'roleId': roleId, '_token': token},
+                                success: function (response) {
+                                    swal({
+                                        title: "",
+                                        text: response,
+                                        type: "info",
+                                        confirmButtonText: "بستن"
+                                    });
+                                    setInterval(function () {
+                                        window.location.reload();
+                                    }, 2000);
+                                },error:function(error)
+                                {
+                                    console.log(error);
+                                    swal({
+                                        title: "",
+                                        text: 'خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید',
+                                        type: "warning",
+                                        confirmButtonText: "بستن"
+                                    });
+
+                                }
+                            })
+                        }
+
+                    }
+                )
+            })
+        </script>
+
 @endsection

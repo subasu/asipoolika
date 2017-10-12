@@ -166,10 +166,10 @@ class SystemManagerController extends Controller
             $userFullName = $users->title .' '. $users->name .' '. $users->family;
             foreach ($users->roles as $user)
             {
-                $userRoles  .=   $user->description .'-';
+                $userRoles  .=  ' <button type="button" id="deleteLevel" class="btn btn-info btn-sm" data-toggle="tooltip" style="font-size : 95%;" title="حذف دسترسی" content="'.$user->id.'">  <span class="glyphicon glyphicon-remove-sign"></span> ' .'  ' .$user->description. '</button> '  ;
             }
-            $userRoles = strval($userRoles);
-            $userRoles = substr($userRoles,0,-1);
+//            $userRoles = strval($userRoles);
+//            $userRoles = substr($userRoles,0,-1);
         }
         return view('system_manager.access_level',compact('pageTitle','roles','userRoles','userFullName','id'));
 //        return view('comingSoon',compact('pageTitle'));
@@ -192,5 +192,17 @@ class SystemManagerController extends Controller
             {
                 return response('خطا در ثبت اطلاعات ، با بخش پشتیبانی تماس بگیرید');
             }
+    }
+
+    //
+    public function deleteRole(Request $request)
+    {
+
+        $deletedId = DB::table('user_role')->where([['user_id',$request->userId],['role_id',$request->roleId]])->value('id');
+        $delete    = DB::table('User_role')->where('id',$deletedId)->delete();
+        if($delete)
+        {
+            return response('سطح دسترسی مربوطه برای این کاربر پاک شد');
+        }
     }
 }
