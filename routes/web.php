@@ -230,13 +230,13 @@ Route::group(['prefix'=>'systemManager'],function() {
 //        Route::get('usersManagement', 'SupplyController@usersManagementGet');
         Route::get('/usersManagement',[
             'uses'=>'SupplyController@usersManagementGet',
-            'middleware' => 'roles',
+            //'middleware' => 'roles',//meeeeeee
             'roles'=>['systemManager']
         ]);
 //        Route::get('usersCreate', 'SupplyController@usersCreateGet');
         Route::get('/usersCreate',[
             'uses'=>'SupplyController@usersCreateGet',
-            'middleware' => 'roles',
+           // 'middleware' => 'roles',///////meeeeeeeeee
             'roles'=>['systemManager']
         ]);
         Route::post('checkUnitSupervisor', 'SupplyController@checkUnitSupervisor');
