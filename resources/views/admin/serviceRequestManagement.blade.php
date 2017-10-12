@@ -94,7 +94,7 @@
                                     <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                     <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                     <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                    <td><a class="btn btn-info" href="{{url('admin/serviceRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                    <td><a class="btn btn-info" target="_blank" href="{{url('admin/serviceRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
                                 @endif
                             </tr>
                         @endforeach
@@ -120,7 +120,7 @@
                                     <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                     <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                     <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                    <td class="col-md-2">@if($productRequest->active==1) پایان یافته @else درحال رسیدگی @endif</td>
+                                    <td class="col-md-2" style="padding-top: 20px;">@if($productRequest->active==1)<span style="font-size: 16px;font-weight: lighter;" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter;" class="label label-warning">در حال رسیدگی </span>@endif</td>
                                     {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                 </tr>
                             @endif
@@ -137,7 +137,8 @@
                                     <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
                                     <td class="col-md-2" style="font-size: 25px;">
                                         {{--<a href="" class="btn btn-danger">صدور صورتجلسه تحویل و نصب</a>--}}
-                                        <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-10  @if($productRequest->accept_count==0) disabled @endif"> صدور گواهی</a>
+                                        <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-10  @if($productRequest->accept_count==0 or $productRequest->supplier_id==null) disabled @endif"> صدور گواهی</a>
+
                                         <a href="{{url('admin/printProductRequest/'.$productRequest->id)}}" class="btn btn-info col-md-10"> چاپ درخواست </a>
                                         @if($productRequest->supplier_id==null)
                                             <a href="{{url('admin/impart/'.$productRequest->id)}}" class="btn btn-danger col-md-10"> ابلاغ به کارپرداز</a>

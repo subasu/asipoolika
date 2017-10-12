@@ -57,6 +57,7 @@ return [
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => 'supplies',
+//            'database' => 'test',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',

@@ -1,7 +1,4 @@
 @extends('layouts.adminLayout')
-@section('title')
-    ایجاد واحد
-@endsection
 @section('content')
     <div class="clearfix"></div>
     <div class="row">
@@ -63,7 +60,7 @@
                             <div class="ln_solid"></div>
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <button id="unit-send" type="button" class="col-md-12 btn btn-primary">ثبت</button>
+                                    <button id="unit-send" type="button" class="col-md-9 btn btn-primary">ثبت</button>
                                 </div>
                             </div>
                         </form>

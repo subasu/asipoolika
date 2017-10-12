@@ -45,11 +45,7 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            {{--<div class="alert alert-info col-md-12 col-sm-12 col-xs-12" style="direction:rtl;font-size:17px;color:white;">تعداد درخواست ها :  {{$productRequests->count()}} عدد--}}
-
-            {{--</div>--}}
             <div class="x_content">
-                {{--<form id="serviceDetailForm">--}}
                 <table style="direction:rtl;text-align: center;" id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                     @if(!empty($pageName))
                         <thead>
@@ -87,8 +83,10 @@
                                 <td class="info col-md-2">{{$request->request_record_count}}</td>
                                 <td class="success col-md-2">{{$request->request_record_count_accept}}</td>
                                 <td class="danger col-md-2">{{$request->request_record_count_refused}}</td>
+
                                 <td style="padding-top: 20px;">@if($request->active)<span class="label label-success" style="font-size:15px;"> انجام شده </span>@else<span class="label label-warning" style="font-size:15px;"> در حال رسیدگی </span>@endif</td>
-                                <td><a class="btn btn-info" href="{{url('user/myRequestRecords/'.$request->id)}}">جزئیات بیشتر</a>
+                                <td><a class="btn btn-info" target="_blank" href="{{url('user/myRequestRecords/'.$request->id)}}">جزئیات بیشتر</a>
+
                             </tr>
                         @endforeach
                     @elseif($pageName=='myServiceRequests')
@@ -101,8 +99,8 @@
                                 <td class="info col-md-2">{{$request->request_record_count}}</td>
                                 <td class="success col-md-2">{{$request->request_record_count_accept}}</td>
                                 <td class="danger col-md-2">{{$request->request_record_count_refused}}</td>
-                                <td style="padding-top: 20px;">@if($request->active)<span class="label label-success" style="font-size:15px;"> انجام شده </span>@else<span class="label label-warning" style="font-size:15px;"> در حال رسیدگی </span>@endif</td>
-                                <td><a class="btn btn-info" href="{{url('user/myRequestRecords/'.$request->id)}}">جزئیات بیشتر</a>
+                                <td style="padding-top: 20px;">@if($request->active)<span class="label label-success" style="font-size:15px;font-weight: lighter"> انجام شده </span>@else<span class="label label-warning" style="font-size:15px;font-weight: lighter"> در حال رسیدگی </span>@endif</td>
+                                <td><a class="btn btn-info col-md-12" href="{{url('user/myRequestRecords/'.$request->id)}}">جزئیات بیشتر</a>
                             </tr>
                         @endforeach
                     @elseif($pageName=='acceptProductRequestManagement')
@@ -115,7 +113,7 @@
                                     <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                     <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                     <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                    <td class="col-md-2">@if($productRequest->active==1) پایان یافته @else درحال رسیدگی @endif</td>
+                                    <td class="col-md-2">@if($productRequest->active==1)<span class="label label-success" style="font-size: 16px;font-weight: lighter"> پایان یافته </span>@else<span class="label label-warning" style="font-size: 16px;font-weight: lighter">در حال رسیدگی</span>@endif</td>
                                     {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
                                 </tr>
                             @endif
@@ -150,7 +148,6 @@
                     @endif
                     </tbody>
                 </table>
-                {{--</form>--}}
             </div>
         </div>
     </div>
