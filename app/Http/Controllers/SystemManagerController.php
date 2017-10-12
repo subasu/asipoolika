@@ -157,6 +157,7 @@ class SystemManagerController extends Controller
         $pageTitle='تعیین سطح دسترسی';
         $forbiddenRoles = DB::table('user_role')->where('user_id',$id)->pluck('role_id');
         $roles=Role::whereNotIn('id',$forbiddenRoles)->get();
+        //dd($roles);
         $users=User::find($id);
         //dd($users);
         $userRoles = '';
