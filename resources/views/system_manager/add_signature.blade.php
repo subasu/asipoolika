@@ -201,6 +201,9 @@
                                     type: "info",
                                     confirmButtonText: "بستن"
                                 });
+                                setInterval(function () {
+                                    window.location.reload();
+                                }, 2000);
                             },error:function(error)
                             {
                                 swal({
