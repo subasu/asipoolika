@@ -155,7 +155,7 @@
                                             @endif
                                                 <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-5  pull-right">مشاهده  گواهی ها</a>
                                                 <a href="{{url('admin/printFactors/'.$productRequest->id)}}" class="btn btn-sample col-md-5  pull-right">چاپ خلاصه تنظیمی</a>
-                                                <a href="{{url('admin/costDocumentForm/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right">سند هزینه</a>
+                                                <a href="{{url('admin/costDocumentForm/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right">سند هزینه</a>
                                         </td>
                                     </tr>
                                         @endif
