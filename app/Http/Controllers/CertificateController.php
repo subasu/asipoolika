@@ -487,7 +487,6 @@ class CertificateController extends Controller
                 if($user_unit_id[0]==4)
                     $step=5;
 
-
             }
             else
             {
