@@ -131,7 +131,7 @@
         <tr>
             <td class="col-md-2">@if(strlen($receiverSignature) > 25)<img style="height: 100px; width: 100px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
             <td class="col-md-2"><img style="height: 100px; width: 100px;" src="{{$unitSupervisorSignature}}"></td>
-            <td class="col-md-2">@if(strlen($supplierSignature) > 25)<img src="{{$supplierSignature}}"> @endif @if(strlen($supplierSignature) < 25)امضا ندارد @endif</td>
+            <td class="col-md-2">@if(strlen($supplierSignature) > 25)<img style="height: 100px; width: 100px;" src="{{$supplierSignature}}"> @endif @if(strlen($supplierSignature) < 25)امضا ندارد @endif</td>
             <td class="col-md-2"><img style="height: 100px; width: 100px;" src="{{$bossSignature}}"></td>
         </tr>
         </tbody>
