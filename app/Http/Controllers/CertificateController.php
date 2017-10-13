@@ -180,6 +180,12 @@ class CertificateController extends Controller
             case 'boss':
                 $certificate_id = CertificateRecord::where('step', 4)->pluck('certificate_id');
                 $certificates = Certificate::whereIn('id', $certificate_id)->get();
+                //as a unit employee
+                $request_id = RequestRecord::where('receiver_id', $user->id)->pluck('request_id');
+                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                $certificate_records = CertificateRecord::where('step', 1)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
+                $certificates2 = Certificate::whereIn('id', $certificate_records)->get();
+                $certificates=$certificates->merge($certificates2);
                 break;
             case 'unit_supervisor':
                 //bring certificates as a unit supervisor
@@ -368,6 +374,11 @@ class CertificateController extends Controller
                 break;
             case 'boss':
                 $certificateRecords = CertificateRecord::where([['step', 4],['certificate_id',$id]])->get();
+                //as unit employee
+                $request_id = RequestRecord::where('receiver_id', $user->id)->pluck('request_id');
+                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                $certificateRecords2 = CertificateRecord::where([['step', 1],['certificate_id',$id]])->whereIn('certificate_id', $certificate_id)->get();
+                $certificateRecords=$certificateRecords->merge($certificateRecords2);
                 break;
             case 'unit_supervisor':
                 //bring certificates as a unit supervisor
@@ -502,6 +513,11 @@ class CertificateController extends Controller
                 $step=5;
                 $active=1;
                 $me='من رئیسم';
+                $request_record_id=CertificateRecord::where('id',$request->certificate_record_id)->pluck('request_record_id');
+                //چه کسی تحویل گیرنده بوده
+                $receiver_id=RequestRecord::where('id',$request_record_id)->pluck('receiver_id');
+                if($user->id==$receiver_id[0])
+                    $step=3;
             }
             else
             {

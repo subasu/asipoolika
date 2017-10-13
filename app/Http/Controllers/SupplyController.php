@@ -1678,7 +1678,10 @@ class SupplyController extends Controller
                 break;
             case 'ریاست':
                 $request=Request2::where('id',$requestId)->get();
-                if($request[0]->unit->title=='تدارکات')
+                $unit_id=$request[0]->unit_id;
+                $user_id=User::where([['is_supervisor',1],['unit_id',$unit_id]])->pluck('id');
+//                return response($user_id);
+                if($request[0]->unit->title=='تدارکات' or $user_id[0]==$request[0]->user_id)
                 {
                     $accept=0;
                     $step=6;
@@ -1698,8 +1701,12 @@ class SupplyController extends Controller
         if($mine==1)
         {
             $step_record=RequestRecord::where('id',$id)->pluck('step');
-            if($step_record[0]==5)
+            $request_id=RequestRecord::where('id',$id)->pluck('request_id');
+            $unit_id=Request2::where('id',$request_id[0])->pluck('unit_id');
+            if($step_record[0]==5 and $unit_id[0]!=12)
                 $step=6;
+            elseif($step_record[0]==5 and $unit_id[0]==12)
+                $step=7;
             else $step=$step_record[0]++;
         }
         //این درخواست توسط واحد من درج نشده است
