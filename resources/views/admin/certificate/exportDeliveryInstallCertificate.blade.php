@@ -123,16 +123,16 @@
             <td class="col-md-3">{{number_format($sum)}}</td>
         </tr>
         <tr>
-            <th class="col-md-3">تحویل گیرنده:   {{$receiverFullName}}</th>
-            <th class="col-md-3"> مسئول واحد : {{$unitSupervisorFullName}} </th>
-            <th class="col-md-3">کارپرداز :{{$supplierFullName}}</th>
-            <th class="col-md-3">  رئیس واحد : {{$bossFullName}} </th>
+            <th class="col-md-2">تحویل گیرنده:   {{$receiverFullName}}</th>
+            <th class="col-md-2"> مسئول واحد : {{$unitSupervisorFullName}} </th>
+            <th class="col-md-2">کارپرداز :{{$supplierFullName}}</th>
+            <th class="col-md-2">  رئیس واحد : {{$bossFullName}} </th>
         </tr>
         <tr>
-            <td class="col-md-3">@if(strlen($receiverSignature) > 25)<img style="height: 100px; width: 100px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
-            <td class="col-md-3"><img style="height: 100px; width: 100px;" src="{{$unitSupervisorSignature}}"></td>
-            <td class="col-md-3">@if(strlen($supplierSignature) > 25)<img src="{{$supplierSignature}}"> @endif @if(strlen($supplierSignature) < 25)امضا ندارد @endif</td>
-            <td class="col-md-3"><img style="height: 100px; width: 100px;" src="{{$bossSignature}}"></td>
+            <td class="col-md-2">@if(strlen($receiverSignature) > 25)<img style="height: 100px; width: 100px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
+            <td class="col-md-2"><img style="height: 100px; width: 100px;" src="{{$unitSupervisorSignature}}"></td>
+            <td class="col-md-2">@if(strlen($supplierSignature) > 25)<img style="height: 100px; width: 100px;" src="{{$supplierSignature}}"> @endif @if(strlen($supplierSignature) < 25)امضا ندارد @endif</td>
+            <td class="col-md-2"><img style="height: 100px; width: 100px;" src="{{$bossSignature}}"></td>
         </tr>
         </tbody>
 

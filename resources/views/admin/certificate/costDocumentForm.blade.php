@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
+
+
+
     <title>{{$pageTitle}}</title>
     <link href="{{ url('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{URL::asset('public/css/sweetalert.css')}}">
@@ -16,14 +21,14 @@
             $('.change tr:first').after
             (
                 "<tr>"+
-                "<td colspan='1' class='col-md-1'><input type='number' class='form-control required'  name='code[]' placeholder='کد هزینه'></td>"+
-                "<td colspan='3' class='col-md-3'><input type='text'   class='form-control required'  name='description[]' placeholder='شرح'></td>"+
-                "<td colspan='2' class='col-md-2'><input type='number' class='form-control required'  name='moeinOffice[]' placeholder='دفتر معین'></td>"+
-                "<td colspan='2' class='col-md-2'><input type='number' class='form-control required'  name='generalPrice[]' placeholder='اصل مبلغ'></td>"+
-                "<td colspan='1' class='col-md-1'><input type='number' class='form-control required'  name='deduction[]' placeholder='کسور'></td>"+
-                "<td colspan='1' class='col-md-1'><input type='number' class='form-control required'  name='payedPrice[]' placeholder='مبلغ پرداختی'></td>"+
-                "<td colspan='1' class='col-md-1'><input type='number' class='form-control required'  name='page[]' placeholder='صفحه'></td>"+
-                "<td colspan='1' class='col-md-1'><input type='number' class='form-control required'  name='row[]' placeholder='ردیف'></td>"+
+                "<td colspan='1' class='col-md-1'><input type='number'   style='width: 70px !important; border-color: #0e0e0e;' class='form-control required'  name='code[]'></td>"+
+                "<td colspan='3' class='col-md-3'><input type='text'     style='width: 100px; border-color: #0e0e0e;' class='form-control required'  name='description[]' ></td>"+
+                "<td colspan='2' class='col-md-2'><input type='number'   style='width: 65px !important; border-color: #0e0e0e;' class='form-control required'  name='moeinOffice[]' ></td>"+
+                "<td colspan='2' class='col-md-2'><input type='number'  style='width: 90px !important; border-color: #0e0e0e;' class='form-control required'  name='generalPrice[]' ></td>"+
+                "<td colspan='1' class='col-md-1'><input type='number'  style='width: 90px !important; border-color: #0e0e0e;' class='form-control required'  name='deduction[]' ></td>"+
+                "<td colspan='1' class='col-md-1'><input type='number'  style='width: 90px !important; border-color: #0e0e0e;' class='form-control required'  name='payedPrice[]'></td>"+
+                "<td colspan='1' class='col-md-1'><input type='number'   style='width: 65px !important; border-color: #0e0e0e;' class='form-control required'  name='page[]' ></td>"+
+                "<td colspan='1' class='col-md-1'><input type='number'   style='width: 65px !important; border-color: #0e0e0e;' class='form-control required'  name='row[]' ></td>"+
                 "<td colspan='1' class='col-md-1'><a class='glyphicon glyphicon-remove-sign' data-toggle='tooltip' title='حذف' style='font-size:18px;'></td>"+
                 "</tr>"
 
@@ -142,7 +147,7 @@
         }
     </style>
 </head>
-@if(!empty($id)))
+@if(!empty($id))
 
 <body  id="body">
 
