@@ -1885,7 +1885,7 @@ class SupplyController extends Controller
             return view('admin.certificate.costDocumentForm',compact('costDocumentsRecords','pageTitle','sumDeduction','sumPayedPrice','sumGeneralPrice'));
         }else
             {
-                return view('admin.certificate.costDocumentForm',compact('id','pageTitle'));
+                return view('admin.costDocumentRegister',compact('id','pageTitle'));
             }
 
     }
