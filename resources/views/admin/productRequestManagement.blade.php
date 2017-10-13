@@ -49,6 +49,9 @@
 
                     {{--</div>--}}
                     <div class="x_content">
+                        @if($pageName=='confirmProductRequest')
+                            <a href="{{url('admin/confirmProductRequestManagement')}}" class="btn btn-danger col-md-12"><i class="fa fa-refresh"></i> بروزرسانی درخواست ها</a>
+                            @endif
                         {{--<form id="serviceDetailForm">--}}
                         <table style="direction:rtl;text-align: center;" id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                             @if(!empty($pageName))
@@ -154,7 +157,7 @@
                                                 <a  class="btn btn-success disabled col-md-5 pull-right">ابلاغ شده</a>
                                             @endif
                                                 <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-5  pull-right">مشاهده  گواهی ها</a>
-                                                <a href="{{url('admin/printFactors/'.$productRequest->id)}}" class="btn btn-sample col-md-5  pull-right">چاپ خلاصه تنظیمی</a>
+                                                <a href="{{url('admin/printFactors/'.$productRequest->id)}}" class="btn btn-default  col-md-5  pull-right"> چاپ خلاصه تنظیمی <i class="fa fa-print"></i></a>
                                                 <a href="{{url('admin/costDocumentForm/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right">سند هزینه</a>
                                         </td>
                                     </tr>
