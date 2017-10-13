@@ -75,7 +75,7 @@
                             <td>{{$requestRecord->description}}</td>
                             <td>@if($requestRecord->refuse==0)
                                 {{$requestRecord->status}}
-                                @else <span class="label label-danger" data-toggle="tooltip" data-placement="top" title="علت رد شدن : {{$requestRecord->why_not}}"> رد شده</span>
+                                @else <span style="font-size:15px;" class="label label-danger"> رد شده توسط واحد {{$requestRecord->refuseBy}} </span> <a style="margin-right: 10px;cursor: pointer" data-toggle="tooltip" data-placement="top" title="علت رد شدن : {{$requestRecord->why_not}}">چرا؟</a>
                                 @endif
                             </td>
                         </tr>

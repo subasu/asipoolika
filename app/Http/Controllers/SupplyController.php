@@ -1106,7 +1106,6 @@ class SupplyController extends Controller
                 ]);
                 $productRequest->msg='Yes';
             }
-
             else
                 $productRequest->msg='No';
             $productRequest->all_count=$all_count;
@@ -1678,8 +1677,16 @@ class SupplyController extends Controller
                 $step=4;
                 break;
             case 'ریاست':
-                $accept=0;
-                $step=5;
+                $request=Request2::where('id',$requestId)->get();
+                if($request[0]->unit->title=='تدارکات')
+                {
+                    $accept=0;
+                    $step=6;
+                }
+                else{
+                    $accept=0;
+                    $step=5;
+                }
                 break;
             case 'امور مالی':
                 $accept=1;

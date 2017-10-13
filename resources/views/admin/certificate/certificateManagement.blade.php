@@ -71,6 +71,7 @@
                                 {{--<th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>--}}
                                 {{--<th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>--}}
                                 {{--<th class="col-md-2" style="text-align: center ;">رد شده</th>--}}
+                                {{--<th class="col-md-1" style="text-align: center ;">مشاهده</th>--}}
                                 <th class="col-md-1" style="text-align: center ;">وضعیت</th>
                                 {{--<th class="col-md-2" style="text-align: center ;">مرحله</th>--}}
                                 {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
@@ -98,7 +99,7 @@
                                     <td class="col-md-2">{{$certificate->request_type}}</td>
                                     {{--<td class="info col-md-2">{{$certificate->certificate_record_count}}</td>--}}
                                     {{--<td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>--}}
-                                    <td><a class="btn btn-info col-md-12" href="{{url('admin/productCertificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
+                                    <td><a class="btn btn-info col-md-12" target="_blank" href="{{url('admin/productCertificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
                             </tr>
                             @endif
                         @endforeach
@@ -113,7 +114,7 @@
                                         <td class="col-md-2">{{$certificate->request_type}}</td>
                                         {{--<td class="info col-md-2">{{$certificate->certificate_record_count}}</td>--}}
                                         {{--<td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>--}}
-                                        <td><a class="btn btn-info col-md-12" href="{{url('admin/serviceCertificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
+                                        <td><a class="btn btn-info col-md-12" target="_blank" href="{{url('admin/serviceCertificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
                                     </tr>
                                 @endif
                             @endforeach
@@ -128,7 +129,8 @@
                                     <td class="col-md-2">{{$certificate->request_type}}</td>
                                     {{--<td class="info col-md-2">{{$certificate->certificate_record_count}}</td>--}}
                                     {{--<td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>--}}
-                                    <td>@if($certificate->active==1)<span style="font-size: 16px;font-weight: lighter" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter" class="label label-warning">در حال رسیدگی </span>@endif</td>
+{{--                                    <td><a href="{{url('admin/productCertificateRecords/'.$certificate->id)}}" target="_blank" class="btn btn-info"><i class="fa fa-search"></i> جزئیات بیشتر</a></td>--}}
+                                    <td style="padding-top:13px;">@if($certificate->active==1)<span style="font-size: 16px;font-weight: lighter" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter" class="label label-warning">در حال رسیدگی </span>@endif</td>
                                 </tr>
                             {{--@endif--}}
                         @endforeach
