@@ -80,6 +80,7 @@ Route::group(['prefix'=>'systemManager'],function() {
 //    Route::get('signaturesList','SystemManagerController@signaturesList');
 
     Route::post('newRole','SystemManagerController@newRole');
+    Route::post('deleteRole','SystemManagerController@deleteRole');
 
     Route::get('/signaturesList',[
         'uses'=>'SystemManagerController@signaturesList',
