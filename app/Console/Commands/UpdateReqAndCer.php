@@ -53,9 +53,11 @@ class UpdateReqAndCer extends Command
             $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
             if($all_count==($accept_count+$refuse_count))
             {
-                DB::table('requests')->where('id',$productRequest->id)->update([
-                    'active'=>1
-                ]);
+                do{
+                    $q=DB::table('requests')->where('id',$productRequest->id)->update([
+                        'active'=>1
+                    ]);
+                }while($q==null);
                 $productRequest->msg='Yes';
                     return redirect('admin/confirmProductRequestManagement');
             }
@@ -73,10 +75,11 @@ class UpdateReqAndCer extends Command
                 $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
                 if($all_c_count==$finished_c_count)
                 {
-                    Certificate::where('id',$certificate->id)->update([
-                        'active'=>1
-                    ]);
-                    return redirect('admin/confirmProductRequestManagement');
+                    do{
+                        $q=Certificate::where('id',$certificate->id)->update([
+                            'active'=>1
+                        ]);
+                    }while($q==null);
                 }
             }
         }
@@ -90,11 +93,13 @@ class UpdateReqAndCer extends Command
             $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
             if($all_count==($accept_count+$refuse_count))
             {
-                DB::table('requests')->where('id',$productRequest->id)->update([
-                    'active'=>1
-                ]);
+                do{
+                    $q=DB::table('requests')->where('id',$productRequest->id)->update([
+                        'active'=>1
+                    ]);
+                }while ($q==null);
                 $productRequest->msg='Yes';
-                    return redirect('admin/confirmServiceRequestManagement');
+
             }
 
             else
@@ -111,10 +116,11 @@ class UpdateReqAndCer extends Command
                 $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
                 if($all_c_count==$finished_c_count)
                 {
-                    Certificate::where('id',$certificate->id)->update([
-                        'active'=>1
-                    ]);
-                    return redirect('admin/confirmServiceRequestManagement');
+                    do{
+                        $q=Certificate::where('id',$certificate->id)->update([
+                            'active'=>1
+                        ]);
+                    }while ($q==null);
                 }
             }
         }

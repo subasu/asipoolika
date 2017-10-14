@@ -220,12 +220,14 @@
                                     </li>
                                 </ul>
                            </li>
-                            <li><a><i class="fa fa-odnoklassniki"></i>امور روزانه کار پرداز<span class="fa fa-chevron-down"></span></a>
+                            @if($user->unit_id==6 and $user->is_supervisor!=1)
+                            <li><a><i class="fa fa-odnoklassniki"></i>امور روزانه کارپرداز<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/dailyWorks')}}">امور روزانه</a>
                                     </li>
                                 </ul>
                             </li>
+                            @endif
                             @if(($user->is_supervisor==1 or $user->is_supervisor==0) and $user->unit_id!=3)
                             <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
@@ -303,109 +305,6 @@
                         <a id="back" class="btn btn-info">بازگشت به صفحه قبل</a>
                     </div>
 
-                    {{--<ul class="nav navbar-nav navbar-right">--}}
-                    {{--<li class="">--}}
-                    {{--<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"--}}
-                    {{--aria-expanded="false">--}}
-                    {{--<img src="{{url('public/dashboard/images/img.png')}}" alt=""> {{$user_info->name}} {{$user_info->family}}--}}
-                    {{--<span class=" fa fa-angle-down"></span>--}}
-                    {{--</a>--}}
-                    {{--<ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">--}}
-                    {{--<li><a href="javascript:;"> مشخصات کاربری من</a>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                    {{--<a href="javascript:;">راهنما</a>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                    {{--<a href="javascript:;">--}}
-                    {{--<span class="badge bg-red pull-right">50%</span>--}}
-                    {{--<span>تنظیمات</span>--}}
-                    {{--</a>--}}
-                    {{--</li>--}}
-                    {{--<li><a href="{{url('/logout')}}"><i class="fa fa-sign-out pull-right"></i> خروج</a>--}}
-                    {{--</li>--}}
-                    {{--</ul>--}}
-                    {{--</li>--}}
-
-                    {{--<li role="presentation" class="dropdown">--}}
-                    {{--<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"--}}
-                    {{--aria-expanded="false">--}}
-                    {{--<i class="fa fa-envelope-o"></i>--}}
-                    {{--<span class="badge bg-green">6</span>--}}
-                    {{--</a>--}}
-                    {{--<ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">--}}
-                    {{--<li>--}}
-                    {{--<a>--}}
-                    {{--<span class="image">--}}
-                    {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
-                    {{--alt="Profile Image"/>--}}
-                    {{--</span>--}}
-                    {{--<span>--}}
-                    {{--<span>John Smith</span>--}}
-                    {{--<span class="time">3 mins ago</span>--}}
-                    {{--</span>--}}
-                    {{--<span class="message">--}}
-                    {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                    {{--</span>--}}
-                    {{--</a>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                    {{--<a>--}}
-                    {{--<span class="image">--}}
-                    {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
-                    {{--alt="Profile Image"/>--}}
-                    {{--</span>--}}
-                    {{--<span>--}}
-                    {{--<span>John Smith</span>--}}
-                    {{--<span class="time">3 mins ago</span>--}}
-                    {{--</span>--}}
-                    {{--<span class="message">--}}
-                    {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                    {{--</span>--}}
-                    {{--</a>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                    {{--<a>--}}
-                    {{--<span class="image">--}}
-                    {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
-                    {{--alt="Profile Image"/>--}}
-                    {{--</span>--}}
-                    {{--<span>--}}
-                    {{--<span>John Smith</span>--}}
-                    {{--<span class="time">3 mins ago</span>--}}
-                    {{--</span>--}}
-                    {{--<span class="message">--}}
-                    {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                    {{--</span>--}}
-                    {{--</a>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                    {{--<a>--}}
-                    {{--<span class="image">--}}
-                    {{--<img src="{{URL::asset('public/dashboard/images/img.png')}}"--}}
-                    {{--alt="Profile Image"/>--}}
-                    {{--</span>--}}
-                    {{--<span>--}}
-                    {{--<span>John Smith</span>--}}
-                    {{--<span class="time">3 mins ago</span>--}}
-                    {{--</span>--}}
-                    {{--<span class="message">--}}
-                    {{--Film festivals used to be do-or-die moments for movie makers. They were where...--}}
-                    {{--</span>--}}
-                    {{--</a>--}}
-                    {{--</li>--}}
-                    {{--<li>--}}
-                    {{--<div class="text-center">--}}
-                    {{--<a href="inbox.html">--}}
-                    {{--<strong>See All Alerts</strong>--}}
-                    {{--<i class="fa fa-angle-right"></i>--}}
-                    {{--</a>--}}
-                    {{--</div>--}}
-                    {{--</li>--}}
-                    {{--</ul>--}}
-                    {{--</li>--}}
-
-                    {{--</ul>--}}
                 </nav>
             </div>
 
