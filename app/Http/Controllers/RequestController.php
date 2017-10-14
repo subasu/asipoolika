@@ -76,7 +76,7 @@ class RequestController extends Controller
     {
         $pageTitle='مدیریت درخواست های من';
         $pageName='myProductRequests';
-        $requests=Request2::where([['user_id',Auth::user()->id],['request_type_id',3]])->get();
+        $requests=Request2::where([['user_id',Auth::user()->id],['request_type_id',3]])->orderBy('created_at','desc')->get();
         foreach($requests as $request)
         {
             //undecided records
@@ -137,7 +137,7 @@ class RequestController extends Controller
     {
         $pageTitle='مدیریت درخواست های من';
         $pageName='myServiceRequests';
-        $requests=Request2::where([['user_id',Auth::user()->id],['request_type_id',2]])->get();
+        $requests=Request2::where([['user_id',Auth::user()->id],['request_type_id',2]])->orderBy('created_at','desc')->get();
         foreach($requests as $request)
         {
             //undecided records

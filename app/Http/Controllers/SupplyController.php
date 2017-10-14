@@ -887,7 +887,7 @@ class SupplyController extends Controller
             default: $step=2;$step2=1;
         }
         $requestRecords=RequestRecord::where([['step','>=',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
-        $serviceRequests=Request2::where('request_type_id',2)->whereIn('id',$requestRecords)->get();
+        $serviceRequests=Request2::where('request_type_id',2)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
 //به عنوان مسئول واحد
         $service_request_id=Request2::where([['unit_id',$user->unit_id],['request_type_id',2]])->pluck('id');
         $requestRecords2=RequestRecord::where([['step','>=',6]],['active',1],['refuse_user_id',null])->whereIn('request_id',$service_request_id)->pluck('request_id');
@@ -996,7 +996,7 @@ class SupplyController extends Controller
             default: $step=2;$step2=1;
         }
         $requestRecords=RequestRecord::where([['step','>=',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
-        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
+        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
         foreach($productRequests as $productRequest)
         {
             //undecided records
@@ -1705,7 +1705,10 @@ class SupplyController extends Controller
             if($step_record[0]==5 and $unit_id[0]!=12)
                 $step=6;
             elseif($step_record[0]==5 and $unit_id[0]==12)
+            {
                 $step=7;
+                $accept=1;
+            }
             else $step=$step_record[0]++;
         }
         //این درخواست توسط واحد من درج نشده است
