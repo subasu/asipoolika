@@ -231,7 +231,8 @@
                                     </li>
                                 </ul>
                             </li>
-
+                            @endif
+                            @if( ($user->is_supervisor == 1 and $user->unit_id !=3 and $user->unit_id !=6 ) or $user->is_supervisor == 0)
                                 <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="{{url('user/ticketRequest')}}">ارسال تیکت</a>
@@ -240,7 +241,7 @@
                                         </li>
                                     </ul>
                                 </li>
-
+                            @endif
                                 {{--<li><a><i class="fa fa-envelope"></i> صندوق پیام<span class="fa fa-chevron-down"></span></a>--}}
                                 {{--<ul class="nav child_menu" style="display: none">--}}
                                 {{--<li><a href="#">صندوق پیام</a>--}}
@@ -253,7 +254,7 @@
                                 {{--</li>--}}
                                 {{--</ul>--}}
                                 {{--</li>--}}
-                            @endif
+
                             {{--//End User menu--}}
                             {{-- end user dashboard menu --}}
                            {{--<a class="btn btn-default col-md-12" style="color:white;" href="{{url('/logout')}}">خروج</a>--}}
