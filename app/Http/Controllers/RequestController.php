@@ -346,7 +346,7 @@ class RequestController extends Controller
 
         switch ($id) {
             case 1 :
-                $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where('user_id', Auth::user()->id)->orderBy('date')->get();
+                $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where('sender_user_id', Auth::user()->id)->orderBy('date')->get();
                 break;
             case 2 :
                 $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where('unit_id', Auth::user()->unit_id)->orderBy('date')->get();
@@ -354,7 +354,8 @@ class RequestController extends Controller
         }
         foreach ($data as $date) {
             $date->date = $this->toPersian($date->date);
-            $date->unit_name = $date->unit->title;
+            $date->unit = $date->user->unit->title;
+            $date->user      = $date->user;
         }
        // dd($data);
         return response()->json(compact('data'));
@@ -418,5 +419,22 @@ class RequestController extends Controller
         {
             return response('خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید');
         }
+    }
+
+    //
+    public function dailyWorks()
+    {
+        $pageTitle = 'امور روزانه کار پرداز';
+        $supplierId = Auth::user()->id;
+        $requests = Request2::where('supplier_id',$supplierId)->get();
+        return view('user.dailyWorks',compact('requests','pageTitle'));
+    }
+
+    //
+    public function dailyWorksDetails($id)
+    {
+        $pageTitle = 'مشاهده جزییات امور روزانه';
+        $requestRecords = RequestRecord::where([['request_id',$id],['accept',1],['step',8]])->get();
+        return view('user.dailyWorksDetails',compact('pageTitle','requestRecords'));
     }
 }

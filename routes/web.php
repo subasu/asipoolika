@@ -67,6 +67,9 @@ Route::group(['prefix'=>'user'],function() {
     Route::post('userSendMessage','RequestController@userSendMessage');
     Route::post('endTicket' , 'RequestController@endTicket');
 
+    Route::get('dailyWorks','RequestController@dailyWorks');
+    Route::get('dailyWorksDetails/{id}','RequestController@dailyWorksDetails');
+
 });
 
 Route::group(['prefix'=>'systemManager'],function() {

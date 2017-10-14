@@ -8,8 +8,9 @@
                     <h2>
 
                         @if(!empty($tickets[0]))
-                            @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id)بررسی تیکت های دریافتی @endif
-                            @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id)بررسی تیکت های ارسالی     @endif
+                            @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1 )بررسی تیکت های دریافتی @endif
+                            @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1) بررسی تیکت های ارسالی     @endif
+                            @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 0) بررسی تیکت های ارسالی     @endif
                         @endif
                     </h2>
                     <ul class="nav navbar-right panel_toolbox">
@@ -37,9 +38,25 @@
                                 class="fa fa-user-plus"></i>
                         ارسال تیکت جدید
                     </a>
-                    <button id="search" type="button" class="col-md-2 btn btn-success" href="{{url('user/ticketRequest')}}" style="margin-left: 150px;">
-                        جستجو
-                    </button>
+                    @if(!empty($tickets[0]))
+                        @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1)
+                            <button id="search" content="2" type="button" class="col-md-2 btn btn-success"  style="margin-left: 150px;">
+                                جستجو
+                            </button>
+                        @endif
+                        @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1)
+                                <button id="search" content="1" type="button" class="col-md-2 btn btn-success"  style="margin-left: 150px;">
+                                    جستجو
+                                </button>
+                        @endif
+                            @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 0)
+                                <button id="search" content="1" type="button" class="col-md-2 btn btn-success"  style="margin-left: 150px;">
+                                    جستجو
+                                </button>
+                            @endif
+
+                    @endif
+
 
                 </div>
                 <div class="x_content">
@@ -107,7 +124,7 @@
                 var date2 = $('#date2').val();
 
                 var token=$('#token').val();
-
+                var id = $(this).attr('content');
                 // alert(name);
 
 //            alert(date1);
@@ -120,7 +137,7 @@
                 $.ajax
                 ({
 
-                    url:"{{Url('user/searchOnDate')}}/{{1}}",
+                    url:"{{Url('user/searchOnDate')}}/"+id,
                     type:'post',
                     dataType:'json',
                     data:{'date1':date1,'date2':date2,'_token':token},
@@ -199,7 +216,8 @@
 
                                         "<tr   class='unit'>" +
                                         "<td   id='date'>" + value.id+ "</td>" +
-                                        "<td   id='date'>" + value.unit.title + "</td>" +
+                                        "<td   id='date'>" + value.user.unit.title + "</td>" +
+                                        "<td   id='date'>" + value.user.title+ ' '+value.user.name+ ' ' +value.user.family+ "</td>" +
                                         "<td   id='date'>" + value.title + "</td>" +
                                         "<td   id='date'>" + value.date + "</td>" +
                                         "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-warning' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>در حال بررسی</label></td>" +
@@ -212,23 +230,11 @@
 
                                         "<tr   class='unit'>" +
                                         "<td   id='date'>" + value.id+ "</td>" +
-                                        "<td   id='date'>" + value.unit.title + "</td>" +
+                                        "<td   id='date'>" + value.user.unit.title + "</td>" +
+                                        "<td   id='date'>" + value.user.title+ ' '+value.user.name+ ' ' +value.user.family+ "</td>" +
                                         "<td   id='date'>" + value.title + "</td>" +
                                         "<td   id='date'>" + value.date + "</td>" +
-                                        "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-default' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>اتمام تیکت از طرف ادمین</label></td>" +
-                                        "<td   id='time2'><a class='btn btn-success' target='_blank' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
-                                        "</tr>");
-                                }
-                                if(value.active == 2)
-                                {
-                                    $('#change').append(
-
-                                        "<tr   class='unit'>" +
-                                        "<td   id='date'>" + value.id+ "</td>" +
-                                        "<td   id='date'>" + value.unit.title + "</td>" +
-                                        "<td   id='date'>" + value.title + "</td>" +
-                                        "<td   id='date'>" + value.date + "</td>" +
-                                        "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-default' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>اتمام تیکت از طرف ادمین</label></td>" +
+                                        "<td   id='time1'> <span class='col-md-9 col-md-offset-1 btn btn-default' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>بسته شده</span></td>" +
                                         "<td   id='time2'><a class='btn btn-success' target='_blank' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
                                         "</tr>");
                                 }
