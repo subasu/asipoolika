@@ -7,11 +7,7 @@
                 <div class="x_title">
                     <h2>
 
-                        @if(!empty($tickets[0]))
-                            @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1 )بررسی تیکت های دریافتی @endif
-                            @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1) بررسی تیکت های ارسالی     @endif
-                            @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 0) بررسی تیکت های ارسالی     @endif
-                        @endif
+                        بررسی امور روزانه
                     </h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i
@@ -25,37 +21,6 @@
                 <div class="col-md-12">
 
                 </div>
-                <div class="container">
-                    <div class="col-md-3 col-sm-3 col-xs-12 form-group pull-right">
-                        <input type="text" class="form-control" style="text-align:right;" id="date1"
-                               name="date1" placeholder="از تاریخ" min="1" max="5">
-                    </div>
-                    <div class="col-md-3 col-sm-3 col-xs-12 form-group pull-right">
-                        <input type="text" class="form-control" style="text-align:right;" id="date2"
-                               name="date2" placeholder=" تا تاریخ" min="1" max="5">
-                    </div>
-                    <a id="user-send" type="button" class="col-md-2 btn btn-danger " href="{{url('user/ticketRequest')}}" style="font-weight: bold;"><i
-                                class="fa fa-user-plus"></i>
-                        ارسال تیکت جدید
-                    </a>
-                    @if(!empty($tickets[0]))
-                        @if($tickets[0]->unit_id       == \Illuminate\Support\Facades\Auth::user()->unit_id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1)
-                            <button id="search" content="2" type="button" class="col-md-2 btn btn-success"  style="margin-left: 150px;">
-                                جستجو
-                            </button>
-                        @endif
-                        @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1)
-                                <button id="search" content="1" type="button" class="col-md-2 btn btn-success"  style="margin-left: 150px;">
-                                    جستجو
-                                </button>
-                        @endif
-                            @if($tickets[0]->sender_user_id     == \Illuminate\Support\Facades\Auth::user()->id && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 0)
-                                <button id="search" content="1" type="button" class="col-md-2 btn btn-success"  style="margin-left: 150px;">
-                                    جستجو
-                                </button>
-                            @endif
-
-                    @endif
 
 
                 </div>
@@ -66,47 +31,27 @@
                         <thead>
                         <tr>
                             <th style="text-align: center" class="">شناسه</th>
-                            <th style="text-align: center" class=""> نام واحد درخواست دهنده</th>
-                            <th style="text-align: center" class="">نام و نام خانوادگی درخواست دهنده</th>
-                            <th style="text-align: center;" > عنوان تیکت</th>
-                            <th style="text-align: center;" class="col-md-2">تاریخ ثبت تیکت</th>
-                            <th style="text-align: center;border-left: 1px solid #ddd;">وضعیت</th>
+                            <th style="text-align: center" class="">نوع درخواست</th>
+                            <th style="text-align: center" class="">واحد درخواست دهنده</th>
                             <th style="text-align: center;" class="col-md-2">عملیات</th>
                         </tr>
                         </thead>
                         <tbody id="change">
-                         @foreach($tickets as $ticket)
-                        <tr class="unit">
-                            <td>
-                                {{$ticket->id}}
-                            </td>
-                            <td>
-                                {{$ticket->user->unit->title}}
-                            </td>
-                            <td>
-                                {{$ticket->user->title .chr(10).$ticket->user->name .chr(10). $ticket->user->family}}
-                            </td>
-                            <td>
-                                {{$ticket->title}}
-                            </td>
-                            <td>
-                                {{$ticket->date}}
-                            </td>
-                            <td style="border-left: 1px solid #ddd;">
-                                @if($ticket->active == 0)
-                                    <label  class="col-md-7 col-md-offset-3 btn btn-warning" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">در حال بررسی</label>
-                                @endif
-                                @if($ticket->active == 1)
-
-                                    <span class="col-md-9 col-md-offset-1 btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">بسته شده</span>
-                                @endif
-                            </td>
-
-                            <td>
-                                <a class="col-md-7 col-md-offset-2 btn btn-success" target="_blank" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
-
-                            </td>
-                        </tr>
+                        @foreach($requests as $request)
+                            <tr class="unit">
+                                <td>
+                                    {{$request->id}}
+                                </td>
+                                <td>
+                                    {{$request->requestType->title}}
+                                </td>
+                                <td>
+                                    {{$request->unit->title}}
+                                </td>
+                                <td>
+                                    <a href="{{url('user/dailyWorksDetails/'.$request->id)}}" class="btn btn-primary">مشاهده جزئیات</a>
+                                </td>
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>
@@ -124,7 +69,7 @@
                 var date2 = $('#date2').val();
 
                 var token=$('#token').val();
-                var id = $(this).attr('content');
+
                 // alert(name);
 
 //            alert(date1);
@@ -137,7 +82,7 @@
                 $.ajax
                 ({
 
-                    url:"{{Url('user/searchOnDate')}}/"+id,
+                    url:"{{Url('user/searchOnDate')}}/{{1}}",
                     type:'post',
                     dataType:'json',
                     data:{'date1':date1,'date2':date2,'_token':token},
@@ -216,8 +161,7 @@
 
                                         "<tr   class='unit'>" +
                                         "<td   id='date'>" + value.id+ "</td>" +
-                                        "<td   id='date'>" + value.user.unit.title + "</td>" +
-                                        "<td   id='date'>" + value.user.title+ ' '+value.user.name+ ' ' +value.user.family+ "</td>" +
+                                        "<td   id='date'>" + value.unit.title + "</td>" +
                                         "<td   id='date'>" + value.title + "</td>" +
                                         "<td   id='date'>" + value.date + "</td>" +
                                         "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-warning' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>در حال بررسی</label></td>" +
@@ -230,11 +174,23 @@
 
                                         "<tr   class='unit'>" +
                                         "<td   id='date'>" + value.id+ "</td>" +
-                                        "<td   id='date'>" + value.user.unit.title + "</td>" +
-                                        "<td   id='date'>" + value.user.title+ ' '+value.user.name+ ' ' +value.user.family+ "</td>" +
+                                        "<td   id='date'>" + value.unit.title + "</td>" +
                                         "<td   id='date'>" + value.title + "</td>" +
                                         "<td   id='date'>" + value.date + "</td>" +
-                                        "<td   id='time1'> <span class='col-md-9 col-md-offset-1 btn btn-default' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>بسته شده</span></td>" +
+                                        "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-default' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>اتمام تیکت از طرف ادمین</label></td>" +
+                                        "<td   id='time2'><a class='btn btn-success' target='_blank' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
+                                        "</tr>");
+                                }
+                                if(value.active == 2)
+                                {
+                                    $('#change').append(
+
+                                        "<tr   class='unit'>" +
+                                        "<td   id='date'>" + value.id+ "</td>" +
+                                        "<td   id='date'>" + value.unit.title + "</td>" +
+                                        "<td   id='date'>" + value.title + "</td>" +
+                                        "<td   id='date'>" + value.date + "</td>" +
+                                        "<td   id='time1'><label  class='col-md-7 col-md-offset-3  label label-default' style='margin-left: 10%; font-size: 120%;width: 80%; !important;'>اتمام تیکت از طرف ادمین</label></td>" +
                                         "<td   id='time2'><a class='btn btn-success' target='_blank' href='{{URL::asset("user/ticketConversation")}}/"+value.id+" '>مشاهده جزییات</a></td>"+
                                         "</tr>");
                                 }
