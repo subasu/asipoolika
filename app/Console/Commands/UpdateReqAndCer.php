@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\CertificateController;
 use App\Models\Certificate;
 use App\Models\CertificateRecord;
 use App\Models\Request2;
@@ -42,6 +43,7 @@ class UpdateReqAndCer extends Command
      */
     public function handle()
     {
+        //active product request
         $productRequests=Request2::where('request_type_id',3)->get();
         foreach($productRequests as $productRequest)
         {
@@ -55,7 +57,6 @@ class UpdateReqAndCer extends Command
                     'active'=>1
                 ]);
                 $productRequest->msg='Yes';
-                if($pageName='confirmProductRequest')
                     return redirect('admin/confirmProductRequestManagement');
             }
             else
@@ -64,7 +65,7 @@ class UpdateReqAndCer extends Command
             $productRequest->accept_count=$accept_count;
             $productRequest->has_certificate_count=$has_certificate_count;
             $productRequest->refuse_count=$refuse_count;
-
+//active the certificates of this request
             $certificates=Certificate::where('request_id',$productRequest->id)->get();
 
             foreach ($certificates as $certificate) {
@@ -75,10 +76,11 @@ class UpdateReqAndCer extends Command
                     Certificate::where('id',$certificate->id)->update([
                         'active'=>1
                     ]);
+                    return redirect('admin/confirmProductRequestManagement');
                 }
             }
         }
-
+        //active service request
         $productRequests=Request2::where('request_type_id',2)->get();
         foreach($productRequests as $productRequest)
         {
@@ -92,7 +94,6 @@ class UpdateReqAndCer extends Command
                     'active'=>1
                 ]);
                 $productRequest->msg='Yes';
-                if($pageName='confirmProductRequest')
                     return redirect('admin/confirmServiceRequestManagement');
             }
 
@@ -103,8 +104,8 @@ class UpdateReqAndCer extends Command
             $productRequest->has_certificate_count=$has_certificate_count;
             $productRequest->refuse_count=$refuse_count;
 
+//active the certificates of this request
             $certificates=Certificate::where('request_id',$productRequest->id)->get();
-
             foreach ($certificates as $certificate) {
                 $all_c_count=CertificateRecord::where('certificate_id',$certificate->id)->count();
                 $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
@@ -113,10 +114,24 @@ class UpdateReqAndCer extends Command
                     Certificate::where('id',$certificate->id)->update([
                         'active'=>1
                     ]);
-
+                    return redirect('admin/confirmServiceRequestManagement');
                 }
             }
         }
 
+
+//        $certificate=new CertificateController();
+//        $certificates=$certificate->acceptedCertificatesActive();
+//        foreach($certificates as $certificate)
+//        {
+//            $certificate_records_count=CertificateRecord::where('certificate_id',$certificate->id)->count();
+//            $accepted_certificate_record_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
+//            if($certificate_records_count==$accepted_certificate_record_count)
+//            {
+//                Certificate::where('id',$certificate->id)->update([
+//                    'active'=>1
+//                ]);
+//            }
+//        }
     }
 }

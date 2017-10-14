@@ -949,7 +949,7 @@ class SupplyController extends Controller
 //        $requestRecords=RequestRecord::where([['refuse_user_id','!=',null],['active',0]])->pluck('request_id');
         $requestRecords=RequestRecord::where([['refuse_user_id','!=',null],['active',0]])->pluck('request_id');
 //        $requestRecords=RequestRecord::where([['refuse_user_id','!=',null],['active',0],['step',3]])->get();
-        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
+        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
 //        dd($productRequests);
         return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
@@ -1092,13 +1092,13 @@ class SupplyController extends Controller
     {
         $pageTitle="مدیریت درخواست ها";
         $pageName='confirmProductRequest';
-        $productRequests=Request2::where('request_type_id',3)->get();
-//        foreach($productRequests as $productRequest)
-//        {
-//            $all_count=RequestRecord::where('request_id',$productRequest->id)->count();
-//            $accept_count=RequestRecord::where([['request_id',$productRequest->id],['step',7],['refuse_user_id',null],['active',1]])->count();
-//            $has_certificate_count=RequestRecord::where([['request_id',$productRequest->id],['step',8]])->count();
-//            $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
+        $productRequests=Request2::where('request_type_id',3)->orderBy('created_at','desc')->get();
+        foreach($productRequests as $productRequest)
+        {
+            $all_count=RequestRecord::where('request_id',$productRequest->id)->count();
+            $accept_count=RequestRecord::where([['request_id',$productRequest->id],['step',7],['refuse_user_id',null],['active',1]])->count();
+            $has_certificate_count=RequestRecord::where([['request_id',$productRequest->id],['step',8]])->count();
+            $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
 //            if($all_count==($accept_count+$refuse_count))
 //            {
 //                DB::table('requests')->where('id',$productRequest->id)->update([
@@ -1108,10 +1108,10 @@ class SupplyController extends Controller
 //            }
 //            else
 //                $productRequest->msg='No';
-//            $productRequest->all_count=$all_count;
-//            $productRequest->accept_count=$accept_count;
-//            $productRequest->has_certificate_count=$has_certificate_count;
-//            $productRequest->refuse_count=$refuse_count;
+            $productRequest->all_count=$all_count;
+            $productRequest->accept_count=$accept_count;
+            $productRequest->has_certificate_count=$has_certificate_count;
+            $productRequest->refuse_count=$refuse_count;
 //
 //            $certificates=Certificate::where('request_id',$productRequest->id)->get();
 //
@@ -1126,7 +1126,7 @@ class SupplyController extends Controller
 //
 //                }
 //            }
-//        }
+        }
 
         return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
 
@@ -1610,13 +1610,13 @@ class SupplyController extends Controller
     {
         $pageTitle="مدیریت درخواست های تایید شده";
         $pageName='confirmProductRequest';
-        $productRequests=Request2::where('request_type_id',2)->get();
-//        foreach($productRequests as $productRequest)
-//        {
-//            $all_count=RequestRecord::where('request_id',$productRequest->id)->count();
-//            $accept_count=RequestRecord::where([['request_id',$productRequest->id],['step',7],['refuse_user_id',null],['active',1]])->count();
-//            $has_certificate_count=RequestRecord::where([['request_id',$productRequest->id],['step',8]])->count();
-//            $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
+        $productRequests=Request2::where('request_type_id',2)->orderBy('created_at','desc')->get();
+        foreach($productRequests as $productRequest)
+        {
+            $all_count=RequestRecord::where('request_id',$productRequest->id)->count();
+            $accept_count=RequestRecord::where([['request_id',$productRequest->id],['step',7],['refuse_user_id',null],['active',1]])->count();
+            $has_certificate_count=RequestRecord::where([['request_id',$productRequest->id],['step',8]])->count();
+            $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
 //            if($all_count==($accept_count+$refuse_count))
 //            {
 //                DB::table('requests')->where('id',$productRequest->id)->update([
@@ -1627,10 +1627,10 @@ class SupplyController extends Controller
 //
 //            else
 //                $productRequest->msg='No';
-//            $productRequest->all_count=$all_count;
-//            $productRequest->accept_count=$accept_count;
-//            $productRequest->has_certificate_count=$has_certificate_count;
-//            $productRequest->refuse_count=$refuse_count;
+            $productRequest->all_count=$all_count;
+            $productRequest->accept_count=$accept_count;
+            $productRequest->has_certificate_count=$has_certificate_count;
+            $productRequest->refuse_count=$refuse_count;
 //
 //            $certificates=Certificate::where('request_id',$productRequest->id)->get();
 //
@@ -1645,7 +1645,7 @@ class SupplyController extends Controller
 //
 //                }
 //            }
-//        }
+        }
 //        dd($productRequests);
         return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
     }

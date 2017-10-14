@@ -492,7 +492,8 @@
     $(document).ready(function () {
         $('#datatable').dataTable();
         $('#datatable-keytable').DataTable({
-            keys: true
+            keys: true,
+            bSort: false
         });
         $('#datatable-responsive').DataTable();
         $('#datatable-scroller').DataTable({
@@ -500,10 +501,13 @@
             deferRender: true,
             scrollY: 380,
             scrollCollapse: true,
-            scroller: true
+            scroller: true,
+            bSort: false
         });
         var table = $('#datatable-fixed-header').DataTable({
-            fixedHeader: true
+            fixedHeader: true,
+            bSort: false
+
         });
     });
     TableManageButtons.init();
@@ -515,6 +519,7 @@
     $(document).ready(function () {
         $('#example').DataTable({
             "pageLength": 10,
+            bSort: false,
             initComplete: function () {
                 this.api().columns([0, 1, 3, 4]).every(function () {
                     var column = this;
