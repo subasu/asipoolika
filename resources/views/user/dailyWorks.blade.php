@@ -48,9 +48,16 @@
                                 <td>
                                     {{$request->unit->title}}
                                 </td>
+                                @if($request->request_type_id == 2)
                                 <td>
-                                    <a href="{{url('user/dailyWorksDetails/'.$request->id)}}" class="btn btn-primary">مشاهده جزئیات</a>
+                                    <a href="{{url('admin/printServiceRequest/'.$request->id)}}" class="btn btn-primary">مشاهده جزئیات</a>
                                 </td>
+                                @endif
+                                @if($request->request_type_id == 3)
+                                    <td>
+                                        <a href="{{url('admin/printProductRequest/'.$request->id)}}" class="btn btn-primary">مشاهده جزئیات</a>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                         </tbody>
