@@ -199,7 +199,7 @@ class SystemManagerController extends Controller
     {
 
         $deletedId = DB::table('user_role')->where([['user_id',$request->userId],['role_id',$request->roleId]])->value('id');
-        $delete    = DB::table('User_role')->where('id',$deletedId)->delete();
+        $delete    = DB::table('user_role')->where('id',$deletedId)->delete();
         if($delete)
         {
             return response('سطح دسترسی مربوطه برای این کاربر پاک شد');
