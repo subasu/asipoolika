@@ -86,7 +86,7 @@
                             </td>
 
                             <td>
-                                <a class="col-md-6 col-md-offset-3 btn btn-success" target="_blank" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
+                                <a class="col-md-7 col-md-offset-2 btn btn-success" target="_blank" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
 
                             </td>
                         </tr>
