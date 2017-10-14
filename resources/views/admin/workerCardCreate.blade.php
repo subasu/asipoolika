@@ -36,17 +36,22 @@
                                 صاحب کارت کارگری
                             </label>
                             {{--<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback pull-right">--}}
+
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
+                                <lable style="font-size: 120%;">نام:</lable>
                                 <input type="text" class="form-control" style="text-align:right;" id="name"
                                        name="name" placeholder="نام" min="1" max="5">
                             </div>
                             {{--</div>--}}
+
                             <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                                <lable style="font-size: 120%;">نام خانوادگی:</lable>
                                 <input type="text" class="form-control" style="text-align:right;" id="family"
                                        name="family" placeholder="نام خانوادگی" min="1" max="5" >
                             </div>
 
                             <div class="">
+                                <lable style="font-size: 120%;">توضیحات : حجم فایل کارت کارگری نباید بیش از 150 کیلو بایت باشد ، پسوند فایل کارت کارگری باید از نوع png باشد.</lable>
                                     <div class="input-group image-preview col-md-12" style="padding:0px 10px !important;">
                                         <input type="text" class="form-control image-preview-filename" disabled="disabled">
                                         <!-- don't give a name === doesn't send on POST/GET -->

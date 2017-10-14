@@ -89,11 +89,11 @@ class SystemManagerController extends Controller
                         }
                     }else
                     {
-                        return response('پسوند فایل امضا باید از نوع png باشد');
+                        return response('پسوند فایل امضا نامعتبر است');
                     }
                 }else
                     {
-                        return response('حجم فایل امضا نباید بیش از 1مگابایت باشد');
+                        return response('حجم فایل امضا بیش از حد مجاز است');
                     }
 
 
