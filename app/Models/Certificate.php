@@ -27,7 +27,7 @@ class Certificate extends Model
     //shiri relation of signature and certificate
     public function request()
     {
-        return $this->belongsTo('App\Models\Request2');
+        return $this->belongsTo('App\Models\Request2','request_id');
     }
 
     //shiri : relation of request_record and certificate

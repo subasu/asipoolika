@@ -146,7 +146,7 @@
                                             {{--<a href="" class="btn btn-danger">صدور صورتجلسه تحویل و نصب</a>--}}
                                             <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right @if($productRequest->accept_count==0 or $productRequest->supplier_id==null) disabled @endif"> صدور گواهی</a>
                                             @if($productRequest->request_type_id == 3)
-                                             <a href="{{url('admin/printProductRequest/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right"> چاپ درخواست </a>
+                                             <a target="_blank" href="{{url('admin/printProductRequest/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right"> چاپ درخواست </a>
                                             @endif
                                             @if($productRequest->request_type_id == 2)
                                                 <a href="{{url('admin/printServiceRequest/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right"> چاپ درخواست </a>
@@ -156,8 +156,9 @@
                                             @else
                                                 <a  class="btn btn-success disabled col-md-5 pull-right">ابلاغ شده</a>
                                             @endif
-                                                <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-5  pull-right">مشاهده  گواهی ها</a>
-                                                <a href="{{url('admin/printFactors/'.$productRequest->id)}}" class="btn btn-default  col-md-5  pull-right"> چاپ خلاصه تنظیمی <i class="fa fa-print"></i></a>
+                                                <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-5  pull-right @if($productRequest->supplier_id==null or ($productRequest->supplier_id!=null and $productRequest->certificate->active==0)) disabled
+                                                   @endif">مشاهده  گواهی ها</a>
+                                                <a href="{{url('admin/printFactors/'.$productRequest->id)}}" target="_blank" class="btn btn-default  col-md-5  pull-right"> چاپ خلاصه تنظیمی <i class="fa fa-print"></i></a>
                                                 <a href="{{url('admin/costDocumentForm/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right">سند هزینه</a>
                                         </td>
                                     </tr>

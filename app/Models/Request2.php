@@ -25,7 +25,7 @@ class Request2 extends Model
     //shiri relation of request and certificate
     public function certificate()
     {
-        return $this->hasOne('App\Models\Certificate');
+        return $this->hasOne('App\Models\Certificate','request_id');
     }
 
     //shiri relation of request and request_type

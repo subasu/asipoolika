@@ -46,14 +46,14 @@
                                 <td>
                                     @if($certificate->request->request_type_id == 3)
                                         @if($certificate->certificate_type_id == 1)
-                                            <a class="btn btn-info" href="{{url('admin/exportDeliveryInstallCertificate'.'/'.$certificate->id)}}">چاپ گواهی تحویل و نصب</a>
+                                            <a target="_blank" class="btn btn-info" href="{{url('admin/exportDeliveryInstallCertificate'.'/'.$certificate->id)}}">چاپ گواهی تحویل و نصب</a>
                                         @endif
                                         @if($certificate->certificate_type_id == 2)
-                                            <a class="btn btn-info" href="{{url('admin/exportDeliveryInstallCertificate'.'/'.$certificate->id)}}">چاپ گواهی تحویل و مصرف</a>
+                                            <a target="_blank" class="btn btn-info" href="{{url('admin/exportDeliveryInstallCertificate'.'/'.$certificate->id)}}">چاپ گواهی تحویل و مصرف</a>
                                         @endif
                                     @endif
                                     @if($certificate->request->request_type_id == 2)
-                                       <a class="btn btn-info" href="{{url('admin/serviceDeliveryForm'.'/'.$certificate->id)}}">چاپ گواهی صادر شده</a>
+                                       <a target="_blank" class="btn btn-info" href="{{url('admin/serviceDeliveryForm'.'/'.$certificate->id)}}">چاپ گواهی صادر شده</a>
                                     @endif
                                 </td>
                             </tr>
