@@ -221,6 +221,11 @@
                 $(this).closest('tr').remove();
                 recordCount--;
                 $('#recordCount').val(recordCount);
+                if(recordCount == 0)
+                {
+                    $('#save').css('display','none');
+                }
+
             });
         </script>
 

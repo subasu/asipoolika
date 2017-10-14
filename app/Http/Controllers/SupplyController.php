@@ -588,11 +588,11 @@ class SupplyController extends Controller
                 }
                 else
                     {
-                        return response('پسوند فایل امضا باید از نوع png باشد');
+                        return response('پسوند فایل کارت کارگری نامعتبر است');
                     }
             }else
                 {
-                    return response('حجم فایل امضا نباید بیش از 1مگابایت باشد');
+                    return response('حجم فایل کارت کارگری بیش از حد مجاز است');
                 }
 
         }else

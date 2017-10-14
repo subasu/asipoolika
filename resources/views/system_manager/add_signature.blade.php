@@ -66,7 +66,9 @@
                                     <lable style="font-size: 120%;">در صورت اختیاری بودن امضاء کاربر تیک را بزنید.</lable>
                                     {{--<span class="fa fa-info-circle form-control-feedback right" aria-hidden="true"></span>--}}
                                 </div>
+
                                 <div class="col-md-12">
+                                    <lable style="font-size: 120%;">توضیحات : حجم فایل امضا نباید بیش از 150 کیلو بایت باشد ، پسوند فایل امضا باید از نوع png باشد.</lable>
                                     <div class="input-group image-preview ">
                                         <input type="text" class="form-control image-preview-filename" disabled="disabled">
                                         <!-- don't give a name === doesn't send on POST/GET -->
