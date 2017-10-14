@@ -99,7 +99,7 @@
                                     <td class="col-md-2">{{$certificate->request_type}}</td>
                                     {{--<td class="info col-md-2">{{$certificate->certificate_record_count}}</td>--}}
                                     {{--<td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>--}}
-                                    <td><a class="btn btn-info col-md-12" target="_blank" href="{{url('admin/productCertificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
+                                    <td><a class="btn btn-info col-md-12" href="{{url('admin/productCertificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
                             </tr>
                             @endif
                         @endforeach
@@ -114,7 +114,7 @@
                                         <td class="col-md-2">{{$certificate->request_type}}</td>
                                         {{--<td class="info col-md-2">{{$certificate->certificate_record_count}}</td>--}}
                                         {{--<td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>--}}
-                                        <td><a class="btn btn-info col-md-12" target="_blank" href="{{url('admin/serviceCertificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
+                                        <td><a class="btn btn-info col-md-12"  href="{{url('admin/serviceCertificateRecords/'.$certificate->id)}}">مشاهده جزییات</a>
                                     </tr>
                                 @endif
                             @endforeach

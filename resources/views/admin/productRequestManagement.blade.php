@@ -101,7 +101,7 @@
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                            <td><a class="btn btn-info" target="_blank" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                            <td><a class="btn btn-info"  href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
                                             {{--<td></td>--}}
                                         @endif
                                     </tr>
@@ -125,7 +125,7 @@
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
-                                            <td><a class="btn btn-info" target="_blank" href="{{url('admin/acceptedRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
+                                            <td><a class="btn btn-info"  href="{{url('admin/acceptedRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
                                             <td class="col-md-2" style="padding-top: 17px;border-right: 1px solid #e0e0d1">@if($productRequest->active==1)<span style="font-size: 15px;padding: 4px 7px 4px 7px;font-weight: lighter;" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter" class="label label-warning">در حال رسیدگی </span>@endif</td>
                                             {{--<td></td>--}}
                                             {{--<td><a class="btn btn-info" href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>--}}
