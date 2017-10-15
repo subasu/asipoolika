@@ -510,10 +510,10 @@ class SupplyController extends Controller
     {
         $pageTitle='مدیریت کارت های کارگری';
         $userId = Auth::user()->id;
-        $workers = Workers::where([['active',0],['user_id' , $userId]])->orderBy('date')->get();
+        $workers = Workers::where([['active',1],['user_id' , $userId]])->orderBy('date')->get();
         foreach ($workers as $worker) {
             $worker->date = $this->toPersian($worker->date);
-            $worker->card = 'data:image/jpeg;base64,'.$worker->card;
+            $worker->card = 'data:image/png;base64,'.$worker->card;
         }
         return view ('admin.workerCardManage',compact('workers','pageTitle'));
     }
@@ -635,7 +635,7 @@ class SupplyController extends Controller
 
         switch ($id) {
             case 1 :
-                $data = Workers::whereBetween('date', [$gDate1, $gDate2])->where([['active', 0], ['user_id', $userId]])->orderBy('date')->get();
+                $data = Workers::whereBetween('date', [$gDate1, $gDate2])->where([['active', 1], ['user_id', $userId]])->orderBy('date')->get();
                 break;
         }
 

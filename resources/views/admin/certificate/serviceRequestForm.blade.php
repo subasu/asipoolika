@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
+@extends('layouts.formLayout')
+
     <title>{{$pageTitle}}</title>
     <link href="{{ url('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
     <link href="{{ url('public/dashboard/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -9,15 +8,20 @@
         $(document).on('click','#print',function () {
 
             var body      = $('#body')[0].innerHTML;
-            var token     = $('#token').val();
+          //  var token     = $('#token').val();
             var requestId = $('#requestId').val();
             var button    = $(this);
             var formId    = $('#formId').val();
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $.ajax
             ({
                 url  : "{{url('admin/formSave')}}/{{2}}",
                 type : "post",
-                data : {'body':body ,'_token':token , 'requestId' : requestId , 'formId' : formId},
+                data : {'body':body  , 'requestId' : requestId , 'formId' : formId},
                 success : function(response)
                 {
                     alert(response);
@@ -33,7 +37,7 @@
             });
         })
     </script>
-</head>
+
 @if(!empty($productRequestRecords))
 <body id="body">
 <input type="hidden" id="token" value="{{ csrf_token() }}">
@@ -126,5 +130,3 @@
     @endforeach
     </body>
 @endif
-
-</html>
