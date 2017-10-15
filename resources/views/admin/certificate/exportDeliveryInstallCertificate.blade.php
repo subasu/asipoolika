@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
+@extends('layouts.formLayout')
+
     @if(!empty($certificateRecord[0]))
         @if($certificateRecords[0]->certificate->certificate_type_id == 1)
             <title>{{$pageTitleInstall}}</title>
@@ -15,18 +14,23 @@
         $(document).on('click','#print',function () {
 
             var body      = $('#body')[0].innerHTML;
-            var token     = $('#token').val();
+            //var token     = $('#token').val();
             var requestId = $('#requestId').val();
             var button    = $(this);
             var certificateId = $('#certificateId').val();
             var title         = $('#title').val();
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $.ajax
             ({
 
                url  : "{{url('admin/formSave')}}/{{3}}",
                type : "post",
                context : button,
-               data : {'body':body ,'_token':token,'requestId':requestId , 'certificateId' : certificateId ,'title':title},
+               data : {'body':body ,'requestId':requestId , 'certificateId' : certificateId ,'title':title},
                success : function(response)
                {
                    alert(response);
@@ -42,7 +46,7 @@
             });
         })
     </script>
-</head>
+
 @if(!empty($certificateRecords))
     <body id="body">
     <input type="hidden" id="token" value="{{ csrf_token() }}">
@@ -150,12 +154,14 @@
 @endif
 
 @if(!empty($oldCertificates))
+
     <body id="body">
     @foreach($oldCertificates as $oldCertificate)
         {!! $oldCertificate->content  !!}
         {{--<input type="hidden" id="formId" value="{{$formContent->id}}">--}}
+
     @endforeach
+
     </body>
 @endif
 
-</html>
