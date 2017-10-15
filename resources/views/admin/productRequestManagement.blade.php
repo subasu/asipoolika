@@ -1,6 +1,37 @@
 @extends('layouts.adminLayout')
 @section('content')
 
+
+        <!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog" style="direction: rtl;text-align: right">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">نحوه مدیریت درخواست های تایید شده</h4>
+            </div>
+            <div class="modal-body">
+                <p>درخواست های تایید شده درخواست هایی هستند که کلیه مراحل اداری را طی کرده اند.</p>
+                <p>مراحل انجام کار : </p>
+                <ol>
+                    <li>ابلاغ درخواست به کارپرداز</li>
+                    <li>صدور گواهی</li>
+                </ol>
+                <p>در این حین میتوانید درخواست را بطور کامل مشاهده و در صورت نیاز چاپ کنید</p>
+                <p>همچنین میتوانید خلاصه تنظیمی مربوط به آن را نیز چاپ کنید</p>
+                <p>پس از صدور گواهی وقتی گواهی روند اداری اش را بطور کامل طی کردی میتوانید آن را مشاهده و در صورت نیاز چاپ کنید</p>
+                <span style="color:red">توجه : </span> چنانچه دکمه ای غیرفعال است به این معناست که پیش نیازهای لازم برای آن هنوز انجام نشده است. مثلا اگر دکمه صدور گواهی غیرفعال است به این دلیل است که هنوز درخواست به یک کارپرداز واگذار نشده است.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info col-md-12" data-dismiss="modal">متوجه شدم</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
             <!-- Modal -->
         <div id="commentModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -51,6 +82,8 @@
                     <div class="x_content">
                         @if($pageName=='confirmProductRequest')
                             <a href="{{url('admin/confirmProductRequestManagement')}}" class="btn btn-danger col-md-12"><i class="fa fa-refresh"></i> بروزرسانی درخواست ها</a>
+                            <button  style="font-size:18px;" type="button" class="btn btn-primary col-md-12" data-toggle="modal" data-target="#myModal">نحوه کار با این صفحه <i class="fa fa-question-circle-o" aria-hidden="true"></i></button>
+
                             @endif
                         {{--<form id="serviceDetailForm">--}}
                         <table style="direction:rtl;text-align: center;" id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
@@ -133,6 +166,7 @@
                                         @endif
                                     @endforeach
                                 @elseif($pageName=='confirmProductRequest')
+{{--                                    @if(!empty($productRequests))--}}
                                     @foreach($productRequests as $productRequest)
 {{--                                        @if($productRequest->all_count==($productRequest->accept_count+$productRequest->refuse_count))--}}
                                         @if($productRequest->active==1)
@@ -156,14 +190,26 @@
                                             @else
                                                 <a  class="btn btn-success disabled col-md-5 pull-right">ابلاغ شده</a>
                                             @endif
-                                                <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"  class="btn btn-warning col-md-5  pull-right @if($productRequest->supplier_id==null or ($productRequest->supplier_id!=null and $productRequest->certificate->active==0)) disabled
-                                                   @endif">مشاهده  گواهی ها</a>
+                                            <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"
+                                               class="btn btn-warning col-md-5 pull-right
+                                             @if($productRequest->hasCertificate==0) disabled
+                                                @elseif($productRequest->hasCertificate==1)
+                                                       @if($productRequest->certificate->active==0) disabled
+                                                       @endif
+                                                @endif">مشاهده  گواهی ها</a>
+                                            {{--@if($productRequest->hasCertificate==1)--}}
+                                                {{--@if($productRequest->certificate->active==1)--}}
+                                                {{--<a href="{{url('admin/showCertificates/'.$productRequest->id)}}"--}}
+                                                   {{--class="btn btn-warning col-md-5  pull-right">مشاهده  گواهی ها</a>--}}
+                                            {{--@endif--}}
+                                            {{--@endif--}}
                                                 <a href="{{url('admin/printFactors/'.$productRequest->id)}}" target="_blank" class="btn btn-default  col-md-5  pull-right"> چاپ خلاصه تنظیمی <i class="fa fa-print"></i></a>
                                                 <a href="{{url('admin/costDocumentForm/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right">سند هزینه</a>
                                         </td>
                                     </tr>
                                         @endif
                                     @endforeach
+                                {{--@endif--}}
                                 @endif
                             </tbody>
                         </table>

@@ -1,3 +1,4 @@
+
 @extends('layouts.adminLayout')
 @section('content')
     <div class="clearfix"></div>
@@ -68,3 +69,4 @@
 
     {{--edit user's status by user-id --}}
 @endsection
+

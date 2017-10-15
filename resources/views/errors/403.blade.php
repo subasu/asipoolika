@@ -52,7 +52,7 @@
                     <br>
                     <h2><a href="{{url('/login')}}" style="color: white">بازگشت</a>
                     </h2>
-
+                    <a href="{{url('/logout')}}" class="btn btn-danger">خروج</a>
                 </div>
             </div>
         </div>
