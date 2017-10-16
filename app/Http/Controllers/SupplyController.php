@@ -1141,14 +1141,14 @@ class SupplyController extends Controller
     //shiri : below function is related to show printed form of product request
     public function printProductRequest($id)
     {
-        $formExistence = Request2::where('id',$id)->value('request_form_id');
-        if($formExistence != 0)
-        {
-            $formContents = Form::where('id',$formExistence)->get();
-            $pageTitle = 'نسخه چاپی گواهی';
-            return view('admin.certificate.productRequestForm',compact('formContents','pageTitle'));
-        }
-        else {
+//        $formExistence = Request2::where('id',$id)->value('request_form_id');
+//        if($formExistence != 0)
+//        {
+//            $formContents = Form::where('id',$formExistence)->get();
+//            $pageTitle = 'نسخه چاپی گواهی';
+//            return view('admin.certificate.productRequestForm',compact('formContents','pageTitle'));
+//        }
+//        else {
             $storageId = Unit::where('title', 'انبار')->value('id');
             $storageSupervisorInfo = User::where([['unit_id', $storageId], ['is_supervisor', 1]])->get();
             $storageSupervisorId = 0;
@@ -1228,21 +1228,21 @@ class SupplyController extends Controller
                 $sum += $productRequestRecord->rate * $productRequestRecord->count;
             }
             return view('admin.certificate.productRequestForm', compact('pageTitle', 'productRequestRecords', 'sum', 'storageSupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'storageSupervisorFullName', 'originalJobSupervisorFullName', 'bossFullName', 'creditSupervisorFullName', 'financeSupervisorFullName'));
-        }
+      //  }
     }
 
     //shiri : below function is related to print service_request_form
     public function printServiceRequest($id)
     {
-        $formExistence = Request2::where('id',$id)->value('request_form_id');
-        if($formExistence != 0)
-        {
-            $formContents = Form::where('id',$formExistence)->get();
-            $pageTitle = 'نسخه چاپی گواهی';
-            return view('admin.certificate.serviceRequestForm',compact('formContents','pageTitle'));
-        }
-        else
-            {
+//        $formExistence = Request2::where('id',$id)->value('request_form_id');
+//        if($formExistence != 0)
+//        {
+//            $formContents = Form::where('id',$formExistence)->get();
+//            $pageTitle = 'نسخه چاپی گواهی';
+//            return view('admin.certificate.serviceRequestForm',compact('formContents','pageTitle'));
+//        }
+//        else
+//            {
             $supplyId = Unit::where('title', 'تدارکات')->value('id');
             $supplySupervisorInfo = User::where([['unit_id', $supplyId], ['is_supervisor', 1]])->get();
             $supplySupervisorId = 0;
@@ -1330,7 +1330,7 @@ class SupplyController extends Controller
             $unitSupervisorSignature = Signature::where('user_id', $unitSupervisorId)->value('signature');
             $unitSupervisorSignature = 'data:image/png;base64,' . $unitSupervisorSignature;
             return view('admin.certificate.serviceRequestForm', compact('productRequestRecords', 'pageTitle', 'sum', 'unitName', 'requestNumber', 'date', 'supplySupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'creditSupervisorFullName', 'financeSupervisorFullName', 'bossFullName', 'supplySupervisorFullName', 'unitSupervisorName', 'unitSupervisorFullName', 'unitSupervisorSignature'));
-        }
+      //  }
     }
 
     //shiri : below function is related to export delivery and install certificate
@@ -1338,13 +1338,13 @@ class SupplyController extends Controller
     {
         $pageTitleInstall = 'صدور گواهی تحویل و نصب';
         $pageTitleUse     = 'صدور گواهی تحویل و نصب';
-        $oldCertificates = Form::where('certificate_id',$id)->get();
-        if(count($oldCertificates) > 0)
-        {
-            return view('admin.certificate.exportDeliveryInstallCertificate',compact('pageTitleInstall','oldCertificates','pageTitleUse'));
-        }
-        else
-            {
+//        $oldCertificates = Form::where('certificate_id',$id)->get();
+//        if(count($oldCertificates) > 0)
+//        {
+//            return view('admin.certificate.exportDeliveryInstallCertificate',compact('pageTitleInstall','oldCertificates','pageTitleUse'));
+//        }
+//        else
+//            {
                 $bossUnitId = Unit::where('title','ریاست')->value('id');
                 $bossInfo = User::where([['unit_id',$bossUnitId],['is_supervisor',1]])->get();
                 $bossId = 0;
@@ -1420,7 +1420,7 @@ class SupplyController extends Controller
                 $unitSupervisorSignature = Signature::where('user_id',$unitSupervisorId)->value('signature');
                 $unitSupervisorSignature = 'data:image/png;base64,'.$unitSupervisorSignature;
                 return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitleInstall','pageTitleUse','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
-            }
+          //  }
     }
 
 
@@ -1431,128 +1431,111 @@ class SupplyController extends Controller
         $userId = Auth::user()->id;
         switch ($id) {
             case 1:
-                if($request->formId)
+                $oldFactorFormId = Request2::where('id',$request->requestId)->value('factor_form_id');
+                if($oldFactorFormId > 0)
                 {
-                    $checkFormExistence = Form::where('id',$request->formId)->get();
-                    $countFormExistence  = count($checkFormExistence);
-                    if($countFormExistence > 0)
-                    {
-                        $count = Form::where('id', $request->formId)->increment('print_count');
-                        $formPrintId = DB::table('print_form')->insertGetId
-                        ([
-
-                            'form_id'    => $request->formId,
-                            'printed_by' => $userId,
-                        ]);
-                        if ($count && $formPrintId) {
-                            return response('اطلاعات فرم شما ذخیره گردید');
-                        }
-                    }else
-                    {
-                        return response('در ثبت اطلاعات مشکلی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید');
-                    }
-
-                }
-                else {
-                    $formId = DB::table('forms')->insertGetId
+                    $update = Form::where('id',$oldFactorFormId)->increment('print_count');
+                    $formPrintId = DB::table('print_form')->insertGetId
                     ([
-                        'title'      => 'خلاصه تنظیمی',
-                        'request_id' => $request->requestId,
-                        'content' => $request->body,
 
+                        'form_id'    => $oldFactorFormId,
+                        'printed_by' => $userId,
                     ]);
-                    if ($formId) {
-                        $count = Form::where('id', $formId)->increment('print_count');
-                        $formPrintId = DB::table('print_form')->insertGetId
+                    if ($update && $formPrintId) {
+                        return response('لطفا برای چاپ فرم کلیک نمایید');
+                    }
+                }else
+                    {
+                        $newFactorFormId = DB::table('forms')->insertGetId
                         ([
-                            'form_id' => $formId,
-                            'printed_by' => $userId,
+                            'title'       => 'فرم خلاصه تنظیمی',
+                            'request_id'  => $request->requestId,
+                            'print_count' =>  1
                         ]);
+                        if($newFactorFormId > 0)
+                        {
+                            $factorFormId = Request2::where('id',$request->requestId)->update(['factor_form_id' => $newFactorFormId]);
+                            $formPrintId = DB::table('print_form')->insertGetId
+                            ([
 
+                                'form_id'    => $newFactorFormId,
+                                'printed_by' => $userId,
+                            ]);
+                            if ($factorFormId && $formPrintId) {
+                                return response('لطفا برای چاپ فرم کلیک نمایید');
+                            }
+                        }
                     }
-                    $updateRequestFactorFormId = Request2::where('id', $request->requestId)->update(['factor_form_id' => $formId]);
-                    if ($count && $formPrintId && $updateRequestFactorFormId) {
-                        return response('اطلاعات فرم شما ذخیره گردید');
-                    }
-                }
                 break;
 
             case 2:
-                if($request->formId)
+                $oldRequestFormId = Request2::where('id',$request->requestId)->value('request_form_id');
+                if($oldRequestFormId > 0)
                 {
-                    $checkFormExistence = Form::where('id',$request->formId)->get();
-                    $countFormExistence  = count($checkFormExistence);
-                    if($countFormExistence > 0)
-                    {
-                        $count = Form::where('id', $request->formId)->increment('print_count');
-                        $formPrintId = DB::table('print_form')->insertGetId
+                    $update = Form::where('id',$oldRequestFormId)->increment('print_count');
+                    $formPrintId = DB::table('print_form')->insertGetId
                         ([
 
-                            'form_id'    => $request->formId,
+                            'form_id'    => $oldRequestFormId,
                             'printed_by' => $userId,
                         ]);
-                        if ($count && $formPrintId) {
-                            return response('اطلاعات فرم شما ذخیره گردید');
+                        if ($update && $formPrintId) {
+                            return response('لطفا برای چاپ فرم کلیک نمایید');
                         }
-                    }else
+
+                }else
                     {
-                        return response('در ثبت اطلاعات مشکلی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید');
-                    }
-
-                }
-                else {
-                    $formId = DB::table('forms')->insertGetId
-                    ([
-                        'title'      => 'فرم درخواست',
-                        'request_id' => $request->requestId,
-                        'content' => $request->body,
-
-                    ]);
-                    if ($formId) {
-                        $count = Form::where('id', $formId)->increment('print_count');
-                        $formPrintId = DB::table('print_form')->insertGetId
+                        $newRequestFormId = DB::table('forms')->insertGetId
                         ([
-                            'form_id' => $formId,
-                            'printed_by' => $userId,
+                            'title'       => 'فرم درخواست',
+                            'request_id'  => $request->requestId,
+                            'print_count' =>  1
                         ]);
+                        if($newRequestFormId > 0)
+                        {
+                            $requestFormId = Request2::where('id',$request->requestId)->update(['request_form_id' => $newRequestFormId]);
+                            $formPrintId = DB::table('print_form')->insertGetId
+                            ([
 
+                                'form_id'    => $newRequestFormId,
+                                'printed_by' => $userId,
+                            ]);
+                            if ($requestFormId && $formPrintId) {
+                                return response('لطفا برای چاپ فرم کلیک نمایید');
+                            }
+                        }
                     }
-                    $updateRequestFactorFormId = Request2::where('id', $request->requestId)->update(['request_form_id' => $formId]);
-                    if ($count && $formPrintId && $updateRequestFactorFormId) {
-                        return response('اطلاعات فرم شما ذخیره گردید');
-                    }
-                }
                 break;
             case 3:
-                $formId = Form::where('certificate_id', $request->certificateId)->value('id');
-                if ($formId > 0) {
+                $oldFormId = Form::where('certificate_id', $request->certificateId)->value('id');
+                if ($oldFormId > 0) {
                     $count = Form::where('certificate_id', $request->certificateId)->increment('print_count');
                     $formPrintId = DB::table('print_form')->insertGetId
                     ([
-                        'form_id' => $formId,
+                        'form_id'    => $oldFormId,
                         'printed_by' => $userId,
                     ]);
                     if ($count && $formPrintId) {
-                        return response('اطلاعات فرم شما ذخیره گردید');
+                        return response('لطفا برای چاپ فرم کلیک نمایید');
 
                     }
                 } else {
-                    $formId = DB::table('forms')->insertGetId
+                    $newFormId = DB::table('forms')->insertGetId
                     ([
-                        'request_id' => $request->requestId,
-                        'content' => $request->body,
-                        'title' => $request->title,
-                        'certificate_id' => $request->certificateId
+                        'request_id'     => $request->requestId,
+                        'title'          => $request->title,
+                        'certificate_id' => $request->certificateId,
+                        'print_count'    => 1
                     ]);
-                    if ($formId) {
-                        $count = Form::where('id', $formId)->increment('print_count');
+                    if ($newFormId) {
+
                         $formPrintId = DB::table('print_form')->insertGetId
                         ([
-                            'form_id' => $formId,
+                            'form_id'    => $newFormId,
                             'printed_by' => $userId,
                         ]);
-                        if ($count && $formPrintId) {
-                            return response('اطلاعات فرم شما ذخیره گردید');
+                        if ($formPrintId) {
+                            return response('لطفا برای چاپ فرم کلیک نمایید');
                         }
 
                     }
@@ -1560,34 +1543,33 @@ class SupplyController extends Controller
 
                 break;
             case 4:
-                $formId = Form::where('certificate_id', $request->certificateId)->value('id');
-                if (count($formId) > 0) {
+                $oldFormId = Form::where('certificate_id', $request->certificateId)->value('id');
+                if (count($oldFormId) > 0) {
                     $count = Form::where('certificate_id', $request->certificateId)->increment('print_count');
                     $formPrintId = DB::table('print_form')->insertGetId
                     ([
-                        'form_id' => $formId,
+                        'form_id'    => $oldFormId,
                         'printed_by' => $userId,
                     ]);
                     if ($count && $formPrintId) {
-                        return response('اطلاعات فرم شما ذخیره گردید');
+                        return response('لطفا برای چاپ فرم کلیک نمایید');
                     }
                 } else {
-                    $formId = DB::table('forms')->insertGetId
+                    $newFormId = DB::table('forms')->insertGetId
                     ([
-                        'request_id' => $request->requestId,
-                        'content' => $request->body,
-                        'title' => 'گواهی تحویل خدمت',
-                        'certificate_id' => $request->certificateId
+                        'request_id'     => $request->requestId,
+                        'title'          => 'گواهی تحویل خدمت',
+                        'certificate_id' => $request->certificateId,
+                        'print_count'    => 1
                     ]);
-                    if ($formId) {
-                        $count = Form::where('id', $formId)->increment('print_count');
+                    if ($newFormId) {
                         $formPrintId = DB::table('print_form')->insertGetId
                         ([
-                            'form_id' => $formId,
+                            'form_id' => $newFormId,
                             'printed_by' => $userId,
                         ]);
-                        if ($count && $formPrintId) {
-                            return response('اطلاعات فرم شما ذخیره گردید');
+                        if ($formPrintId) {
+                            return response('لطفا برای چاپ فرم کلیک نمایید');
                         }
 
                     }
@@ -1760,14 +1742,14 @@ class SupplyController extends Controller
     public function printServiceDeliveryForm($id)
     {
         //dd($id);
-        $formExistence = Form::where('certificate_id',$id)->get();
-        if(count($formExistence) > 0)
-        {
-          //  dd($formExistence);
-            $pageTitle = 'صدور گواهی تحویل و نصب';
-            return view('admin.certificate.serviceDeliveryForm',compact('formExistence','pageTitle'));
-        }
-        else {
+//        $formExistence = Form::where('certificate_id',$id)->get();
+//        if(count($formExistence) > 0)
+//        {
+//          //  dd($formExistence);
+//            $pageTitle = 'صدور گواهی تحویل و نصب';
+//            return view('admin.certificate.serviceDeliveryForm',compact('formExistence','pageTitle'));
+//        }
+//        else {
 
             $supplyId = Unit::where('title', 'تدارکات')->value('id');
             $supplySupervisorInfo = User::where([['unit_id', $supplyId], ['is_supervisor', 1]])->get();
@@ -1843,21 +1825,21 @@ class SupplyController extends Controller
             $unitSupervisorSignature = Signature::where('user_id', $unitSupervisorId)->value('signature');
             $unitSupervisorSignature = 'data:image/png;base64,' . $unitSupervisorSignature;
             return view('admin.certificate.serviceDeliveryForm', compact('supplySupervisorFullName', 'bossFullName', 'bossSignature', 'supplySupervisorSignature', 'unitSupervisorFullName', 'unitSupervisorSignature', 'certificateRecords', 'shopComp', 'requestId', 'pageTitle', 'unitName', 'receiverFullName', 'sum', 'receiverSignature', 'requestId'));
-        }
+      //  }
     }
   
     //shiri : below function is related to print summary of requests
     public function printFactors($id)
     {
-        $formExistence = Request2::where('id',$id)->value('factor_form_id');
-        if($formExistence != 0)
-        {
-            $formContents = Form::where('id',$formExistence)->get();
-            $pageTitle = 'چاپ خلاصه تنظیمی';
-            return view('admin.certificate.factorsForm',compact('formContents','pageTitle'));
-        }
-        else
-            {
+//        $formExistence = Request2::where('id',$id)->value('factor_form_id');
+//        if($formExistence != 0)
+//        {
+//            $formContents = Form::where('id',$formExistence)->get();
+//            $pageTitle = 'چاپ خلاصه تنظیمی';
+//            return view('admin.certificate.factorsForm',compact('formContents','pageTitle'));
+//        }
+//        else
+//            {
                 $pageTitle = 'چاپ خلاصه تنظیمی';
                 $productRequestRecords = RequestRecord::where([['request_id',$id],['accept',1]])->get();
                 $sum = 0;
@@ -1875,7 +1857,7 @@ class SupplyController extends Controller
                 $supplierFamily = User::where('id',$supplierId)->value('family');
                 $supplierFullName = $supplierName .chr(10).$supplierFamily;
                 return view ('admin.certificate.factorsForm',compact('pageTitle','productRequestRecords','sum','supplierFullName'));
-            }
+        //    }
 
     }
 

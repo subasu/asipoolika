@@ -6,11 +6,11 @@
     <script>
         $(document).on('click','#print',function () {
 
-            var body      = $('#body')[0].innerHTML;
+           // var body      = $('#body')[0].innerHTML;
           //  var token     = $('#token').val();
             var requestId = $('#requestId').val();
             var button    = $(this);
-            var formId    = $('#formId').val();
+         //   var formId    = $('#formId').val();
             var certificateId = $('#certificateId').val();
             jQuery.ajaxSetup({
                 headers: {
@@ -22,7 +22,7 @@
                 url  : "{{url('admin/formSave')}}/{{4}}",
                 type : "post",
                 context : button,
-                data : {'body':body  , 'requestId' : requestId , 'certificateId' : certificateId},
+                data : {'requestId' : requestId , 'certificateId' : certificateId},
                 success : function(response)
                 {
                     alert(response);
@@ -39,7 +39,7 @@
         })
     </script>
 
-@if(!empty($certificateRecords))
+{{--@if(!empty($certificateRecords))--}}
 <body id="body">
 <input type="hidden" id="token" value="{{ csrf_token() }}">
 <div style="padding:1% 2.5%">
@@ -112,13 +112,13 @@
 </div>
 
 </body>
-@endif
+{{--@endif--}}
 
-@if(!empty($formExistence))
-    <body id="body">
-    @foreach($formExistence as $form)
-        {!! $form->content  !!}
+{{--@if(!empty($formExistence))--}}
+    {{--<body id="body">--}}
+    {{--@foreach($formExistence as $form)--}}
+        {{--{!! $form->content  !!}--}}
         {{--<input type="hidden" id="formId" value="{{$form->id}}">--}}
-    @endforeach
-    </body>
-@endif
+    {{--@endforeach--}}
+    {{--</body>--}}
+{{--@endif--}}
