@@ -13,7 +13,7 @@
     <script>
         $(document).on('click','#print',function () {
 
-            var body      = $('#body')[0].innerHTML;
+          //  var body      = $('#body')[0].innerHTML;
             //var token     = $('#token').val();
             var requestId = $('#requestId').val();
             var button    = $(this);
@@ -30,7 +30,7 @@
                url  : "{{url('admin/formSave')}}/{{3}}",
                type : "post",
                context : button,
-               data : {'body':body ,'requestId':requestId , 'certificateId' : certificateId ,'title':title},
+               data : {'requestId':requestId , 'certificateId' : certificateId ,'title':title},
                success : function(response)
                {
                    alert(response);
@@ -47,7 +47,7 @@
         })
     </script>
 
-@if(!empty($certificateRecords))
+{{--@if(!empty($certificateRecords))--}}
     <body id="body">
     <input type="hidden" id="token" value="{{ csrf_token() }}">
     <div style="padding:1% 2.5%">
@@ -151,17 +151,17 @@
         </div>
     </div>
     </body>
-@endif
+{{--@endif--}}
 
-@if(!empty($oldCertificates))
+{{--@if(!empty($oldCertificates))--}}
 
-    <body id="body">
-    @foreach($oldCertificates as $oldCertificate)
-        {!! $oldCertificate->content  !!}
+    {{--<body id="body">--}}
+    {{--@foreach($oldCertificates as $oldCertificate)--}}
+        {{--{!! $oldCertificate->content  !!}--}}
         {{--<input type="hidden" id="formId" value="{{$formContent->id}}">--}}
 
-    @endforeach
+    {{--@endforeach--}}
 
-    </body>
-@endif
+    {{--</body>--}}
+{{--@endif--}}
 

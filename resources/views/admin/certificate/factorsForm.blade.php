@@ -6,10 +6,10 @@
     <script>
         $(document).on('click','#print',function () {
 
-            var body      = $('#body')[0].innerHTML;
+           // var body      = $('#body')[0].innerHTML;
             //var token     = $('#token').val();
             var requestId = $('#requestId').val();
-            var formId    = $('#formId').val();
+           // var formId    = $('#formId').val();
             var button    = $(this);
             jQuery.ajaxSetup({
                 headers: {
@@ -21,7 +21,7 @@
                 url  : "{{url('admin/formSave')}}/{{1}}",
                 type : "post",
                 context : button,
-                data : {'body':body  , 'requestId' : requestId ,'formId':formId},
+                data : {'requestId' : requestId},
                 success : function(response)
                 {
                     alert(response);
@@ -39,7 +39,7 @@
     </script>
 
 
-@if(!empty($productRequestRecords))
+{{--@if(!empty($productRequestRecords))--}}
     <body id="body">
 
     <div style="padding:1% 2.5%">
@@ -81,13 +81,13 @@
         <i class="fa-print"></i>
     </div>
     </body>
-@endif
+{{--@endif--}}
 
-@if(!empty($formContents))
-    <body id="body">
-        @foreach($formContents as $formContent)
-            {!! $formContent->content  !!}
-            <input type="hidden" id="formId" value="{{$formContent->id}}">
-        @endforeach
-    </body>
-@endif
+{{--@if(!empty($formContents))--}}
+    {{--<body id="body">--}}
+        {{--@foreach($formContents as $formContent)--}}
+            {{--{!! $formContent->content  !!}--}}
+            {{--<input type="hidden" id="formId" value="{{$formContent->id}}">--}}
+        {{--@endforeach--}}
+    {{--</body>--}}
+{{--@endif--}}
