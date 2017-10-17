@@ -41,16 +41,16 @@
                 </div>
                 <form id="form_certificate">
                     @if(!empty($requestRecords[0]))
-                        <input type="hidden" value="{{$requestRecords[0]->request_id}}" name="request_id">
+                        <input type="hidden" value="{{$requestRecords[0]->request_id}}" id="requestId" name="requestId">
                     @endif
                     <div class="row" style="font-size: 18px;direction: rtl;text-align: right;margin-bottom: 10px;">
                         <div class="col-md-12"> بدینوسیله گواهی می شود خدمات انجام شده توسط شرکت / فروشگاه
                             <input id="shop_comp" name="shop_comp"
                                    placeholder="" required="required" type="text" style="width: 20%;padding:2px 5px 2px 5px;"> به واحد
                             <span style="color:red">{{$users[0]->unit->title}}</span> به آقای / خانم
-                            <select name="receiver_id" id="" style="font-size: 18px;padding:2px 5px 2px 5px;">
+                            <select name="receiver_id"  style="font-size: 18px;padding:2px 5px 2px 5px;">
                                 @foreach($users as $user2)
-                                    <option value="{{$user2->id}}">{{$user2->name}} {{$user2->family}}</option>
+                                    <option name ='receiverId' value="{{$user2->id}}">{{$user2->name}} {{$user2->family}}</option>
                                 @endforeach
                             </select> تحویل گردید و پرداخت شده است.
                         </div>
@@ -71,8 +71,8 @@
                     </tr>
                     </thead>
                     <tbody id="main_table">
-                    {{ csrf_field() }}
-                    <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
+                    {{--{{ csrf_field() }}--}}
+
                     <?php $row=1; ?>
 
                     @foreach($requestRecords as $requestRecord)
@@ -99,11 +99,13 @@
                             <td class="gray1"><input type="text" class="form-control new_price" id="new_price" content="content" name="new_price[]" style="font-size:16px;color:red"/></td>
                             <input type="hidden" value="{{$requestRecord->price}}" id="record_price" class="record_price" name="">
                             <input type="hidden" value="" id="new_price2" class="new_price2" name="new_price2[]">
+
                         </tr>
                     @endforeach
-
+                    <input type="hidden" id="token" value="{{ csrf_token() }}">
                     <input type="hidden" value="0" name="checked_count" id="checked_count">
                     <input type="hidden" value="" name="certificate_type" id="certificate_type">
+                    <input type="hidden" value="" name="" id="receiverId">
                     </tbody>
                 </table>
 
@@ -136,7 +138,7 @@
             $(this).parents('tr').find('.new_price2').val(price);
 
 //            var price=$(this).parents('tr').find('.price').val();
-            price = price.replace(',', '');
+            price = price.replace(/,/g, '');
         });
     </script>
 <script>
@@ -148,23 +150,44 @@
 
 </script>
     <script>
-        var checked_count;
-        $(".record_ch").click(function() {
-            if(this.checked) {
-                checked_count=$('#checked_count').val();
-                checked_count++;
-                $('#checked_count').val(checked_count);
-            }
-            if(!(this.checked)) {
-                checked_count=$('#checked_count').val();
-                checked_count--;
-                $('#checked_count').val(checked_count);
-            }
-        });
+//        var checked_count;
+//        $(".record_ch").click(function() {
+//            if(this.checked) {
+//                checked_count=$('#checked_count').val();
+//                checked_count++;
+//                $('#checked_count').val(checked_count);
+//            }
+//            if(!(this.checked)) {
+//                checked_count=$('#checked_count').val();
+//                checked_count--;
+//                $('#checked_count').val(checked_count);
+//            }
+//        });
         $(document).on('click','#install_certificate',function(){
-            var certificate_type=$(this).attr('content');
-            $('#certificate_type').val(certificate_type);
-            var DOM = $('#table');
+
+            var recordId  = '';
+            var newRate   = '';
+            var newPrice  = '';
+            var newCount  = '';
+            var unitCount = '';
+            var token = $('#token').val();
+            var requestId = $('#requestId').val();
+            var certificateType = $(this).attr('content');
+            $("[name = 'record']:checked").each(function(){
+
+               recordId  += $(this).val()+',';
+               newRate   += $(this).parents('tr').find('.new_rate').val()+',';
+               newCount  += $(this).parents('tr').find('.new_count').val()+',';
+               unitCount += $(this).parents('tr').find('.unit_count').val()+',';
+               newPrice += $(this).parents('tr').find('.new_price').val().replace(/,/g , '')+',';
+            });
+
+            var receiverId = '';
+            $("[name='receiverId']:selected").each(function(){
+                receiverId += $(this).val();
+                $('#receiverId').val(receiverId);
+            });
+
             var shop_comp = $('#shop_comp').val();
             if(shop_comp == '' || shop_comp == null)
             {
@@ -214,31 +237,44 @@
                                 function (isConfirm) {
                                     if (isConfirm) {
                                         //serialize() send all form input values
-                                        var formData = $('#form_certificate').serialize();
+                                        //var formData = $('#form_certificate').serialize();
 //                                        console.log(formData);
 //                                        return false;
-                                        $.ajaxSetup({
-                                            headers: {
-                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                                            }
-                                        });
+//                                        $.ajaxSetup({
+//                                            headers: {
+//                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+//                                            }
+//                                        });
                                         $.ajax({
                                             url: "{{ url('admin/execute_certificate') }}",
                                             type: 'POST',
                                             //dataType: 'json',
-                                            data: formData,
-                                            context : td,
+                                            data:
+                                                {
+                                                    'recordId': recordId,
+                                                    'newRate' : newRate ,
+                                                    'newPrice' : newPrice,
+                                                    'newCount':newCount,
+                                                    '_token' : token,
+                                                    'unitCount':unitCount,
+                                                    'receiverId':receiverId,
+                                                    'certificateType' : certificateType,
+                                                    'shop_comp'       : shop_comp,
+                                                    'requestId'      : requestId
+                                                },
+
+                                            //context : recordId,
                                             success: function (response) {
                                                // $(td).parentsUntil(DOM,'tr').hide();
                                                 console.log(response);
                                                 swal
                                                 ({
                                                     title: 'گواهی ثبت شد',
-                                                    text:'گواهی به لیست گواهی ها اضافه شد',
+                                                    text:"گواهی به لیست گواهی ها اضافه شد",
                                                     type:'success',
                                                     confirmButtonText: "بستن"
                                                 });
-                                                setInterval(function(){ window.location.reload(); }, 1000);
+                                                setInterval(function(){ window.location.reload(true); }, 1000);
 
                                             },
                                             error: function (error) {
@@ -304,9 +340,27 @@
 
 
         $(document).on('click','#use_certificate',function(){
-            var certificate_type=$(this).attr('content');
-            $('#certificate_type').val(certificate_type);
-            var DOM = $('#table');
+            var recordId  = '';
+            var newRate   = '';
+            var newPrice  = '';
+            var newCount  = '';
+            var unitCount = '';
+            var token = $('#token').val();
+            var requestId = $('#requestId').val();
+            var certificateType = $(this).attr('content');
+            $("[name = 'record']:checked").each(function(){
+                recordId  += $(this).val()+',';
+                newRate   += $(this).parents('tr').find('.new_rate').val()+',';
+                newCount  += $(this).parents('tr').find('.new_count').val()+',';
+                unitCount += $(this).parents('tr').find('.unit_count').val()+',';
+                newPrice += $(this).parents('tr').find('.new_price').val().replace(/,/g , '')+',';
+            });
+
+            var receiverId = '';
+            $("[name='receiverId']:selected").each(function(){
+                receiverId += $(this).val();
+                $('#receiverId').val(receiverId);
+            });
             var shop_comp = $('#shop_comp').val();
             if(shop_comp == '' || shop_comp == null)
             {
@@ -359,17 +413,30 @@
                                         var formData = $('#form_certificate').serialize();
                                         //                    console.log(formData);
                                         //                    return false;
-                                        $.ajaxSetup({
-                                            headers: {
-                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                                            }
-                                        });
+//                                        $.ajaxSetup({
+//                                            headers: {
+//                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+//                                            }
+//                                        });
                                         $.ajax({
                                             url: "{{ url('admin/execute_certificate') }}",
                                             type: 'POST',
+
                                             //dataType: 'json',
-                                            data: formData,
-                                            context : td,
+                                            data:
+                                                {
+                                                    'recordId': recordId,
+                                                    'newRate' : newRate ,
+                                                    'newPrice' : newPrice,
+                                                    'newCount':newCount,
+                                                    '_token' : token,
+                                                    'unitCount':unitCount,
+                                                    'receiverId':receiverId,
+                                                    'certificateType' : certificateType,
+                                                    'shop_comp'       : shop_comp,
+                                                    'requestId'      : requestId
+                                                },
+                                            //context : td,
                                             success: function (response) {
                                                // $(td).parentsUntil(DOM,'tr').hide();
                                                 console.log(response);
@@ -380,7 +447,7 @@
                                                     type:'success',
                                                     confirmButtonText: "بستن"
                                                 });
-                                                setInterval(function(){ window.location.reload(); }, 1000);
+                                                setInterval(function(){ window.location.reload(true); }, 1000);
                                             },
                                             error: function (error) {
                                                 if (error.status === 422) {
@@ -444,9 +511,21 @@
 
 
         $(document).on('click','#service_certificate',function(){
-            var certificate_type=$(this).attr('content');
-            $('#certificate_type').val(certificate_type);
-            var DOM = $('#table');
+            var recordId  = '';
+            var newRate   = '';
+            var newPrice  = '';
+            var newCount  = '';
+            var unitCount = '';
+            var token = $('#token').val();
+            var requestId = $('#requestId').val();
+            var certificateType = $(this).attr('content');
+            $("[name = 'record']:checked").each(function(){
+                recordId  += $(this).val()+',';
+                newRate   += $(this).parents('tr').find('.new_rate').val()+',';
+                newCount  += $(this).parents('tr').find('.new_count').val()+',';
+                unitCount += $(this).parents('tr').find('.unit_count').val()+',';
+                newPrice += $(this).parents('tr').find('.new_price').val().replace(/,/g , '')+',';
+            });
             var shop_comp = $('#shop_comp').val();
             if(shop_comp == '' || shop_comp == null)
             {
@@ -496,20 +575,33 @@
                                 function (isConfirm) {
                                     if (isConfirm) {
                                         //serialize() send all form input values
-                                        var formData = $('#form_certificate').serialize();
-                                        //                    console.log(formData);
-                                        //                    return false;
-                                        $.ajaxSetup({
-                                            headers: {
-                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                                            }
-                                        });
+//                                        var formData = $('#form_certificate').serialize();
+//                                        //                    console.log(formData);
+//                                        //                    return false;
+//                                        $.ajaxSetup({
+//                                            headers: {
+//                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+//                                            }
+//                                        });
                                         $.ajax({
                                             url: "{{ url('admin/execute_certificate') }}",
                                             type: 'POST',
                                             //dataType: 'json',
-                                            data: formData,
-                                            context : td,
+                                            data:
+                                                {
+                                                    'recordId': recordId,
+                                                    'newRate' : newRate ,
+                                                    'newPrice' : newPrice,
+                                                    'newCount':newCount,
+                                                    '_token' : token,
+                                                    'unitCount':unitCount,
+                                                    'receiverId':receiverId,
+                                                    'certificateType' : certificateType,
+                                                    'shop_comp'       : shop_comp,
+                                                    'requestId'      : requestId
+                                                },
+
+                                            //context : td,
                                             success: function (response) {
                                                 //$(td).parentsUntil(DOM,'tr').hide();
                                                 console.log(response);
@@ -520,7 +612,7 @@
                                                     type:'success',
                                                     confirmButtonText: "بستن"
                                                 });
-                                                setInterval(function(){ window.location.reload(); }, 1000);
+                                                setInterval(function(){ window.location.reload(true) }, 1000);
                                             },
                                             error: function (error) {
                                                 if (error.status === 422) {

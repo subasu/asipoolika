@@ -13,7 +13,7 @@
     <script>
         $(document).on('click','#print',function () {
 
-          //  var body      = $('#body')[0].innerHTML;
+            var body      = $('#body')[0].innerHTML;
             //var token     = $('#token').val();
             var requestId = $('#requestId').val();
             var button    = $(this);
@@ -29,7 +29,7 @@
 
                url  : "{{url('admin/formSave')}}/{{3}}",
                type : "post",
-               context : button,
+               context :{'button':button,'body':body},
                data : {'requestId':requestId , 'certificateId' : certificateId ,'title':title},
                success : function(response)
                {
@@ -45,6 +45,19 @@
 
             });
         })
+//        function printData(){
+//            var printContents = $('#body')[0].innerHTML;
+//            w = window.open();
+//            w.document.write(printContents);
+//            w.document.close(); // necessary for IE >= 10
+//            w.focus(); // necessary for IE >= 10
+//            setTimeout(function () { // necessary for Chrome
+//                w.print();
+//                w.close();
+//            }, 3000);
+//            return true;
+//        }
+
     </script>
 
 {{--@if(!empty($certificateRecords))--}}
