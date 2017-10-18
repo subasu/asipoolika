@@ -204,7 +204,7 @@
                                     confirmButtonText: "بستن"
                                 });
                                 setInterval(function () {
-                                    window.location.reload();
+                                    window.location.reload(true);
                                 }, 2000);
                             },error:function(error)
                             {
