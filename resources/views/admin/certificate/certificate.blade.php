@@ -526,6 +526,13 @@
                 unitCount += $(this).parents('tr').find('.unit_count').val()+',';
                 newPrice += $(this).parents('tr').find('.new_price').val().replace(/,/g , '')+',';
             });
+
+            var receiverId = '';
+            $("[name='receiverId']:selected").each(function(){
+                receiverId += $(this).val();
+                $('#receiverId').val(receiverId);
+            });
+
             var shop_comp = $('#shop_comp').val();
             if(shop_comp == '' || shop_comp == null)
             {

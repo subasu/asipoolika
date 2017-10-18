@@ -244,8 +244,10 @@ class SupplyController extends Controller
             case 1:
                 $unitSupervisorId = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->value('id');
                 //dd($unitSupervisorId);
-                $unitSupervisorUpdate = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->update(['is_supervisor' => 0]);
+                $unitSupervisorUpdate = User::where('id',$unitSupervisorId)->update(['is_supervisor' => 0]);
                 $supervisorId = Unit::where('title','تدارکات')->value('supervisor_id');
+                $supplyUnitId = Unit::where('title','تدارکات')->value('id');
+
                 if($unitSupervisorUpdate)
                 {
                     $userId = DB::table('users')->insertGetId
@@ -260,15 +262,22 @@ class SupplyController extends Controller
                         'description'       =>trim($request->description),
                         'unit_id'           =>$request->unitId,
                         'is_supervisor'     => 1,
-                        'supervisor_id'     =>$supervisorId,
                         'created_at'        =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
 
                     ]);
                     if($userId)
                     {
-                        $updateUser  = User::where('supervisor_id',$unitSupervisorId)->update(['supervisor_id' => $userId]);
+                        if($request->unitId == $supplyUnitId)
+                        {
+                            $updateHimSelf = User::where('id',$userId)->update(['supervisor_id' => $userId]);
+                        }else
+                            {
+                                $updateHimSelf = User::where('id',$userId)->update(['supervisor_id' => $supervisorId]);
+                            }
+                        $updateUser  = User::where([['is_supervisor',0],['unit_id',$request->unitId]])->update(['supervisor_id' => $userId]);
                         $updateUsers = User::where('id',$unitSupervisorId)->update(['supervisor_id' => $userId]);
-                        if($updateUser || $updateUsers)
+                        $updateUnit  = Unit::where('id',$request->unitId)->update(['supervisor_id' => $userId]);
+                        if($updateUser && $updateUsers && $updateUnit || $updateHimSelf)
                         {
                             return response('کاربر جدید درج شد');
                         }
@@ -280,13 +289,8 @@ class SupplyController extends Controller
                 break;
 
             case 2:
-                $unitSupervisors = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->get();
-                $supervisorId   = 0;
-                foreach ($unitSupervisors as $unitSupervisor)
-                {
-                    $supervisorId += $unitSupervisor->id;
-                }
-                //dd($supervisorId);
+                $supervisorId = User::where([['unit_id',$request->unitId],['is_supervisor',1]])->value('id');
+
                 $userId = DB::table('users')->insertGetId
                 ([
                     'title'             =>trim($request->title),
@@ -326,7 +330,12 @@ class SupplyController extends Controller
                 ]);
                 if($userId)
                 {
-                    return response('کاربر جدید درج شد');
+                    $unitUpdate = Unit::where('id',$request->unitId)->update(['supervisor_id' => $supervisorId]);
+                    if($unitUpdate)
+                    {
+                        return response('کاربر جدید درج شد');
+                    }
+
                 }
                 break;
 
@@ -354,12 +363,12 @@ class SupplyController extends Controller
                     if(count($users)>0)
                     {
                         $usersWithNewManager = User::where([['is_supervisor',0],['unit_id',$request->unitId],['supervisor_id',$supervisorId]])->update(['supervisor_id' => $userId]);
-                        if($usersWithNewManager)
+                        $unitUpdate          = Unit::where('id',$request->unitId)->update(['supervisor_id' => $userId]);
+                        if($usersWithNewManager && $unitUpdate)
                         {
                             return response('کاربر جدید درج شد');
                         }
                     }
-                    return response('کاربر جدید درج شد');
 
                 }
         }
@@ -1044,29 +1053,38 @@ class SupplyController extends Controller
     // shiri : below function is to register admin message related to ticket
     public function adminSendMessage(Request $request)
     {
-        $message = Message::where('id',$request->messageId)->value('answer');
-        //$count = count($message);
-        //dd($count);
-        if($message == null)
+        $ticketId = Message::where('id',$request->messageId)->value('ticket_id');
+        $checkTicketToBeActive = Ticket::where('id',$ticketId)->value('active');
+        if($checkTicketToBeActive == 0)
         {
-            $query = Message::where('id',$request->messageId)->update
-            ([
-                'answer' => $request->message,
-                'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
-            ]);
-            if($query)
+            $message = Message::where('id',$request->messageId)->value('answer');
+            //$count = count($message);
+            //dd($count);
+            if($message == null)
             {
-                return response('پاسخ شما با موفقیت ثبت گردید');
+                $query = Message::where('id',$request->messageId)->update
+                ([
+                    'answer' => $request->message,
+                    'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                ]);
+                if($query)
+                {
+                    return response('پاسخ شما با موفقیت ثبت گردید');
+                }
+                else
+                {
+                    return response('خطا در ثبت اطلاعات ، لطفا با بخش پشتیبانی تماس بگیرید');
+                }
             }
             else
             {
-                return response('خطا در ثبت اطلاعات ، لطفا با بخش پشتیبانی تماس بگیرید');
+                return response('قبلا به این پیام پاسخ داده اید،لطفا درخواست مجدد نفرمائید');
             }
-        }
-        else
-        {
-            return response('قبلا به این پیام پاسخ داده اید،لطفا درخواست مجدد نفرمائید');
-        }
+        }else
+            {
+                return response('با توجه به اینکه این تیکت بسته شده است ، امکان ارسال پیام وجود ندارد ');
+            }
+
 
     }
 

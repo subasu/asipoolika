@@ -79,7 +79,7 @@
                success: function(response)
                {
                    alert(response);
-                   setInterval(function(){ window.location.reload(); }, 1000);
+                   setInterval(function(){ window.location.reload(true); }, 1000);
                },error: function (error) {
                     if (error.status === 422) {
                         var x = error.responseJSON;

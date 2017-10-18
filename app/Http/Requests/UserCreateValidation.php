@@ -58,8 +58,8 @@ class UserCreateValidation extends FormRequest
                 //'cellphone.numeric' => ' فیلد موبایل عددی است',
                 //'internal_phone.required' => ' فیلد شماره داخلی الزامی است ',
                 //'internal_phone.numeric' => ' فیلد شماره داخلی عددی است',
-                'internal_phone.size' => ' فیلد شماره داخلی باید 11 رقمی باشد',
-                'unit_id.required' => ' فیلد شماره واحد الزامی است',
+                //'internal_phone.size' => ' فیلد شماره داخلی باید 11 رقمی باشد',
+                'unit_id.required' => 'لطفا فیلد واحد را اتنخاب نمایید',
                 //'supervisor_id.required' => ' فیلد سرپرست الزامی است',
                 //'description.required' => ' فیلد توضیحات الزامی است',
             ];

@@ -89,7 +89,7 @@
                             confirmButtonText: "بستن"
                         });
                         setInterval(function () {
-                            window.location.reload();
+                            window.location.reload(true);
                         }, 3000);
                     },
                     error: function (xhr) {
@@ -154,7 +154,7 @@
                                         confirmButtonText: "بستن"
                                     });
                                     setInterval(function () {
-                                        window.location.reload();
+                                        window.location.reload(true);
                                     }, 2000);
                                 },error:function(error)
                                 {

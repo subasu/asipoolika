@@ -382,24 +382,28 @@ class RequestController extends Controller
     //shiri : below function is to register user message related to ticket
     public function userSendMessage(Request $request)
     {
-        $userId = Auth::user()->id;
-        $now  = new Carbon();
-        $date = $now->toDateString();
-        $time = $now->toTimeString();
-        $query = DB::table('ticket_messages')->insertGetId
-        ([
-             'ticket_id'         => $request->ticketId,
-             'user_id'           => $userId,
-             'content'           => trim($request->message),
-             'time'              => $time,
-             'date'              => $date
-        ]);
-        if($query)
-        {
-            return response('پیام شما به مسئول مربوطه ارسال گردید');
+        $checkTicketToBeActive  = Ticket::where('id',$request->ticketId)->value('active');
+        if($checkTicketToBeActive == 0) {
+            $userId = Auth::user()->id;
+            $now = new Carbon();
+            $date = $now->toDateString();
+            $time = $now->toTimeString();
+            $query = DB::table('ticket_messages')->insertGetId
+            ([
+                'ticket_id' => $request->ticketId,
+                'user_id' => $userId,
+                'content' => trim($request->message),
+                'time' => $time,
+                'date' => $date
+            ]);
+            if ($query) {
+                return response('پیام شما به مسئول مربوطه ارسال گردید');
+            } else {
+                return response('خطا در ثبت اطلاعات');
+            }
         }else
             {
-                return response('خطا در ثبت اطلاعات');
+                return response('با توجه به اینکه این تیکت بسته شده است ، امکان ارسال پیام وجود ندارد');
             }
     }
 

@@ -280,7 +280,7 @@
                                 type: "info",
                                 confirmButtonText: "بستن"
                             });
-                            window.location.reload();
+                            window.location.reload(true);
                         }, error: function (error) {
                             swal({
                                 title: "",
@@ -329,7 +329,7 @@
                                 type: "info",
                                 confirmButtonText: "بستن"
                             });
-                            window.location.reload();
+                            window.location.reload(true);
                         }, error: function (error) {
                             swal({
                                 title: "",
@@ -368,7 +368,7 @@
                             type: "info",
                             confirmButtonText: "بستن"
                         });
-                        window.location.reload();
+                        window.location.reload(true);
                     }, error: function (error) {
                         swal({
                             title: "",
