@@ -58,15 +58,15 @@ class UpdateReqAndCer extends Command
                         'active'=>1
                     ]);
                 }while($q==null);
-                $productRequest->msg='Yes';
-                    return redirect('admin/confirmProductRequestManagement');
+//                $productRequest->msg='Yes';
+//                    return redirect('admin/confirmProductRequestManagement');
             }
-            else
-                $productRequest->msg='No';
-            $productRequest->all_count=$all_count;
-            $productRequest->accept_count=$accept_count;
-            $productRequest->has_certificate_count=$has_certificate_count;
-            $productRequest->refuse_count=$refuse_count;
+//            else
+//                $productRequest->msg='No';
+//            $productRequest->all_count=$all_count;
+//            $productRequest->accept_count=$accept_count;
+//            $productRequest->has_certificate_count=$has_certificate_count;
+//            $productRequest->refuse_count=$refuse_count;
 //active the certificates of this request
             $certificates=Certificate::where('request_id',$productRequest->id)->get();
 
@@ -98,16 +98,16 @@ class UpdateReqAndCer extends Command
                         'active'=>1
                     ]);
                 }while ($q==null);
-                $productRequest->msg='Yes';
+//                $productRequest->msg='Yes';
 
             }
 
-            else
-                $productRequest->msg='No';
-            $productRequest->all_count=$all_count;
-            $productRequest->accept_count=$accept_count;
-            $productRequest->has_certificate_count=$has_certificate_count;
-            $productRequest->refuse_count=$refuse_count;
+//            else
+//                $productRequest->msg='No';
+//            $productRequest->all_count=$all_count;
+//            $productRequest->accept_count=$accept_count;
+//            $productRequest->has_certificate_count=$has_certificate_count;
+//            $productRequest->refuse_count=$refuse_count;
 
 //active the certificates of this request
             $certificates=Certificate::where('request_id',$productRequest->id)->get();

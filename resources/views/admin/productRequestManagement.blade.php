@@ -31,7 +31,6 @@
 
     </div>
 </div>
-
             <!-- Modal -->
         <div id="commentModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -52,7 +51,6 @@
                 <input type="hidden" id="token" value="{{ csrf_token() }}">
             </div>
         </div>
-
 
         <div class="clearfix"></div>
         <div class="row">
