@@ -271,7 +271,7 @@
                             type: "info",
                             confirmButtonText: "بستن"
                         });
-                        setInterval(function(){ window.location.reload(true); }, 1000);
+                        setTimeout(function(){ window.location.reload(true); }, 1000);
                     },error: function (error) {
                         if (error.status === 422) {
                             var x = error.responseJSON;

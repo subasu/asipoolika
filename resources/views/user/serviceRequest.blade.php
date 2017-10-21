@@ -261,7 +261,7 @@
                                         confirmButtonText: "بستن"
                                     });
                                     //rayat: refresh page after showing alert
-                                    setInterval(myTimer, 1500);
+                                    setTimeout(myTimer, 1500);
                                     function myTimer() {
                                         location.reload()
                                     }

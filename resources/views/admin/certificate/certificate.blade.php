@@ -270,10 +270,7 @@
                                                     type: 'success',
                                                     confirmButtonText: "بستن"
                                                 });
-
-                                                window.location.reload(true);
-
-
+                                                setTimeout(function(){ window.location.reload(true); }, 1000);
                                             },
                                             error: function (error) {
                                                 if (error.status === 422) {
@@ -441,10 +438,7 @@ $(document).on('click','#use_certificate',function()
                                     type: 'success',
                                     confirmButtonText: "بستن"
                                 });
-
-                                window.location.reload(true);
-
-
+                                setTimeout(function(){ window.location.reload(true); }, 1000);
                             },
                             error: function (error) {
                                 if (error.status === 422) {
@@ -602,10 +596,7 @@ $(document).on('click','#service_certificate',function()
                                     type: 'success',
                                     confirmButtonText: "بستن"
                                 });
-
-                                window.location.reload(true);
-
-
+                                setTimeout(function(){ window.location.reload(true); }, 1000);
                             },
                             error: function (error) {
                                 if (error.status === 422) {
