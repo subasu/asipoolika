@@ -75,39 +75,49 @@ class CertificateController extends Controller
 
     public function execute_certificate(Request $request)
     {
-        $record_count=$request->checked_count;
-        if($record_count!=0)
+        $newPriceArray  = explode(',',$request->newPrice);
+        $newRateArray   = explode(',',$request->newRate);
+        $recordIdArray  = explode(',',$request->recordId);
+        $newCountArray  = explode(',',$request->newCount);
+        $unitCountArray = explode(',',$request->unitCount);
+        $len            = count($recordIdArray);
+        //dd($len);
+        //$record_count=$request->checked_count;
+        if($len!=0)
         {
             $certificate_id=DB::table('certificates')->insertGetId([
-                'request_id'=>$request->request_id,
-                'user_id'=>Auth::user()->id,
-                'shop_comp'=>$request->shop_comp,
-                'certificate_type_id'=>$request->certificate_type,
-                'created_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                'request_id'          => $request->requestId,
+                'user_id'             => Auth::user()->id,
+                'shop_comp'           => $request->shop_comp,
+                'certificate_type_id' => $request->certificateType,
+                'created_at'          => Carbon::now(new \DateTimeZone('Asia/Tehran'))
             ]);
             $i=0;
-            do{
+            while($i < $len-1)
+            {
                 $q=DB::table('certificate_records')->insert([
-                    'request_record_id'=>$request->record_id[$i],
-                    'price'=>$request->new_price2[$i],
-                    'rate'=>$request->new_rate[$i],
-                    'count'=>$request->new_count[$i],
-                    'unit_count'=>$request->unit_count[$i],
-                    'certificate_id'=>$certificate_id,
-                    'receiver_id'=>$request->receiver_id,
+
+                    'request_record_id' => $recordIdArray[$i],
+                    'price'             => $newPriceArray[$i],
+                    'rate'              => $newRateArray[$i],
+                    'count'             => $newCountArray[$i],
+                    'unit_count'        => $unitCountArray[$i],
+                    'certificate_id'    => $certificate_id,
+                    'receiver_id'       => $request->receiverId,
                 ]);
-                DB::table('request_records')->where('id',$request->record_id[$i])->update([
+                DB::table('request_records')->where('id',$recordIdArray[$i])->update([
                     'step'=>8,
-                    'receiver_id'=>$request->receiver_id,
+                    'receiver_id'=>$request->receiverId,
                     'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
                 ]);
                 $i++;
-                $record_count--;
-            } while($record_count>=1);
+                //$record_count--;
+            }
+
             if($q)
                 return response('inserted');
         }
-        return response($record_count);
+        //return response($record_count);
     }
 
     public function productCertificatesManagementGet()

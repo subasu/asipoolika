@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
+@extends('layouts.formLayout')
+
     @if(!empty($certificateRecord[0]))
         @if($certificateRecords[0]->certificate->certificate_type_id == 1)
             <title>{{$pageTitleInstall}}</title>
@@ -15,18 +14,23 @@
         $(document).on('click','#print',function () {
 
             var body      = $('#body')[0].innerHTML;
-            var token     = $('#token').val();
+            //var token     = $('#token').val();
             var requestId = $('#requestId').val();
             var button    = $(this);
             var certificateId = $('#certificateId').val();
             var title         = $('#title').val();
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $.ajax
             ({
 
                url  : "{{url('admin/formSave')}}/{{3}}",
                type : "post",
-               context : button,
-               data : {'body':body ,'_token':token,'requestId':requestId , 'certificateId' : certificateId ,'title':title},
+               context :{'button':button,'body':body},
+               data : {'requestId':requestId , 'certificateId' : certificateId ,'title':title},
                success : function(response)
                {
                    alert(response);
@@ -41,9 +45,22 @@
 
             });
         })
+//        function printData(){
+//            var printContents = $('#body')[0].innerHTML;
+//            w = window.open();
+//            w.document.write(printContents);
+//            w.document.close(); // necessary for IE >= 10
+//            w.focus(); // necessary for IE >= 10
+//            setTimeout(function () { // necessary for Chrome
+//                w.print();
+//                w.close();
+//            }, 3000);
+//            return true;
+//        }
+
     </script>
-</head>
-@if(!empty($certificateRecords))
+
+{{--@if(!empty($certificateRecords))--}}
     <body id="body">
     <input type="hidden" id="token" value="{{ csrf_token() }}">
     <div style="padding:1% 2.5%">
@@ -147,15 +164,17 @@
         </div>
     </div>
     </body>
-@endif
+{{--@endif--}}
 
-@if(!empty($oldCertificates))
-    <body id="body">
-    @foreach($oldCertificates as $oldCertificate)
-        {!! $oldCertificate->content  !!}
+{{--@if(!empty($oldCertificates))--}}
+
+    {{--<body id="body">--}}
+    {{--@foreach($oldCertificates as $oldCertificate)--}}
+        {{--{!! $oldCertificate->content  !!}--}}
         {{--<input type="hidden" id="formId" value="{{$formContent->id}}">--}}
-    @endforeach
-    </body>
-@endif
 
-</html>
+    {{--@endforeach--}}
+
+    {{--</body>--}}
+{{--@endif--}}
+

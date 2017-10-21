@@ -39,18 +39,18 @@
                     <a href="#" data-toggle="popover" title="بستن" class="pull-left" data-dismiss="alert" aria-label="close" style="font-size:20px;color:white"><i class="fa fa-times" aria-hidden="true"></i></a>
                     <strong>روش کار : </strong> گزینه هایی که قصد صدور آن ها در یک گواهی را دارید انتخاب کرده و روی دکمه مربوطه کلیک کنید.
                 </div>
-                <form id="form_certificate">
+                {{--<form id="form_certificate">--}}
                     @if(!empty($requestRecords[0]))
-                        <input type="hidden" value="{{$requestRecords[0]->request_id}}" name="request_id">
+                        <input type="hidden" value="{{$requestRecords[0]->request_id}}" id="requestId" name="requestId">
                     @endif
                     <div class="row" style="font-size: 18px;direction: rtl;text-align: right;margin-bottom: 10px;">
                         <div class="col-md-12"> بدینوسیله گواهی می شود خدمات انجام شده توسط شرکت / فروشگاه
                             <input id="shop_comp" name="shop_comp"
                                    placeholder="" required="required" type="text" style="width: 20%;padding:2px 5px 2px 5px;"> به واحد
                             <span style="color:red">{{$users[0]->unit->title}}</span> به آقای / خانم
-                            <select name="receiver_id" id="" style="font-size: 18px;padding:2px 5px 2px 5px;">
+                            <select name="receiver_id"  style="font-size: 18px;padding:2px 5px 2px 5px;">
                                 @foreach($users as $user2)
-                                    <option value="{{$user2->id}}">{{$user2->name}} {{$user2->family}}</option>
+                                    <option name ='receiverId' value="{{$user2->id}}">{{$user2->name}} {{$user2->family}}</option>
                                 @endforeach
                             </select> تحویل گردید و پرداخت شده است.
                         </div>
@@ -71,8 +71,8 @@
                     </tr>
                     </thead>
                     <tbody id="main_table">
-                    {{ csrf_field() }}
-                    <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
+                    {{--{{ csrf_field() }}--}}
+
                     <?php $row=1; ?>
 
                     @foreach($requestRecords as $requestRecord)
@@ -87,34 +87,36 @@
                             <input type="hidden" value="{{$requestRecord->title}}" id="record_title" class="record_title" name="">
 
                             <td class="gray3" id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
-                            <td class="gray3" ><input type="text" class="form-control new_count" id="new_count"  name="new_count[]"/></td>
+                            <td class="gray3" ><input type="text" class="form-control new_count required" id="new_count"  name="new_count[]"/></td>
                             <input type="hidden" class="record_count2" value="{{$requestRecord->count}}" name="count">
                             <input type="hidden" class="unit_count" value="{{$requestRecord->unit_count}}" name="unit_count[]">
 
                             <td class="gray2">{{number_format($requestRecord->rate)}} تومان</td>
-                            <td class="gray2"><input type="text" class="form-control new_rate" id="new_rate"  name="new_rate[]"/></td>
+                            <td class="gray2"><input type="text" class="form-control new_rate required" id="new_rate"  name="new_rate[]"/></td>
                             <input type="hidden" value="{{$requestRecord->rate}}" id="record_rate" class="record_rate" name="">
 
                             <td class="gray1">{{number_format($requestRecord->price)}} تومان</td>
-                            <td class="gray1"><input type="text" class="form-control new_price" id="new_price" content="content" name="new_price[]" style="font-size:16px;color:red"/></td>
+                            <td class="gray1"><input type="text" class="form-control new_price required" id="new_price" content="content" name="new_price[]" style="font-size:16px;color:red"/></td>
                             <input type="hidden" value="{{$requestRecord->price}}" id="record_price" class="record_price" name="">
                             <input type="hidden" value="" id="new_price2" class="new_price2" name="new_price2[]">
+
                         </tr>
                     @endforeach
-
+                    <input type="hidden" id="token" value="{{ csrf_token() }}">
                     <input type="hidden" value="0" name="checked_count" id="checked_count">
                     <input type="hidden" value="" name="certificate_type" id="certificate_type">
+                    <input type="hidden" value="" name="" id="receiverId">
                     </tbody>
                 </table>
 
-                </form>
+                {{--</form>--}}
                 <div class="row">
                     <div class="col-md-12 col-md-offset-3">
                         @if($requestRecords[0]->request->request_type_id==3)
-                        <button id="use_certificate" content="2" class="btn btn-danger col-md-3">صدور گواهی تحویل و مصرف</button>
-                        <button id="install_certificate"  content="1" class="btn btn-primary col-md-3">صدور گواهی تحویل و نصب</button>
+                            <button   id="use_certificate" content="2" class="btn btn-danger col-md-3" >صدور گواهی تحویل و مصرف</button>
+                            <button   id="install_certificate"  content="1" class="btn btn-primary col-md-3" >صدور گواهی تحویل و نصب</button>
                         @elseif($requestRecords[0]->request->request_type_id==2)
-                        <button id="service_certificate"  content="3" class="btn btn-success col-md-4 col-md-offset-1">صدور گواهی انجام خدمت</button>
+                        <button  id="service_certificate"  content="3" class="btn btn-success col-md-4 col-md-offset-1" value="">صدور گواهی انجام خدمت</button>
                         @endif
                     </div>
                 </div>
@@ -136,7 +138,7 @@
             $(this).parents('tr').find('.new_price2').val(price);
 
 //            var price=$(this).parents('tr').find('.price').val();
-            price = price.replace(',', '');
+            price = price.replace(/,/g, '');
         });
     </script>
 <script>
@@ -148,23 +150,22 @@
 
 </script>
     <script>
-        var checked_count;
-        $(".record_ch").click(function() {
-            if(this.checked) {
-                checked_count=$('#checked_count').val();
-                checked_count++;
-                $('#checked_count').val(checked_count);
-            }
-            if(!(this.checked)) {
-                checked_count=$('#checked_count').val();
-                checked_count--;
-                $('#checked_count').val(checked_count);
-            }
-        });
-        $(document).on('click','#install_certificate',function(){
-            var certificate_type=$(this).attr('content');
-            $('#certificate_type').val(certificate_type);
-            var DOM = $('#table');
+//        var checked_count;
+//        $(".record_ch").click(function() {
+//            if(this.checked) {
+//                checked_count=$('#checked_count').val();
+//                checked_count++;
+//                $('#checked_count').val(checked_count);
+//            }
+//            if(!(this.checked)) {
+//                checked_count=$('#checked_count').val();
+//                checked_count--;
+//                $('#checked_count').val(checked_count);
+//            }
+//        });
+        $(document).on('click','#install_certificate',function()
+        {
+
             var shop_comp = $('#shop_comp').val();
             if(shop_comp == '' || shop_comp == null)
             {
@@ -172,29 +173,56 @@
                 $('#shop_comp').focus();
                 return false;
             }
-            if ($('input.record_ch').is(':checked'))
-            {
-                $("[name = 'record']:checked").each(function(){
-                    var td    = $(this);
-                    var rate  = $(this).parents('tr').find('.new_rate').val();
-                    var price = $(this).parents('tr').find('.new_price').val();
-                    var count = $(this).parents('tr').find('.new_count').val();
-                    if(count == '' || count == null )
-                    {
-                        $(this).parents('tr').find('.new_count').css('border' , 'red 4px solid' );
-                        $(this).parents('tr').find('.new_count').focus();
-                        return false;
-                    }
-                    else if(rate == '' || rate == null)
-                    {
-                        $(this).parents('tr').find('.new_rate').css('border' , 'red 4px solid' );
-                        $(this).parents('tr').find('.new_rate').focus();
-                        return false;
-                    }
-                    else if(price == '' || price == null )
-                    {
-                        $(this).parents('tr').find('.new_price').css('border' , 'red 4px solid' );
-                        $(this).parents('tr').find('.new_price').focus();
+
+            var recordId  = '';
+            var newRate   = '';
+            var newPrice  = '';
+            var newCount  = '';
+            var unitCount = '';
+            var token = $('#token').val();
+            var requestId = $('#requestId').val();
+            var certificateType = $(this).attr('content');
+            var receiverId = '';
+            $("[name='receiverId']:selected").each(function(){
+                receiverId += $(this).val();
+                $('#receiverId').val(receiverId);
+            });
+            if ($('input.record_ch').is(':checked')) {
+                $("[name = 'record']:checked").each(function () {
+
+                    recordId += $(this).val() + ',';
+                    newRate += $(this).parents('tr').find('.new_rate').val() + ',';
+                    newCount += $(this).parents('tr').find('.new_count').val() + ',';
+                    unitCount += $(this).parents('tr').find('.unit_count').val() + ',';
+                    newPrice += $(this).parents('tr').find('.new_price').val().replace(/,/g, '') + ',';
+                });
+                //$("[name = 'record']:checked").each(function () {
+                    var counter = 0;
+                    $("[name = 'record']:checked").each(function() {
+                        if($(this).parents('tr').find('.new_count').val() === "")
+                        {
+                            $(this).parents('tr').find('.new_count').css("border" , "red 4px solid");
+                            counter++;
+                        }
+                        if ($(this).parents('tr').find('.new_rate').val() === "")
+                        {
+                            $(this).parents('tr').find('.new_rate').css("border" , "red 4px solid");
+                            counter++;
+                        }
+                        if($(this).parents('tr').find('.new_price').val() === "")
+                        {
+                            $(this).parents('tr').find('.new_price').css("border" , "red 4px solid");
+                            counter++;
+                        }
+
+                    });
+                    if(counter > 0){
+                        swal({
+                            title: "",
+                            text:'مقادیر سطرهای انتخاب شده خالی است ، لطفا مقادیر مربوطه را پر نمایید و مجددا در خواست خود را ارسال نمایید' ,
+                            type: "info",
+                            confirmButtonText: "بستن"
+                        });
                         return false;
                     }
                     else
@@ -213,33 +241,36 @@
                                 },
                                 function (isConfirm) {
                                     if (isConfirm) {
-                                        //serialize() send all form input values
-                                        var formData = $('#form_certificate').serialize();
-//                                        console.log(formData);
-//                                        return false;
-                                        $.ajaxSetup({
-                                            headers: {
-                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                                            }
-                                        });
-                                        $.ajax({
+                                        $.ajax
+                                        ({
+
                                             url: "{{ url('admin/execute_certificate') }}",
                                             type: 'POST',
                                             //dataType: 'json',
-                                            data: formData,
-                                            context : td,
+                                            data: {
+                                                'recordId': recordId,
+                                                'newRate': newRate,
+                                                'newPrice': newPrice,
+                                                'newCount': newCount,
+                                                '_token': token,
+                                                'unitCount': unitCount,
+                                                'receiverId': receiverId,
+                                                'certificateType': certificateType,
+                                                'shop_comp': shop_comp,
+                                                'requestId': requestId
+                                            },
+                                            //context : recordId,
                                             success: function (response) {
-                                               // $(td).parentsUntil(DOM,'tr').hide();
+                                                // $(td).parentsUntil(DOM,'tr').hide();
                                                 console.log(response);
                                                 swal
                                                 ({
                                                     title: 'گواهی ثبت شد',
-                                                    text:'گواهی به لیست گواهی ها اضافه شد',
-                                                    type:'success',
+                                                    text: "گواهی به لیست گواهی ها اضافه شد",
+                                                    type: 'success',
                                                     confirmButtonText: "بستن"
                                                 });
-                                                setInterval(function(){ window.location.reload(); }, 1000);
-
+                                                setTimeout(function(){ window.location.reload(true); }, 1000);
                                             },
                                             error: function (error) {
                                                 if (error.status === 422) {
@@ -247,7 +278,7 @@
                                                     //show them somewhere in the markup
                                                     //e.g
                                                     var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
-//
+                                                    //
                                                     $.each($errors, function (key, value) {
                                                         errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
                                                     });
@@ -257,7 +288,7 @@
                                                     ({
                                                         title: 'خطاهای زیر را برطرف کنید !',
                                                         text: '',
-                                                        type:'error',
+                                                        type: 'error',
                                                         confirmButtonText: "بستن"
                                                     });
                                                 } else if (error.status === 500) {
@@ -265,28 +296,27 @@
                                                     ({
                                                         title: 'لطفا با بخش پشتیبانی تماس بگیرید',
                                                         text: 'خطایی رخ داده است',
-                                                        type:'error',
+                                                        type: 'error',
                                                         confirmButtonText: "بستن"
                                                     });
                                                     console.log(error);
                                                 }
                                             }
                                         });
-                                    } else {
-                                        swal
-                                        ({
-                                            title: 'منصرف شدید',
-                                            text: 'درخواست ثبت نشد',
-                                            type:'error',
-                                            confirmButtonText: "بستن"
-                                        });
-                                    }
+                                    }else
+                                        {
+                                            swal
+                                            ({
+                                                title: 'منصرف شدید',
+                                                text: 'درخواست ثبت نشد',
+                                                type:'error',
+                                                confirmButtonText: "بستن"
+                                            });
+                                        }
+
                                 });
 
                         }
-
-
-                });
 
             }else
                 {
@@ -299,284 +329,322 @@
                     });
                     return false;
                 }
+
+    });
+
+$(document).on('click','#use_certificate',function()
+{
+    var shop_comp = $('#shop_comp').val();
+    if(shop_comp == '' || shop_comp == null)
+    {
+        $('#shop_comp').css('border' , 'red 4px solid');
+        $('#shop_comp').focus();
+        return false;
+    }
+
+    var recordId  = '';
+    var newRate   = '';
+    var newPrice  = '';
+    var newCount  = '';
+    var unitCount = '';
+    var token = $('#token').val();
+    var requestId = $('#requestId').val();
+    var certificateType = $(this).attr('content');
+    var receiverId = '';
+    $("[name='receiverId']:selected").each(function(){
+        receiverId += $(this).val();
+        $('#receiverId').val(receiverId);
+    });
+    if ($('input.record_ch').is(':checked')) {
+        $("[name = 'record']:checked").each(function () {
+
+            recordId += $(this).val() + ',';
+            newRate += $(this).parents('tr').find('.new_rate').val() + ',';
+            newCount += $(this).parents('tr').find('.new_count').val() + ',';
+            unitCount += $(this).parents('tr').find('.unit_count').val() + ',';
+            newPrice += $(this).parents('tr').find('.new_price').val().replace(/,/g, '') + ',';
         });
-
-
-
-        $(document).on('click','#use_certificate',function(){
-            var certificate_type=$(this).attr('content');
-            $('#certificate_type').val(certificate_type);
-            var DOM = $('#table');
-            var shop_comp = $('#shop_comp').val();
-            if(shop_comp == '' || shop_comp == null)
+        //$("[name = 'record']:checked").each(function () {
+        var counter = 0;
+        $("[name = 'record']:checked").each(function() {
+            if($(this).parents('tr').find('.new_count').val() === "")
             {
-                $('#shop_comp').css('border' , 'red 4px solid');
-                $('#shop_comp').focus();
-                return false;
+                $(this).parents('tr').find('.new_count').css("border" , "red 4px solid");
+                counter++;
             }
-            if ($('input.record_ch').is(':checked'))
+            if ($(this).parents('tr').find('.new_rate').val() === "")
             {
-                $("[name = 'record']:checked").each(function(){
-                    var td    = $(this);
-                    var rate  = $(this).parents('tr').find('.new_rate').val();
-                    var price = $(this).parents('tr').find('.new_price').val();
-                    var count = $(this).parents('tr').find('.new_count').val();
-                    if(count == '' || count == null )
-                    {
-                        $(this).parents('tr').find('.new_count').css('border' , 'red 4px solid' );
-                        $(this).parents('tr').find('.new_count').focus();
-                        return false;
-                    }
-                    else if(rate == '' || rate == null)
-                    {
-                        $(this).parents('tr').find('.new_rate').css('border' , 'red 4px solid' );
-                        $(this).parents('tr').find('.new_rate').focus();
-                        return false;
-                    }
-                    else if(price == '' || price == null )
-                    {
-                        $(this).parents('tr').find('.new_price').css('border' , 'red 4px solid' );
-                        $(this).parents('tr').find('.new_price').focus();
-                        return false;
-                    }
-                    else
-                    {
+                $(this).parents('tr').find('.new_rate').css("border" , "red 4px solid");
+                counter++;
+            }
+            if($(this).parents('tr').find('.new_price').val() === "")
+            {
+                $(this).parents('tr').find('.new_price').css("border" , "red 4px solid");
+                counter++;
+            }
 
-                        swal({
-                                    title: "آیا از ثبت درخواست مطمئن هستید؟",
-                                    text: "",
-                                    type: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "	#5cb85c",
-                                    cancelButtonText: "خیر ، منصرف شدم",
-                                    confirmButtonText: "بله ثبت شود",
-                                    closeOnConfirm: true,
-                                    closeOnCancel: false
-                                },
-                                function (isConfirm) {
-                                    if (isConfirm) {
-                                        //serialize() send all form input values
-                                        var formData = $('#form_certificate').serialize();
-                                        //                    console.log(formData);
-                                        //                    return false;
-                                        $.ajaxSetup({
-                                            headers: {
-                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                                            }
-                                        });
-                                        $.ajax({
-                                            url: "{{ url('admin/execute_certificate') }}",
-                                            type: 'POST',
-                                            //dataType: 'json',
-                                            data: formData,
-                                            context : td,
-                                            success: function (response) {
-                                               // $(td).parentsUntil(DOM,'tr').hide();
-                                                console.log(response);
-                                                swal
-                                                ({
-                                                    title: 'گواهی ثبت شد',
-                                                    text:'گواهی به لیست گواهی ها اضافه شد',
-                                                    type:'success',
-                                                    confirmButtonText: "بستن"
-                                                });
-                                                setInterval(function(){ window.location.reload(); }, 1000);
-                                            },
-                                            error: function (error) {
-                                                if (error.status === 422) {
-                                                    $errors = error.responseJSON; //this will get the errors response data.
-                                                    //show them somewhere in the markup
-                                                    //e.g
-                                                    var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
-//
-                                                    $.each($errors, function (key, value) {
-                                                        errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
-                                                    });
-                                                    errorsHtml += '</ul></div>';
-                                                    $('fieldset').append(errorsHtml);
-                                                    swal
-                                                    ({
-                                                        title: 'خطاهای زیر را برطرف کنید !',
-                                                        text: '',
-                                                        type:'error',
-                                                        confirmButtonText: "بستن"
-                                                    });
-                                                } else if (error.status === 500) {
-                                                    swal
-                                                    ({
-                                                        title: 'لطفا با بخش پشتیبانی تماس بگیرید',
-                                                        text: 'خطایی رخ داده است',
-                                                        type:'error',
-                                                        confirmButtonText: "بستن"
-                                                    });
-                                                    console.log(error);
-                                                }
-                                            }
-                                        });
-                                    } else {
-                                        swal
-                                        ({
-                                            title: 'منصرف شدید',
-                                            text: 'درخواست ثبت نشد',
-                                            type:'error',
-                                            confirmButtonText: "بستن"
-                                        });
-                                    }
+        });
+        if(counter > 0){
+            swal({
+                title: "",
+                text:'مقادیر سطرهای انتخاب شده خالی است ، لطفا مقادیر مربوطه را پر نمایید و مجددا در خواست خود را ارسال نمایید' ,
+                type: "info",
+                confirmButtonText: "بستن"
+            });
+            return false;
+        }
+        else
+        {
+
+            swal({
+                    title: "آیا از ثبت درخواست مطمئن هستید؟",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "	#5cb85c",
+                    cancelButtonText: "خیر ، منصرف شدم",
+                    confirmButtonText: "بله ثبت شود",
+                    closeOnConfirm: true,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $.ajax
+                        ({
+
+                            url: "{{ url('admin/execute_certificate') }}",
+                            type: 'POST',
+                            //dataType: 'json',
+                            data: {
+                                'recordId': recordId,
+                                'newRate': newRate,
+                                'newPrice': newPrice,
+                                'newCount': newCount,
+                                '_token': token,
+                                'unitCount': unitCount,
+                                'receiverId': receiverId,
+                                'certificateType': certificateType,
+                                'shop_comp': shop_comp,
+                                'requestId': requestId
+                            },
+                            //context : recordId,
+                            success: function (response) {
+                                // $(td).parentsUntil(DOM,'tr').hide();
+                                console.log(response);
+                                swal
+                                ({
+                                    title: 'گواهی ثبت شد',
+                                    text: "گواهی به لیست گواهی ها اضافه شد",
+                                    type: 'success',
+                                    confirmButtonText: "بستن"
                                 });
-
+                                setTimeout(function(){ window.location.reload(true); }, 1000);
+                            },
+                            error: function (error) {
+                                if (error.status === 422) {
+                                    $errors = error.responseJSON; //this will get the errors response data.
+                                    //show them somewhere in the markup
+                                    //e.g
+                                    var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
+                                    //
+                                    $.each($errors, function (key, value) {
+                                        errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                    });
+                                    errorsHtml += '</ul></div>';
+                                    $('fieldset').append(errorsHtml);
+                                    swal
+                                    ({
+                                        title: 'خطاهای زیر را برطرف کنید !',
+                                        text: '',
+                                        type: 'error',
+                                        confirmButtonText: "بستن"
+                                    });
+                                } else if (error.status === 500) {
+                                    swal
+                                    ({
+                                        title: 'لطفا با بخش پشتیبانی تماس بگیرید',
+                                        text: 'خطایی رخ داده است',
+                                        type: 'error',
+                                        confirmButtonText: "بستن"
+                                    });
+                                    console.log(error);
+                                }
+                            }
+                        });
                     }
-
-
                 });
+        }
 
-            }else
-            {
-                swal
-                ({
-                    title: 'لطفا سطری را انتخاب نمایید',
-                    text: '',
-                    type:'',
-                    confirmButtonText: "بستن"
-                });
-                return false;
-            }
+    }else
+    {
+        swal
+        ({
+            title: 'لطفا سطری را انتخاب نمایید',
+            text: '',
+            type:'',
+            confirmButtonText: "بستن"
         });
+        return false;
+    }
+
+});
 
 
-        $(document).on('click','#service_certificate',function(){
-            var certificate_type=$(this).attr('content');
-            $('#certificate_type').val(certificate_type);
-            var DOM = $('#table');
-            var shop_comp = $('#shop_comp').val();
-            if(shop_comp == '' || shop_comp == null)
+$(document).on('click','#service_certificate',function()
+{
+    var shop_comp = $('#shop_comp').val();
+    if(shop_comp == '' || shop_comp == null)
+    {
+        $('#shop_comp').css('border' , 'red 4px solid');
+        $('#shop_comp').focus();
+        return false;
+    }
+
+    var recordId  = '';
+    var newRate   = '';
+    var newPrice  = '';
+    var newCount  = '';
+    var unitCount = '';
+    var token = $('#token').val();
+    var requestId = $('#requestId').val();
+    var certificateType = $(this).attr('content');
+    var receiverId = '';
+    $("[name='receiverId']:selected").each(function(){
+        receiverId += $(this).val();
+        $('#receiverId').val(receiverId);
+    });
+    if ($('input.record_ch').is(':checked')) {
+        $("[name = 'record']:checked").each(function () {
+
+            recordId += $(this).val() + ',';
+            newRate += $(this).parents('tr').find('.new_rate').val() + ',';
+            newCount += $(this).parents('tr').find('.new_count').val() + ',';
+            unitCount += $(this).parents('tr').find('.unit_count').val() + ',';
+            newPrice += $(this).parents('tr').find('.new_price').val().replace(/,/g, '') + ',';
+        });
+        //$("[name = 'record']:checked").each(function () {
+        var counter = 0;
+        $("[name = 'record']:checked").each(function() {
+            if($(this).parents('tr').find('.new_count').val() === "")
             {
-                $('#shop_comp').css('border' , 'red 4px solid');
-                $('#shop_comp').focus();
-                return false;
+                $(this).parents('tr').find('.new_count').css("border" , "red 4px solid");
+                counter++;
             }
-            if ($('input.record_ch').is(':checked'))
+            if ($(this).parents('tr').find('.new_rate').val() === "")
             {
-                $("[name = 'record']:checked").each(function(){
-                    var td    = $(this);
-                    var rate  = $(this).parents('tr').find('.new_rate').val();
-                    var price = $(this).parents('tr').find('.new_price').val();
-                    var count = $(this).parents('tr').find('.new_count').val();
-                    if(count == '' || count == null )
-                    {
-                        $(this).parents('tr').find('.new_count').css('border' , 'red 4px solid' );
-                        $(this).parents('tr').find('.new_count').focus();
-                        return false;
-                    }
-                    else if(rate == '' || rate == null)
-                    {
-                        $(this).parents('tr').find('.new_rate').css('border' , 'red 4px solid' );
-                        $(this).parents('tr').find('.new_rate').focus();
-                        return false;
-                    }
-                    else if(price == '' || price == null )
-                    {
-                        $(this).parents('tr').find('.new_price').css('border' , 'red 4px solid' );
-                        $(this).parents('tr').find('.new_price').focus();
-                        return false;
-                    }
-                    else
-                    {
+                $(this).parents('tr').find('.new_rate').css("border" , "red 4px solid");
+                counter++;
+            }
+            if($(this).parents('tr').find('.new_price').val() === "")
+            {
+                $(this).parents('tr').find('.new_price').css("border" , "red 4px solid");
+                counter++;
+            }
 
-                        swal({
-                                    title: "آیا از ثبت درخواست مطمئن هستید؟",
-                                    text: "",
-                                    type: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "	#5cb85c",
-                                    cancelButtonText: "خیر ، منصرف شدم",
-                                    confirmButtonText: "بله ثبت شود",
-                                    closeOnConfirm: true,
-                                    closeOnCancel: false
-                                },
-                                function (isConfirm) {
-                                    if (isConfirm) {
-                                        //serialize() send all form input values
-                                        var formData = $('#form_certificate').serialize();
-                                        //                    console.log(formData);
-                                        //                    return false;
-                                        $.ajaxSetup({
-                                            headers: {
-                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                                            }
-                                        });
-                                        $.ajax({
-                                            url: "{{ url('admin/execute_certificate') }}",
-                                            type: 'POST',
-                                            //dataType: 'json',
-                                            data: formData,
-                                            context : td,
-                                            success: function (response) {
-                                                //$(td).parentsUntil(DOM,'tr').hide();
-                                                console.log(response);
-                                                swal
-                                                ({
-                                                    title: 'گواهی ثبت شد',
-                                                    text:'گواهی به لیست گواهی ها اضافه شد',
-                                                    type:'success',
-                                                    confirmButtonText: "بستن"
-                                                });
-                                                setInterval(function(){ window.location.reload(); }, 1000);
-                                            },
-                                            error: function (error) {
-                                                if (error.status === 422) {
-                                                    $errors = error.responseJSON; //this will get the errors response data.
-                                                    //show them somewhere in the markup
-                                                    //e.g
-                                                    var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
-//
-                                                    $.each($errors, function (key, value) {
-                                                        errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
-                                                    });
-                                                    errorsHtml += '</ul></div>';
-                                                    $('fieldset').append(errorsHtml);
-                                                    swal
-                                                    ({
-                                                        title: 'خطاهای زیر را برطرف کنید !',
-                                                        text: '',
-                                                        type:'error',
-                                                        confirmButtonText: "بستن"
-                                                    });
-                                                } else if (error.status === 500) {
-                                                    swal
-                                                    ({
-                                                        title: 'لطفا با بخش پشتیبانی تماس بگیرید',
-                                                        text: 'خطایی رخ داده است',
-                                                        type:'error',
-                                                        confirmButtonText: "بستن"
-                                                    });
-                                                    console.log(error);
-                                                }
-                                            }
-                                        });
-                                    } else {
-                                        swal
-                                        ({
-                                            title: 'منصرف شدید',
-                                            text: 'درخواست ثبت نشد',
-                                            type:'error',
-                                            confirmButtonText: "بستن"
-                                        });
-                                    }
+        });
+        if(counter > 0){
+            swal({
+                title: "",
+                text:'مقادیر سطرهای انتخاب شده خالی است ، لطفا مقادیر مربوطه را پر نمایید و مجددا در خواست خود را ارسال نمایید' ,
+                type: "info",
+                confirmButtonText: "بستن"
+            });
+            return false;
+        }
+        else
+        {
+
+            swal({
+                    title: "آیا از ثبت درخواست مطمئن هستید؟",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "	#5cb85c",
+                    cancelButtonText: "خیر ، منصرف شدم",
+                    confirmButtonText: "بله ثبت شود",
+                    closeOnConfirm: true,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $.ajax
+                        ({
+
+                            url: "{{ url('admin/execute_certificate') }}",
+                            type: 'POST',
+                            //dataType: 'json',
+                            data: {
+                                'recordId': recordId,
+                                'newRate': newRate,
+                                'newPrice': newPrice,
+                                'newCount': newCount,
+                                '_token': token,
+                                'unitCount': unitCount,
+                                'receiverId': receiverId,
+                                'certificateType': certificateType,
+                                'shop_comp': shop_comp,
+                                'requestId': requestId
+                            },
+                            //context : recordId,
+                            success: function (response) {
+                                // $(td).parentsUntil(DOM,'tr').hide();
+                                console.log(response);
+                                swal
+                                ({
+                                    title: 'گواهی ثبت شد',
+                                    text: "گواهی به لیست گواهی ها اضافه شد",
+                                    type: 'success',
+                                    confirmButtonText: "بستن"
                                 });
+                                setTimeout(function(){ window.location.reload(true); }, 1000);
+                            },
+                            error: function (error) {
+                                if (error.status === 422) {
+                                    $errors = error.responseJSON; //this will get the errors response data.
+                                    //show them somewhere in the markup
+                                    //e.g
+                                    var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
+                                    //
+                                    $.each($errors, function (key, value) {
+                                        errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                    });
+                                    errorsHtml += '</ul></div>';
+                                    $('fieldset').append(errorsHtml);
+                                    swal
+                                    ({
+                                        title: 'خطاهای زیر را برطرف کنید !',
+                                        text: '',
+                                        type: 'error',
+                                        confirmButtonText: "بستن"
+                                    });
+                                } else if (error.status === 500) {
+                                    swal
+                                    ({
+                                        title: 'لطفا با بخش پشتیبانی تماس بگیرید',
+                                        text: 'خطایی رخ داده است',
+                                        type: 'error',
+                                        confirmButtonText: "بستن"
+                                    });
+                                    console.log(error);
+                                }
+                            }
+                        });
                     }
                 });
+        }
 
-            }else
-            {
-                swal
-                ({
-                    title: 'لطفا سطری را انتخاب نمایید',
-                    text: '',
-                    type:'',
-                    confirmButtonText: "بستن"
-                });
-                return false;
-            }
+    }else
+    {
+        swal
+        ({
+            title: 'لطفا سطری را انتخاب نمایید',
+            text: '',
+            type:'',
+            confirmButtonText: "بستن"
         });
-    </script>
+        return false;
+    }
+
+});
+</script>
 @endsection

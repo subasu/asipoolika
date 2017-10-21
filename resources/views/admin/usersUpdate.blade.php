@@ -195,7 +195,7 @@
                         type: "info",
                         confirmButtonText: "بستن"
                     });
-                        setInterval(function () {
+                        setTimeout(function () {
                             window.location.href ='../usersManagement';
                         },1000);
 

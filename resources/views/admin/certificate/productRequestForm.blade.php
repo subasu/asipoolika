@@ -1,23 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
+@extends('layouts.formLayout')
+
     <title>{{$pageTitle}}</title>
     <link href="{{ url('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
     <script>
         $(document).on('click','#print',function () {
 
-            var body = $('#body')[0].innerHTML;
-            var token = $('#token').val();
+            //var body = $('#body')[0].innerHTML;
+            //var token = $('#token').val();
             var requestId = $('#requestId').val();
             var button    = $(this);
             var formId = $('#formId').val();
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $.ajax
             ({
+                cache : false,
                 url  : "{{url('admin/formSave')}}/{{2}}",
                 type : "post",
                 context : button,
-                data : {'body':body ,'_token':token , 'requestId' : requestId, 'formId' : formId},
+                data : {'requestId' : requestId},
                 success : function(response)
                 {
                     alert(response);
@@ -33,17 +38,16 @@
             });
         })
     </script>
-</head>
-@if(!empty($productRequestRecords))
+
+{{--@if(!empty($productRequestRecords))--}}
 <body id="body">
-<input type="hidden" id="token" value="{{ csrf_token() }}">
 
 <div style="padding:1% 2.5%">
     <h4>نام واحد</h4>
     <h3 style="text-align: right;">فرم شماره 2</h3>
     <h4> « درخواست خرید کالا »</h4>
 <table style="direction:rtl;text-align: center" cellpadding="0" cellspacing="0" class="formTable" width="100%">
-    <input type="hidden" id="token" value="{{ csrf_token() }}">
+
     <thead>
     <tr style="border-bottom: 0;">
         <th rowspan="2">ردیف</th>
@@ -104,15 +108,16 @@
     <i class="fa-print"></i>
 </div>
 </body>
-@endif
+{{--@endif--}}
 
-@if(!empty($formContents))
-    <body id="body">
-    @foreach($formContents as $formContent)
-        {!! $formContent->content  !!}
-        <input type="hidden" id="formId" value="{{$formContent->id}}">
-    @endforeach
-    </body>
-@endif
+{{--@if(!empty($formContents))--}}
+    {{--<body id="body">--}}
+    {{--@foreach($formContents as $formContent)--}}
+        {{--{!! $formContent->content  !!}--}}
+        {{--<input type="hidden" id="formId" value="{{$formContent->id}}">--}}
 
-</html>
+    {{--@endforeach--}}
+    {{--</body>--}}
+{{--@endif--}}
+
+

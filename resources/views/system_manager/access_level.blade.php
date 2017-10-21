@@ -88,9 +88,9 @@
                             type: "info",
                             confirmButtonText: "بستن"
                         });
-                        setInterval(function () {
-                            window.location.reload();
-                        }, 3000);
+                        setTimeout(function () {
+                            window.location.reload(true);
+                        }, 1000);
                     },
                     error: function (xhr) {
                         if (xhr.status === 422) {
@@ -153,9 +153,9 @@
                                         type: "info",
                                         confirmButtonText: "بستن"
                                     });
-                                    setInterval(function () {
-                                        window.location.reload();
-                                    }, 2000);
+                                    setTimeout(function () {
+                                        window.location.reload(true);
+                                    }, 1000);
                                 },error:function(error)
                                 {
                                     console.log(error);
