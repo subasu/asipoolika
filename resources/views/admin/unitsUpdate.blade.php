@@ -96,9 +96,9 @@
                         type: "info",
                         confirmButtonText: "بستن"
                     });
-                    setInterval(function () {
+                    setTimeout(function () {
                         top.location = '{{URL::asset('admin/unitsManage')}}';
-                    }, 2000);
+                    }, 1000);
                 },
                 error: function (xhr) {
                     if (xhr.status === 422) {
@@ -123,9 +123,9 @@
                             type: "info",
                             confirmButtonText: "بستن"
                         });
-                        setInterval(function () {
+                        setTimeout(function () {
                             top.location = '{{URL::asset('admin/unitsManage')}}';
-                        }, 3000);
+                        }, 1000);
                     }
                     else if (xhr.status === 500) {
                         swal({
