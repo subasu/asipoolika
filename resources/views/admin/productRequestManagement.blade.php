@@ -79,7 +79,8 @@
                     {{--</div>--}}
                     <div class="x_content">
                         @if($pageName=='confirmProductRequest')
-                            <a href="{{url('admin/confirmProductRequestManagement')}}" class="btn btn-danger col-md-12"><i class="fa fa-refresh"></i> بروزرسانی درخواست ها</a>
+                            {{--<a href="{{url('admin/confirmProductRequestManagement')}}" class="btn btn-danger col-md-12"><i class="fa fa-refresh"></i> بروزرسانی درخواست ها</a>--}}
+                            {{--<a href="{{url('admin/confirmServiceRequestManagement')}}" class="btn btn-danger col-md-12"><i class="fa fa-refresh"></i> بروزرسانی درخواست ها</a>--}}
                             <button  style="font-size:18px;" type="button" class="btn btn-primary col-md-12" data-toggle="modal" data-target="#myModal">نحوه کار با این صفحه <i class="fa fa-question-circle-o" aria-hidden="true"></i></button>
 
                             @endif
