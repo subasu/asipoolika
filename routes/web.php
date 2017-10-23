@@ -21,6 +21,8 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
 Route::group(['prefix'=>'user'],function() {
 
+    Route::get('changePassword','RequestController@changePassword');
+
     Route::get('/productRequest',[
         'uses'=>'RequestController@productRequestGet',
         'middleware' => 'roles',
@@ -245,6 +247,9 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('costDocumentForm/{id}','SupplyController@costDocumentForm');                                //96/7/17
         Route::post('saveCostDocument','SupplyController@saveCostDocument');
         Route::get('productDeliveryAndUseForm/{id}','SupplyController@productDeliveryAndUseForm');
+
+        Route::get('issueBill','SupplyController@issueBillGet');
+
 
         //rayat - users manage:
 //        Route::get('usersManagement', 'SupplyController@usersManagementGet');

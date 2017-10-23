@@ -33,5 +33,5 @@
             $("#password").css({"font-family": "dotsfont", "font-size": "12px"});
         });
     </script>
-    </form>
+
 @endsection

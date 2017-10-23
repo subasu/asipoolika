@@ -1,7 +1,6 @@
 @extends('layouts.adminLayout')
 @section('content')
 
-
         <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog" style="direction: rtl;text-align: right">
     <div class="modal-dialog">
@@ -17,7 +16,7 @@
                 <p>مراحل انجام کار : </p>
                 <ol>
                     <li>ابلاغ درخواست به کارپرداز</li>
-                    <li>صدور گواهی</li>
+                    <li>تحویل فوری</li>
                 </ol>
                 <p>در این حین میتوانید درخواست را بطور کامل مشاهده و در صورت نیاز چاپ کنید</p>
                 <p>همچنین میتوانید خلاصه تنظیمی مربوط به آن را نیز چاپ کنید</p>
@@ -93,7 +92,7 @@
                                 <th style="text-align: center ;">نام واحد</th>
                                 <th style="text-align: center ;">درخواست دهنده</th>
                                     @if($pageName=='productRequestManagement')
-                                        <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
+                                        <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
                                         <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                         <th class="col-md-2" style="text-align: center;">رد شده</th>
                                         <th class="col-md-1" style="text-align: center;border-right: 1px solid #d6d6c2">عملیات</th>
@@ -102,7 +101,7 @@
                                         <th class="col-md-1" style="text-align: center ;">رکوردهای رد شده</th>
                                         {{--<th style="text-align: center ;">عملیات</th>--}}
                                     @elseif($pageName=='acceptProductRequestManagement')
-                                        <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
+                                        <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
                                         <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                         <th class="col-md-2" style="text-align: center ;">رد شده</th>
                                         <th class="col-md-1" style="text-align: center ;"></th>
@@ -111,7 +110,7 @@
                                         {{--<th class="col-md-2" style="text-align: center ;">مرحله</th>--}}
                                         {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
                                     @elseif($pageName=='confirmProductRequest')
-                                        <th class="col-md-1" style="text-align: center ;">در انتظار بررسی</th>
+                                        <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
                                         <th class="col-md-1" style="text-align: center ;">دارای گواهی</th>
                                         <th class="col-md-3" style="text-align: center ;border-right: 1px solid #e0e0d1"> عملیات</th>
                                         {{--<td></td>--}}
@@ -177,7 +176,7 @@
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
                                         <td class="col-md-2" style="font-size: 25px;">
                                             {{--<a href="" class="btn btn-danger">صدور صورتجلسه تحویل و نصب</a>--}}
-                                            <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right @if($productRequest->accept_count==0 or $productRequest->supplier_id==null) disabled @endif"> صدور گواهی</a>
+                                            <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right @if($productRequest->accept_count==0 or $productRequest->supplier_id==null) disabled @endif"> تحویل فوری</a>
                                             @if($productRequest->request_type_id == 3)
                                              <a target="_blank" href="{{url('admin/printProductRequest/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right"> چاپ درخواست </a>
                                             @endif

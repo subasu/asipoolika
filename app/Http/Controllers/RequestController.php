@@ -441,4 +441,18 @@ class RequestController extends Controller
         $requestRecords = RequestRecord::where([['request_id',$id],['accept',1],['step',8]])->get();
         return view('user.dailyWorksDetails',compact('pageTitle','requestRecords'));
     }
+    public function changePassword()
+    {
+        $pageTitle='تغییر رمز عبور';
+        $pageName='changePassword';
+        if(Auth::check())
+        {
+            $userInfo=User::where('id',Auth::user()->id)->get();
+            return view('user.changePassword',compact('pageTitle','pageName','userInfo'));
+        }
+        else
+        return redirect('/logout');
+
+    }
+
 }

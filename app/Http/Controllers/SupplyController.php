@@ -1962,11 +1962,19 @@ class SupplyController extends Controller
                             return response('اطلاعات با موفقیت ثبت شد');
                         }
                     }
-
             }
-
-
     }
 
+    public function issueBillGet()
+    {
+        $pageTitle='صدور قبض انبار';
+        $pageName='issueBill';
+        $requests=Request2::where([['request_type_id',3],['active',1]])->get();
+        foreach($requests as $request)
+        {
+            $request->records=RequestRecord::where('request_id',$request->id)->get();
+        }
+        return view('admin.issueBill',compact('pageTitle','pageName','requests'));
+    }
 
 }

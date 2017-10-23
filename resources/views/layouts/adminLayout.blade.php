@@ -85,6 +85,7 @@
                         <span>@if($user_info->is_supervisor==1)@if($user_info->unit_id!=4) مدیر @endif @endif{{$user->unit->description}}</span><br>
                         <h2>{{$user_info->title}} {{$user_info->name}} {{$user_info->family}}</h2>
                     </div>
+
                 </div>
                 <!-- /menu profile quick info -->
 
@@ -93,7 +94,7 @@
                 <!-- sidebar menu -->
                 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                     <div class="menu_section" style="margin-bottom:10px;">
-                        <h3 style="font-size: 16px;"><a href="" onclick="alert('این هم چیز واسه تست! ادد باید همینو بزنین :)')" style="color:white">پروفایل</a></h3>
+                        <h3 style="font-size: 16px;"><a href="" onclick="alert('بزودی!')" style="color:white">پروفایل</a></h3>
                         <ul class="nav side-menu">
                             {{--//system manager menu--}}
                          
@@ -111,7 +112,10 @@
                             @endif
                             {{--//End system manager menu <br>--}}
                             {{--//Admin menu--}}
-
+                            @if($user->is_supervisor==1 and $user->unit_id==9)
+                                <li><a href="{{url('/admin/issueBill')}}"><i class="fa fa-credit-card"></i> صدور قبض انبار</a>
+                                </li>
+                            @endif
                             @if($user->is_supervisor==1 and $user->unit_id!=3)
                                 <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
@@ -269,6 +273,8 @@
 
                             {{--<li style="font-size:20px;"><a style="background-color: rgba(231, 76, 60, 0.88);padding:3px 10px 3px 0" href="{{url('/logout')}}"><i class="fa fa-sign-out" style="margin-left:20px;"></i>خروج</a>--}}
                             {{--</li>--}}
+                            <li><a href={{url('user/changePassword')}}><i class="fa fa-key"></i> تغییر رمز عبور</a>
+                            </li>
                             <li style="background-color: rgba(231, 76, 60, 0.88)"><a href="{{url('/logout')}}"><i class="fa fa-sign-out"></i> خروج</a>
                             </li>
                         </ul>
