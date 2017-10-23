@@ -11,7 +11,7 @@
                 <strong>{{ $errors->first('email') }}</strong>
             </span>
         @endif
-        <input type="text" name="password" id="password" placeholder="رمزعبور"
+        <input type="password" name="password" id="password" placeholder="رمزعبور"
                style="-webkit-text-security: disc;"
                class="{{ $errors->has('password') ? ' has-error' : '' }}"/>
         <i class="fa fa-key"></i>
