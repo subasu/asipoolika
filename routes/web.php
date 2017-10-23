@@ -252,6 +252,8 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('productDeliveryAndUseForm/{id}','SupplyController@productDeliveryAndUseForm');
 
         Route::get('issueBill','SupplyController@issueBillGet');
+        Route::get('billUpload/{id}','SupplyController@billUpload');
+        Route::post('saveBill','SupplyController@saveBill');
 
 
         //rayat - users manage:
