@@ -89,7 +89,7 @@
                         swal({
                             title: "",
                             text: 'رمزهای وارد شده با هم مطابقت ندارند',
-                            type: "warning",
+                            type: "error",
                             confirmButtonText: "بستن"
                         });
                         return false;
@@ -105,7 +105,7 @@
                     swal({
                         title: "",
                         text: response,
-                        type: "info",
+                        type: "success",
                         confirmButtonText: "بستن"
                     });
                 },error : function (error) {
