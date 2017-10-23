@@ -138,55 +138,55 @@
                 var payedPrice = $('#payedPrice').val();
                 var page = $('#page').val();
                 var row = $('#row').val();
-                if(code == '' || code == null)
-                {
-                    $('#code').focus();
-                    $('#code').css('border-color','red');
-                    return false;
-
-                }
-                else if(description == '' || description == null)
+//                if(code == '' || code == null)
+//                {
+//                    $('#code').focus();
+//                    $('#code').css('border-color','red');
+//                    return false;
+//
+//                }
+                if(description == '' || description == null)
                 {
                     $('#description').focus();
                     $('#description').css('border-color','red');
                     return false;
                 }
-                else if(moeinOffice == '' || moeinOffice == null)
-                {
-                    $('#moeinOffice').focus();
-                    $('#moeinOffice').css('border-color','red');
-                    return false;
-                }
+//                else if(moeinOffice == '' || moeinOffice == null)
+//                {
+//                    $('#moeinOffice').focus();
+//                    $('#moeinOffice').css('border-color','red');
+//                    return false;
+//                }
                 else if(generalPrice == '' || generalPrice == null)
                 {
                     $('#generalPrice').focus();
                     $('#generalPrice').css('border-color','red');
                     return false;
                 }
-                else if(deduction == '' || deduction == null)
-                {
-                    $('#deduction').focus();
-                    $('#deduction').css('border-color','red');
-                    return false;
-                }
-                else if(payedPrice == '' || payedPrice == null)
-                {
-                    $('#payedPrice').focus();
-                    $('#payedPrice').css('border-color','red');
-                    return false;
-                }
-                else if(page == '' || page == null)
-                {
-                    $('#page').focus();
-                    $('#page').css('border-color','red');
-                    return false;
-                }
-                else if(row == '' || row == null)
-                {
-                    $('#row').focus();
-                    $('#row').css('border-color','red');
-                    return false;
-                }
+//                else if(deduction == '' || deduction == null)
+//                {
+//                    $('#deduction').focus();
+//                    $('#deduction').css('border-color','red');
+//                    return false;
+//                }
+//                else if(payedPrice == '' || payedPrice == null)
+//                {
+//                    $('#payedPrice').focus();
+//                    $('#payedPrice').css('border-color','red');
+//                    return false;
+//                }
+//                else if(page == '' || page == null)
+//                {
+//                    $('#page').focus();
+//                    $('#page').css('border-color','red');
+//                    return false;
+//                }
+//                else if(row == '' || row == null)
+//                {
+//                    $('#row').focus();
+//                    $('#row').css('border-color','red');
+//                    return false;
+//                }
                 else
                     {
                         recordCount++;
@@ -194,14 +194,14 @@
                         $('#change').append
                         (
                             "<tr>"+
-                            "<td ><input type='number'    value='"+ code +"' class='form-control required'  name='code[]'></td>"+
+                            "<td ><input type='number'    value='"+ code +"' class='form-control'  name='code[]'></td>"+
                             "<td  class='col-md-3'><input type='text'      value='"+description+"' class='form-control required'  name='description[]' ></td>"+
-                            "<td ><input type='number'    value='"+moeinOffice+"' class='form-control required'  name='moeinOffice[]' ></td>"+
+                            "<td ><input type='number'    value='"+moeinOffice+"' class='form-control'  name='moeinOffice[]' ></td>"+
                             "<td ><input type='number'   value='"+generalPrice+"' class='form-control required'  name='generalPrice[]' ></td>"+
-                            "<td ><input type='number'   value='"+deduction+"' class='form-control required'  name='deduction[]' ></td>"+
-                            "<td ><input type='number'   value='"+payedPrice+"' class='form-control required'  name='payedPrice[]'></td>"+
-                            "<td ><input type='number'   value='"+page+"' class='form-control required'  name='page[]' ></td>"+
-                            "<td ><input type='number'   value='"+row+"'  class='form-control required'  name='row[]' ></td>"+
+                            "<td ><input type='number'   value='"+deduction+"' class='form-control'  name='deduction[]' ></td>"+
+                            "<td ><input type='number'   value='"+payedPrice+"' class='form-control'  name='payedPrice[]'></td>"+
+                            "<td ><input type='number'   value='"+page+"' class='form-control'  name='page[]' ></td>"+
+                            "<td ><input type='number'   value='"+row+"'  class='form-control'  name='row[]' ></td>"+
                             "<td ><a type='button' class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
                             "</tr>"
 
@@ -271,7 +271,7 @@
                             type: "info",
                             confirmButtonText: "بستن"
                         });
-                        setTimeout(function(){ window.location.reload(true); }, 1000);
+                       // setTimeout(function(){ window.location.reload(true); }, 1000);
                     },error: function (error) {
                         if (error.status === 422) {
                             var x = error.responseJSON;
