@@ -455,4 +455,45 @@ class RequestController extends Controller
 
     }
 
+
+    //
+    public function saveNewPassword(Request $request)
+    {
+        if (!$request->ajax())
+        {
+            abort(403);
+        }
+        else
+        {
+            if(Auth::user()->id == $request->userId)
+            {
+
+                    if($request->password == $request->confirmPassword)
+                    {
+                        $q=DB::table('users')->where('id',$request->userId)
+                            ->update(['password' => bcrypt($request->password)]);
+                        if($q)
+                        {
+                            //$n=1;
+                            return response('رمز عبور شما تغییر یافت');
+                        }
+                        else
+                        {
+                            //$n=2;
+                            return response('متاسفانه در فرآیند تغییر رمز خطایی رخ داده است!');
+                        }
+                    }
+                    else
+                    {
+                        return response('رمز و تکرار رمز با یکدیگر یکسان نیست');
+                    }
+
+                }
+                else
+                    {
+                        return redirect('/logout');
+                    }
+        }
+    }
+
 }

@@ -21,7 +21,7 @@
                     <div class="x_content">
                         <br />
                         {{--<a href="{{url('admin/realStateManagement')}}" class="btn btn-warning col-md-6 col-xs-12 col-sm-12 col-md-offset-3" style="margin-bottom: 20px;display: none;" id="goAdminPage">بازگشت به مدیریت</a>--}}
-                        <form method="POST" action="{{ url('admin/saveNewPassword') }}" class="form-horizontal form-label-left input_mask" style="direction:rtl" >
+                        <form id="passwordForm" class="form-horizontal form-label-left input_mask" style="direction:rtl" >
                             {{ csrf_field() }}
                             <input type="hidden" value="{{$userInfo[0]->id}}" name="userId" id="userId">
                             <div class="form-group">
@@ -49,13 +49,14 @@
                             </div>
                             <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
-                                    <input id="password-confirm" type="password" name="password_confirmation"  class="form-control" placeholder="تکرار رمز عبور" >
+                                    <input id="confirmPassword" type="password" name="confirmPassword"  class="form-control" placeholder="تکرار رمز عبور" >
                                     @if ($errors->has('password_confirmation'))
                                         <span class="help-block">
                                              <strong>{{ $errors->first('password_confirmation') }}</strong>
                                              </span>
                                     @endif
                                     <span class="fa fa-lock form-control-feedback right" aria-hidden="true"></span>
+
                                 </div>
                             </div>
 
@@ -64,6 +65,7 @@
                                 <div class="col-md-5 col-sm-9 col-xs-12 col-md-offset-3 col-sm-offset-2">
                                     {{--<button type="submit" id="saveChangePassButton" class="btn btn-success col-md-12 col-sm-12 col-xs-12" style="font-size:20px;">ذخیره رمز عبور جدید</button>--}}
                                     <button type="button" id="saveChangePassButton" class="btn btn-success col-md-12 col-sm-12 col-xs-12" style="font-size:20px;">ذخیره رمز عبور جدید</button>
+                                    <input type="hidden" id="userId" name="userId" value="{{$userInfo[0]->id}}">
                                 </div>
                             </div>
                         </form>
@@ -73,4 +75,49 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).on('click','#saveChangePassButton',function(){
+            var formData = new FormData($('#passwordForm')[0]);
+            var password = $('#password').val();
+            var confirmPassword = $('#confirmPassword').val();
+            $.ajax
+            ({
+                beforeSend : function () {
+                    if(password !== confirmPassword)
+                    {
+                        swal({
+                            title: "",
+                            text: 'رمزهای وارد شده با هم مطابقت ندارند',
+                            type: "warning",
+                            confirmButtonText: "بستن"
+                        });
+                        return false;
+                    }
+                },
+                cache : false,
+                url   : "{{url('user/saveNewPassword')}}",
+                type  : "post",
+                data  : formData,
+                contentType : false,
+                processData : false,
+                success : function (response) {
+                    swal({
+                        title: "",
+                        text: response,
+                        type: "info",
+                        confirmButtonText: "بستن"
+                    });
+                },error : function (error) {
+                    swal({
+                        title: "",
+                        text: 'خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید',
+                        type: "warning",
+                        confirmButtonText: "بستن"
+                    });
+                    console.log(error);
+                }
+            })
+        });
+    </script>
 @endsection
