@@ -104,4 +104,8 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Models\Signature','user_id');
     }
+    public function bills()
+    {
+        return $this->hasMany('App\Models\Bill');
+    }
 }
