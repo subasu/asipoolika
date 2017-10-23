@@ -1965,16 +1965,33 @@ class SupplyController extends Controller
             }
     }
 
-    public function issueBillGet()
+    public function issueBillManagementGet()
+    {
+        if(Auth::user()->unit_id==9)
+        {
+            $pageTitle='صدور قبض انبار';
+            $pageName='issueBillManagement';
+            $requests=Request2::where([['request_type_id',3],['active',1]])->get();
+            foreach($requests as $request)
+            {
+                $request->records=RequestRecord::where('request_id',$request->id)->get();
+            }
+            return view('admin.issueBillManagement',compact('pageTitle','pageName','requests'));
+        }
+       else
+           return back();
+    }
+    public function issueBillGet($id)
     {
         $pageTitle='صدور قبض انبار';
         $pageName='issueBill';
-        $requests=Request2::where([['request_type_id',3],['active',1]])->get();
-        foreach($requests as $request)
+        if(Auth::user()->unit_id==9)
         {
-            $request->records=RequestRecord::where('request_id',$request->id)->get();
+            $records=RequestRecord::where([['request_id',$id],['accept',1]])->get();
+            return view('admin.issueBill',compact('pageTitle','pageName','id','records'));
         }
-        return view('admin.issueBill',compact('pageTitle','pageName','requests'));
+        else
+            return back();
     }
 
 }

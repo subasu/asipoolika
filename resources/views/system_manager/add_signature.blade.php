@@ -40,7 +40,6 @@
                                 </label>
                                 {{--<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback pull-right">--}}
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
-
                                     <select class="col-md-10 col-xs-12" id="unit_signature" name="unit_id">
                                         <option readonly>انتخاب واحد</option>
                                         @foreach($units as $unit)

@@ -16,6 +16,9 @@
 <link href="{{ URL::asset('public/dashboard/css/bootstrap.min.css')}}" rel="stylesheet">
 <link href="{{ URL::asset('public/dashboard/fonts/css/font-awesome.min.css')}}" rel="stylesheet">
 <link href="{{ URL::asset('public/dashboard/css/animate.min.css')}}" rel="stylesheet">
+{{--dropzon--}}
+<link href="{{ URL::asset('public/dashboard/css/dropzone.css')}}" rel="stylesheet">
+<link href="{{ URL::asset('public/dashboard/css/dropzone.min.css')}}" rel="stylesheet">
 {{--My Style Code--}}
 <link href="{{ URL::asset('public/dashboard/css/mystyle.css')}}" rel="stylesheet">
 
@@ -113,7 +116,7 @@
                             {{--//End system manager menu <br>--}}
                             {{--//Admin menu--}}
                             @if($user->is_supervisor==1 and $user->unit_id==9)
-                                <li><a href="{{url('/admin/issueBill')}}"><i class="fa fa-credit-card"></i> صدور قبض انبار</a>
+                                <li><a href="{{url('/admin/issueBillManagement')}}"><i class="fa fa-credit-card"></i> صدور قبض انبار</a>
                                 </li>
                             @endif
                             @if($user->is_supervisor==1 and $user->unit_id!=3)

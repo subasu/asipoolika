@@ -51,5 +51,8 @@ class Request2 extends Model
     {
         return $this->belongsTo('App\User','supplier_id');
     }
-
+    public function bills()
+    {
+        return $this->hasMany('App\Models\Bill');
+    }
 }
