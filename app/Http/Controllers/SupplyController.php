@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 //use Illuminate\Http\File;
 use App\Http\Requests\AcceptServiceRequestValidation;
 use App\Http\Requests\CostDocumentValidation;
+use App\Http\Requests\SaveBillValidation;
 use App\Http\Requests\UserCreateValidation;
 use App\Models\Certificate;
 use App\Models\CertificateRecord;
@@ -1992,6 +1993,74 @@ class SupplyController extends Controller
         }
         else
             return back();
+    }
+
+    public function billUpload($id)
+    {
+        $pageTitle = 'آپلو فاکتور';
+        return view('admin.billUpload',compact('pageTitle','id'));
+    }
+
+    public function saveBill(SaveBillValidation $request)
+    {
+        $extension = $request->image->getClientOriginalExtension();
+        $size      = $request->image->getClientSize();
+        if($request->hasFile('image'))
+        {
+            if($extension == 'png' || $extension == 'PNG' || $extension=='jpg' || $extension=='JPG')
+            {
+                if($size < 150000)
+                {
+                    $image = $request->image;
+                    $src  = str_random(4).$image->getClientOriginalName();
+                    $image->move( 'public/dashboard/image/' , $src);
+                    $fileExistence = public_path().'public/dashboard/image/'.$src;
+
+                    if($fileExistence)
+                    {
+                        $jDate = $request->date;
+                        if ($date = explode('/', $jDate)) {
+                            $year = $date[0];
+                            $month = $date[1];
+                            $day = $date[2];
+                        }
+                        $gDate = $this->jalaliToGregorian($year, $month, $day);
+                        $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
+                        $factorId = DB::table('bills')->insertGetId
+                        ([
+                            'src'           => $src,
+                            'date'          => $gDate1,
+                            'factor_number' => $request->factorNumber,
+                            'user_id'       => Auth::user()->id,
+                            'request_id'    => $request->requestId,
+                            'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                        ]);
+                        if($factorId)
+                        {
+                            return response('فایل فاکتور مورد نظر شما آپلود گردید');
+                        }else
+                            {
+                                return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
+                            }
+                    }else
+                        {
+                            return response('خطا در آپلود فایل فاکتور ، تماس با بخش پشتیبانی');
+                        }
+                }
+                else
+                    {
+                        return response('سایز فایل انتخاب شده بیش از حد مجاز میباشد');
+                    }
+            }
+            else
+                {
+                    return response('پسوند فایل انتخاب شده معتبر نیست');
+                }
+        }
+        else
+            {
+                return response('لطفا فایل فاکتور انتخاب نمایید سپس درخواست ثبت فاکتور را بزنید');
+            }
     }
 
 }

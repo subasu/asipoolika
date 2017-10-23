@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewPasswordValidation;
 use App\Http\Requests\SendTicketValidation;
 use App\Http\Requests\ServiceRequestValidation;
 use App\Models\Conversation;
@@ -466,7 +467,7 @@ class RequestController extends Controller
 
 
     //
-    public function saveNewPassword(Request $request)
+    public function saveNewPassword(NewPasswordValidation $request)
     {
         if (!$request->ajax()) {
             abort(403);
