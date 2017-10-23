@@ -72,6 +72,9 @@ Route::group(['prefix'=>'user'],function() {
     Route::get('dailyWorks','RequestController@dailyWorks');
     Route::get('dailyWorksDetails/{id}','RequestController@dailyWorksDetails');
 
+    //
+    Route::post('saveNewPassword','RequestController@saveNewPassword');
+
 });
 
 Route::group(['prefix'=>'systemManager'],function() {
