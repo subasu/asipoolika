@@ -47,7 +47,7 @@
                                             <?php $i++; ?>
                                         @endforeach
                                     </td>
-                                    <td style="border-right: 1px solid #d6d6c2"><a class="btn btn-info"  href="{{url('admin/issueBill/'.$request->id)}}">آپلود قبض انبار</a>
+                                    <td style="border-right: 1px solid #d6d6c2"><a class="btn btn-info"  href="{{url('admin/billUpload/'.$request->id)}}">آپلود قبض انبار</a>
                                 </tr>
                             @endforeach
                         @endif
