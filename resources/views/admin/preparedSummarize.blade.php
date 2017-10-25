@@ -119,7 +119,23 @@
                 <input type="hidden" id="token" value="{{ csrf_token() }}">
             </div>
         </div>
+    <script>
 
+            function formatNumber (num) {
+                return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+            }
+
+                //var totalPrice = $("#finalPrice");
+</script>
+    <script>
+                $(document).on('keyup','#totalPrice',function(){
+                    var v0 = $(this).val();
+                    var v1 = v0.split(',').join('');
+                    var v2 = formatNumber(v1);
+                    $(this) . val(v2);
+                })
+
+    </script>
         <script>
             $(document).on('click','#addRow',function(){
                 var recordCount = $('#recordCount').val();
@@ -131,17 +147,23 @@
                                 "<tr>"+
                                     "<td><input type='number' class='form-control required' name='description[]' id='description'></td>"+
                                     "<td><input type='text' class='form-control required' name='totalPrice[]'  id='totalPrice'></td>"+
+                                    "<td><input type='hidden'  name='newTotalPrice[]'  id='newTotalPrice'></td>"+
                                     "<td><a  class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
                                 "</tr>"
 
                             );
-
             });
         </script>
+        {{--<script>--}}
+            {{--function makeNewPrice()--}}
+            {{--{--}}
+
+            {{--}--}}
+        {{--</script>--}}
         <script>
             $(document).on('click','#reg',function(){
-
-                var formData = $('#dealForm').serialize();
+               //makeNewPrice();
+               var formData = $('#dealForm').serialize();
                var counter = 0;
                $('.required').each(function () {
                    if($(this).val() == '')
