@@ -2079,44 +2079,60 @@ class SupplyController extends Controller
     public function savePreparedSummarize(Request $request)
     {
         //dd($request->totalPrice);
-        $recordCount = $request->recordCount;
-        if($recordCount != 0)
+        if(!$request->ajax())
         {
-
-                    $i =0;
-                    while($i < $recordCount)
+            abort(403);
+        }
+        else
+            {
+                $check = DB::table('bills')->where('request_id',$request->requestId)->pluck('active')->toArray();
+                if(in_array(0,$check))
+                {
+                    $recordCount = $request->recordCount;
+                    if($recordCount != 0)
                     {
-                        $query = DB::table('bills')->insert
-                        ([
 
-                            'final_price'            => str_replace(',','',$request->totalPrice[$i]),
-                            'factor_number'          => $request->description[$i],
-                            'user_id'                => Auth::user()->id,
-                            'request_id'             => $request->requestId,
-                            'created_at'             => Carbon::now(new \DateTimeZone('Asia/Tehran'))
-                        ]);
-                        $i++;
-                    }
-                    if($query)
-                    {
-                        $update = DB::table('bills')->where('request_id',$request->requestId)->update(['active' => 1]);
-                        if($update)
+                        $i =0;
+                        while($i < $recordCount)
                         {
-                            return response('اطلاعات با موفقیت ثبت گردید');
-                        }else
+                            $query = DB::table('bills')->insert
+                            ([
+
+                                'final_price'            => str_replace(',','',$request->totalPrice[$i]),
+                                'factor_number'          => $request->description[$i],
+                                'user_id'                => Auth::user()->id,
+                                'request_id'             => $request->requestId,
+                                'created_at'             => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                            ]);
+                            $i++;
+                        }
+                        if($query)
+                        {
+                            $update = DB::table('bills')->where('request_id',$request->requestId)->update(['active' => 1]);
+                            if($update)
+                            {
+                                return response('اطلاعات با موفقیت ثبت گردید');
+                            }else
                             {
                                 return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
                             }
 
-                    }else
+                        }else
                         {
                             return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
                         }
-        }
-        else
-            {
-                return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
+                    }
+                    else
+                    {
+                        return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
+                    }
+                }else
+                    {
+                        return response('خلاصه تنظیمی قبلا برای این درخواست ثبت گردیده است ، لطفا درخواست مجدد نفرمایید');
+                    }
+
             }
+
     }
 
     public function updatePreparedSummarize(Request $request)
@@ -2126,14 +2142,22 @@ class SupplyController extends Controller
             abort(403);
         }else
             {
-                $update = DB::table('bills')->where('request_id',$request->requestId)->update(['active' => 1]);
-                if($update)
+                $check  = DB::table('bills')->where('request_id',$request->requestId)->pluck('active')->toArray();
+                if(in_array(0,$check))
                 {
-                    return response('خلاصه تنظیمی برای این درخواست ثبت گردید');
-                }else
+                    $update = DB::table('bills')->where('request_id',$request->requestId)->update(['active' => 1]);
+                    if($update)
+                    {
+                        return response('خلاصه تنظیمی برای این درخواست ثبت گردید');
+                    }else
                     {
                         return response('خطایی رخ داده است ، تماس با بخش پشتیبانی');
                     }
+                }else
+                    {
+                        return response('خلاصه تنظیمی قبلا برای این درخواست ثبت گردیده است ، لطفا درخواست مجدد نفرمایید');
+                    }
+
             }
 
     }
