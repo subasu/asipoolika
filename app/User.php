@@ -106,6 +106,6 @@ class User extends Authenticatable
     }
     public function bills()
     {
-        return $this->hasMany('App\Models\Bill');
+        return $this->hasMany('App\Models\Bill','user_id');
     }
 }

@@ -23,7 +23,7 @@
                         </div>
                         <div class="x_content">
                             <br/>
-                            <form class="form-horizontal form-label-right input_mask" enctype="multipart/form-data" id="dealForm" style="direction: rtl;">
+                            <form  enctype="multipart/form-data" id="dealForm" style="direction: rtl;">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="dealTypeName" id="dealTypeName" value="">
                                 <label style="font-size: 20px;margin-bottom: 10px;"
@@ -33,14 +33,19 @@
                                     <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
                                         <label class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> شماره فاکتور :
                                         </label>
-                                        <input type="number" min="1000" class="form-control" name="" id="">
+                                        <input type="number" min="1000" class="form-control" name="factorNumber" id="factorNumber">
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
                                         <label class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> تاریخ :
                                         </label>
-                                        <input type="text" class="form-control" name="" id="">
+                                        <input type="text" class="form-control" name="date" id="date">
                                     </div>
-                                    <lable style="font-size: 16px;">توضیحات : حجم فایل امضا نباید بیش از 150 کیلو بایت باشد ، پسوند فایل امضا باید از نوع png باشد.</lable>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group pull-right">
+                                        <label class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> قیمت نهایی :
+                                        </label>
+                                        <input type="text" class="form-control" name="finalPrice" id="finalPrice">
+                                    </div>
+                                    <lable style="font-size: 16px;">توضیحات : حجم فایل امضا نباید بیش از 150 کیلو بایت باشد ، پسوند فایل امضا باید از نوع  png یا jpg باشد.</lable>
                                     <div class="input-group image-preview" style="margin-top: 10px;">
                                         <input type="text" class="form-control image-preview-filename" disabled="disabled">
                                         <!-- don't give a name === doesn't send on POST/GET -->
@@ -53,7 +58,7 @@
                                     <div class="btn btn-default image-preview-input">
                                         <span class="glyphicon glyphicon-folder-open"></span>
                                         <span class="image-preview-input-title">انتخاب تصویر فاکتور</span>
-                                        <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/gif" name="input-file-preview"/>
+                                        <input type="file" id="image" name="image"  />
                                         <!-- rename it -->
                                     </div>
                                     </span>
@@ -70,9 +75,11 @@
                                 {{--<div class="ln_solid"></div>--}}
                                 <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-offset-1">
                                     {{--<button type="submit" name="edit" id="edit" class="btn btn-primary col-md-3 col-sm-3 col-xs-5">ویرایش</button>--}}
-                                    <button type="button" name="add_signature" id="add_signature"
+                                    <button type="button" name="addBill" id="addBill"
                                             class="btn btn-primary col-md-6 col-sm-3 col-xs-5"> آپلود فاکتور
                                     </button>
+                                    <input type="hidden" id="requestId" name="requestId" value="{{$id}}">
+                                    <input type="hidden" id="newFinalPrice"  name="newFinalPrice" value="">
                                 </div>
                             </form>
                         </div>
@@ -80,100 +87,112 @@
                 </div>
             </div>
         </div>
+        <script src="{{URL::asset('public/js/persianDatepicker.js')}}"></script>
         <script>
-            $('#signature_priority').change(function() {
-                $('#forced').val(0);
-            });
+            $('#date').persianDatepicker();
         </script>
         <script>
-            $(document).on('click','#add_signature',function () {
+            var finalPrice = $("#finalPrice");
 
-                var unitId = "";
-                $("[name='unit_id']:selected").each(function(){
-                    unitId +=$(this).val();
-                    $('#unitId').val(unitId);
-                });
-                //alert(unitId);
+            function formatNumber (num) {
+                return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+            }
+            finalPrice.keyup(function(){
+                var v0 = finalPrice.val();
+                var v1 = v0.split(',').join('');
+                var v2 = formatNumber(v1);
+                finalPrice . val(v2);
+            })
+        </script>
 
-                var userId = "";
-                $("[name='users']:selected").each(function () {
-                    userId += $(this).val();
-                    $('#userId').val(userId);
-                });
-                var file  = $('#file').val();
-                var token = $('#token').val();
-                if(unitId == '' || unitId == null)
-                {
-                    swal({
-                        title: "",
-                        text: 'لطفا واحد مربوطه را انتخاب نمایید',
-                        type: "warning",
-                        confirmButtonText: "بستن"
-                    });
-                    return false;
-                }
-                else if(userId == '' || userId == null)
-                {
-                    swal({
-                        title: "",
-                        text: 'لطفا کاربر مربوطه را انتخاب کنید',
-                        type: "warning",
-                        confirmButtonText: "بستن"
-                    });
-                    return false;
-                }
-                else if(file == '' || file == null)
-                {
-                    swal({
-                        title: "",
-                        text: 'لطفا فایل مربوط به امضاء را انتخاب کنید',
-                        type: "warning",
-                        confirmButtonText: "بستن"
-                    });
-                    return false;
-                }else
-                {
+        <script>
+            $(document).on('click','#addBill',function(){
 
-                    var formData = new FormData($('#dealForm')[0]);
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                        }
-                    });
-                    $.ajax
-                    ({
-                        cache:false,
-                        url  : "{{Url('systemManager/addSignature')}}",
-                        type : 'POST',
-                        processData :false,
-                        contentType: false,
-                        data : formData,
-                        success:function(response)
+                var newFinalPrice = $('#finalPrice').val();
+                newFinalPrice     = newFinalPrice.replace(/,/g , '');
+                $('#newFinalPrice').val(newFinalPrice);
+                var factorNumber  = $('#factorNumber').val();
+                var date          = $('#date').val();
+                var image         = $('#image').val();
+                var finalPrice    = $('#finalPrice').val();
+                var formData      = new FormData($('#dealForm')[0]);
+
+
+                $.ajax
+                ({
+                    cache:false,
+                    url  : "{{Url('admin/addBillPhoto')}}",
+                    type : 'POST',
+                    processData :false,
+                    contentType: false,
+                    data : formData,
+                    beforeSend:function()
+                    {
+
+                        if(factorNumber == '' || factorNumber == null)
                         {
+                            $('#factorNumber').focus();
+                            $('#factorNumber').css('border-color' , 'red');
+                            return false;
+                        }
+                        if(date == '' || date == null)
+                        {
+                            $('#date').focus();
+                            $('#date').css('border-color' , 'red');
+                            return false;
+                        }
+                        if(finalPrice == '' || finalPrice == null)
+                        {
+                            $('#finalPrice').focus();
+                            $('#finalPrice').css('border-color' , 'red');
+                            return false;
+                        }
+
+
+                    },
+                    success:function(response)
+                    {
+                        swal({
+                            title: "",
+                            text: response,
+                            type: "info",
+                            confirmButtonText: "بستن"
+                        });
+                        setTimeout( function(){window.location.reload(true)},3000);
+                    },error:function(error)
+                    {
+                        if (error.status === 422) {
+                            var x = error.responseJSON;
+                            var errorsHtml = '';
+                            var count = 0;
+                            $.each(x, function (key, value) {
+                                errorsHtml += value[0] + '\n'; //showing only the first error.
+                            });
+                            console.log(count)
                             swal({
                                 title: "",
-                                text: response,
+                                text: errorsHtml,
                                 type: "info",
                                 confirmButtonText: "بستن"
                             });
-                            setTimeout(function () {
-                                window.location.reload(true);
-                            }, 2000);
-                        },error:function(error)
+                        }
+                        if(error.status === 500)
                         {
                             swal({
                                 title: "",
-                                text: 'خطا در ثبت اطلاعات ، لطفا با بخش پشتیبانی تماس بگیرید',
+                                text: 'خطایی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید',
                                 type: "warning",
                                 confirmButtonText: "بستن"
                             });
                             console.log(error);
                         }
-                    });
+
+                    }
+                })
 
 
-                }
 
             });
         </script>
+
 @endsection

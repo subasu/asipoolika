@@ -53,12 +53,12 @@
                 <th class="col-md-5">مبلغ به تومان</th>
             </tr>
                 <?php $i=0; ?>
-                @foreach($productRequestRecords as $productRequestRecord)
+                @foreach($bills as $bill)
                 <tr class=" padding-formTable">
                     <th class="col-md-1">{{ ++$i }}</th>
-                    <th class="col-md-6">{{$productRequestRecord->title}}</th>
-                    <th class="col-md-5">{{number_format($productRequestRecord->price)}}</th>
-                    <input type="hidden" id="requestId" value="{{$productRequestRecord->request_id}}">
+                    <th class="col-md-6">فاکتور شماره : {{$bill->factor_number}}</th>
+                    <th class="col-md-5">{{number_format($bill->final_price)}}</th>
+                    <input type="hidden" id="requestId" value="{{$bill->request_id}}">
                  </tr>
                 @endforeach
             </thead>
@@ -73,7 +73,10 @@
 
         </table>
         <br>
-        <h4 class="col-md-1 text-right" dir="rtl">کارپرداز :  {{$supplierFullName}}</h4>
+        <h4 class="col-md-1 text-right" dir="rtl" style="margin-right: 2%;">نام کارپرداز :   {{$supplierFullName}}</h4>
+        <h4 class="col-md-1 text-left" dir="rtl" style="margin-left: 10%; margin-top: -1.75%;"> امضاء کار پرداز: </h4>
+        <img src="{{$supplierSignature}}" style="width: 100px; height: 100px;">
+
     </div>
 
     <div align="center">

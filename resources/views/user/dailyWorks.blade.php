@@ -7,8 +7,12 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>
-
-                        بررسی امور روزانه
+                    @if(!empty($requests))
+                        بررسی امور مربوط به درخواست ها
+                    @endif
+                    @if(!empty($request2))
+                            بررسی امور مربوط به فاکتورها
+                     @endif
                     </h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i
@@ -31,36 +35,66 @@
                         <input type="hidden" id="token" value="{{ csrf_token() }}">
                         <thead>
                         <tr>
-                            <th style="text-align: center" class="">شناسه</th>
-                            <th style="text-align: center" class="">نوع درخواست</th>
-                            <th style="text-align: center" class="">واحد درخواست دهنده</th>
-                            <th style="text-align: center;" class="col-md-2">عملیات</th>
+                            @if(!empty($requests))
+                                <th style="text-align: center" class="">شناسه</th>
+                                <th style="text-align: center" class="">نوع درخواست</th>
+                                <th style="text-align: center" class="">واحد درخواست دهنده</th>
+                                <th style="text-align: center;" class="col-md-2">عملیات</th>
+                            @endif
+                            @if(!empty($request2))
+                                <th style="text-align: center" class=""> شناسه درخواست</th>
+                                <th style="text-align: center" class="">نوع درخواست</th>
+                                    <th style="text-align: center" class="">واحد درخواست دهنده</th>
+                                <th style="text-align: center;" class="col-md-2">عملیات</th>
+                            @endif
                         </tr>
                         </thead>
                         <tbody id="change">
-                        @foreach($requests as $request)
-                            <tr class="unit">
-                                <td>
-                                    {{$request->id}}
-                                </td>
-                                <td>
-                                    {{$request->requestType->title}}
-                                </td>
-                                <td>
-                                    {{$request->unit->title}}
-                                </td>
-                                @if($request->request_type_id == 2)
-                                <td>
-                                    <a href="{{url('admin/printServiceRequest/'.$request->id)}}" class="btn btn-primary">مشاهده جزئیات</a>
-                                </td>
-                                @endif
-                                @if($request->request_type_id == 3)
+                        @if(!empty($requests))
+                            @foreach($requests as $request)
+                                <tr class="unit">
                                     <td>
-                                        <a href="{{url('admin/printProductRequest/'.$request->id)}}" class="btn btn-primary">مشاهده جزئیات</a>
+                                        {{$request->id}}
                                     </td>
-                                @endif
-                            </tr>
-                        @endforeach
+                                    <td>
+                                        {{$request->requestType->title}}
+                                    </td>
+                                    <td>
+                                        {{$request->unit->title}}
+                                    </td>
+                                    @if($request->request_type_id == 2)
+                                    <td>
+                                        <a href="{{url('admin/printServiceRequest/'.$request->id)}}" class="btn btn-primary">مشاهده جزئیات</a>
+                                    </td>
+                                    @endif
+                                    @if($request->request_type_id == 3)
+                                        <td>
+                                            <a href="{{url('admin/printProductRequest/'.$request->id)}}" class="btn btn-primary">مشاهده جزئیات</a>
+                                        </td>
+                                    @endif
+                                </tr>
+                            @endforeach
+                        @endif
+                        @if(!empty($request2))
+                            @foreach($request2 as $request)
+                                <tr class="unit">
+                                    <td>
+                                        {{$request->id}}
+                                    </td>
+                                    <td>
+                                        {{$request->requestType->title}}
+                                    </td>
+                                    <td>
+                                        {{$request->unit->title}}
+                                    </td>
+
+                                        <td>
+                                            <a href="{{url('user/showFactorDetails/'.$request->id)}}" class="btn btn-primary">مشاهده فاکتورها</a>
+                                        </td>
+
+                                </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
