@@ -69,8 +69,10 @@ Route::group(['prefix'=>'user'],function() {
     Route::post('userSendMessage','RequestController@userSendMessage');
     Route::post('endTicket' , 'RequestController@endTicket');
 
-    Route::get('dailyWorks','RequestController@dailyWorks');
+    Route::get('dailyWorks/{parameter}','RequestController@dailyWorks');
     Route::get('dailyWorksDetails/{id}','RequestController@dailyWorksDetails');
+    Route::get('showFactorDetails/{id}','RequestController@showFactorDetails');
+    Route::post('acceptPreparedSummarize','RequestController@acceptPreparedSummarize');
 
     //
     Route::post('saveNewPassword','RequestController@saveNewPassword');
@@ -252,15 +254,17 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('productDeliveryAndUseForm/{id}','SupplyController@productDeliveryAndUseForm');
 
 
-        Route::get('issueBill','SupplyController@issueBillGet');
-        Route::get('billUpload/{id}','SupplyController@billUpload');
-        Route::post('saveBill','SupplyController@saveBill');
+//        Route::get('issueBill','SupplyController@issueBillGet');
+//        Route::get('billUpload/{id}','SupplyController@billUpload');
+//        Route::post('saveBill','SupplyController@saveBill');
 
         Route::get('issueBillManagement','SupplyController@issueBillManagementGet');
         Route::get('issueBill/{id}','SupplyController@issueBillGet');
         Route::post('addBillPhoto','SupplyController@addBillPhoto');
 
-
+        Route::get('preparedSummarize/{id}','SupplyController@preparedSummarize');
+        Route::post('savePreparedSummarize','SupplyController@savePreparedSummarize');
+        Route::post('updatePreparedSummarize','SupplyController@updatePreparedSummarize');
 
         //rayat - users manage:
 //        Route::get('usersManagement', 'SupplyController@usersManagementGet');

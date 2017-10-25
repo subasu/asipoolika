@@ -26,8 +26,10 @@ class SaveBillValidation extends FormRequest
         return [
             //
                  'factorNumber' => 'required|numeric',
-                 'image'        => 'required|mimes:png,jpg',
-                 'date'         => 'required'
+                 'image'        => 'required',
+                 'date'         => 'required',
+                 'finalPrice'   => 'required'
+
                ];
     }
     public function messages()
@@ -39,6 +41,8 @@ class SaveBillValidation extends FormRequest
                 'image.required'         => 'لطفا فایل فاکتور انتخاب نمایید سپس درخواست ثبت فاکتور را بزنید',
                 'image.mimes'            => 'پسوند فایل اتنخاب شده معتبر نیست',
                 'date.required'          => 'وارد کردن فیلد تاریخ الزامی است',
+                'finalPrice.required'    => 'وارد کردن فیلد قیمت الزامی است',
+                //'finalPrice.numeric'     => 'نوع فیلد قیمت باید از نوع عددی باشد',
           ];
     }
 }

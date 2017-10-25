@@ -6,6 +6,7 @@ use App\Http\Requests\AcceptServiceRequestValidation;
 use App\Http\Requests\CostDocumentValidation;
 use App\Http\Requests\SaveBillValidation;
 use App\Http\Requests\UserCreateValidation;
+use App\Models\Bill;
 use App\Models\Certificate;
 use App\Models\CertificateRecord;
 use App\Models\CostDocument;
@@ -1866,22 +1867,24 @@ class SupplyController extends Controller
 //        else
 //            {
                 $pageTitle = 'چاپ خلاصه تنظیمی';
-                $productRequestRecords = RequestRecord::where([['request_id',$id],['accept',1]])->get();
+                $bills = Bill::where('request_id',$id)->get();
                 $sum = 0;
                 $supplierId = 0;
-                foreach ($productRequestRecords as $productRequestRecord)
+                foreach ($bills as $bill)
                 {
-                    $sum += $productRequestRecord->count * $productRequestRecord->rate;
+                    $sum += $bill->final_price;
                     if($supplierId == 0)
                     {
-                        $supplierId += $productRequestRecord->request->supplier_id;
+                        $supplierId += $bill->request->supplier_id;
                     }
 
                 }
                 $supplierName = User::where('id',$supplierId)->value('name');
                 $supplierFamily = User::where('id',$supplierId)->value('family');
                 $supplierFullName = $supplierName .chr(10).$supplierFamily;
-                return view ('admin.certificate.factorsForm',compact('pageTitle','productRequestRecords','sum','supplierFullName'));
+                $supplierSignature = Signature::where('user_id',$supplierId)->value('signature');
+                $supplierSignature = 'data:image/png;base64,' . $supplierSignature;
+                return view ('admin.certificate.factorsForm',compact('pageTitle','bills','sum','supplierFullName','supplierSignature'));
         //    }
 
     }
@@ -2001,8 +2004,9 @@ class SupplyController extends Controller
         return view('admin.billUpload',compact('pageTitle','id'));
     }
 
-    public function saveBill(SaveBillValidation $request)
+    public function addBillPhoto(SaveBillValidation $request)
     {
+
         $extension = $request->image->getClientOriginalExtension();
         $size      = $request->image->getClientSize();
         if($request->hasFile('image'))
@@ -2012,7 +2016,7 @@ class SupplyController extends Controller
                 if($size < 150000)
                 {
                     $image = $request->image;
-                    $src  = str_random(4).$image->getClientOriginalName();
+                    $src   = $request->requestId.'-'.str_random(4).$image->getClientOriginalName();
                     $image->move( 'public/dashboard/image/' , $src);
                     $fileExistence = public_path().'public/dashboard/image/'.$src;
 
@@ -2030,14 +2034,15 @@ class SupplyController extends Controller
                         ([
                             'src'           => $src,
                             'date'          => $gDate1,
-                            'factor_number' => $request->factorNumber,
+                            'factor_number' => trim($request->factorNumber),
                             'user_id'       => Auth::user()->id,
                             'request_id'    => $request->requestId,
+                            'final_price'   => $request->newFinalPrice,
                             'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
                         ]);
                         if($factorId)
                         {
-                            return response('فایل فاکتور مورد نظر شما آپلود گردید');
+                            return response(' فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید');
                         }else
                             {
                                 return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
@@ -2063,4 +2068,73 @@ class SupplyController extends Controller
             }
     }
 
+
+    public function preparedSummarize($id)
+    {
+        $pageTitle = 'ثبت خلاصه تنظیمی';
+        $factors = DB::table('bills')->where('request_id',$id)->get();
+        return view('admin.preparedSummarize',compact('pageTitle','factors'));
+    }
+//
+    public function savePreparedSummarize(Request $request)
+    {
+        //dd($request->totalPrice);
+        $recordCount = $request->recordCount;
+        if($recordCount != 0)
+        {
+
+                    $i =0;
+                    while($i < $recordCount)
+                    {
+                        $query = DB::table('bills')->insert
+                        ([
+
+                            'final_price'            => $request->totalPrice[$i],
+                            'factor_number'          => $request->description[$i],
+                            'user_id'                => Auth::user()->id,
+                            'request_id'             => $request->requestId,
+                            'created_at'             => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                        ]);
+                        $i++;
+                    }
+                    if($query)
+                    {
+                        $update = DB::table('bills')->where('request_id',$request->requestId)->update(['active' => 1]);
+                        if($update)
+                        {
+                            return response('اطلاعات با موفقیت ثبت گردید');
+                        }else
+                            {
+                                return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
+                            }
+
+                    }else
+                        {
+                            return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
+                        }
+        }
+        else
+            {
+                return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
+            }
+    }
+
+    public function updatePreparedSummarize(Request $request)
+    {
+        if(!$request->ajax())
+        {
+            abort(403);
+        }else
+            {
+                $update = DB::table('bills')->where('request_id',$request->requestId)->update(['active' => 1]);
+                if($update)
+                {
+                    return response('خلاصه تنظیمی برای این درخواست ثبت گردید');
+                }else
+                    {
+                        return response('خطایی رخ داده است ، تماس با بخش پشتیبانی');
+                    }
+            }
+
+    }
 }

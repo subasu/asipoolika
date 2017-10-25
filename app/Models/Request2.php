@@ -53,6 +53,6 @@ class Request2 extends Model
     }
     public function bills()
     {
-        return $this->hasMany('App\Models\Bill');
+        return $this->hasMany('App\Models\Bill','request_id');
     }
 }
