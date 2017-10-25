@@ -481,14 +481,22 @@ class RequestController extends Controller
             abort(403);
         }else
             {
-                $update = DB::table('bills')->where('request_id',$request->requestId)->update(['status' => 1]);
-                if($update)
+                $check = DB::table('bills')->where('request_id',$request->requestId)->pluck('status')->toArray();
+                if(in_array(0,$check))
                 {
-                    return response ('فاکتور های مربوط به درخواست مربوطه تایید گردید');
-                }else
+                    $update = DB::table('bills')->where('request_id',$request->requestId)->update(['status' => 1]);
+                    if($update)
+                    {
+                        return response ('فاکتور های مربوط به درخواست مربوطه تایید گردید');
+                    }else
                     {
                         return response('خطایی رخ داده است ، تماس با بخش پشتیبانی');
                     }
+                }else
+                    {
+                        return response('فاکتور ها قبلا تایید شده اند ، لطفا درخواست مجدد نفرمایید');
+                    }
+
             }
     }
 
