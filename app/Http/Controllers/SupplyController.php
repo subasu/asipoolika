@@ -2089,7 +2089,7 @@ class SupplyController extends Controller
                         $query = DB::table('bills')->insert
                         ([
 
-                            'final_price'            => $request->totalPrice[$i],
+                            'final_price'            => str_replace(',','',$request->totalPrice[$i]),
                             'factor_number'          => $request->description[$i],
                             'user_id'                => Auth::user()->id,
                             'request_id'             => $request->requestId,
