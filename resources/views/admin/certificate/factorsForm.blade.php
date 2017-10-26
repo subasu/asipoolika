@@ -44,7 +44,7 @@
 
     <div style="padding:1% 2.5%">
         <h4 class="text-center">
-            خلاصه ی تنظیمی فکتور های خریداری شده جهت شبکه بهداشت و درمان خمینی شهر </h4><br>
+            خلاصه ی تنظیمی فاکتور های خریداری شده جهت شبکه بهداشت و درمان خمینی شهر </h4><br>
         <table class="formTable col-md-12 width100 border-right" dir="rtl">
             <thead>
             <tr class=" padding-formTable">

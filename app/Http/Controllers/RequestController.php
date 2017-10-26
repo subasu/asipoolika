@@ -487,7 +487,7 @@ class RequestController extends Controller
                     $update = DB::table('bills')->where('request_id',$request->requestId)->update(['status' => 1]);
                     if($update)
                     {
-                        return response ('فاکتور های مربوط به درخواست مربوطه تایید گردید');
+                        return response ('خلاصه تنظیمی مربوط به درخواست مربوطه تایید گردید');
                     }else
                     {
                         return response('خطایی رخ داده است ، تماس با بخش پشتیبانی');

@@ -1989,13 +1989,10 @@ class SupplyController extends Controller
     {
         $pageTitle='صدور قبض انبار';
         $pageName='issueBill';
-        if(Auth::user()->unit_id==9)
-        {
+
             $records=RequestRecord::where([['request_id',$id],['accept',1]])->get();
             return view('admin.issueBill',compact('pageTitle','pageName','id','records'));
-        }
-        else
-            return back();
+
     }
 
     public function billUpload($id)
