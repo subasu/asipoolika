@@ -4,6 +4,27 @@
         .padding-right-1px{padding-right: 1px !important;}
     </style>
     <!-- page content -->
+    <div id="modal" class="modal fade" role="dialog" style="direction: rtl;text-align: right">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">اطلاع رسانی</h4>
+                </div>
+                <div class="modal-body">
+                    <p>در نظر داشته باشید دسترسی به این صفحه جهت آپلود فاکتور فقط و فقط یکبار امکان پذیر است ، لذا در آپلود فاکتورهای مورد نظر خود دقت فرمائید.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info col-md-12" data-dismiss="modal">متوجه شدم</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
     <div class="" role="main">
         <div class="">
             <div class="clearfix"></div>
@@ -88,6 +109,21 @@
             </div>
         </div>
         <script src="{{URL::asset('public/js/persianDatepicker.js')}}"></script>
+
+        <script>
+            $(function () {
+                var count = 0;
+                if(count == 0)
+                {
+                    $('#modal').modal('show');
+                    count+=1;
+                }
+
+            })
+
+        </script>
+
+
         <script>
             $('#date').persianDatepicker();
         </script>
