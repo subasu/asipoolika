@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NewPasswordValidation;
 use App\Http\Requests\SendTicketValidation;
 use App\Http\Requests\ServiceRequestValidation;
 use App\Models\Conversation;
@@ -436,12 +437,25 @@ class RequestController extends Controller
     }
 
     //
-    public function dailyWorks()
+    public function dailyWorks($parameter)
     {
-        $pageTitle = 'امور روزانه کار پرداز';
-        $supplierId = Auth::user()->id;
-        $requests = Request2::where('supplier_id', $supplierId)->get();
-        return view('user.dailyWorks', compact('requests', 'pageTitle'));
+        switch ($parameter)
+        {
+            case 'request':
+                $pageTitle = 'امور مربوط به درخواست ها';
+                $supplierId = Auth::user()->id;
+                $requests = Request2::where('supplier_id', $supplierId)->get();
+                return view('user.dailyWorks', compact('requests', 'pageTitle'));
+            break;
+            case 'factors':
+                $pageTitle = 'امور مربوط به فاکتور ها';
+                $supplierId = Auth::user()->id;
+                $requestsId = DB::table('bills')->where([['active',1],['status',0]])->pluck('request_id');
+                $request2   = Request2::whereIn('id',$requestsId)->where('supplier_id', $supplierId)->get();
+                return view('user.dailyWorks', compact('request2', 'pageTitle'));
+            break;
+        }
+
     }
 
     //
@@ -450,6 +464,40 @@ class RequestController extends Controller
         $pageTitle = 'مشاهده جزییات امور روزانه';
         $requestRecords = RequestRecord::where([['request_id', $id], ['accept', 1], ['step', 8]])->get();
         return view('user.dailyWorksDetails', compact('pageTitle', 'requestRecords'));
+    }
+
+
+    public function showFactorDetails($id)
+    {
+        $pageTitle = 'جزییات خلاصه تنظیمی';
+        $bills     = DB::table('bills')->where([['request_id',$id],['status',0]])->get();
+        return  view ('user.showFactorDetails',compact('pageTitle','bills'));
+    }
+
+    public function acceptPreparedSummarize(Request $request)
+    {
+        if(!$request->ajax())
+        {
+            abort(403);
+        }else
+            {
+                $check = DB::table('bills')->where('request_id',$request->requestId)->pluck('status')->toArray();
+                if(in_array(0,$check))
+                {
+                    $update = DB::table('bills')->where('request_id',$request->requestId)->update(['status' => 1]);
+                    if($update)
+                    {
+                        return response ('خلاصه تنظیمی مربوط به درخواست مربوطه تایید گردید');
+                    }else
+                    {
+                        return response('خطایی رخ داده است ، تماس با بخش پشتیبانی');
+                    }
+                }else
+                    {
+                        return response('فاکتور ها قبلا تایید شده اند ، لطفا درخواست مجدد نفرمایید');
+                    }
+
+            }
     }
 
     public function changePassword()
@@ -466,7 +514,7 @@ class RequestController extends Controller
 
 
     //
-    public function saveNewPassword(Request $request)
+    public function saveNewPassword(NewPasswordValidation $request)
     {
         if (!$request->ajax()) {
             abort(403);
