@@ -9,6 +9,6 @@ class CostDocument extends Model
     //
     public function request()
     {
-        return $this->belongsTo('App\Models\Request2');
+        return $this->belongsTo('App\Models\Request2','request_id');
     }
 }

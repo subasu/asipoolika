@@ -62,7 +62,9 @@
                             <td class="col-md-1">{{$request[0]->id}}</td>
                             <td class="col-md-1">{{$request[0]->user->unit->title}}</td>
                             <td class="col-md-1">{{$request[0]->user->name .chr(10). $request[0]->user->family}}</td>
+
                             <td class="col-md-1" style="border-right: 1px solid #d6d6c2">{{$request[0]->date}}</td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -118,6 +120,7 @@
                         {{--class="btn btn-warning col-md-5  pull-right">مشاهده  گواهی ها</a>--}}
                         {{--@endif--}}
                         {{--@endif--}}
+
                         @if(!empty($request[0]->bills[0]))
                             @if($request[0]->request_type_id == 3  && count($request[0]->bills) >= 2 && $request[0]->bills[0]->active == 0 )
                                 <a href="{{url ('admin/preparedSummarize/'.$request[0]->id)}}" data-toggle=""  class="btn btn-info col-md-12  pull-right">ثبت خلاصه تنظیمی</a>
@@ -143,6 +146,7 @@
                                     <a   class="btn btn-default  col-md-12  pull-right"  disabled="disabled"> آپلود فاکتور </a>
                                 @endif
                         @endif
+
 
                         <a href="{{url('admin/issueBill/'.$request[0]->id)}}"  class="btn btn-danger  col-md-12  pull-right" >آپلود قبض انبار</a>
                         <a href="{{url('admin/costDocumentForm/'.$request[0]->id)}}" class="btn btn-primary col-md-12 pull-right">سند هزینه</a>

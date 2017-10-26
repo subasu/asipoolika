@@ -58,7 +58,7 @@
                             <th style="text-align: center ;">نام واحد</th>
                             <th style="text-align: center ;">درخواست دهنده</th>
                             @if($pageName=='productRequestManagement')
-                                <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
+                                <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
                                 <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                 <th class="col-md-2" style="text-align: center ;">رد شده</th>
                                 <th class="col-md-1" style="text-align: center ;border-right: 1px solid #e0e0d1">عملیات</th>
@@ -66,7 +66,7 @@
                                 <th class="col-md-1" style="text-align: center ;">رکوردهای رد شده</th>
                                 {{--<th style="text-align: center ;">عملیات</th>--}}
                             @elseif($pageName=='acceptProductRequestManagement')
-                                <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
+                                <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
                                 <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                 <th class="col-md-2" style="text-align: center ;">رد شده</th>
                                 <th class="col-md-2" style="text-align: center ;"></th>
