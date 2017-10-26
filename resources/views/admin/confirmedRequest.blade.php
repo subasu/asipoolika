@@ -44,6 +44,7 @@
             <div class="x_content">
                 <div class="row">
                     <div class="col-md-10">
+                        <div class="well well-sm" style="text-align: right;direction: rtl;font-size:20px;"><i class="fa fa-user"></i> کارپرداز : @if($request[0]->supplier_id!=null) {{$request[0]->supplier->name .chr(10). $request[0]->supplier->family}} @else هنوز به کارپرداز ابلاغ نشده است @endif</div>
                    <table style="direction:rtl;text-align: center;" id="" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
                         <tr>

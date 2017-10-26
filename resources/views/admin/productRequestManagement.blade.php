@@ -130,6 +130,7 @@
                                             <td class="col-md-1">{{$productRequest->id}}</td>
                                             <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                             <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                            <td class="col-md-1">23 خرداد 96</td>
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
@@ -144,6 +145,7 @@
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                         <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                         <td class="col-md-1">23 خرداد 96</td>
                                         <td class="col-md-2 danger">{{$productRequest->refuse_record_count}}</td>
                                      </tr>
                                     @endforeach
@@ -154,6 +156,7 @@
                                             <td class="col-md-1">{{$productRequest->id}}</td>
                                             <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                             <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                            <td class="col-md-1">23 خرداد 96</td>
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
