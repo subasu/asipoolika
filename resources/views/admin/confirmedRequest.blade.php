@@ -95,7 +95,7 @@
                         </table>
                     </div>
                     <div class="col-md-2">
-                        <a href="{{url('admin/certificate/'.$request[0]->id)}}" class="btn btn-primary col-md-12 pull-right @if($request[0]->accept_count==0 or $request[0]->supplier_id==null) disabled @endif"> تحویل فوری</a>
+                        <a href="{{url('admin/certificate/'.$request[0]->id)}}" class="btn btn-primary col-md-12 pull-right @if($request[0]->accept_count==0 or $request[0]->supplier_id==null) disabled @endif"> تحویل</a>
                         @if($request[0]->request_type_id == 3)
                             <a target="_blank" href="{{url('admin/printProductRequest/'.$request[0]->id)}}" class="btn btn-info col-md-12 pull-right"> چاپ درخواست </a>
                         @endif
@@ -146,8 +146,7 @@
                                     <a   class="btn btn-default  col-md-12  pull-right"  disabled="disabled"> آپلود فاکتور </a>
                                 @endif
                         @endif
-
-
+                        
                         <a href="{{url('admin/issueBill/'.$request[0]->id)}}"  class="btn btn-danger  col-md-12  pull-right" >آپلود قبض انبار</a>
                         <a href="{{url('admin/costDocumentForm/'.$request[0]->id)}}" class="btn btn-primary col-md-12 pull-right">سند هزینه</a>
                     </div>
