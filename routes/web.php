@@ -163,6 +163,13 @@ Route::group(['prefix'=>'systemManager'],function() {
             'roles'=>['supplierManager']
         ]);
 
+        Route::get('/confirmedRequestDetails/{id}',[
+            'uses'=>'SupplyController@confirmedRequestDetails',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
+
+
         // Certificate
         Route::get('/impart/{id}','CertificateController@impartGet');
 
@@ -265,6 +272,8 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('preparedSummarize/{id}','SupplyController@preparedSummarize');
         Route::post('savePreparedSummarize','SupplyController@savePreparedSummarize');
         Route::post('updatePreparedSummarize','SupplyController@updatePreparedSummarize');
+
+        Route::post('checkPreparedSummarize','SupplyController@checkPreparedSummarize');
 
         //rayat - users manage:
 //        Route::get('usersManagement', 'SupplyController@usersManagementGet');

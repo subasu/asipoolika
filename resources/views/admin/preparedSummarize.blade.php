@@ -147,7 +147,6 @@
                                 "<tr>"+
                                     "<td><input type='number' class='form-control required' name='description[]' id='description'></td>"+
                                     "<td><input type='text' class='form-control required' name='totalPrice[]'  id='totalPrice'></td>"+
-                                    "<td><input type='hidden'  name='newTotalPrice[]'  id='newTotalPrice'></td>"+
                                     "<td><a  class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
                                 "</tr>"
 
@@ -162,7 +161,7 @@
         {{--</script>--}}
         <script>
             $(document).on('click','#reg',function(){
-               //makeNewPrice();
+               var requestId = $('#requestId').val();
                var formData = $('#dealForm').serialize();
                var counter = 0;
                $('.required').each(function () {
@@ -185,7 +184,7 @@
                   }else {
 
                       swal({
-                              title: "آیا از ثبت درخواست مطمئن هستید؟",
+                              title: "کاربر گرامی در نظر داشته باشید در صورتی که خلاصه تنظیمی برای این درخواست ثبت گردد دیگر امکان آپلود فاکتور و اضافه کردن ردیف های جدید وجود ندارد ، آیا درخواست خود را ثبت می نمایید؟",
                               text: "",
                               type: "warning",
                               showCancelButton: true,
@@ -207,6 +206,7 @@
                                       url: "{{url('admin/savePreparedSummarize')}}",
                                       type: 'post',
                                       data: formData,
+                                      context : requestId,
                                       success: function (response) {
                                           swal
                                           ({
@@ -216,7 +216,7 @@
                                               confirmButtonText: "بستن"
                                           });
                                           setTimeout(function () {
-                                              window.location.href='../confirmProductRequestManagement';
+                                              window.location.href='../confirmedRequestDetails/'+requestId;
                                           },2000);
                                       }, error: function (error) {
                                           swal
@@ -254,7 +254,7 @@
                 var requestId = $('#requestId').val();
                 var token     = $('#token').val();
                 swal({
-                        title: "آیا از ثبت درخواست مطمئن هستید؟",
+                        title: "کاربر گرامی در نظر داشته باشید در صورتی که خلاصه تنظیمی برای این درخواست ثبت گردد دیگر امکان آپلود فاکتور و اضافه کردن ردیف های جدید وجود ندارد ، آیا درخواست خود را ثبت می نمایید؟",
                         text: "",
                         type: "warning",
                         showCancelButton: true,
@@ -270,6 +270,7 @@
                             ({
                                 url: "{{url('admin/updatePreparedSummarize')}}",
                                 type: "post",
+                                context : requestId,
                                 data: {'requestId': requestId, '_token': token},
                                 success: function (response) {
                                     swal
@@ -280,7 +281,7 @@
                                         confirmButtonText: "بستن"
                                     });
                                     setTimeout(function () {
-                                        window.location.href = '../confirmProductRequestManagement';
+                                        window.location.href = '../confirmedRequestDetails/'+requestId;
                                     }, 2000);
                                 }, error: function (error) {
                                     swal

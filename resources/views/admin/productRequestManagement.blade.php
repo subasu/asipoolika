@@ -80,7 +80,7 @@
                         @if($pageName=='confirmProductRequest')
                             {{--<a href="{{url('admin/confirmProductRequestManagement')}}" class="btn btn-danger col-md-12"><i class="fa fa-refresh"></i> بروزرسانی درخواست ها</a>--}}
                             {{--<a href="{{url('admin/confirmServiceRequestManagement')}}" class="btn btn-danger col-md-12"><i class="fa fa-refresh"></i> بروزرسانی درخواست ها</a>--}}
-                            <button  style="font-size:18px;" type="button" class="btn btn-primary col-md-12" data-toggle="modal" data-target="#myModal">نحوه کار با این صفحه <i class="fa fa-question-circle-o" aria-hidden="true"></i></button>
+                            {{--<button  style="font-size:18px;" type="button" class="btn btn-primary col-md-12" data-toggle="modal" data-target="#myModal">نحوه کار با این صفحه <i class="fa fa-question-circle-o" aria-hidden="true"></i></button>--}}
 
                             @endif
                         {{--<form id="serviceDetailForm">--}}
@@ -91,6 +91,7 @@
                                 <th style="text-align: center ;">شناسه</th>
                                 <th style="text-align: center ;">نام واحد</th>
                                 <th style="text-align: center ;">درخواست دهنده</th>
+                                <th style="text-align: center ;">تاریخ ثبت</th>
                                     @if($pageName=='productRequestManagement')
                                         <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
                                         <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
@@ -112,7 +113,8 @@
                                     @elseif($pageName=='confirmProductRequest')
                                         <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
                                         <th class="col-md-1" style="text-align: center ;">دارای گواهی</th>
-                                        <th class="col-md-3" style="text-align: center ;border-right: 1px solid #e0e0d1"> عملیات</th>
+                                        <th class="col-md-1" style="text-align: center ;">خلاصه وضعیت</th>
+                                        <th class="col-md-3" style="text-align: center ;border-right: 1px solid #e0e0d1"> مشاهده جزئیات</th>
                                         {{--<td></td>--}}
                                     @endif
                                     {{--<td></td>--}}
@@ -129,11 +131,12 @@
                                             <td class="col-md-1">{{$productRequest->id}}</td>
                                             <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                             <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                            <td class="col-md-1">23 خرداد 96</td>
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
                                             <td><a class="btn btn-info"  href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
-                                            {{--<td></td>--}}
+                                            </td>
                                         @endif
                                     </tr>
                                     @endforeach
@@ -143,6 +146,7 @@
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                         <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                         <td class="col-md-1">23 خرداد 96</td>
                                         <td class="col-md-2 danger">{{$productRequest->refuse_record_count}}</td>
                                      </tr>
                                     @endforeach
@@ -153,6 +157,7 @@
                                             <td class="col-md-1">{{$productRequest->id}}</td>
                                             <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                             <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                            <td class="col-md-1">23 خرداد 96</td>
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
@@ -171,52 +176,19 @@
                                     <tr>
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-1">{{$productRequest->user->unit->title}}</td>
-                                        <td class="col-md-1">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                        <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                        <td class="col-md-1">{{$productRequest->date}}</td>
                                         <td class="info col-md-1">{{$productRequest->accept_count}}</td>
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
-                                        <td class="col-md-2" style="font-size: 25px;">
-                                            {{--<a href="" class="btn btn-danger">صدور صورتجلسه تحویل و نصب</a>--}}
-                                            <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right @if($productRequest->accept_count==0 or $productRequest->supplier_id==null) disabled @endif"> تحویل فوری</a>
-                                            @if($productRequest->request_type_id == 3)
-                                             <a target="_blank" href="{{url('admin/printProductRequest/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right"> چاپ درخواست </a>
-                                            @endif
-                                            @if($productRequest->request_type_id == 2)
-                                                <a href="{{url('admin/printServiceRequest/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right"> چاپ درخواست </a>
-                                            @endif
-                                            @if($productRequest->supplier_id==null)
-                                            <a href="{{url('admin/impart/'.$productRequest->id)}}" class="btn btn-danger col-md-5 pull-right"> ابلاغ به کارپرداز</a>
-                                            @else
-                                                <a  class="btn btn-success disabled col-md-5 pull-right">ابلاغ شده</a>
-                                            @endif
-                                            <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"
-                                               class="btn btn-warning col-md-5 pull-right
-                                             @if($productRequest->hasCertificate==0) disabled
-                                                @elseif($productRequest->hasCertificate==1)
-                                                       @if($productRequest->certificate->active==0) disabled
-                                                       @endif
-                                                @endif">مشاهده  گواهی ها</a>
-                                            {{--@if($productRequest->hasCertificate==1)--}}
-                                                {{--@if($productRequest->certificate->active==1)--}}
-                                                {{--<a href="{{url('admin/showCertificates/'.$productRequest->id)}}"--}}
-                                                   {{--class="btn btn-warning col-md-5  pull-right">مشاهده  گواهی ها</a>--}}
-                                            {{--@endif--}}
-                                            {{--@endif--}}
-                                                @if($productRequest->request_type_id == 3 && count($productRequest->bills) > 1 && $productRequest->bills[0]->active == 0)
-                                                    <a href="{{url('admin/preparedSummarize/'.$productRequest->id)}}"  class="btn btn-default  col-md-5  pull-right"> ثبت خلاصه تنظیمی </a>
-                                                @endif
-                                                @if($productRequest->request_type_id == 3 && count($productRequest->bills) > 1 && $productRequest->bills[0]->active == 1 && $productRequest->bills[0]->status == 0 && $productRequest->supplier_id != null)
-                                                    <a   class="btn btn-default  col-md-5  pull-right"> در انتظار تایید کارپرداز </a>
-                                                @endif
-                                                @if($productRequest->request_type_id == 3 && count($productRequest->bills) > 1 && $productRequest->bills[0]->active == 1 && $productRequest->bills[0]->status == 0 && $productRequest->supplier_id == null)
-                                                    <a   title="این درخواست دارای خلاصه تنظیمی میباشد ، برای ادامه به کارپرداز ابلاغ نمایید" data-toggle="" class="btn btn-default  col-md-5  pull-right">بخوانید</a>
-                                                @endif
-                                                @if($productRequest->request_type_id == 3 && count($productRequest->bills) > 1 && $productRequest->bills[0]->active == 1 && $productRequest->bills[0]->status == 1)
-                                                <a href="{{url('admin/printFactors/'.$productRequest->id)}}" target="_blank"  class="btn btn-default col-md-5  pull-right">چاپ خلاصه تنظیمی<i class="fa fa-print"></i></a>
-                                                @endif
-                                                @if($productRequest->request_type_id == 3 && count($productRequest->bills) <= 1 )
-                                                    <a href="{{url('admin/issueBill/'.$productRequest->id)}}"  class="btn btn-default  col-md-5  pull-right" > آپلود فاکتور </a>
-                                                @endif
-                                                <a href="{{url('admin/costDocumentForm/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right">سند هزینه</a>
+                                        <td style="text-align: right;direction: rtl;font-size:15px;">
+                                                <ul>
+                                                    <li>خلاصه تنظیمی صادر شده</li>
+                                                    <li>گواهی دارد</li>
+                                                    <li>به کارپرداز ابلاغ شده</li>
+                                                </ul>
+                                         </td>
+                                        <td class="col-md-2" style="font-size: 25px;border-right: 1px solid #d6d6c2">
+                                            <a href="{{url('admin/confirmedRequestDetails/'.$productRequest->id)}}" class="btn btn-primary col-md-12">مشاهده جزئیات</a>
                                         </td>
                                     </tr>
                                         @endif

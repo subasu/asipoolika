@@ -1132,30 +1132,33 @@ class SupplyController extends Controller
             $productRequest->accept_count=$accept_count;
             $productRequest->has_certificate_count=$has_certificate_count;
             $productRequest->refuse_count=$refuse_count;
-
+            $productRequest->date = $this->toPersian($productRequest->created_at);
             $certificate_has=Certificate::where('request_id',$productRequest->id)->get();
 //            dd($certificate_has);
             if(empty($certificate_has[0]))
                 $productRequest->hasCertificate=0;
             else
                 $productRequest->hasCertificate=1;
-//            $certificates=Certificate::where('request_id',$productRequest->id)->get();
-//
-//            foreach ($certificates as $certificate) {
-//                $all_c_count=CertificateRecord::where('certificate_id',$certificate->id)->count();
-//                $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
-//                if($all_c_count==$finished_c_count)
-//                {
-//                    Certificate::where('id',$certificate->id)->update([
-//                        'active'=>1
-//                    ]);
-//
-//                }
-//            }
+
         }
 //dd($productRequests);
         return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
 
+    }
+
+    public function confirmedRequestDetails($id)
+    {
+        $pageTitle='جزئیات درخواست شماره : '.$id;
+        $pageName='confirmedRequestDetails';
+        $request=Request2::where([['id',$id],['active',1]])->get();
+        $request_records=RequestRecord::where([['request_id',$id],['active',1]])->get();
+        foreach($request as $item)
+        {
+            $item->recquest_records=$request_records;
+            $item->date = $this->toPersian($item->created_at);
+        }
+//        dd($request[0]);
+        return view('admin.confirmedRequest',compact('pageTitle','pageName','request'));
     }
 
     //shiri : below function is related to show printed form of product request
@@ -2039,7 +2042,7 @@ class SupplyController extends Controller
                         ]);
                         if($factorId)
                         {
-                            return response(' فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید');
+                            return response('فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید');
                         }else
                             {
                                 return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
@@ -2157,5 +2160,11 @@ class SupplyController extends Controller
 
             }
 
+    }
+
+    public function checkPreparedSummarize(Request $request)
+    {
+        $count = DB::table('bills')->where('request_id',$request->requestId)->count();
+        return response($count);
     }
 }

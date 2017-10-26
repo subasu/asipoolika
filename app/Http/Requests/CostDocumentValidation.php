@@ -24,14 +24,14 @@ class CostDocumentValidation extends FormRequest
     public function rules()
     {
         return [
-                   'code[]'         => 'numeric',
+                   'code[]'         => 'integer|min:0',
                    //'description[]'  => 'required',
-                   'moeinOffice[]'  => 'numeric',
-                   'generalPrice[]' => 'numeric',
-                   'deduction[]'    => 'numeric',
-                   'payedPrice[]'   => 'numeric',
-                   'page[]'         => 'numeric',
-                   'row[]'          => 'numeric'
+                   'moeinOffice[]'  => 'integer|min:0',
+                   'generalPrice[]' => 'numeric|min:0',
+                   'deduction[]'    => 'numeric|min:0',
+                   'payedPrice[]'   => 'numeric|min:0',
+                   'page[]'         => 'numeric|min:0',
+                   'row[]'          => 'numeric|min:0'
                ];
 
 
@@ -41,7 +41,8 @@ class CostDocumentValidation extends FormRequest
     {
         return
             [
-                 'code[].numeric'             => 'لطفا فیلد کد را از نوع عدد  وارد نمایید',
+                 'code[].integer'             => 'لطفا فیلد کد را از نوع عدد  وارد نمایید',
+                 'code[].min:0'             => 'لطفا از وارد کردن اعداد منفی خودداری نمایید',
                  //'description[].required'     => 'پر کردن فیلد شرح الزامی است',
                  'moeinOffice[].numeric'      => 'لطفا فیلد دفتر معین را از نوع عدد صحیح وارد نمایید',
                  'deduction[].numeric'        => 'لطفا فیلد کسور را از نوع عدد صحیح وارد نمایید',

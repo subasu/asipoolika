@@ -96,11 +96,14 @@
                                 {{--<div class="ln_solid"></div>--}}
                                 <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-offset-1">
                                     {{--<button type="submit" name="edit" id="edit" class="btn btn-primary col-md-3 col-sm-3 col-xs-5">ویرایش</button>--}}
+                                    <button type="button" id="check" content="{{$id}}" class="btn btn-primary col-md-3 col-sm-3 col-xs-5" >ثبت خلاصه تنظیمی</button>
                                     <button type="button" name="addBill" id="addBill"
-                                            class="btn btn-primary col-md-6 col-sm-3 col-xs-5"> آپلود فاکتور
+                                            class="btn btn-primary col-md-3 col-sm-3 col-xs-5"> آپلود فاکتور
                                     </button>
+
                                     <input type="hidden" id="requestId" name="requestId" value="{{$id}}">
                                     <input type="hidden" id="newFinalPrice"  name="newFinalPrice" value="">
+                                    <input type="hidden" id="token" value="{{ csrf_token() }}">
                                 </div>
                             </form>
                         </div>
@@ -111,15 +114,6 @@
         <script src="{{URL::asset('public/js/persianDatepicker.js')}}"></script>
 
         <script>
-            $(function () {
-                var count = 0;
-                if(count == 0)
-                {
-                    $('#modal').modal('show');
-                    count+=1;
-                }
-
-            })
 
         </script>
 
@@ -143,6 +137,7 @@
 
         <script>
             $(document).on('click','#addBill',function(){
+
 
                 var newFinalPrice = $('#finalPrice').val();
                 newFinalPrice     = newFinalPrice.replace(/,/g , '');
@@ -188,13 +183,25 @@
                     },
                     success:function(response)
                     {
-                        swal({
-                            title: "",
-                            text: response,
-                            type: "info",
-                            confirmButtonText: "بستن"
-                        });
-                        setTimeout( function(){window.location.reload(true)},3000);
+                        if(response == 'فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید')
+                        {
+                            swal({
+                                title: "",
+                                text: response,
+                                type: "info",
+                                confirmButtonText: "بستن"
+                            });
+                            setTimeout( function(){window.location.reload(true)},3000);
+                        }else
+                            {
+                                swal({
+                                    title: "",
+                                    text: response,
+                                    type: "info",
+                                    confirmButtonText: "بستن"
+                                });
+                            }
+
                     },error:function(error)
                     {
                         if (error.status === 422) {
@@ -226,8 +233,45 @@
                     }
                 })
 
+            });
+        </script>
+        <script>
+            $(document).on('click','#check',function(){
+               var requestId = $(this).attr('content');
+               var token     = $('#token').val();
 
+                $.ajax
+                ({
+                    url  : "{{url('admin/checkPreparedSummarize')}}",
+                    type : 'post',
+                    context : requestId,
+                    data : {'requestId' : requestId , '_token' : token},
+                    success : function (resposne) {
+                            if(resposne >= 2)
+                            {
+                                window.location.href = '../preparedSummarize/'+requestId ;
+                            }else
+                                {
+                                    swal({
+                                        title: "",
+                                        text: 'تعداد فاکتورهای آپلود شده به حدی نرسیده است که امکان ثبت خلاصه تنظیمی وجود داشته باشد',
+                                        type: "info",
+                                        confirmButtonText: "بستن"
+                                    });
+                                    return false;
+                                }
 
+                    },error : function(error)
+                    {
+                        swal({
+                            title: "",
+                            text: 'خطایی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید',
+                            type: "warning",
+                            confirmButtonText: "بستن"
+                        });
+                        console.log(error);
+                    }
+                })
             });
         </script>
 
