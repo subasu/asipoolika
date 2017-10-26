@@ -98,7 +98,7 @@
                                     {{--<button type="submit" name="edit" id="edit" class="btn btn-primary col-md-3 col-sm-3 col-xs-5">ویرایش</button>--}}
                                     <button type="button" id="check" content="{{$id}}" class="btn btn-primary col-md-3 col-sm-3 col-xs-5" >ثبت خلاصه تنظیمی</button>
                                     <button type="button" name="addBill" id="addBill"
-                                            class="btn btn-primary col-md-3 col-sm-3 col-xs-5"> آپلود فاکتور
+                                            class="btn btn-success col-md-3 col-sm-3 col-xs-5"> آپلود فاکتور
                                     </button>
 
                                     <input type="hidden" id="requestId" name="requestId" value="{{$id}}">
