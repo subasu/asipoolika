@@ -91,6 +91,7 @@
                                 <th style="text-align: center ;">شناسه</th>
                                 <th style="text-align: center ;">نام واحد</th>
                                 <th style="text-align: center ;">درخواست دهنده</th>
+                                <th style="text-align: center ;">تاریخ ثبت</th>
                                     @if($pageName=='productRequestManagement')
                                         <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
                                         <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
@@ -172,6 +173,7 @@
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-1">{{$productRequest->user->unit->title}}</td>
                                         <td class="col-md-1">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                        <td class="col-md-1">23 خرداد 96</td>
                                         <td class="info col-md-1">{{$productRequest->accept_count}}</td>
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
                                         <td class="col-md-2" style="font-size: 25px;">
