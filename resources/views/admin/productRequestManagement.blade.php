@@ -181,6 +181,7 @@
                                     <tr>
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-1">{{$productRequest->user->unit->title}}</td>
+
                                         <td class="col-md-1">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
                                         <td class="col-md-1">23 خرداد 96</td>
                                         <td class="info col-md-1">{{$productRequest->accept_count}}</td>
@@ -204,6 +205,7 @@
                                                 </ul>
                                          </td>
                                         <td class="col-md-1" style="font-size: 25px;border-right: 1px solid #d6d6c2;">
+
                                             <a href="{{url('admin/confirmedRequestDetails/'.$productRequest->id)}}" class="btn btn-primary col-md-12">مشاهده جزئیات</a>
                                         </td>
                                     </tr>

@@ -4,6 +4,27 @@
         .padding-right-1px{padding-right: 1px !important;}
     </style>
     <!-- page content -->
+    <div id="modal" class="modal fade" role="dialog" style="direction: rtl;text-align: right">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">اطلاع رسانی</h4>
+                </div>
+                <div class="modal-body">
+                    <p>در نظر داشته باشید دسترسی به این صفحه جهت آپلود فاکتور فقط و فقط یکبار امکان پذیر است ، لذا در آپلود فاکتورهای مورد نظر خود دقت فرمائید.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info col-md-12" data-dismiss="modal">متوجه شدم</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
     <div class="" role="main">
         <div class="">
             <div class="clearfix"></div>
@@ -75,11 +96,14 @@
                                 {{--<div class="ln_solid"></div>--}}
                                 <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-offset-1">
                                     {{--<button type="submit" name="edit" id="edit" class="btn btn-primary col-md-3 col-sm-3 col-xs-5">ویرایش</button>--}}
+                                    <button type="button" id="check" content="{{$id}}" class="btn btn-primary col-md-3 col-sm-3 col-xs-5" >ثبت خلاصه تنظیمی</button>
                                     <button type="button" name="addBill" id="addBill"
-                                            class="btn btn-primary col-md-6 col-sm-3 col-xs-5"> آپلود فاکتور
+                                            class="btn btn-primary col-md-3 col-sm-3 col-xs-5"> آپلود فاکتور
                                     </button>
+
                                     <input type="hidden" id="requestId" name="requestId" value="{{$id}}">
                                     <input type="hidden" id="newFinalPrice"  name="newFinalPrice" value="">
+                                    <input type="hidden" id="token" value="{{ csrf_token() }}">
                                 </div>
                             </form>
                         </div>
@@ -88,6 +112,12 @@
             </div>
         </div>
         <script src="{{URL::asset('public/js/persianDatepicker.js')}}"></script>
+
+        <script>
+
+        </script>
+
+
         <script>
             $('#date').persianDatepicker();
         </script>
@@ -107,6 +137,7 @@
 
         <script>
             $(document).on('click','#addBill',function(){
+
 
                 var newFinalPrice = $('#finalPrice').val();
                 newFinalPrice     = newFinalPrice.replace(/,/g , '');
@@ -152,13 +183,25 @@
                     },
                     success:function(response)
                     {
-                        swal({
-                            title: "",
-                            text: response,
-                            type: "info",
-                            confirmButtonText: "بستن"
-                        });
-                        setTimeout( function(){window.location.reload(true)},3000);
+                        if(response == 'فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید')
+                        {
+                            swal({
+                                title: "",
+                                text: response,
+                                type: "info",
+                                confirmButtonText: "بستن"
+                            });
+                            setTimeout( function(){window.location.reload(true)},3000);
+                        }else
+                            {
+                                swal({
+                                    title: "",
+                                    text: response,
+                                    type: "info",
+                                    confirmButtonText: "بستن"
+                                });
+                            }
+
                     },error:function(error)
                     {
                         if (error.status === 422) {
@@ -190,8 +233,45 @@
                     }
                 })
 
+            });
+        </script>
+        <script>
+            $(document).on('click','#check',function(){
+               var requestId = $(this).attr('content');
+               var token     = $('#token').val();
 
+                $.ajax
+                ({
+                    url  : "{{url('admin/checkPreparedSummarize')}}",
+                    type : 'post',
+                    context : requestId,
+                    data : {'requestId' : requestId , '_token' : token},
+                    success : function (resposne) {
+                            if(resposne >= 2)
+                            {
+                                window.location.href = '../preparedSummarize/'+requestId ;
+                            }else
+                                {
+                                    swal({
+                                        title: "",
+                                        text: 'تعداد فاکتورهای آپلود شده به حدی نرسیده است که امکان ثبت خلاصه تنظیمی وجود داشته باشد',
+                                        type: "info",
+                                        confirmButtonText: "بستن"
+                                    });
+                                    return false;
+                                }
 
+                    },error : function(error)
+                    {
+                        swal({
+                            title: "",
+                            text: 'خطایی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید',
+                            type: "warning",
+                            confirmButtonText: "بستن"
+                        });
+                        console.log(error);
+                    }
+                })
             });
         </script>
 

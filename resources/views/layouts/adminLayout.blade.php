@@ -231,7 +231,7 @@
                             <li><a><i class="fa fa-odnoklassniki"></i>امور روزانه کارپرداز<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('user/dailyWorks/request')}}">امور مربوط به درخواست ها</a>
-                                    <li><a href="{{url('user/dailyWorks/factors')}}">امور مربوط به فاکتورها</a>
+                                    <li><a href="{{url('user/dailyWorks/factors')}}">امور مربوط به خلاصه تنظیمی</a>
                                     </li>
                                 </ul>
                             </li>

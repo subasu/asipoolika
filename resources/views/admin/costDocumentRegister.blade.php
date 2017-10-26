@@ -48,14 +48,14 @@
                             </thead>
                             <tbody>
                             <tr id="oldRow">
-                                <td ><input type='number'   id="code"  class='form-control'  ></td>
+                                <td ><input type='number' min="0"  id="code"  class='form-control'  ></td>
                                 <td class="col-md-3"><input type='text'      id="description"  class='form-control'  ></td>
-                                <td ><input type='number'   id="moeinOffice"  class='form-control'   ></td>
-                                <td ><input type='number'   id="generalPrice" class='form-control'   ></td>
-                                <td ><input type='number'   id="deduction" class='form-control'   ></td>
-                                <td ><input type='number'   id="payedPrice" class='form-control' ></td>
-                                <td ><input type='number'   id="page" class='form-control'   ></td>
-                                <td ><input type='number'   id="row" class='form-control'   ></td>
+                                <td ><input type='number'   id="moeinOffice" min="0" class='form-control'   ></td>
+                                <td ><input type='number'   id="generalPrice" min="0" class='form-control'   ></td>
+                                <td ><input type='number'   id="deduction" min="0" class='form-control'   ></td>
+                                <td ><input type='number'   id="payedPrice" min="0" class='form-control' ></td>
+                                <td ><input type='number'   id="page" min="0" class='form-control'   ></td>
+                                <td ><input type='number'   id="row" min="0" class='form-control'   ></td>
                             </tr>
                             </tbody>
                         </table>
@@ -194,14 +194,14 @@
                         $('#change').append
                         (
                             "<tr>"+
-                            "<td ><input type='number'    value='"+ code +"' class='form-control'  name='code[]'></td>"+
+                            "<td ><input type='number'  min='0'   value='"+ code +"' class='form-control'   name='code[]'></td>"+
                             "<td  class='col-md-3'><input type='text'      value='"+description+"' class='form-control required'  name='description[]' ></td>"+
-                            "<td ><input type='number'    value='"+moeinOffice+"' class='form-control'  name='moeinOffice[]' ></td>"+
-                            "<td ><input type='number'   value='"+generalPrice+"' class='form-control required'  name='generalPrice[]' ></td>"+
-                            "<td ><input type='number'   value='"+deduction+"' class='form-control'  name='deduction[]' ></td>"+
-                            "<td ><input type='number'   value='"+payedPrice+"' class='form-control'  name='payedPrice[]'></td>"+
-                            "<td ><input type='number'   value='"+page+"' class='form-control'  name='page[]' ></td>"+
-                            "<td ><input type='number'   value='"+row+"'  class='form-control'  name='row[]' ></td>"+
+                            "<td ><input type='number'  min='0'  value='"+moeinOffice+"' class='form-control'  name='moeinOffice[]' ></td>"+
+                            "<td ><input type='number'  min='0' value='"+generalPrice+"' class='form-control required'  name='generalPrice[]' ></td>"+
+                            "<td ><input type='number'  min='0' value='"+deduction+"' class='form-control'  name='deduction[]' ></td>"+
+                            "<td ><input type='number'  min='0' value='"+payedPrice+"' class='form-control'  name='payedPrice[]'></td>"+
+                            "<td ><input type='number'  min='0' value='"+page+"' class='form-control'  name='page[]' ></td>"+
+                            "<td ><input type='number'  min='0' value='"+row+"'  class='form-control'  name='row[]' ></td>"+
                             "<td ><a type='button' class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
                             "</tr>"
 

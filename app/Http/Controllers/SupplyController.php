@@ -1132,13 +1132,14 @@ class SupplyController extends Controller
             $productRequest->accept_count=$accept_count;
             $productRequest->has_certificate_count=$has_certificate_count;
             $productRequest->refuse_count=$refuse_count;
-
+            $productRequest->date = $this->toPersian($productRequest->created_at);
             $certificate_has=Certificate::where('request_id',$productRequest->id)->get();
 //            dd($certificate_has);
             if(empty($certificate_has[0]))
                 $productRequest->hasCertificate=0;
             else
                 $productRequest->hasCertificate=1;
+
 
             $certificates=Certificate::where('request_id',$productRequest->id)->get();
 
@@ -1169,6 +1170,9 @@ class SupplyController extends Controller
         foreach($request as $item)
         {
             $item->recquest_records=$request_records;
+
+            $item->date = $this->toPersian($item->created_at);
+
         }
 //        dd($request[0]);
         return view('admin.confirmedRequest',compact('pageTitle','pageName','request'));
@@ -2054,7 +2058,7 @@ class SupplyController extends Controller
                         ]);
                         if($factorId)
                         {
-                            return response(' فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید');
+                            return response('فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید');
                         }else
                             {
                                 return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
@@ -2172,5 +2176,11 @@ class SupplyController extends Controller
 
             }
 
+    }
+
+    public function checkPreparedSummarize(Request $request)
+    {
+        $count = DB::table('bills')->where('request_id',$request->requestId)->count();
+        return response($count);
     }
 }

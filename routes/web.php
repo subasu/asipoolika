@@ -273,6 +273,8 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::post('savePreparedSummarize','SupplyController@savePreparedSummarize');
         Route::post('updatePreparedSummarize','SupplyController@updatePreparedSummarize');
 
+        Route::post('checkPreparedSummarize','SupplyController@checkPreparedSummarize');
+
         //rayat - users manage:
 //        Route::get('usersManagement', 'SupplyController@usersManagementGet');
         Route::get('/usersManagement',[

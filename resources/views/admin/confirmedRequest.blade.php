@@ -62,7 +62,9 @@
                             <td class="col-md-1">{{$request[0]->id}}</td>
                             <td class="col-md-1">{{$request[0]->user->unit->title}}</td>
                             <td class="col-md-1">{{$request[0]->user->name .chr(10). $request[0]->user->family}}</td>
-                            <td class="col-md-1" style="border-right: 1px solid #d6d6c2">23 خرداد 96</td>
+
+                            <td class="col-md-1" style="border-right: 1px solid #d6d6c2">{{$request[0]->date}}</td>
+
                         </tr>
                     </tbody>
                 </table>
@@ -118,21 +120,34 @@
                         {{--class="btn btn-warning col-md-5  pull-right">مشاهده  گواهی ها</a>--}}
                         {{--@endif--}}
                         {{--@endif--}}
-                        @if($request[0]->request_type_id == 3 && count($request[0]->bills) > 1 && $request[0]->bills[0]->active == 0)
-                            <a href="{{url('admin/preparedSummarize/'.$request[0]->id)}}"  class="btn btn-default  col-md-12  pull-right"> ثبت خلاصه تنظیمی </a>
+
+                        @if(!empty($request[0]->bills[0]))
+                            @if($request[0]->request_type_id == 3  && count($request[0]->bills) >= 2 && $request[0]->bills[0]->active == 0 )
+                                <a href="{{url ('admin/preparedSummarize/'.$request[0]->id)}}" data-toggle=""  class="btn btn-info col-md-12  pull-right">ثبت خلاصه تنظیمی</a>
+                            @endif
+                            @if($request[0]->request_type_id == 3  && $request[0]->bills[0]->active == 1 && $request[0]->bills[0]->status == 0)
+                                <a title="این درخواست دارای خلاصه تنظیمی میباشد ، و در انتظار تایید کارپرداز میباشد" data-toggle=""  class="btn btn-default col-md-12  pull-right">بخوانید</a>
+                            @endif
+                            @if($request[0]->request_type_id == 3  && $request[0]->bills[0]->active == 1 && $request[0]->bills[0]->status == 1)
+                                <a href="{{url('admin/printFactors/'.$request[0]->id)}}" target="_blank"  class="btn btn-default col-md-12  pull-right">چاپ خلاصه تنظیمی<i class="fa fa-print"></i></a>
+                            @endif
+                            @if($request[0]->request_type_id == 3 &&  $request[0]->supplier_id != null && $request[0]->bills[0]->active == 0)
+                                <a href="{{url('admin/issueBill/'.$request[0]->id)}}"  class="btn btn-default  col-md-12  pull-right" > آپلود فاکتور </a>
+                            @endif
+                            {{--@if($request[0]->request_type_id == 3 &&  $request[0]->supplier_id == null && $request[0]->bills[0]->active == 0)--}}
+                                {{--<a   class="btn btn-default  col-md-12  pull-right"  disabled="disabled"> آپلود فاکتور </a>--}}
+                            {{--@endif--}}
                         @endif
-                        @if($request[0]->request_type_id == 3 && count($request[0]->bills) > 1 && $request[0]->bills[0]->active == 1 && $request[0]->bills[0]->status == 0 && $request[0]->supplier_id != null)
-                            <a   class="btn btn-default  col-md-12  pull-right"> در انتظار تایید کارپرداز </a>
+                        @if(empty($request[0]->bills[0]))
+                            @if($request[0]->request_type_id == 3 &&  $request[0]->supplier_id != null)
+                                <a href="{{url('admin/issueBill/'.$request[0]->id)}}"  class="btn btn-default  col-md-12  pull-right" > آپلود فاکتور </a>
+                            @endif
+                                @if($request[0]->request_type_id == 3 &&  $request[0]->supplier_id == null)
+                                    <a   class="btn btn-default  col-md-12  pull-right"  disabled="disabled"> آپلود فاکتور </a>
+                                @endif
                         @endif
-                        @if($request[0]->request_type_id == 3 && count($request[0]->bills) > 1 && $request[0]->bills[0]->active == 1 && $request[0]->bills[0]->status == 0 && $request[0]->supplier_id == null)
-                            <a   title="این درخواست دارای خلاصه تنظیمی میباشد ، برای ادامه به کارپرداز ابلاغ نمایید" data-toggle="" class="btn btn-default  col-md-12  pull-right">بخوانید</a>
-                        @endif
-                        @if($request[0]->request_type_id == 3 && count($request[0]->bills) > 1 && $request[0]->bills[0]->active == 1 && $request[0]->bills[0]->status == 1)
-                            <a href="{{url('admin/printFactors/'.$request[0]->id)}}" target="_blank"  class="btn btn-default col-md-12  pull-right">چاپ خلاصه تنظیمی<i class="fa fa-print"></i></a>
-                        @endif
-                        @if($request[0]->request_type_id == 3 && count($request[0]->bills) <= 1 )
-                            <a href="{{url('admin/issueBill/'.$request[0]->id)}}"  class="btn btn-default  col-md-12  pull-right" > آپلود فاکتور </a>
-                        @endif
+
+
                         <a href="{{url('admin/issueBill/'.$request[0]->id)}}"  class="btn btn-danger  col-md-12  pull-right" >آپلود قبض انبار</a>
                         <a href="{{url('admin/costDocumentForm/'.$request[0]->id)}}" class="btn btn-primary col-md-12 pull-right">سند هزینه</a>
                     </div>
