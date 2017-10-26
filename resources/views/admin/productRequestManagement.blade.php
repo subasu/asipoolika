@@ -80,7 +80,7 @@
                         @if($pageName=='confirmProductRequest')
                             {{--<a href="{{url('admin/confirmProductRequestManagement')}}" class="btn btn-danger col-md-12"><i class="fa fa-refresh"></i> بروزرسانی درخواست ها</a>--}}
                             {{--<a href="{{url('admin/confirmServiceRequestManagement')}}" class="btn btn-danger col-md-12"><i class="fa fa-refresh"></i> بروزرسانی درخواست ها</a>--}}
-                            <button  style="font-size:18px;" type="button" class="btn btn-primary col-md-12" data-toggle="modal" data-target="#myModal">نحوه کار با این صفحه <i class="fa fa-question-circle-o" aria-hidden="true"></i></button>
+                            {{--<button  style="font-size:18px;" type="button" class="btn btn-primary col-md-12" data-toggle="modal" data-target="#myModal">نحوه کار با این صفحه <i class="fa fa-question-circle-o" aria-hidden="true"></i></button>--}}
 
                             @endif
                         {{--<form id="serviceDetailForm">--}}
@@ -113,6 +113,7 @@
                                     @elseif($pageName=='confirmProductRequest')
                                         <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
                                         <th class="col-md-1" style="text-align: center ;">دارای گواهی</th>
+                                        <th class="col-md-1" style="text-align: center ;">خلاصه وضعیت</th>
                                         <th class="col-md-3" style="text-align: center ;border-right: 1px solid #e0e0d1"> مشاهده جزئیات</th>
                                         {{--<td></td>--}}
                                     @endif
@@ -135,7 +136,7 @@
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
                                             <td><a class="btn btn-info"  href="{{url('admin/productRequestRecords/'.$productRequest->id)}}">مشاهده جزییات</a>
-                                            {{--<td></td>--}}
+                                            </td>
                                         @endif
                                     </tr>
                                     @endforeach
@@ -175,11 +176,18 @@
                                     <tr>
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-1">{{$productRequest->user->unit->title}}</td>
-                                        <td class="col-md-1">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                        <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
                                         <td class="col-md-1">23 خرداد 96</td>
                                         <td class="info col-md-1">{{$productRequest->accept_count}}</td>
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
-                                        <td class="col-md-2" style="font-size: 25px;">
+                                        <td style="text-align: right;direction: rtl;font-size:15px;">
+                                                <ul>
+                                                    <li>خلاصه تنظیمی صادر شده</li>
+                                                    <li>گواهی دارد</li>
+                                                    <li>به کارپرداز ابلاغ شده</li>
+                                                </ul>
+                                         </td>
+                                        <td class="col-md-2" style="font-size: 25px;border-right: 1px solid #d6d6c2">
                                             <a href="{{url('admin/confirmedRequestDetails/'.$productRequest->id)}}" class="btn btn-primary col-md-12">مشاهده جزئیات</a>
                                         </td>
                                     </tr>

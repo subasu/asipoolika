@@ -91,7 +91,6 @@
                             @endforeach
                             </tbody>
                         </table>
-
                     </div>
                     <div class="col-md-2">
                         <a href="{{url('admin/certificate/'.$request[0]->id)}}" class="btn btn-primary col-md-12 pull-right @if($request[0]->accept_count==0 or $request[0]->supplier_id==null) disabled @endif"> تحویل فوری</a>
