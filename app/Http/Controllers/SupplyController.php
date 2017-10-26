@@ -1139,23 +1139,25 @@ class SupplyController extends Controller
                 $productRequest->hasCertificate=0;
             else
                 $productRequest->hasCertificate=1;
-//            $certificates=Certificate::where('request_id',$productRequest->id)->get();
-//
-//            foreach ($certificates as $certificate) {
-//                $all_c_count=CertificateRecord::where('certificate_id',$certificate->id)->count();
-//                $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
-//                if($all_c_count==$finished_c_count)
-//                {
-//                    Certificate::where('id',$certificate->id)->update([
-//                        'active'=>1
-//                    ]);
-//
-//                }
-//            }
+
         }
 //dd($productRequests);
         return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
 
+    }
+
+    public function confirmedRequestDetails($id)
+    {
+        $pageTitle='جزئیات درخواست شماره : '.$id;
+        $pageName='confirmedRequestDetails';
+        $request=Request2::where([['id',$id],['active',1]])->get();
+        $request_records=RequestRecord::where([['request_id',$id],['active',1]])->get();
+        foreach($request as $item)
+        {
+            $item->recquest_records=$request_records;
+        }
+//        dd($request[0]);
+        return view('admin.confirmedRequest',compact('pageTitle','pageName','request'));
     }
 
     //shiri : below function is related to show printed form of product request

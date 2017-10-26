@@ -163,6 +163,13 @@ Route::group(['prefix'=>'systemManager'],function() {
             'roles'=>['supplierManager']
         ]);
 
+        Route::get('/confirmedRequestDetails/{id}',[
+            'uses'=>'SupplyController@confirmedRequestDetails',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
+
+
         // Certificate
         Route::get('/impart/{id}','CertificateController@impartGet');
 

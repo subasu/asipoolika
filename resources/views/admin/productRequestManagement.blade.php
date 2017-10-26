@@ -113,7 +113,7 @@
                                     @elseif($pageName=='confirmProductRequest')
                                         <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
                                         <th class="col-md-1" style="text-align: center ;">دارای گواهی</th>
-                                        <th class="col-md-3" style="text-align: center ;border-right: 1px solid #e0e0d1"> عملیات</th>
+                                        <th class="col-md-3" style="text-align: center ;border-right: 1px solid #e0e0d1"> مشاهده جزئیات</th>
                                         {{--<td></td>--}}
                                     @endif
                                     {{--<td></td>--}}
@@ -177,48 +177,7 @@
                                         <td class="info col-md-1">{{$productRequest->accept_count}}</td>
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
                                         <td class="col-md-2" style="font-size: 25px;">
-                                            {{--<a href="" class="btn btn-danger">صدور صورتجلسه تحویل و نصب</a>--}}
-                                            <a href="{{url('admin/certificate/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right @if($productRequest->accept_count==0 or $productRequest->supplier_id==null) disabled @endif"> تحویل فوری</a>
-                                            @if($productRequest->request_type_id == 3)
-                                             <a target="_blank" href="{{url('admin/printProductRequest/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right"> چاپ درخواست </a>
-                                            @endif
-                                            @if($productRequest->request_type_id == 2)
-                                                <a href="{{url('admin/printServiceRequest/'.$productRequest->id)}}" class="btn btn-info col-md-5 pull-right"> چاپ درخواست </a>
-                                            @endif
-                                            @if($productRequest->supplier_id==null)
-                                            <a href="{{url('admin/impart/'.$productRequest->id)}}" class="btn btn-danger col-md-5 pull-right"> ابلاغ به کارپرداز</a>
-                                            @else
-                                                <a  class="btn btn-success disabled col-md-5 pull-right">ابلاغ شده</a>
-                                            @endif
-                                            <a href="{{url('admin/showCertificates/'.$productRequest->id)}}"
-                                               class="btn btn-warning col-md-5 pull-right
-                                             @if($productRequest->hasCertificate==0) disabled
-                                                @elseif($productRequest->hasCertificate==1)
-                                                       @if($productRequest->certificate->active==0) disabled
-                                                       @endif
-                                                @endif">مشاهده  گواهی ها</a>
-                                            {{--@if($productRequest->hasCertificate==1)--}}
-                                                {{--@if($productRequest->certificate->active==1)--}}
-                                                {{--<a href="{{url('admin/showCertificates/'.$productRequest->id)}}"--}}
-                                                   {{--class="btn btn-warning col-md-5  pull-right">مشاهده  گواهی ها</a>--}}
-                                            {{--@endif--}}
-                                            {{--@endif--}}
-                                                @if($productRequest->request_type_id == 3 && count($productRequest->bills) > 1 && $productRequest->bills[0]->active == 0)
-                                                    <a href="{{url('admin/preparedSummarize/'.$productRequest->id)}}"  class="btn btn-default  col-md-5  pull-right"> ثبت خلاصه تنظیمی </a>
-                                                @endif
-                                                @if($productRequest->request_type_id == 3 && count($productRequest->bills) > 1 && $productRequest->bills[0]->active == 1 && $productRequest->bills[0]->status == 0 && $productRequest->supplier_id != null)
-                                                    <a   class="btn btn-default  col-md-5  pull-right"> در انتظار تایید کارپرداز </a>
-                                                @endif
-                                                @if($productRequest->request_type_id == 3 && count($productRequest->bills) > 1 && $productRequest->bills[0]->active == 1 && $productRequest->bills[0]->status == 0 && $productRequest->supplier_id == null)
-                                                    <a   title="این درخواست دارای خلاصه تنظیمی میباشد ، برای ادامه به کارپرداز ابلاغ نمایید" data-toggle="" class="btn btn-default  col-md-5  pull-right">بخوانید</a>
-                                                @endif
-                                                @if($productRequest->request_type_id == 3 && count($productRequest->bills) > 1 && $productRequest->bills[0]->active == 1 && $productRequest->bills[0]->status == 1)
-                                                <a href="{{url('admin/printFactors/'.$productRequest->id)}}" target="_blank"  class="btn btn-default col-md-5  pull-right">چاپ خلاصه تنظیمی<i class="fa fa-print"></i></a>
-                                                @endif
-                                                @if($productRequest->request_type_id == 3 && count($productRequest->bills) <= 1 )
-                                                    <a href="{{url('admin/issueBill/'.$productRequest->id)}}"  class="btn btn-default  col-md-5  pull-right" > آپلود فاکتور </a>
-                                                @endif
-                                                <a href="{{url('admin/costDocumentForm/'.$productRequest->id)}}" class="btn btn-primary col-md-5 pull-right">سند هزینه</a>
+                                            <a href="{{url('admin/confirmedRequestDetails/'.$productRequest->id)}}" class="btn btn-primary col-md-12">مشاهده جزئیات</a>
                                         </td>
                                     </tr>
                                         @endif
