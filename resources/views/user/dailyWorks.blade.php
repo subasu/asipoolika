@@ -89,7 +89,7 @@
                                     </td>
 
                                         <td>
-                                            <a href="{{url('user/showFactorDetails/'.$request->id)}}" class="btn btn-primary">مشاهده فاکتورها</a>
+                                            <a href="{{url('user/showFactorDetails/'.$request->id)}}" class="btn btn-primary">مشاهده خلاصه تنظیمی</a>
                                         </td>
 
                                 </tr>

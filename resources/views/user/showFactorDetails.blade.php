@@ -55,7 +55,7 @@
                         @endforeach
 
                 </table>
-                <input style="margin-left: 40%; width: 20%;" type="button" id="finish" value="تایید فاکتور" content="{{$bill->request_id}}" class="btn btn-primary">
+                <input style="margin-left: 40%; width: 20%;" type="button" id="finish" value="تایید خلاصه تنظیمی" content="{{$bill->request_id}}" class="btn btn-primary">
             </div>
         </div>
     </div>
