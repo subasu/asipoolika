@@ -181,10 +181,24 @@
                                         <td class="info col-md-1">{{$productRequest->accept_count}}</td>
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
                                         <td style="text-align: right;direction: rtl;font-size:15px;">
-                                                <ul>
-                                                    <li>خلاصه تنظیمی صادر شده</li>
-                                                    <li>گواهی دارد</li>
-                                                    <li>به کارپرداز ابلاغ شده</li>
+                                                <ul> <li>کارپرداز :
+                                                    @if($productRequest->supplier_id!=null)
+                                                        {{$productRequest->supplier->name .chr(10). $productRequest->supplier->family}}
+                                                        @else <span style="color:red">ابلاغ نشده</span>
+                                                    @endif
+                                                        </li>
+                                                    <li>گواهی :
+                                                    @if($productRequest->certificate!=null) دارد
+                                                        @else <span style="color:red">ندارد</span>
+                                                        @endif
+                                                    </li>
+                                                    <li>تعداد رکوردها :
+                                                    {{$productRequest->requestRecord->count()}}
+                                                    </li>
+                                                    <li>سند هزینه :
+                                                    @if($productRequest->costDocument!= null) تنظیم شده
+                                                        @else <span style="color:red">ندارد</span>
+                                                    @endif</li>
                                                 </ul>
                                          </td>
                                         <td class="col-md-2" style="font-size: 25px;border-right: 1px solid #d6d6c2">
