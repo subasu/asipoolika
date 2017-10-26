@@ -53,6 +53,7 @@
                                     <option name ='receiverId' value="{{$user2->id}}">{{$user2->name}} {{$user2->family}}</option>
                                 @endforeach
                             </select> تحویل گردید و پرداخت شده است.
+                            <span style="color:red">در صورت تحویل به انبار تحویل گیرنده مسئول انبار خواهد بود</span>
                         </div>
                     </div>
                 <table style="direction:rtl;text-align: center;font-size: 16px;" id="table" class="table table-responsive table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
@@ -113,8 +114,9 @@
                 <div class="row">
                     <div class="col-md-12 col-md-offset-3">
                         @if($requestRecords[0]->request->request_type_id==3)
-                            <button   id="use_certificate" content="2" class="btn btn-danger col-md-3" >صدور گواهی تحویل و مصرف</button>
-                            <button   id="install_certificate"  content="1" class="btn btn-primary col-md-3" >صدور گواهی تحویل و نصب</button>
+                            <button   id="deliver_store"  content="4" class="btn btn-success col-md-2" >تحویل به انبار</button>
+                            <button   id="use_certificate" content="2" class="btn btn-danger col-md-2" >صدور گواهی تحویل و مصرف</button>
+                            <button   id="install_certificate"  content="1" class="btn btn-primary col-md-2" >صدور گواهی تحویل و نصب</button>
                         @elseif($requestRecords[0]->request->request_type_id==2)
                         <button  id="service_certificate"  content="3" class="btn btn-success col-md-4 col-md-offset-1" value="">صدور گواهی انجام خدمت</button>
                         @endif
@@ -163,7 +165,7 @@
 //                $('#checked_count').val(checked_count);
 //            }
 //        });
-        $(document).on('click','#install_certificate',function()
+$(document).on('click','#install_certificate',function()
         {
 
             var shop_comp = $('#shop_comp').val();
@@ -489,6 +491,162 @@ $(document).on('click','#use_certificate',function()
 
 });
 
+$(document).on('click','#deliver_store',function()
+{
+    var shop_comp = $('#shop_comp').val();
+    if(shop_comp == '' || shop_comp == null)
+    {
+        $('#shop_comp').css('border' , 'red 4px solid');
+        $('#shop_comp').focus();
+        return false;
+    }
+
+    var recordId  = '';
+    var newRate   = '';
+    var newPrice  = '';
+    var newCount  = '';
+    var unitCount = '';
+    var token = $('#token').val();
+    var requestId = $('#requestId').val();
+    var certificateType = $(this).attr('content');
+    var receiverId = '';
+    $("[name='receiverId']:selected").each(function(){
+        receiverId += $(this).val();
+        $('#receiverId').val(receiverId);
+    });
+    if ($('input.record_ch').is(':checked')) {
+        $("[name = 'record']:checked").each(function () {
+
+            recordId += $(this).val() + ',';
+            newRate += $(this).parents('tr').find('.new_rate').val() + ',';
+            newCount += $(this).parents('tr').find('.new_count').val() + ',';
+            unitCount += $(this).parents('tr').find('.unit_count').val() + ',';
+            newPrice += $(this).parents('tr').find('.new_price').val().replace(/,/g, '') + ',';
+        });
+        //$("[name = 'record']:checked").each(function () {
+        var counter = 0;
+        $("[name = 'record']:checked").each(function() {
+            if($(this).parents('tr').find('.new_count').val() === "")
+            {
+                $(this).parents('tr').find('.new_count').css("border" , "red 4px solid");
+                counter++;
+            }
+            if ($(this).parents('tr').find('.new_rate').val() === "")
+            {
+                $(this).parents('tr').find('.new_rate').css("border" , "red 4px solid");
+                counter++;
+            }
+            if($(this).parents('tr').find('.new_price').val() === "")
+            {
+                $(this).parents('tr').find('.new_price').css("border" , "red 4px solid");
+                counter++;
+            }
+
+        });
+        if(counter > 0){
+            swal({
+                title: "",
+                text:'مقادیر سطرهای انتخاب شده خالی است ، لطفا مقادیر مربوطه را پر نمایید و مجددا در خواست خود را ارسال نمایید' ,
+                type: "info",
+                confirmButtonText: "بستن"
+            });
+            return false;
+        }
+        else
+        {
+
+            swal({
+                        title: "آیا از ثبت درخواست مطمئن هستید؟",
+                        text: "",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "	#5cb85c",
+                        cancelButtonText: "خیر ، منصرف شدم",
+                        confirmButtonText: "بله ثبت شود",
+                        closeOnConfirm: true,
+                        closeOnCancel: false
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            $.ajax
+                            ({
+
+                                url: "{{ url('admin/deliver_to_store') }}",
+                                type: 'POST',
+                                //dataType: 'json',
+                                data: {
+                                    'recordId': recordId,
+                                    'newRate': newRate,
+                                    'newPrice': newPrice,
+                                    'newCount': newCount,
+                                    '_token': token,
+                                    'unitCount': unitCount,
+                                    'receiverId': receiverId,
+                                    'certificateType': certificateType,
+                                    'shop_comp': shop_comp,
+                                    'requestId': requestId
+                                },
+                                //context : recordId,
+                                success: function (response) {
+                                    // $(td).parentsUntil(DOM,'tr').hide();
+                                    console.log(response);
+                                    swal
+                                    ({
+                                        title: 'گواهی ثبت شد',
+                                        text: "گواهی به لیست گواهی ها اضافه شد",
+                                        type: 'success',
+                                        confirmButtonText: "بستن"
+                                    });
+                                    setTimeout(function(){ window.location.reload(true); }, 1000);
+                                },
+                                error: function (error) {
+                                    if (error.status === 422) {
+                                        $errors = error.responseJSON; //this will get the errors response data.
+                                        //show them somewhere in the markup
+                                        //e.g
+                                        var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
+                                        //
+                                        $.each($errors, function (key, value) {
+                                            errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                        });
+                                        errorsHtml += '</ul></div>';
+                                        $('fieldset').append(errorsHtml);
+                                        swal
+                                        ({
+                                            title: 'خطاهای زیر را برطرف کنید !',
+                                            text: '',
+                                            type: 'error',
+                                            confirmButtonText: "بستن"
+                                        });
+                                    } else if (error.status === 500) {
+                                        swal
+                                        ({
+                                            title: 'لطفا با بخش پشتیبانی تماس بگیرید',
+                                            text: 'خطایی رخ داده است',
+                                            type: 'error',
+                                            confirmButtonText: "بستن"
+                                        });
+                                        console.log(error);
+                                    }
+                                }
+                            });
+                        }
+                    });
+        }
+
+    }else
+    {
+        swal
+        ({
+            title: 'لطفا سطری را انتخاب نمایید',
+            text: '',
+            type:'',
+            confirmButtonText: "بستن"
+        });
+        return false;
+    }
+
+});
 
 $(document).on('click','#service_certificate',function()
 {

@@ -193,6 +193,7 @@ Route::group(['prefix'=>'systemManager'],function() {
             'roles'=>['supplierManager']
         ]);
         Route::post('/execute_certificate','CertificateController@execute_certificate');
+        Route::post('/deliver_to_store','CertificateController@deliver_to_store');
 
         Route::get('/productCertificatesManagement','CertificateController@productCertificatesManagementGet');
         Route::get('/serviceCertificatesManagement','CertificateController@serviceCertificatesManagementGet');

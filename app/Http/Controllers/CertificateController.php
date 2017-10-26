@@ -66,9 +66,9 @@ class CertificateController extends Controller
         $requestRecords=RequestRecord::where([['request_id',$id],['active',1],['step',7]])->get();
         if(empty($requestRecords[0]))
         {
-            return redirect('admin/confirmProductRequestManagement');
+            return redirect('admin/confirmedRequestDetails/'.$id);
         }
-        $users=User::where('unit_id',$requestRecords[0]->request->user->unit->id)->get();
+        $users=User::where('unit_id',$requestRecords[0]->request->unit_id)->get();
 //        dd($requestRecords[0]->request->request_type_id);
         return view('admin.certificate.certificate',compact('pageTitle','requestRecords','user','users'));
     }
@@ -119,6 +119,59 @@ class CertificateController extends Controller
         }
         //return response($record_count);
     }
+
+    public function deliver_to_store(Request $request)
+    {
+        $newPriceArray  = explode(',',$request->newPrice);
+        $newRateArray   = explode(',',$request->newRate);
+        $recordIdArray  = explode(',',$request->recordId);
+        $newCountArray  = explode(',',$request->newCount);
+        $unitCountArray = explode(',',$request->unitCount);
+        $len            = count($recordIdArray);
+        //dd($len);
+        //$record_count=$request->checked_count;
+        $unit_id=Unit::where('title','انبار')->pluck('id');
+        $receiver_id=User::where([['unit_id',$unit_id[0],['is_supervisor',1]]])->pluck('id');
+
+        if($len!=0)
+        {
+            $certificate_id=DB::table('certificates')->insertGetId([
+                'request_id'          => $request->requestId,
+                'user_id'             => Auth::user()->id,
+                'shop_comp'           => $request->shop_comp,
+                'certificate_type_id' => $request->certificateType,
+                'active'=>1,
+                'created_at'          => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+            ]);
+            $i=0;
+            while($i < $len-1)
+            {
+                $q=DB::table('certificate_records')->insert([
+
+                    'request_record_id' => $recordIdArray[$i],
+                    'price'             => $newPriceArray[$i],
+                    'rate'              => $newRateArray[$i],
+                    'count'             => $newCountArray[$i],
+                    'unit_count'        => $unitCountArray[$i],
+                    'certificate_id'    => $certificate_id,
+                    'receiver_id'       => $receiver_id[0],
+                    'active'            =>1,
+                    'step'              =>5
+                ]);
+                DB::table('request_records')->where('id',$recordIdArray[$i])->update([
+                    'receiver_id'=>$receiver_id[0],
+                    'step'=>9,
+                    'updated_at'=>Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                ]);
+                $i++;
+                //$record_count--;
+            }
+            if($q)
+                return response('inserted');
+        }
+        //return response($record_count);
+    }
+
 
     public function productCertificatesManagementGet()
     {
@@ -709,7 +762,7 @@ class CertificateController extends Controller
                 $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
 //                $certificate_records = CertificateRecord::where('step', 4)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
                 $certificate_records = CertificateRecord::where('step','>', 3)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
-                $certificates = Certificate::whereIn('id', $certificate_records)->orderBy('created_at','desc')->get();
+                $certificates = Certificate::whereIn('id', $certificate_records)->where('certificate_type_id','!=',4)->orderBy('created_at','desc')->get();
 //                dd($certificates);
                 break;
             case 'unit_employee':
@@ -717,13 +770,13 @@ class CertificateController extends Controller
                 $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
 //                $certificate_records = CertificateRecord::where('step', 2)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
                 $certificate_records = CertificateRecord::where('step','>', 1)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
-                $certificates = Certificate::whereIn('id', $certificate_records)->orderBy('created_at','desc')->get();
+                $certificates = Certificate::whereIn('id', $certificate_records)->where('certificate_type_id','!=',4)->orderBy('created_at','desc')->get();
 //                dd($user->id);
                 break;
             case 'boss':
 //                $certificate_id = CertificateRecord::where('step', 5)->pluck('certificate_id');
                 $certificate_id = CertificateRecord::where('step','>',4)->pluck('certificate_id');
-                $certificates = Certificate::whereIn('id', $certificate_id)->orderBy('created_at','desc')->get();
+                $certificates = Certificate::whereIn('id', $certificate_id)->where('certificate_type_id','!=',4)->orderBy('created_at','desc')->get();
                 break;
             case 'unit_supervisor':
                 //bring certificates as a unit supervisor
@@ -731,14 +784,14 @@ class CertificateController extends Controller
                 $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
 //                $certificate_records = CertificateRecord::where('step', 3)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
                 $certificate_records = CertificateRecord::where('step', '>',2)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
-                $certificates = Certificate::whereIn('id', $certificate_records)->orderBy('created_at','desc')->get();
+                $certificates = Certificate::whereIn('id', $certificate_records)->where('certificate_type_id','!=',4)->orderBy('created_at','desc')->get();
 
                 //bring certificates as a unit employee
                 $request_id = RequestRecord::where('receiver_id', $user->id)->pluck('request_id');
                 $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
 //                $certificate_records = CertificateRecord::where('step', 2)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
                 $certificate_records = CertificateRecord::where('step','>', 1)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
-                $certificates2 = Certificate::whereIn('id', $certificate_records)->orderBy('created_at','desc')->get();
+                $certificates2 = Certificate::whereIn('id', $certificate_records)->where('certificate_type_id','!=',4)->orderBy('created_at','desc')->get();
                 $certificates=$certificates->merge($certificates2);
 
 //                dd($certificates);

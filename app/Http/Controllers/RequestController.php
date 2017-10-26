@@ -178,6 +178,9 @@ class RequestController extends Controller
                     case 8:
                         $step = 'در حال صدور گواهی';
                         break;
+                    case 9:
+                        $step = 'تحویل انبار داده شد';
+                        break;
                     default :
                         $step = 'نامشخص';
                 }
@@ -212,7 +215,6 @@ class RequestController extends Controller
                         $step = 'نامشخص';
                 }
             }
-
             if ($requestRecord->refuse_user_id != null) {
                 $requestRecord->refuse = 1;
                 $unit_id = User::where('id', $requestRecord->refuse_user_id)->pluck('unit_id');

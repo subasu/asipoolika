@@ -55,7 +55,7 @@
                         <th style="text-align: center ;">نرخ</th>
                         <th style="text-align: center ;">قیمت</th>
                         <th class="col-md-3" style="text-align: center ;">توضیحات</th>
-                        <th class="col-md-3" style="text-align: center ;">مرحله</th>
+                        <th class="col-md-3" style="text-align: center ;border-right: 1px solid #e0e0d1;">مرحله</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -73,7 +73,7 @@
                             <td>{{number_format($requestRecord->rate)}} تومان</td>
                             <td>{{number_format($requestRecord->price)}} تومان</td>
                             <td>{{$requestRecord->description}}</td>
-                            <td>@if($requestRecord->refuse==0)
+                            <td style="border-right: 1px solid #e0e0d1">@if($requestRecord->refuse==0)
                                 {{$requestRecord->status}}
                                 @else <span style="font-size:15px;" class="label label-danger"> رد شده توسط واحد {{$requestRecord->refuseBy}} </span> <a style="margin-right: 10px;cursor: pointer" data-toggle="tooltip" data-placement="top" title="علت رد شدن : {{$requestRecord->why_not}}">چرا؟</a>
                                 @endif

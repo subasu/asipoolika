@@ -1124,10 +1124,8 @@ class SupplyController extends Controller
                 $q=DB::table('requests')->where('id',$productRequest->id)->update([
                     'active'=>1
                 ]);
-//                $productRequest->msg='Yes';
-//                    return redirect('admin/confirmProductRequestManagement');
             }
-//                $productRequest->msg='No';
+
             $productRequest->all_count=$all_count;
             $productRequest->accept_count=$accept_count;
             $productRequest->has_certificate_count=$has_certificate_count;
@@ -1172,6 +1170,16 @@ class SupplyController extends Controller
             $item->recquest_records=$request_records;
 
             $item->date = $this->toPersian($item->created_at);
+
+            $all_count=RequestRecord::where('request_id',$item->id)->count();
+            $accept_count=RequestRecord::where([['request_id',$item->id],['step',7],['refuse_user_id',null],['active',1]])->count();
+            $has_certificate_count=RequestRecord::where([['request_id',$item->id],['step',8]])->count();
+            $refuse_count=RequestRecord::where([['request_id',$item->id],['refuse_user_id','!=',null],['active',0]])->count();
+
+            $item->all_count=$all_count;
+            $item->accept_count=$accept_count;
+            $item->has_certificate_count=$has_certificate_count;
+            $item->refuse_count=$refuse_count;
 
         }
 //        dd($request[0]);

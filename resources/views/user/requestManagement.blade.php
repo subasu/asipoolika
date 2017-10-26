@@ -59,13 +59,13 @@
                                 <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                 <th class="col-md-2" style="text-align: center ;">رد شده</th>
                                 <th class="col-md-2" style="text-align: center ;">وضعیت</th>
-                                <th class="col-md-1" style="text-align: center ;"></th>
+                                <th class="col-md-1" style="text-align: center ;border-right: 1px solid #e0e0d1">جزئیات بیشتر</th>
                             @elseif($pageName=='myServiceRequests')
                                 <th class="col-md-2" style="text-align: center ;">در انتطار بررسی</th>
                                 <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                 <th class="col-md-2" style="text-align: center ;">رد شده</th>
                                 <th class="col-md-2" style="text-align: center ;">وضعیت</th>
-                                <th class="col-md-1" style="text-align: center ;"></th>
+                                <th class="col-md-1" style="text-align: center ;border-right: 1px solid #e0e0d1">جزئیات بیشتر</th>
                             @endif
                         </tr>
                         </thead>
@@ -83,9 +83,8 @@
                                 <td class="info col-md-2">{{$request->request_record_count}}</td>
                                 <td class="success col-md-2">{{$request->request_record_count_accept}}</td>
                                 <td class="danger col-md-2">{{$request->request_record_count_refused}}</td>
-
                                 <td style="padding-top: 20px;">@if($request->active)<span class="label label-success" style="font-size:15px;"> انجام شده </span>@else<span class="label label-warning" style="font-size:15px;"> در حال رسیدگی </span>@endif</td>
-                                <td><a class="btn btn-info" href="{{url('user/myRequestRecords/'.$request->id)}}">جزئیات بیشتر</a>
+                                <td style="border-right: 1px solid #e0e0d1"><a class="btn btn-info" href="{{url('user/myRequestRecords/'.$request->id)}}">جزئیات بیشتر</a>
 
                             </tr>
                         @endforeach
@@ -100,7 +99,7 @@
                                 <td class="success col-md-2">{{$request->request_record_count_accept}}</td>
                                 <td class="danger col-md-2">{{$request->request_record_count_refused}}</td>
                                 <td style="padding-top: 20px;">@if($request->active)<span class="label label-success" style="font-size:15px;font-weight: lighter"> انجام شده </span>@else<span class="label label-warning" style="font-size:15px;font-weight: lighter"> در حال رسیدگی </span>@endif</td>
-                                <td><a class="btn btn-info col-md-12"  href="{{url('user/myRequestRecords/'.$request->id)}}">جزئیات بیشتر</a>
+                                <td style="border-right: 1px solid #e0e0d1"><a class="btn btn-info col-md-12"  href="{{url('user/myRequestRecords/'.$request->id)}}">جزئیات بیشتر</a>
                             </tr>
                         @endforeach
                     @elseif($pageName=='acceptProductRequestManagement')
