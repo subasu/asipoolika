@@ -84,7 +84,7 @@
 
                             @endif
                         {{--<form id="serviceDetailForm">--}}
-                        <table style="direction:rtl;text-align: center;" id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <table style="direction:rtl;text-align: center;font-size:16px;" id="example" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                             @if(!empty($pageName))
                             <thead>
                             <tr>
@@ -169,6 +169,11 @@
                                         @endif
                                     @endforeach
                                 @elseif($pageName=='confirmProductRequest')
+                                    @if($productRequests[0]->request_type_id==3)
+                                    <a href="{{url('admin/confirmProductRequestManagement')}}" class="btn btn-danger col-md-12">بروزرسانی درخواست ها</a>
+                                    @elseif($productRequests[0]->request_type_id==2)
+                                    <a href="{{url('admin/confirmServiceRequestManagement')}}" class="btn btn-danger col-md-12">بروزرسانی درخواست ها</a>
+                                    @endif
 {{--                                    @if(!empty($productRequests))--}}
                                     @foreach($productRequests as $productRequest)
 {{--                                        @if($productRequest->all_count==($productRequest->accept_count+$productRequest->refuse_count))--}}
@@ -176,11 +181,11 @@
                                     <tr>
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-1">{{$productRequest->user->unit->title}}</td>
-                                        <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
+                                        <td class="col-md-1">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
                                         <td class="col-md-1">23 خرداد 96</td>
                                         <td class="info col-md-1">{{$productRequest->accept_count}}</td>
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
-                                        <td style="text-align: right;direction: rtl;font-size:15px;">
+                                        <td class="col-md-2" style="text-align: right;direction: rtl;font-size:15px;">
                                                 <ul> <li>کارپرداز :
                                                     @if($productRequest->supplier_id!=null)
                                                         {{$productRequest->supplier->name .chr(10). $productRequest->supplier->family}}
@@ -188,20 +193,17 @@
                                                     @endif
                                                         </li>
                                                     <li>گواهی :
-                                                    @if($productRequest->certificate!=null) دارد
+                                                    @if($productRequest->certificate!=null) <span style="color:#006600;font-weight: bold">دارد</span>
                                                         @else <span style="color:red">ندارد</span>
                                                         @endif
                                                     </li>
-                                                    <li>تعداد رکوردها :
-                                                    {{$productRequest->requestRecord->count()}}
-                                                    </li>
                                                     <li>سند هزینه :
-                                                    @if($productRequest->costDocument!= null) تنظیم شده
+                                                    @if($productRequest->costDocument!= null)<span style="color:#006600;font-weight: bold">تنظیم شده</span>
                                                         @else <span style="color:red">ندارد</span>
                                                     @endif</li>
                                                 </ul>
                                          </td>
-                                        <td class="col-md-2" style="font-size: 25px;border-right: 1px solid #d6d6c2">
+                                        <td class="col-md-1" style="font-size: 25px;border-right: 1px solid #d6d6c2;">
                                             <a href="{{url('admin/confirmedRequestDetails/'.$productRequest->id)}}" class="btn btn-primary col-md-12">مشاهده جزئیات</a>
                                         </td>
                                     </tr>

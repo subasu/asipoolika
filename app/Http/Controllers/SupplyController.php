@@ -1119,14 +1119,14 @@ class SupplyController extends Controller
             $accept_count=RequestRecord::where([['request_id',$productRequest->id],['step',7],['refuse_user_id',null],['active',1]])->count();
             $has_certificate_count=RequestRecord::where([['request_id',$productRequest->id],['step',8]])->count();
             $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
-//            if($all_count==($accept_count+$refuse_count))
-//            {
-//                DB::table('requests')->where('id',$productRequest->id)->update([
-//                    'active'=>1
-//                ]);
+            if($all_count==($accept_count+$refuse_count))
+            {
+                $q=DB::table('requests')->where('id',$productRequest->id)->update([
+                    'active'=>1
+                ]);
 //                $productRequest->msg='Yes';
-//            }
-//            else
+//                    return redirect('admin/confirmProductRequestManagement');
+            }
 //                $productRequest->msg='No';
             $productRequest->all_count=$all_count;
             $productRequest->accept_count=$accept_count;
@@ -1139,6 +1139,20 @@ class SupplyController extends Controller
                 $productRequest->hasCertificate=0;
             else
                 $productRequest->hasCertificate=1;
+
+            $certificates=Certificate::where('request_id',$productRequest->id)->get();
+
+            foreach ($certificates as $certificate) {
+                $all_c_count=CertificateRecord::where('certificate_id',$certificate->id)->count();
+                $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
+                if($all_c_count==$finished_c_count)
+                {
+                    $q=Certificate::where('id',$certificate->id)->update([
+                        'active'=>1
+                    ]);
+
+                }
+            }
 
         }
 //dd($productRequests);
@@ -1627,13 +1641,14 @@ class SupplyController extends Controller
             $accept_count=RequestRecord::where([['request_id',$productRequest->id],['step',7],['refuse_user_id',null],['active',1]])->count();
             $has_certificate_count=RequestRecord::where([['request_id',$productRequest->id],['step',8]])->count();
             $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
-//            if($all_count==($accept_count+$refuse_count))
-//            {
-//                DB::table('requests')->where('id',$productRequest->id)->update([
-//                    'active'=>1
-//                ]);
+            if($all_count==($accept_count+$refuse_count))
+            {
+                    $q=DB::table('requests')->where('id',$productRequest->id)->update([
+                        'active'=>1
+                    ]);
 //                $productRequest->msg='Yes';
-//            }
+
+            }
 //
 //            else
 //                $productRequest->msg='No';
@@ -1648,19 +1663,17 @@ class SupplyController extends Controller
                 $productRequest->hasCertificate=0;
             else
                 $productRequest->hasCertificate=1;
-//            $certificates=Certificate::where('request_id',$productRequest->id)->get();
-//
-//            foreach ($certificates as $certificate) {
-//                $all_c_count=CertificateRecord::where('certificate_id',$certificate->id)->count();
-//                $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
-//                if($all_c_count==$finished_c_count)
-//                {
-//                    Certificate::where('id',$certificate->id)->update([
-//                        'active'=>1
-//                    ]);
-//
-//                }
-//            }
+            $certificates=Certificate::where('request_id',$productRequest->id)->get();
+            foreach ($certificates as $certificate) {
+                $all_c_count=CertificateRecord::where('certificate_id',$certificate->id)->count();
+                $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
+                if($all_c_count==$finished_c_count)
+                {
+                        $q=Certificate::where('id',$certificate->id)->update([
+                            'active'=>1
+                        ]);
+                }
+            }
         }
 //        dd($productRequests);
         return view('admin.productRequestManagement',compact('pageTitle','productRequests','pageName'));
