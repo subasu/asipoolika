@@ -19,46 +19,46 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="col-md-12">
+                    <div class="x_content">
+                        <table style="direction:rtl;text-align: center" id="example"
+                               class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                            <input type="hidden" id="token" value="{{ csrf_token() }}">
+                            <thead>
+                            <tr>
 
+                                <th style="text-align: center" class="col-md-1">شناسه</th>
+                                <th style="text-align: center" class="">شماره فاکتور</th>
+                                <th style="text-align: center;border-right: 1px solid #e0e0d1" class="">مبلغ کل</th>
+
+                            </tr>
+                            </thead>
+                            <tbody id="change">
+
+                            @foreach($bills as $bill)
+                                <tr class="unit">
+                                    <td>
+                                        {{$bill->id}}
+                                    </td>
+                                    <td>
+                                        فاکتور شماره: {{$bill->factor_number}}
+                                    </td>
+                                    <td style="border-right: 1px solid #e0e0d1">
+                                        {{number_format($bill->final_price)}}
+                                    </td>
+
+                                </tr>
+                            @endforeach
+
+                        </table>
+                        <input style="margin-left: 40%; width: 20%;" type="button" id="finish" value="تایید خلاصه تنظیمی" content="{{$bill->request_id}}" class="btn btn-primary">
+                    </div>
                 </div>
 
 
             </div>
-            <div class="x_content">
-                <table style="direction:rtl;text-align: center" id="example"
-                       class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                    <input type="hidden" id="token" value="{{ csrf_token() }}">
-                    <thead>
-                    <tr>
 
-                            <th style="text-align: center" class="">شناسه</th>
-                            <th style="text-align: center" class="">شماره فاکتور</th>
-                            <th style="text-align: center" class="">مبلغ کل</th>
-
-                    </tr>
-                    </thead>
-                    <tbody id="change">
-
-                        @foreach($bills as $bill)
-                            <tr class="unit">
-                                <td>
-                                    {{$bill->id}}
-                                </td>
-                                <td>
-                                   فاکتور شماره: {{$bill->factor_number}}
-                                </td>
-                                <td>
-                                    {{number_format($bill->final_price)}}
-                                </td>
-
-                            </tr>
-                        @endforeach
-
-                </table>
-                <input style="margin-left: 40%; width: 20%;" type="button" id="finish" value="تایید خلاصه تنظیمی" content="{{$bill->request_id}}" class="btn btn-primary">
-            </div>
         </div>
-    </div>
+
 
     <script>
         $(document).on('click','#finish',function(){
