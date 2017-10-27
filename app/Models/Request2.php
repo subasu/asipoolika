@@ -59,4 +59,8 @@ class Request2 extends Model
     {
         return $this->hasOne('App\Models\CostDocument','request_id');
     }
+    public function warehouse()
+    {
+        return $this->hasOne('App\Models\Warehouse','request_id');
+    }
 }
