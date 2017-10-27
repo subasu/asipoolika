@@ -64,7 +64,7 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group pull-right">
                                         <label class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> قیمت نهایی :
                                         </label>
-                                        <input type="text" class="form-control" name="finalPrice" id="finalPrice">
+                                        <input type="number" class="form-control" name="finalPrice" id="finalPrice">
                                     </div>
                                     <lable style="font-size: 16px;">توضیحات : حجم فایل امضا نباید بیش از 150 کیلو بایت باشد ، پسوند فایل امضا باید از نوع  png یا jpg باشد.</lable>
                                     <div class="input-group image-preview" style="margin-top: 10px;">
@@ -121,19 +121,19 @@
         <script>
             $('#date').persianDatepicker();
         </script>
-        <script>
-            var finalPrice = $("#finalPrice");
+        {{--<script>--}}
+            {{--var finalPrice = $("#finalPrice");--}}
 
-            function formatNumber (num) {
-                return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-            }
-            finalPrice.keyup(function(){
-                var v0 = finalPrice.val();
-                var v1 = v0.split(',').join('');
-                var v2 = formatNumber(v1);
-                finalPrice . val(v2);
-            })
-        </script>
+            {{--function formatNumber (num) {--}}
+                {{--return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")--}}
+            {{--}--}}
+            {{--finalPrice.keyup(function(){--}}
+                {{--var v0 = finalPrice.val();--}}
+                {{--var v1 = v0.split(',').join('');--}}
+                {{--var v2 = formatNumber(v1);--}}
+                {{--finalPrice . val(v2);--}}
+            {{--})--}}
+        {{--</script>--}}
 
         <script>
             $(document).on('click','#addBill',function(){
