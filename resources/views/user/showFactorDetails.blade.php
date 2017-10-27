@@ -74,7 +74,7 @@
                     cancelButtonText: "خیر ، منصرف شدم",
                     confirmButtonText: "بله ثبت شود",
                     closeOnConfirm: true,
-                    closeOnCancel: false
+                    closeOnCancel: true
                 },
                 function (isConfirm) {
                     if (isConfirm)
