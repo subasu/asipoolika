@@ -106,14 +106,19 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
 
 
     <script>
+=======
+    {{--<script>--}}
+>>>>>>> 61187356bb85c3e4448bc8334b789e3be84f49b8
 
-            function formatNumber (num) {
-                return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
-            }
+            {{--function formatNumber (num) {--}}
+                {{--return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")--}}
+            {{--}--}}
 
+<<<<<<< HEAD
                 //var totalPrice = $("#finalPrice");
 </script>
     <script>
@@ -124,6 +129,19 @@
                 $(this) . val(v2);
             })
     </script>
+=======
+                {{--//var totalPrice = $("#finalPrice");--}}
+{{--</script>--}}
+    {{--<script>--}}
+                {{--$(document).on('keyup','#totalPrice',function(){--}}
+                    {{--var v0 = $(this).val();--}}
+                    {{--var v1 = v0.split(',').join('');--}}
+                    {{--var v2 = formatNumber(v1);--}}
+                    {{--$(this) . val(v2);--}}
+                {{--})--}}
+
+    {{--</script>--}}
+>>>>>>> 61187356bb85c3e4448bc8334b789e3be84f49b8
         <script>
             $(document).on('click','#addRow',function(){
                 var recordCount = $('#recordCount').val();
@@ -131,12 +149,21 @@
                 $('#recordCount').val(newRecordCount);
                 $('#reg').css('display','block');
                 $('#change').append
+<<<<<<< HEAD
                     (
                         "<tr>"+
                             "<td><input type='number' class='form-control required' name='description[]' id='description'></td>"+
                             "<td><input type='text' class='form-control required' name='totalPrice[]'  id='totalPrice'></td>"+
                             "<td style='border-right: 1px solid #e0e0d1;'><a  class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
                         "</tr>"
+=======
+                            (
+                                "<tr>"+
+                                    "<td><input type='number' class='form-control required' name='description[]' id='description'></td>"+
+                                    "<td><input type='number' class='form-control required' name='totalPrice[]'  id='totalPrice'></td>"+
+                                    "<td><a  class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
+                                "</tr>"
+>>>>>>> 61187356bb85c3e4448bc8334b789e3be84f49b8
 
                     );
             });
@@ -174,7 +201,7 @@
                               cancelButtonText: "خیر ، منصرف شدم",
                               confirmButtonText: "بله ثبت شود",
                               closeOnConfirm: true,
-                              closeOnCancel: false
+                              closeOnCancel: true
                           },
                           function (isConfirm) {
                               if (isConfirm) {
@@ -244,7 +271,7 @@
                         cancelButtonText: "خیر ، منصرف شدم",
                         confirmButtonText: "بله ثبت شود",
                         closeOnConfirm: true,
-                        closeOnCancel: false
+                        closeOnCancel: true
                     },
                     function (isConfirm) {
                         if (isConfirm) {

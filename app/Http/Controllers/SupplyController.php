@@ -17,6 +17,7 @@ use App\Models\Request2;
 use App\Models\RequestRecord;
 use App\Models\Signature;
 use App\Models\Ticket;
+use App\Models\Warehouse;
 use App\Models\Workers;
 use App\User;
 use App\Models\Unit;
@@ -2034,17 +2035,9 @@ class SupplyController extends Controller
         return view('admin.billUpload',compact('pageTitle','id'));
     }
 
-    public function addBillPhoto(SaveBillValidation $request)
+    public function addBillPhoto($request)
     {
 
-        $extension = $request->image->getClientOriginalExtension();
-        $size      = $request->image->getClientSize();
-        if($request->hasFile('image'))
-        {
-            if($extension == 'png' || $extension == 'PNG' || $extension=='jpg' || $extension=='JPG')
-            {
-                if($size < 150000)
-                {
                     $image = $request->image;
                     $src   = $request->requestId.'-'.str_random(4).$image->getClientOriginalName();
                     $image->move( 'public/dashboard/image/' , $src);
@@ -2081,21 +2074,7 @@ class SupplyController extends Controller
                         {
                             return response('خطا در آپلود فایل فاکتور ، تماس با بخش پشتیبانی');
                         }
-                }
-                else
-                    {
-                        return response('سایز فایل انتخاب شده بیش از حد مجاز میباشد');
-                    }
-            }
-            else
-                {
-                    return response('پسوند فایل انتخاب شده معتبر نیست');
-                }
-        }
-        else
-            {
-                return response('لطفا فایل فاکتور انتخاب نمایید سپس درخواست ثبت فاکتور را بزنید');
-            }
+
     }
 
 
@@ -2197,4 +2176,94 @@ class SupplyController extends Controller
         $count = DB::table('bills')->where('request_id',$request->requestId)->count();
         return response($count);
     }
+
+    public function warehouseBill($id)
+    {
+        $pageTitle = "صدرو قبض انبار";
+        $records = RequestRecord::where([['request_id',$id],['accept',1]])->get();
+        return view('admin.warehouseBill',compact('pageTitle','records','id'));
+    }
+
+    public function checkFile($parameter,Request $request)
+    {
+        if(!$request->ajax())
+        {
+            abort(403);
+        }
+        else
+            {
+                $extension = $request->image->getClientOriginalExtension();
+                $size      = $request->image->getClientSize();
+                if($request->hasFile('image'))
+                {
+                    if ($extension == 'png' || $extension == 'PNG' || $extension == 'jpg' || $extension == 'JPG')
+                    {
+                        if ($size < 150000)
+                        {
+                            switch ($parameter)
+                            {
+                                case 'warehouse':
+                                    return $this->addWarehousePhoto($request);
+                                    break;
+
+                                case 'bill' :
+                                    return $this->addBillPhoto($request);
+                            }
+                        }
+                        else
+                        {
+                            return response('سایز فایل انتخاب شده بیش از حد مجاز میباشد');
+                        }
+                    }else
+                    {
+                        return response('پسوند فایل انتخاب شده معتبر نیست');
+                    }
+                }else
+                {
+                    return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
+                }
+            }
+    }
+
+    public function addWarehousePhoto($request)
+    {
+        $check = Warehouse::where('request_id',$request->requestId)->count();
+        if($check == 1)
+        {
+            return response('قبض انبار برای این درخواست قبلا ثبت گردیده است ، لطفا درخواست مجدد نفرمایید');
+        }
+        else
+            {
+
+                $image = $request->image;
+                $src   = $request->requestId.'-'.str_random(4).$image->getClientOriginalName();
+                $image->move( 'public/dashboard/image/' , $src);
+                $fileExistence = public_path().'public/dashboard/image/'.$src;
+
+                if($fileExistence)
+                {
+
+                    $warehouseId = DB::table('warehouse')->insertGetId
+                    ([
+                        'src'           => $src,
+                        'factor_number' => trim($request->factorNumber),
+                        'user_id'       => Auth::user()->id,
+                        'request_id'    => $request->requestId,
+                        'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                    ]);
+                    if($warehouseId)
+                    {
+                        return response('قبض انبار  مورد نظر شما آپلود گردید');
+                    }else
+                    {
+                        return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
+                    }
+                }else
+                {
+                    return response('خطا در آپلود فایل فاکتور ، تماس با بخش پشتیبانی');
+                }
+        }
+
+    }
+
 }

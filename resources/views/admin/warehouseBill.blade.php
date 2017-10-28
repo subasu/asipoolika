@@ -32,10 +32,10 @@
                 <div class="col-md-8 col-sm-12 col-xs-12 col-md-offset-2">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>آپلود فاکتورهای درخواست شماره : {{$id}}</h2>
+                            <h2>آپلود قبض انبار درخواست شماره : {{$id}}</h2>
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i
-                                        class="fa fa-chevron-up"></i></a>
+                                                class="fa fa-chevron-up"></i></a>
                                 </li>
                                 <li><a class="close-link" data-toggle="tooltip" title="بستن"><i class="fa fa-close"></i></a>
                                 </li>
@@ -51,21 +51,12 @@
                                        class="control-label pull-right col-md-12 col-sm-12 col-xs-12 form-group">
                                 </label>
                                 <div class="col-md-12">
-                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group pull-right">
                                         <label class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> شماره فاکتور :
                                         </label>
-                                        <input type="number" min="1000" class="form-control" name="factorNumber" id="factorNumber">
+                                        <input type="number" min="0" class="form-control" name="factorNumber" id="factorNumber">
                                     </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
-                                        <label class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> تاریخ :
-                                        </label>
-                                        <input type="text" class="form-control" name="date" id="date">
-                                    </div>
-                                    <div class="col-md-12 col-sm-12 col-xs-12 form-group pull-right">
-                                        <label class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> قیمت نهایی :
-                                        </label>
-                                        <input type="number" class="form-control" name="finalPrice" id="finalPrice">
-                                    </div>
+
                                     <lable style="font-size: 16px;">توضیحات : حجم فایل امضا نباید بیش از 150 کیلو بایت باشد ، پسوند فایل امضا باید از نوع  png یا jpg باشد.</lable>
                                     <div class="input-group image-preview" style="margin-top: 10px;">
                                         <input type="text" class="form-control image-preview-filename" disabled="disabled">
@@ -96,13 +87,12 @@
                                 {{--<div class="ln_solid"></div>--}}
                                 <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-offset-1">
                                     {{--<button type="submit" name="edit" id="edit" class="btn btn-primary col-md-3 col-sm-3 col-xs-5">ویرایش</button>--}}
-                                    <button type="button" id="check" content="{{$id}}" class="btn btn-primary col-md-3 col-sm-3 col-xs-5" >ثبت خلاصه تنظیمی</button>
-                                    <button type="button" name="addBill" id="addBill"
-                                            class="btn btn-success col-md-3 col-sm-3 col-xs-5"> آپلود فاکتور
+
+                                    <button type="button" name="addWarehouseBill" id="addWarehouseBill"
+                                            class="btn btn-success col-md-5 col-sm-3 col-xs-5">  آپلود قبض انبار
                                     </button>
 
                                     <input type="hidden" id="requestId" name="requestId" value="{{$id}}">
-                                    <input type="hidden" id="newFinalPrice"  name="newFinalPrice" value="">
                                     <input type="hidden" id="token" value="{{ csrf_token() }}">
                                 </div>
                             </form>
@@ -111,79 +101,34 @@
                 </div>
             </div>
         </div>
-        <script src="{{URL::asset('public/js/persianDatepicker.js')}}"></script>
+
+
+
+
 
         <script>
-
-        </script>
-
-
-        <script>
-            $('#date').persianDatepicker();
-        </script>
-        {{--<script>--}}
-            {{--var finalPrice = $("#finalPrice");--}}
-
-            {{--function formatNumber (num) {--}}
-                {{--return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")--}}
-            {{--}--}}
-            {{--finalPrice.keyup(function(){--}}
-                {{--var v0 = finalPrice.val();--}}
-                {{--var v1 = v0.split(',').join('');--}}
-                {{--var v2 = formatNumber(v1);--}}
-                {{--finalPrice . val(v2);--}}
-            {{--})--}}
-        {{--</script>--}}
-
-        <script>
-            $(document).on('click','#addBill',function(){
+            $(document).on('click','#addWarehouseBill',function(){
 
 
-                var newFinalPrice = $('#finalPrice').val();
-                newFinalPrice     = newFinalPrice.replace(/,/g , '');
-                $('#newFinalPrice').val(newFinalPrice);
-                var factorNumber  = $('#factorNumber').val();
-                var date          = $('#date').val();
-                var image         = $('#image').val();
-                var finalPrice    = $('#finalPrice').val();
+
+
+                var requestId = $('#requestId').val();
                 var formData      = new FormData($('#dealForm')[0]);
 
 
                 $.ajax
                 ({
                     cache:false,
-                    url  : "{{Url('admin/checkFile')}}/{{'bill'}}",
+                    url  : "{{Url('admin/checkFile')}}/{{'warehouse'}}",
                     type : 'POST',
                     processData :false,
                     contentType: false,
+                    context : requestId,
                     data : formData,
-                    beforeSend:function()
-                    {
 
-                        if(factorNumber == '' || factorNumber == null)
-                        {
-                            $('#factorNumber').focus();
-                            $('#factorNumber').css('border-color' , 'red');
-                            return false;
-                        }
-                        if(date == '' || date == null)
-                        {
-                            $('#date').focus();
-                            $('#date').css('border-color' , 'red');
-                            return false;
-                        }
-                        if(finalPrice == '' || finalPrice == null)
-                        {
-                            $('#finalPrice').focus();
-                            $('#finalPrice').css('border-color' , 'red');
-                            return false;
-                        }
-
-
-                    },
                     success:function(response)
                     {
-                        if(response == 'فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید')
+                        if(response == 'قبض انبار  مورد نظر شما آپلود گردید')
                         {
                             swal({
                                 title: "",
@@ -191,16 +136,16 @@
                                 type: "info",
                                 confirmButtonText: "بستن"
                             });
-                            setTimeout( function(){window.location.reload(true)},3000);
+                            setTimeout( function(){window.location.href = '../confirmedRequestDetails/'+requestId},3000);
                         }else
-                            {
-                                swal({
-                                    title: "",
-                                    text: response,
-                                    type: "info",
-                                    confirmButtonText: "بستن"
-                                });
-                            }
+                        {
+                            swal({
+                                title: "",
+                                text: response,
+                                type: "info",
+                                confirmButtonText: "بستن"
+                            });
+                        }
 
                     },error:function(error)
                     {
@@ -237,8 +182,8 @@
         </script>
         <script>
             $(document).on('click','#check',function(){
-               var requestId = $(this).attr('content');
-               var token     = $('#token').val();
+                var requestId = $(this).attr('content');
+                var token     = $('#token').val();
 
                 $.ajax
                 ({
@@ -247,19 +192,19 @@
                     context : requestId,
                     data : {'requestId' : requestId , '_token' : token},
                     success : function (resposne) {
-                            if(resposne >= 2)
-                            {
-                                window.location.href = '../preparedSummarize/'+requestId ;
-                            }else
-                                {
-                                    swal({
-                                        title: "",
-                                        text: 'تعداد فاکتورهای آپلود شده به حدی نرسیده است که امکان ثبت خلاصه تنظیمی وجود داشته باشد',
-                                        type: "info",
-                                        confirmButtonText: "بستن"
-                                    });
-                                    return false;
-                                }
+                        if(resposne >= 2)
+                        {
+                            window.location.href = '../preparedSummarize/'+requestId ;
+                        }else
+                        {
+                            swal({
+                                title: "",
+                                text: 'تعداد فاکتورهای آپلود شده به حدی نرسیده است که امکان ثبت خلاصه تنظیمی وجود داشته باشد',
+                                type: "info",
+                                confirmButtonText: "بستن"
+                            });
+                            return false;
+                        }
 
                     },error : function(error)
                     {
