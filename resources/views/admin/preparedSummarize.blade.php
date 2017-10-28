@@ -55,9 +55,9 @@
                         <input type="hidden" id="token" value="{{ csrf_token() }}">
                         <thead>
                         <tr>
-                            <th style="text-align: center" class="">شناسه</th>
+                            <th style="text-align: center" class="col-md-1">شناسه</th>
                             <th style="text-align: center" class="">شرح</th>
-                            <th style="text-align: center;" >مبلغ</th>
+                            <th style="text-align: center;border-right: 1px solid #e0e0d1">مبلغ</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -69,56 +69,45 @@
                                 <td>
                                      فاکتور شماره : {{$factor->factor_number}}
                                 </td>
-                                <td>
+                                <td style="border-right: 1px solid #e0e0d1">
                                     {{number_format($factor->final_price)}}
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
 
 
-        <div class="col-md-12 ">
-            <div class="x_title">
-                        <input type="button" id="guide" value="راهنمای استفاده از صفحه" class="btn btn-primary col-md-2 col-md-offset-3 margin-2percent">
-                        <input type="button" id="addRow" value="اضافه کردن ردیف" class="btn btn-primary col-md-2 margin-2percent">
-                        <input type="button" id="finish" value="ثبت خلاصه تنظیمی" class="btn btn-primary col-md-2 margin-2percent">
+                    <form id="dealForm">
+                        <table style="direction:rtl;text-align: center" id="example"
+                               class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                            <input type="hidden" id="token" value="{{ csrf_token() }}">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center" class="">شرح</th>
+                                <th style="text-align: center;" >مبلغ</th>
+                                <th style="text-align: center;border-right: 1px solid #e0e0d1" >حذف</th>
+                            </tr>
+                            </thead>
 
-                </div>
-            </div>
+                            {!! csrf_field() !!}
+                            <tbody id="change">
 
-
-            <div class="x_content">
-                <form id="dealForm">
-                <table style="direction:rtl;text-align: center" id="example"
-                       class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                            </tbody>
+                            <input type="hidden" id="requestId" name="requestId" value="{{$factors[0]->request_id}}">
+                            <input type="hidden" id="recordCount" name="recordCount" value="0">
+                        </table>
+                        <input type="button" id="reg" value="ثبت ردیف های جدید" class="btn btn-success" style="margin-left:43% ; display: none; width: 16%;">
+                    </form>
                     <input type="hidden" id="token" value="{{ csrf_token() }}">
-                    <thead>
-                    <tr>
-                        <th style="text-align: center" class="">شرح</th>
-                        <th style="text-align: center;" >مبلغ</th>
-                        <th style="text-align: center;" >حذف</th>
-                    </tr>
-                    </thead>
-
-                        {!! csrf_field() !!}
-                        <tbody id="change">
-
-
-
-                        </tbody>
-                        <input type="hidden" id="requestId" name="requestId" value="{{$factors[0]->request_id}}">
-                        <input type="hidden" id="recordCount" name="recordCount" value="0">
-
-                </table>
-                <input type="button" id="reg" value="ثبت ردیف های جدید" class="btn btn-success" style="margin-left:43% ; display: none; width: 16%;">
-                </form>
-                <input type="hidden" id="token" value="{{ csrf_token() }}">
+                    <input type="button" id="finish" value="ثبت خلاصه تنظیمی" class="btn btn-success col-md-2 margin-2percent  col-md-offset-3">
+                    <input type="button" id="guide" value="راهنمای استفاده از صفحه" class="btn btn-info col-md-2 margin-2percent">
+                    <input type="button" id="addRow" value="اضافه کردن ردیف" class="btn btn-primary col-md-2 margin-2percent">
+                </div>
             </div>
         </div>
+
+
     <script>
 
             function formatNumber (num) {
@@ -147,7 +136,7 @@
                                 "<tr>"+
                                     "<td><input type='number' class='form-control required' name='description[]' id='description'></td>"+
                                     "<td><input type='text' class='form-control required' name='totalPrice[]'  id='totalPrice'></td>"+
-                                    "<td><a  class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
+                                    "<td style='border-right: 1px solid #e0e0d1;'><a  class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
                                 "</tr>"
 
                             );

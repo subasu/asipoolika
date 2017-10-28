@@ -97,13 +97,12 @@
                                     <label  class="col-md-7 col-md-offset-3 btn btn-warning" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">در حال بررسی</label>
                                 @endif
                                 @if($ticket->active == 1)
-
                                     <span class="col-md-9 col-md-offset-1 btn btn-default" style="margin-left: 10%; font-size: 120%;width: 80%; !important;">بسته شده</span>
                                 @endif
                             </td>
 
                             <td>
-                                <a class="col-md-7 col-md-offset-2 btn btn-success" target="_blank" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
+                                <a class="col-md-8 col-md-offset-2 btn btn-success" target="_blank" href="{{url('user/ticketConversation')}}/{{$ticket->id}}" >مشاهده ی جزئیات</a>
 
                             </td>
                         </tr>

@@ -2014,7 +2014,7 @@ class SupplyController extends Controller
     }
     public function issueBillGet($id)
     {
-        $pageTitle='صدور قبض انبار';
+        $pageTitle='صدور فاکتور';
         $pageName='issueBill';
 
             $records=RequestRecord::where([['request_id',$id],['accept',1]])->get();
