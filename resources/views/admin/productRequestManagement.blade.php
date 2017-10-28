@@ -111,10 +111,10 @@
                                         {{--<th class="col-md-2" style="text-align: center ;">مرحله</th>--}}
                                         {{--<th class="col-md-1" style="text-align: center ;">عملیات</th>--}}
                                     @elseif($pageName=='confirmProductRequest')
-                                        <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
+                                        <th class="col-md-2" style="text-align: center ;">در انتظار</th>
                                         <th class="col-md-1" style="text-align: center ;">دارای گواهی</th>
                                         <th class="col-md-1" style="text-align: center ;">خلاصه وضعیت</th>
-                                        <th class="col-md-3" style="text-align: center ;border-right: 1px solid #e0e0d1"> مشاهده جزئیات</th>
+                                        <th class="" style="text-align: center ;border-right: 1px solid #e0e0d1"> جزئیات</th>
                                         {{--<td></td>--}}
                                     @endif
                                     {{--<td></td>--}}
@@ -131,7 +131,7 @@
                                             <td class="col-md-1">{{$productRequest->id}}</td>
                                             <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                             <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
-                                            <td class="col-md-1">23 خرداد 96</td>
+                                            <td class="col-md-1">{{$productRequest->date}}</td>
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
@@ -146,7 +146,7 @@
                                         <td class="col-md-1">{{$productRequest->id}}</td>
                                         <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                         <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
-                                         <td class="col-md-1">23 خرداد 96</td>
+                                         <td class="col-md-1">{{$productRequest->date}}</td>
                                         <td class="col-md-2 danger">{{$productRequest->refuse_record_count}}</td>
                                      </tr>
                                     @endforeach
@@ -157,7 +157,7 @@
                                             <td class="col-md-1">{{$productRequest->id}}</td>
                                             <td class="col-md-2"> واحد {{$productRequest->user->unit->title}}</td>
                                             <td class="col-md-2">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
-                                            <td class="col-md-1">23 خرداد 96</td>
+                                            <td class="col-md-1">{{$productRequest->date}}</td>
                                             <td class="info col-md-2">{{$productRequest->request_record_count}}</td>
                                             <td class="success col-md-2">{{$productRequest->request_record_count_accept}}</td>
                                             <td class="danger col-md-2">{{$productRequest->request_record_count_refused}}</td>
@@ -183,7 +183,7 @@
                                         <td class="col-md-1">{{$productRequest->user->unit->title}}</td>
 
                                         <td class="col-md-1">{{$productRequest->user->name .chr(10). $productRequest->user->family}}</td>
-                                        <td class="col-md-1">23 خرداد 96</td>
+                                        <td class="col-md-1">{{$productRequest->date}}</td>
                                         <td class="info col-md-1">{{$productRequest->accept_count}}</td>
                                         <td class="success col-md-1">{{$productRequest->has_certificate_count}}</td>
                                         <td class="col-md-2" style="text-align: right;direction: rtl;font-size:15px;">

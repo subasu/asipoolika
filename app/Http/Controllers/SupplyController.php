@@ -802,6 +802,7 @@ class SupplyController extends Controller
             $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',6],['active',1]])->count();
             //inactive records
             $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+            $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
         }
 
 
@@ -813,6 +814,7 @@ class SupplyController extends Controller
             $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',$step2],['active',1]])->count();
             //inactive records
             $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+            $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
         }
         $serviceRequests=$serviceRequests->merge($serviceRequests2);
 //        dd($serviceRequests);
@@ -912,18 +914,20 @@ class SupplyController extends Controller
             $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',5],['active',1]])->count();
             //inactive records
             $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+            $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
         }
 
         $serviceRequests=$serviceRequests->merge($serviceRequests2);
 
-        foreach($serviceRequests as $productRequest)
+        foreach($serviceRequests as $serviceRequest)
         {
             //undecided records
-            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',$step2]])->count();
+            $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',$step2]])->count();
             //in the process records
-            $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step','>=',$step],['active',1]])->count();
+            $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',$step],['active',1]])->count();
             //inactive records
-            $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+            $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+            $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
         }
 //        dd($serviceRequests);
         return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
@@ -1016,6 +1020,7 @@ class SupplyController extends Controller
             $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step','>=',$step],['active',1]])->count();
             //inactive records
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+            $productRequest->date = $this->toPersian($productRequest->created_at);
         }
 //        dd($productRequests);
         return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
@@ -1669,6 +1674,7 @@ class SupplyController extends Controller
             $productRequest->has_certificate_count=$has_certificate_count;
             $productRequest->refuse_count=$refuse_count;
 
+            $productRequest->date = $this->toPersian($productRequest->created_at);
             $certificate_has=Certificate::where('request_id',$productRequest->id)->get();
 //            dd($certificate_has);
             if(empty($certificate_has[0]))
