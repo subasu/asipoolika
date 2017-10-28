@@ -364,8 +364,8 @@
                 <td colspan="3" class="col-md-3">{{$costDocumentsRecord->description}}</td>
                 <td colspan="2" class="col-md-2">{{$costDocumentsRecord->moein_office}}</td>
                 <td colspan="2" class="col-md-2">{{number_format($costDocumentsRecord->general_price)}}</td>
-                <td colspan="1" class="col-md-1">@if(count($costDocumentsRecord->deduction) > 0){{number_format($costDocumentsRecord->deduction)}}@endif  @if(count($costDocumentsRecord->deduction) == 0){{$costDocumentsRecord->deduction}}@endif</td>
-                <td colspan="1" class="col-md-1">@if(count($costDocumentsRecord->deduction) > 0){{number_format($costDocumentsRecord->payed_price)}}@endif  @if(count($costDocumentsRecord->payed_price) == 0){{$costDocumentsRecord->payed_price}}@endif</td>
+                <td colspan="1" class="col-md-1">@if($costDocumentsRecord->deduction > 0){{number_format($costDocumentsRecord->deduction)}}@endif  @if($costDocumentsRecord->deduction == 0){{$costDocumentsRecord->deduction}}@endif</td>
+                <td colspan="1" class="col-md-1">@if($costDocumentsRecord->deduction > 0){{number_format($costDocumentsRecord->payed_price)}}@endif  @if($costDocumentsRecord->payed_price == 0){{$costDocumentsRecord->payed_price}}@endif</td>
                 <td colspan="1" class="col-md-1">{{$costDocumentsRecord->page}}</td>
                 <td colspan="1" class="col-md-1">{{$costDocumentsRecord->row}}</td>
                 <input type="hidden" id="costDocumentId" value="{{$costDocumentsRecord->cost_document_id}}">
@@ -376,8 +376,8 @@
             <td colspan="2" class="col-md-2"> ...</td>
             <td colspan="2" class="col-md-2">جمع</td>
             <td colspan="2" class="col-md-2">{{number_format($sumGeneralPrice)}}</td>
-            <td colspan="1" class="col-md-1">@if(count($sumDeduction) > 0){{number_format($sumDeduction)}}@endif  @if(count($sumDeduction) == 0){{$sumDeduction}}@endif</td>
-            <td colspan="1" class="col-md-1">@if(count($sumPayedPrice) > 0){{number_format($sumPayedPrice)}}@endif  @if(count($sumPayedPrice) == 0){{$sumPayedPrice}}@endif</td>
+            <td colspan="1" class="col-md-1">@if($sumDeduction > 0){{number_format($sumDeduction)}}@endif  @if($sumDeduction == 0){{$sumDeduction}}@endif</td>
+            <td colspan="1" class="col-md-1">@if($sumPayedPrice > 0){{number_format($sumPayedPrice)}}@endif  @if($sumPayedPrice == 0){{$sumPayedPrice}}@endif</td>
             <td colspan="1" class="col-md-1">-</td>
             <td colspan="1" class="col-md-1">-</td>
 

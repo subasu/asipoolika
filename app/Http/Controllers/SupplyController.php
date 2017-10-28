@@ -2015,7 +2015,7 @@ class SupplyController extends Controller
     }
     public function issueBillGet($id)
     {
-        $pageTitle='صدور قبض انبار';
+        $pageTitle='صدور فاکتور';
         $pageName='issueBill';
 
             $records=RequestRecord::where([['request_id',$id],['accept',1]])->get();
@@ -2186,36 +2186,43 @@ class SupplyController extends Controller
         }
         else
             {
-                $extension = $request->image->getClientOriginalExtension();
-                $size      = $request->image->getClientSize();
                 if($request->hasFile('image'))
                 {
-                    if ($extension == 'png' || $extension == 'PNG' || $extension == 'jpg' || $extension == 'JPG')
+                    $extension = $request->image->getClientOriginalExtension();
+                    $size      = $request->image->getClientSize();
+                    if($request->hasFile('image'))
                     {
-                        if ($size < 150000)
+                        if ($extension == 'png' || $extension == 'PNG' || $extension == 'jpg' || $extension == 'JPG')
                         {
-                            switch ($parameter)
+                            if ($size < 150000)
                             {
-                                case 'warehouse':
-                                    return $this->addWarehousePhoto($request);
-                                    break;
+                                switch ($parameter)
+                                {
+                                    case 'warehouse':
+                                        return $this->addWarehousePhoto($request);
+                                        break;
 
-                                case 'bill' :
-                                    return $this->addBillPhoto($request);
+                                    case 'bill' :
+                                        return $this->addBillPhoto($request);
+                                }
                             }
-                        }
-                        else
+                            else
+                            {
+                                return response('سایز فایل انتخاب شده بیش از حد مجاز میباشد');
+                            }
+                        }else
                         {
-                            return response('سایز فایل انتخاب شده بیش از حد مجاز میباشد');
+                            return response('پسوند فایل انتخاب شده معتبر نیست');
                         }
                     }else
                     {
-                        return response('پسوند فایل انتخاب شده معتبر نیست');
+                        return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
                     }
                 }else
-                {
-                    return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
-                }
+                    {
+                        return response('لطفا فایلی انتخاب نمایید ، سپس درخواست خود را ثبت نمایید');
+                    }
+
             }
     }
 
