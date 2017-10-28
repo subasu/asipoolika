@@ -33,7 +33,7 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    @if(!empty($factors))
+                    @if(!empty($factors[0]))
                         <h2>فاکتورهای مربوط به درخواست شماره {{$factors[0]->request_id}}</h2>
                     @endif
                     <ul class="nav navbar-right panel_toolbox">
@@ -95,7 +95,7 @@
                             <tbody id="change">
 
                             </tbody>
-                            @if(!empty($factors))
+                            @if(!empty($factors[0]))
                                 <input type="hidden" id="requestId" name="requestId" value="{{$factors[0]->request_id}}">
                             @endif
                             <input type="hidden" id="recordCount" name="recordCount" value="0">
