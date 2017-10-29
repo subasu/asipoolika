@@ -153,13 +153,25 @@
                         },
                         success:function(response)
                         {
-                            swal({
-                                title: "",
-                                text: response,
-                                type: "info",
-                                confirmButtonText: "بستن"
-                            });
-                           // window.location.href = "workerCardManage";
+                            if(response == 'کارت کارگری مورد نظر شما با موفقیت ثبت گردید')
+                            {
+                                swal({
+                                    title: "",
+                                    text: response,
+                                    type: "info",
+                                    confirmButtonText: "بستن"
+                                });
+                               setTimeout(function(){window.location.reload(true);},3000 );
+                            }else
+                                {
+                                    swal({
+                                        title: "",
+                                        text: response,
+                                        type: "info",
+                                        confirmButtonText: "بستن"
+                                    });
+                                }
+
                         },error:function(error)
                         {
                             swal({
