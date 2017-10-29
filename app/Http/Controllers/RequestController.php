@@ -19,6 +19,7 @@ use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class RequestController extends Controller
 {
@@ -261,39 +262,39 @@ class RequestController extends Controller
      *  */
     public function sendTicket(SendTicketValidation $request)
     {
-        $receiverId = Unit::where('title', $request->unit)->value('supervisor_id');
-        $unitId = Unit::where('title', $request->unit)->value('id');
-        $now = new Carbon();
-        $date = $now->toDateString();
-        $time = $now->toTimeString();
-        $ticketId = DB::table('tickets')->insertGetId
-        ([
-            'title' => $request->title,
-            'description' => $request->description,
-            'date' => $date,
-            'time' => $time,
-            'sender_user_id' => Auth::user()->id,
-            'unit_id' => $unitId,
-            'receiver_user_id' => $receiverId
-        ]);
-        if ($ticketId) {
 
-            $query = DB::table('ticket_messages')->insert
+            $receiverId = Unit::where('title', $request->unit)->value('supervisor_id');
+            $unitId = Unit::where('title', $request->unit)->value('id');
+            $now = new Carbon();
+            $date = $now->toDateString();
+            $time = $now->toTimeString();
+            $ticketId = DB::table('tickets')->insertGetId
             ([
-                'ticket_id' => $ticketId,
-                'user_id' => Auth::user()->id,
-                'content' => $request->description,
+                'title' => $request->title,
+                'description' => $request->description,
                 'date' => $date,
-                'time' => $time
+                'time' => $time,
+                'sender_user_id' => Auth::user()->id,
+                'unit_id' => $unitId,
+                'receiver_user_id' => $receiverId
             ]);
-            if ($query) {
-                return response('اطلاعات شما با موفقیت ثبت گردید');
+            if ($ticketId) {
+
+                $query = DB::table('ticket_messages')->insert
+                ([
+                    'ticket_id' => $ticketId,
+                    'user_id' => Auth::user()->id,
+                    'content' => $request->description,
+                    'date' => $date,
+                    'time' => $time
+                ]);
+                if ($query) {
+                    return response('اطلاعات شما با موفقیت ثبت گردید');
+                }
+
+            } else {
+                return response('خطایی در ثبت اطلاعات رخ داده است،لطفا با واححد پشتیبانی تماس بگیرید');
             }
-
-        } else {
-            return response('خطایی در ثبت اطلاعات رخ داده است،لطفا با واححد پشتیبانی تماس بگیرید');
-        }
-
     }
 
     //shiri : below function is to return all tickets to the view to check the status
@@ -341,41 +342,47 @@ class RequestController extends Controller
     //shiri : below function is related to search on date
     public function searchOnDate(Request $request, $id)
     {
+        if(preg_match('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#', $request->date1) && preg_match('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#', $request->date2))
+        {
+            $date1 = trim($request->date1);
+            if ($dat1 = explode('/', $date1)) {
+                $year = $dat1[0];
+                $month = $dat1[1];
+                $day = $dat1[2];
+                $gDate1 = $this->jalaliToGregorian($year, $month, $day);
+            }
+            $gDate1 = $gDate1[0] . '-' . $gDate1[1] . '-' . $gDate1[2];
 
-        $date1 = trim($request->date1);
-        if ($dat1 = explode('/', $date1)) {
-            $year = $dat1[0];
-            $month = $dat1[1];
-            $day = $dat1[2];
-            $gDate1 = $this->jalaliToGregorian($year, $month, $day);
-        }
-        $gDate1 = $gDate1[0] . '-' . $gDate1[1] . '-' . $gDate1[2];
+            /***** give second  jalali date and convert it to gregorian date *****/
+            $date2 = trim($request->date2);
+            if ($dat2 = explode('/', $date2)) {
+                $year = $dat2[0];
+                $month = $dat2[1];
+                $day = $dat2[2];
+                $gDate2 = $this->jalaliToGregorian($year, $month, $day);
+            }
+            $gDate2 = $gDate2[0] . '-' . $gDate2[1] . '-' . $gDate2[2];
 
-        /***** give second  jalali date and convert it to gregorian date *****/
-        $date2 = trim($request->date2);
-        if ($dat2 = explode('/', $date2)) {
-            $year = $dat2[0];
-            $month = $dat2[1];
-            $day = $dat2[2];
-            $gDate2 = $this->jalaliToGregorian($year, $month, $day);
-        }
-        $gDate2 = $gDate2[0] . '-' . $gDate2[1] . '-' . $gDate2[2];
+            switch ($id) {
+                case 1 :
+                    $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where('sender_user_id', Auth::user()->id)->orderBy('date')->get();
+                    break;
+                case 2 :
+                    $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where('unit_id', Auth::user()->unit_id)->orderBy('date')->get();
+                    break;
+            }
+            foreach ($data as $date) {
+                $date->date = $this->toPersian($date->date);
+                $date->unit = $date->user->unit->title;
+                $date->user = $date->user;
+            }
+            // dd($data);
+            return response()->json(compact('data'));
+        }else
+            {
+                return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
+            }
 
-        switch ($id) {
-            case 1 :
-                $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where('sender_user_id', Auth::user()->id)->orderBy('date')->get();
-                break;
-            case 2 :
-                $data = Ticket::whereBetween('date', [$gDate1, $gDate2])->where('unit_id', Auth::user()->unit_id)->orderBy('date')->get();
-                break;
-        }
-        foreach ($data as $date) {
-            $date->date = $this->toPersian($date->date);
-            $date->unit = $date->user->unit->title;
-            $date->user = $date->user;
-        }
-        // dd($data);
-        return response()->json(compact('data'));
     }
 
 
@@ -518,25 +525,34 @@ class RequestController extends Controller
     //
     public function saveNewPassword(NewPasswordValidation $request)
     {
+
         if (!$request->ajax()) {
             abort(403);
         } else {
+
             if (Auth::user()->id == $request->userId) {
 
-                if ($request->password == $request->confirmPassword) {
-                    $q = DB::table('users')->where('id', $request->userId)
-                        ->update(['password' => bcrypt($request->password)]);
-                    if ($q) {
-                        //$n=1;
-                        return response('رمز عبور شما تغییر یافت');
-                    } else {
-                        //$n=2;
-                        return response('متاسفانه در فرآیند تغییر رمز خطایی رخ داده است!');
-                    }
-                } else {
-                    return response('رمز و تکرار رمز با یکدیگر یکسان نیست');
-                }
 
+
+                if(Auth::attempt(['password' => $request->oldPassword]))
+                {
+                    if ($request->password == $request->confirmPassword) {
+                        $q = DB::table('users')->where('id', $request->userId)
+                            ->update(['password' => bcrypt($request->password)]);
+                        if ($q) {
+                            //$n=1;
+                            return response('رمز عبور شما تغییر یافت');
+                        } else {
+                            //$n=2;
+                            return response('متاسفانه در فرآیند تغییر رمز خطایی رخ داده است!');
+                        }
+                    } else {
+                        return response('رمز و تکرار رمز با یکدیگر یکسان نیست');
+                    }
+                }else
+                    {
+                        return response('رمز قبلی صحیح نیست');
+                    }
             } else {
                 return redirect('/logout');
             }
