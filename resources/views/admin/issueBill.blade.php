@@ -148,7 +148,6 @@
                 var finalPrice    = $('#finalPrice').val();
                 var formData      = new FormData($('#dealForm')[0]);
 
-
                 $.ajax
                 ({
                     cache:false,

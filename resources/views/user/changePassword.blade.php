@@ -38,6 +38,17 @@
                             </div>
                             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                                 <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                                    <input id="oldPassword" type="password" name="oldPassword"  class="form-control" placeholder="رمز عبور قبلی" maxlength="25">
+                                    @if ($errors->has('password'))
+                                        <span class="help-block">
+                                           <strong>{{ $errors->first('password') }}</strong>
+                                           </span>
+                                    @endif
+                                    <span class="fa fa-lock form-control-feedback right" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
                                     <input id="password" type="password" name="password"  class="form-control" placeholder="رمز عبور جدید" maxlength="25">
                                     @if ($errors->has('password'))
                                         <span class="help-block">
@@ -81,6 +92,7 @@
             var formData = new FormData($('#passwordForm')[0]);
             var password = $('#password').val();
             var confirmPassword = $('#confirmPassword').val();
+            var oldPassword     = $('#oldPassword').val();
             $.ajax
             ({
                 beforeSend : function () {
@@ -100,12 +112,19 @@
                         $('#password').css('border-color','red');
                         return false;
                     }
-                    if (password == '' || password == null)
+                    if (confirmPassword == '' || confirmPassword == null)
                     {
-                        $('#password').focus();
-                        $('#password').css('border-color','red');
+                        $('#confirmPassword').focus();
+                        $('#confirmPassword').css('border-color','red');
                         return false;
                     }
+                    if (oldPassword == '' || oldPassword == null)
+                    {
+                        $('#oldPassword').focus();
+                        $('#oldPassword').css('border-color','red');
+                        return false;
+                    }
+
                 },
                 cache : false,
                 url   : "{{url('user/saveNewPassword')}}",
@@ -114,12 +133,27 @@
                 contentType : false,
                 processData : false,
                 success : function (response) {
-                    swal({
-                        title: "",
-                        text: response,
-                        type: "success",
-                        confirmButtonText: "بستن"
-                    });
+                    if(response == 'رمز عبور شما تغییر یافت')
+                    {
+                        swal({
+                            title: "",
+                            text: response,
+                            type: "info",
+                            confirmButtonText: "بستن"
+                        });
+                        setTimeout(function () {
+                            window.location.reload(true);
+                        },3000);
+                    }else
+                        {
+                            swal({
+                                title: "",
+                                text: response,
+                                type: "info",
+                                confirmButtonText: "بستن"
+                            });
+                        }
+
                 },error : function (error) {
                     if (error.status === 422) {
                         var x = error.responseJSON;

@@ -85,13 +85,23 @@
         <script>
 
 
-            $('#search').click(function () {
+            $(document).on('click','#search',function () {
+
                 var date1=$('#date1').val();
                 var date2=$('#date2').val();
                 var token=$('#token').val();
                 var name =$('#adminName').text();
                // alert(name);
-
+                var patt = new RegExp('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#');
+//                if(patt.test(date1))
+//                {
+//                    alert ('valid');
+//                    return false;
+//                }else
+//                    {
+//                        alert('not valid');
+//                        return false;
+//                    }
 //            alert(date1);
 //            alert(date2);
                 $.ajaxSetup({
@@ -157,10 +167,13 @@
                     {
                         //alert(response.toSource());
 
-
+//                        var type=typeof(response);
+//                        alert(type);
+//                        return false;
                         console.log(response);
 
-                        var len = response.data.length;
+                        var len = response.data;//rayat
+                        var resLen = response.length;//rayat
                         console.log(len);
                         if(len == '')
                         {
@@ -171,31 +184,45 @@
                                 confirmButtonText: "بستن"
                             });
                             return false;
+                        }
+                        if(resLen == 52)//rayat
+                        {
+                            swal({
+                                title: "",
+                                text: response,
+                                type: "warning",
+                                confirmButtonText: "بستن"
+                            });
+                            return false;//rayat
                         }else
                             {
-                                $('#change').empty();
-                                $.each(response.data,function(key,value) {
-                                    $('#change').append(
-                                        "<tr   class='unit'>" +
-                                        "<td   id='date'>" + value.id+ "</td>" +
-                                        "<td   id='date'>" + name + "</td>" +
-                                        "<td   id='date'>" + value.name + ' ' + value.family + "</td>" +
-                                        "<td   id='time1'>" + value.date + "</td>" +
-                                        "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("admin/showWorkerCard")}}/"+value.id+"'>نمایش عکس کارت</a></td>"+
-                                        "</tr>");
+                                if(typeof (response) == "object")
+                                {
+                                    $('#change').empty();
+                                    $.each(response.data,function(key,value) {
+                                        $('#change').append(
+                                            "<tr   class='unit'>" +
+                                            "<td   id='date'>" + value.id+ "</td>" +
+                                            "<td   id='date'>" + name + "</td>" +
+                                            "<td   id='date'>" + value.name + ' ' + value.family + "</td>" +
+                                            "<td   id='time1'>" + value.date + "</td>" +
+                                            "<td   id='time2'><a class='btn btn-success' href='{{URL::asset("admin/showWorkerCard")}}/"+value.id+"'>نمایش عکس کارت</a></td>"+
+                                            "</tr>");
 
-                                });
+                                    });
+                                }
+
                             }
 
                     },error:function (error) {
 
                         swal({
                             title: "",
-                            text: "خطایی رخ داده است.لطفا با بخش پشتیبانی تماس بگیرید",
-                            type: "info",
+                            text: error.content,
+                            type: "warning",
                             confirmButtonText: "بستن"
                         });
-                        console.log(error);
+                        //console.log(error);
                     }
 
                 });

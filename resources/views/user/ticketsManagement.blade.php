@@ -194,7 +194,8 @@
 
                         console.log(response);
 
-                        var len = response.data.length;
+                        var len = response.data;//rayat
+                        var resLen = response.length;//rayat
                         console.log(len);
                         if(len == '')
                         {
@@ -205,6 +206,16 @@
                                 confirmButtonText: "بستن"
                             });
                             return false;
+                        }
+                        if(resLen == 52)//rayat
+                        {
+                            swal({
+                                title: "",
+                                text: response,
+                                type: "warning",
+                                confirmButtonText: "بستن"
+                            });
+                            return false;//rayat
                         }else
                         {
                             $('#change').empty();
