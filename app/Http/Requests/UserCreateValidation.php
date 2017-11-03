@@ -27,7 +27,7 @@ class UserCreateValidation extends FormRequest
             [
                 'name' => 'required|max:100',
                 'family' => 'required|max:100',
-                'email' => 'required|email|max:100|unique:users',
+                'username' => 'required|max:100|unique:users',
                 'password' => 'required|min:6|max:25|confirmed',
                // 'cellphone' => 'required|numeric',
                 //'internal_phone' => 'required|numeric',

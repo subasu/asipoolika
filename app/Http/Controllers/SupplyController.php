@@ -258,7 +258,7 @@ class SupplyController extends Controller
                         'title'             =>trim($request->title),
                         'name'              =>trim($request->name),
                         'family'            =>trim($request->family),
-                        'email'             =>trim($request->email),
+                        'username'          =>trim($request->username),
                         'password'          =>bcrypt($request->password),
                         'cellphone'         =>trim($request->cellphone),
                         'internal_phone'    =>trim($request->internal_phone),

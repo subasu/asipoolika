@@ -81,17 +81,31 @@
                                     </span>
                                 @endif
                             </div>
-                            <div class="item form-group {{ $errors->has('email') ? ' has-error' : '' }}">
+                            {{--<div class="item form-group {{ $errors->has('email') ? ' has-error' : '' }}">--}}
+                                {{--<div class="col-md-8 col-sm-6 col-xs-12">--}}
+                                    {{--<input type="email" id="email" name="email" required="required"--}}
+                                           {{--class="form-control col-md-7 col-xs-12">--}}
+                                {{--</div>--}}
+                                {{--<label class="control-label col-md-4 col-sm-4 col-xs-12" for="email"> ایمیل : <span--}}
+                                            {{--class="required star" title="پر کردن این فیلد الزامی است">*</span>--}}
+                                {{--</label>--}}
+                                {{--@if ($errors->has('email'))--}}
+                                    {{--<span class="help-block">--}}
+                                        {{--<strong>{{ $errors->first('email') }}</strong>--}}
+                                    {{--</span>--}}
+                                {{--@endif--}}
+                            {{--</div>--}}
+                            <div class="item form-group {{ $errors->has('username') ? ' has-error' : '' }}">
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input type="email" id="email" name="email" required="required"
-                                           class="form-control col-md-7 col-xs-12">
+                                    <input type="text" id="username" name="username" required="required"
+                                           class="form-control col-md-7 col-xs-12" placeholder="کد ملی">
                                 </div>
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="email"> ایمیل : <span
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="username">نام کاربری : <span
                                             class="required star" title="پر کردن این فیلد الزامی است">*</span>
                                 </label>
-                                @if ($errors->has('email'))
+                                @if ($errors->has('username'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('username') }}</strong>
                                     </span>
                                 @endif
                             </div>
