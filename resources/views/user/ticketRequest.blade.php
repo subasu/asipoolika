@@ -140,13 +140,19 @@
                     data :{'unit':unit,'title':title,'description':description,'_token':token},
                     success:function(response)
                     {
-//                        swal({
-//                            title: "",
-//                            text: response,
-//                            type: "info",
-//                            confirmButtonText: "بستن"
-//                        });
-                        window.location.href = 'ticketsManagement/1';
+                        if(response == 'اطلاعات شما با موفقیت ثبت گردید')
+                        {
+                            swal({
+                                title: "",
+                                text: response,
+                                type: "info",
+                                confirmButtonText: "بستن"
+                            });
+                            setTimeout(function () {
+                                window.location.href = 'ticketsManagement/1';
+                            },3000);
+                        }
+
 
                     },error:function(error)
                     {

@@ -33,7 +33,9 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>فاکتورهای مربوط به درخواست شماره {{$factors[0]->request_id}}</h2>
+                    @if(!empty($factors[0]))
+                        <h2>فاکتورهای مربوط به درخواست شماره {{$factors[0]->request_id}}</h2>
+                    @endif
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i
                                         class="fa fa-chevron-up"></i></a>
@@ -66,7 +68,7 @@
                                     {{$factor->id}}
                                 </td>
                                 <td>
-                                     فاکتور شماره : {{$factor->factor_number}}
+                                    فاکتور شماره : {{$factor->factor_number}}
                                 </td>
                                 <td style="border-right: 1px solid #e0e0d1">
                                     {{number_format($factor->final_price)}}
@@ -93,7 +95,9 @@
                             <tbody id="change">
 
                             </tbody>
-                            <input type="hidden" id="requestId" name="requestId" value="{{$factors[0]->request_id}}">
+                            @if(!empty($factors[0]))
+                                <input type="hidden" id="requestId" name="requestId" value="{{$factors[0]->request_id}}">
+                            @endif
                             <input type="hidden" id="recordCount" name="recordCount" value="0">
                         </table>
                         <input type="button" id="reg" value="ثبت ردیف های جدید" class="btn btn-success" style="margin-left:43% ; display: none; width: 16%;">
@@ -106,30 +110,30 @@
             </div>
         </div>
 
-    <script>
+        <script>
 
-                //var totalPrice = $("#finalPrice");
-</script>
-    <script>
+            //var totalPrice = $("#finalPrice");
+        </script>
+        <script>
             $(document).on('keyup','#totalPrice',function(){
                 var v0 = $(this).val();
                 var v1 = v0.split(',').join('');
                 var v2 = formatNumber(v1);
                 $(this) . val(v2);
             })
-    </script>
+        </script>
 
-                {{--//var totalPrice = $("#finalPrice");--}}
-{{--</script>--}}
-    {{--<script>--}}
-                {{--$(document).on('keyup','#totalPrice',function(){--}}
-                    {{--var v0 = $(this).val();--}}
-                    {{--var v1 = v0.split(',').join('');--}}
-                    {{--var v2 = formatNumber(v1);--}}
-                    {{--$(this) . val(v2);--}}
-                {{--})--}}
+        {{--//var totalPrice = $("#finalPrice");--}}
+        {{--</script>--}}
+        {{--<script>--}}
+        {{--$(document).on('keyup','#totalPrice',function(){--}}
+        {{--var v0 = $(this).val();--}}
+        {{--var v1 = v0.split(',').join('');--}}
+        {{--var v2 = formatNumber(v1);--}}
+        {{--$(this) . val(v2);--}}
+        {{--})--}}
 
-    {{--</script>--}}
+        {{--</script>--}}
 
         <script>
             $(document).on('click','#addRow',function(){
@@ -138,91 +142,91 @@
                 $('#recordCount').val(newRecordCount);
                 $('#reg').css('display','block');
                 $('#change').append
-                    (
-                        "<tr>"+
-                            "<td><input type='number' class='form-control required' name='description[]' id='description'></td>"+
-                            "<td><input type='text' class='form-control required' name='totalPrice[]'  id='totalPrice'></td>"+
-                            "<td style='border-right: 1px solid #e0e0d1;'><a  class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
-                        "</tr>"
+                (
+                    "<tr>"+
+                    "<td><input type='number' class='form-control required' name='description[]' id='description'></td>"+
+                    "<td><input type='text' class='form-control required' name='totalPrice[]'  id='totalPrice'></td>"+
+                    "<td style='border-right: 1px solid #e0e0d1;'><a  class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
+                    "</tr>"
 
-                    );
+                );
             });
         </script>
 
         <script>
             $(document).on('click','#reg',function(){
-               var requestId = $('#requestId').val();
-               var formData = $('#dealForm').serialize();
-               var counter = 0;
-               $('.required').each(function () {
-                   if($(this).val() == '')
-                   {
-                       $(this).css('border-color','red');
-                       counter++;
-                   }
-               });
-                  if(counter > 0)
-                  {
-                      swal
-                      ({
-                          title: '',
-                          text: 'تعدادی از فیلدهای فرم خالی است.لطفا فیلدها را پر نمایید سپس ثبت نهایی را بزنید',
-                          type:'warning',
-                          confirmButtonText: "بستن"
-                      });
-                      return false;
-                  }else {
-                      swal({
-                              title: "کاربر گرامی در نظر داشته باشید در صورتی که خلاصه تنظیمی برای این درخواست ثبت گردد دیگر امکان آپلود فاکتور و اضافه کردن ردیف های جدید وجود ندارد ، آیا درخواست خود را ثبت می نمایید؟",
-                              text: "",
-                              type: "warning",
-                              showCancelButton: true,
-                              confirmButtonColor: "	#5cb85c",
-                              cancelButtonText: "خیر ، منصرف شدم",
-                              confirmButtonText: "بله ثبت شود",
-                              closeOnConfirm: true,
-                              closeOnCancel: true
-                          },
-                          function (isConfirm) {
-                              if (isConfirm) {
-                                  $.ajaxSetup({
-                                      headers: {
-                                          'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                                      }
-                                  });
-                                  $.ajax
-                                  ({
-                                      url: "{{url('admin/savePreparedSummarize')}}",
-                                      type: 'post',
-                                      data: formData,
-                                      context : requestId,
-                                      success: function (response) {
-                                          swal
-                                          ({
-                                              title: '',
-                                              text: response,
-                                              type: 'info',
-                                              confirmButtonText: "بستن"
-                                          });
-                                          setTimeout(function () {
-                                              window.location.href='../confirmedRequestDetails/'+requestId;
-                                          },2000);
-                                      }, error: function (error) {
-                                          swal
-                                          ({
-                                              title: '',
-                                              text: 'خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید',
-                                              type: 'info',
-                                              confirmButtonText: "بستن"
-                                          });
-                                          console.log(error);
-                                      }
-                                  })
+                var requestId = $('#requestId').val();
+                var formData = $('#dealForm').serialize();
+                var counter = 0;
+                $('.required').each(function () {
+                    if($(this).val() == '')
+                    {
+                        $(this).css('border-color','red');
+                        counter++;
+                    }
+                });
+                if(counter > 0)
+                {
+                    swal
+                    ({
+                        title: '',
+                        text: 'تعدادی از فیلدهای فرم خالی است.لطفا فیلدها را پر نمایید سپس ثبت نهایی را بزنید',
+                        type:'warning',
+                        confirmButtonText: "بستن"
+                    });
+                    return false;
+                }else {
+                    swal({
+                            title: "کاربر گرامی در نظر داشته باشید در صورتی که خلاصه تنظیمی برای این درخواست ثبت گردد دیگر امکان آپلود فاکتور و اضافه کردن ردیف های جدید وجود ندارد ، آیا درخواست خود را ثبت می نمایید؟",
+                            text: "",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "	#5cb85c",
+                            cancelButtonText: "خیر ، منصرف شدم",
+                            confirmButtonText: "بله ثبت شود",
+                            closeOnConfirm: true,
+                            closeOnCancel: true
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                    }
+                                });
+                                $.ajax
+                                ({
+                                    url: "{{url('admin/savePreparedSummarize')}}",
+                                    type: 'post',
+                                    data: formData,
+                                    context : requestId,
+                                    success: function (response) {
+                                        swal
+                                        ({
+                                            title: '',
+                                            text: response,
+                                            type: 'info',
+                                            confirmButtonText: "بستن"
+                                        });
+                                        setTimeout(function () {
+                                            window.location.href='../confirmedRequestDetails/'+requestId;
+                                        },2000);
+                                    }, error: function (error) {
+                                        swal
+                                        ({
+                                            title: '',
+                                            text: 'خطایی رخ داده است ، لطفا با بخش پشتیبانی تماس بگیرید',
+                                            type: 'info',
+                                            confirmButtonText: "بستن"
+                                        });
+                                        console.log(error);
+                                    }
+                                })
 
-                              }
+                            }
 
-                          });
-                  }
+                        });
+                }
             });
         </script>
         <script>
@@ -235,7 +239,7 @@
         </script>
         <script>
             $(document).on('click','#guide',function(){
-               $('#modal').modal('show');
+                $('#modal').modal('show');
             });
         </script>
         <script>

@@ -560,58 +560,72 @@ class SupplyController extends Controller
     public function addWorkerCard(Request $request)
     {
         //dd('hello');
-        if($request->hasFile('image'))
+        if(preg_match('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#', $request->date))
         {
-            $extension = $request->image->getClientOriginalExtension();
-            $fileSize  = $request->image->getClientSize();
-            //  dd($fileSize);
-            if($fileSize < 150000)
+            if($request->hasFile('image'))
             {
-                if($extension == 'png' || $extension == 'PNG')
+                $extension = $request->image->getClientOriginalExtension();
+                $fileSize  = $request->image->getClientSize();
+                //  dd($fileSize);
+                if($fileSize < 150000)
                 {
-                    $jDate = $request->date;
-                    if ($date = explode('/', $jDate)) {
-                        $year = $date[0];
-                        $month = $date[1];
-                        $day = $date[2];
-                    }
-                    $gDate = $this->jalaliToGregorian($year, $month, $day);
-                    $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
-                    $file = $request->image;
-                    $file->move(public_path(), $request->image->getClientOriginalName());
-                    $path = public_path() . '\\' . $request->image->getClientOriginalName();
-                    //dd($path);
-                    $image = file_get_contents($path);
-                    File::delete($path);
-                    $fileName = base64_encode($image);
-                    $q =  DB::table('workers')->insert
-                    ([
-                            'card' => $fileName,
-                            'user_id' => Auth::user()->id,
-                            'date' => $gDate1,
-                            'name' => $request->name,
-                            'family' => $request->family
-                    ]);
-                    if($q)
+                    if($extension == 'png' || $extension == 'PNG')
                     {
-                        return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
+                        $jDate = $request->date;
+                        if ($date = explode('/', $jDate)) {
+                            $year = $date[0];
+                            $month = $date[1];
+                            $day = $date[2];
+                        }
+                        $gDate = $this->jalaliToGregorian($year, $month, $day);
+                        $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
+                        $now = new Carbon();
+                        $now = $now->toDateString();
+                        if($gDate1 >= $now)
+                        {
+                            $file = $request->image;
+                            $file->move(public_path(), $request->image->getClientOriginalName());
+                            $path = public_path() . '\\' . $request->image->getClientOriginalName();
+                            //dd($path);
+                            $image = file_get_contents($path);
+                            File::delete($path);
+                            $fileName = base64_encode($image);
+                            $q =  DB::table('workers')->insert
+                            ([
+                                'card' => $fileName,
+                                'user_id' => Auth::user()->id,
+                                'date' => $gDate1,
+                                'name' => $request->name,
+                                'family' => $request->family
+                            ]);
+                            if($q)
+                            {
+                                return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
+                            }
+                        }else
+                            {
+                              return response('تاریخ وارد شده گذشته است');
+                            }
                     }
-
-                }
-                else
+                    else
                     {
                         return response('پسوند فایل کارت کارگری نامعتبر است');
                     }
-            }else
+                }else
                 {
                     return response('حجم فایل کارت کارگری بیش از حد مجاز است');
                 }
 
+            }else
+            {
+                return response('لطفا فایل عکس کارگری خود را انتخاب نمایید ، سپس درخواست خود را وارد نمایید');
+            }
         }else
-        {
-            return response('لطفا فایل عکس کارگری خود را انتخاب نمایید ، سپس درخواست خود را وارد نمایید');
-        }
+            {
+                return response('لطفا تاریخ را بطور صحیح وارد نمایید، مثلا : 1396/05/01');
+            }
     }
+
 
     public function jalaliToGregorian($year, $month, $day)
     {
@@ -625,37 +639,44 @@ class SupplyController extends Controller
     */
     public function searchOnDate(Request $request,$id)
     {
-        $userId = Auth::user()->id;
-        $date1 = trim($request->date1);
-        if ($dat1 = explode('/', $date1)) {
-            $year = $dat1[0];
-            $month = $dat1[1];
-            $day = $dat1[2];
-            $gDate1 = $this->jalaliToGregorian($year, $month, $day);
-        }
-        $gDate1 = $gDate1[0] . '-' . $gDate1[1] . '-' . $gDate1[2];
+        if(preg_match('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#', $request->date1) && preg_match('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#', $request->date2))
+        {
+            $userId = Auth::user()->id;
+            $date1 = trim($request->date1);
+            if ($dat1 = explode('/', $date1)) {
+                $year = $dat1[0];
+                $month = $dat1[1];
+                $day = $dat1[2];
+                $gDate1 = $this->jalaliToGregorian($year, $month, $day);
+            }
+            $gDate1 = $gDate1[0] . '-' . $gDate1[1] . '-' . $gDate1[2];
 
-        /***** give second  jalali date and convert it to gregorian date *****/
-        $date2 = trim($request->date2);
-        if ($dat2 = explode('/', $date2)) {
-            $year = $dat2[0];
-            $month = $dat2[1];
-            $day = $dat2[2];
-            $gDate2 = $this->jalaliToGregorian($year, $month, $day);
-        }
-        $gDate2 = $gDate2[0] . '-' . $gDate2[1] . '-' . $gDate2[2];
+            /***** give second  jalali date and convert it to gregorian date *****/
+            $date2 = trim($request->date2);
+            if ($dat2 = explode('/', $date2)) {
+                $year = $dat2[0];
+                $month = $dat2[1];
+                $day = $dat2[2];
+                $gDate2 = $this->jalaliToGregorian($year, $month, $day);
+            }
+            $gDate2 = $gDate2[0] . '-' . $gDate2[1] . '-' . $gDate2[2];
 
-        switch ($id) {
-            case 1 :
-                $data = Workers::whereBetween('date', [$gDate1, $gDate2])->where([['active', 1], ['user_id', $userId]])->orderBy('date')->get();
-                break;
-        }
+            switch ($id) {
+                case 1 :
+                    $data = Workers::whereBetween('date', [$gDate1, $gDate2])->where([['active', 1], ['user_id', $userId]])->orderBy('date')->get();
+                    break;
+            }
 
-        foreach ($data as $date) {
-            $date->date = $this->toPersian($date->date);
-            $date->card = 'data:image/jpeg;base64,' . $date->card;
-        }
-        return response()->json(compact('data'));
+            foreach ($data as $date) {
+                $date->date = $this->toPersian($date->date);
+                $date->card = 'data:image/jpeg;base64,' . $date->card;
+            }
+            return response()->json(compact('data'));
+        }else
+            {
+                return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
+            }
+
     }
 
 
@@ -2038,42 +2059,58 @@ class SupplyController extends Controller
     public function addBillPhoto($request)
     {
 
-                    $image = $request->image;
-                    $src   = $request->requestId.'-'.str_random(4).$image->getClientOriginalName();
-                    $image->move( 'public/dashboard/image/' , $src);
-                    $fileExistence = public_path().'public/dashboard/image/'.$src;
 
-                    if($fileExistence)
+        if(preg_match('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#', $request->date))
+        {
+            $image = $request->image;
+            $src   = $request->requestId.'-'.str_random(4).$image->getClientOriginalName();
+            $image->move( 'public/dashboard/image/' , $src);
+            $fileExistence = public_path().'public/dashboard/image/'.$src;
+
+            if($fileExistence)
+            {
+                $jDate = $request->date;
+                if ($date = explode('/', $jDate)) {
+                    $year = $date[0];
+                    $month = $date[1];
+                    $day = $date[2];
+                }
+                $gDate = $this->jalaliToGregorian($year, $month, $day);
+                $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
+                $now = new Carbon();
+                $now = $now->toDateString();
+                if($gDate1 >= $now)
+                {
+                    $factorId = DB::table('bills')->insertGetId
+                    ([
+                        'src'           => $src,
+                        'date'          => $gDate1,
+                        'factor_number' => trim($request->factorNumber),
+                        'user_id'       => Auth::user()->id,
+                        'request_id'    => $request->requestId,
+                        'final_price'   => $request->newFinalPrice,
+                        'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                    ]);
+                    if($factorId)
                     {
-                        $jDate = $request->date;
-                        if ($date = explode('/', $jDate)) {
-                            $year = $date[0];
-                            $month = $date[1];
-                            $day = $date[2];
-                        }
-                        $gDate = $this->jalaliToGregorian($year, $month, $day);
-                        $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
-                        $factorId = DB::table('bills')->insertGetId
-                        ([
-                            'src'           => $src,
-                            'date'          => $gDate1,
-                            'factor_number' => trim($request->factorNumber),
-                            'user_id'       => Auth::user()->id,
-                            'request_id'    => $request->requestId,
-                            'final_price'   => $request->newFinalPrice,
-                            'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
-                        ]);
-                        if($factorId)
-                        {
-                            return response('فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید');
-                        }else
-                            {
-                                return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
-                            }
+                        return response('فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید');
                     }else
-                        {
-                            return response('خطا در آپلود فایل فاکتور ، تماس با بخش پشتیبانی');
-                        }
+                    {
+                        return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
+                    }
+                }else
+                    {
+                        return response('تاریخ وارد شده گذشته است');
+                    }
+
+            }else
+            {
+                return response('خطا در آپلود فایل فاکتور ، تماس با بخش پشتیبانی');
+            }
+        }else
+            {
+                return response('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
+            }
 
     }
 
@@ -2192,36 +2229,43 @@ class SupplyController extends Controller
         }
         else
             {
-                $extension = $request->image->getClientOriginalExtension();
-                $size      = $request->image->getClientSize();
                 if($request->hasFile('image'))
                 {
-                    if ($extension == 'png' || $extension == 'PNG' || $extension == 'jpg' || $extension == 'JPG')
+                    $extension = $request->image->getClientOriginalExtension();
+                    $size      = $request->image->getClientSize();
+                    if($request->hasFile('image'))
                     {
-                        if ($size < 150000)
+                        if ($extension == 'png' || $extension == 'PNG' || $extension == 'jpg' || $extension == 'JPG')
                         {
-                            switch ($parameter)
+                            if ($size < 150000)
                             {
-                                case 'warehouse':
-                                    return $this->addWarehousePhoto($request);
-                                    break;
+                                switch ($parameter)
+                                {
+                                    case 'warehouse':
+                                        return $this->addWarehousePhoto($request);
+                                        break;
 
-                                case 'bill' :
-                                    return $this->addBillPhoto($request);
+                                    case 'bill' :
+                                        return $this->addBillPhoto($request);
+                                }
                             }
-                        }
-                        else
+                            else
+                            {
+                                return response('سایز فایل انتخاب شده بیش از حد مجاز میباشد');
+                            }
+                        }else
                         {
-                            return response('سایز فایل انتخاب شده بیش از حد مجاز میباشد');
+                            return response('پسوند فایل انتخاب شده معتبر نیست');
                         }
                     }else
                     {
-                        return response('پسوند فایل انتخاب شده معتبر نیست');
+                        return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
                     }
                 }else
-                {
-                    return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
-                }
+                    {
+                        return response('لطفا فایلی انتخاب نمایید ، سپس درخواست خود را ثبت نمایید');
+                    }
+
             }
     }
 
