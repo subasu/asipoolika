@@ -85,7 +85,7 @@
                              class="img-circle profile_img">
                     </div>
                     <div class="profile_info" style="text-align: left">
-                        <span>@if($user_info->is_supervisor==1)@if($user_info->unit_id!=4) مدیر  @endif @else  کارمند @endif{{$user->unit->description}}</span><br>
+                        <span>@if($user_info->is_supervisor==1)@if($user_info->unit_id!=4) مدیر  @else کارمند@endif @endif{{$user->unit->description}}</span><br>
                         <h2>{{$user_info->title}} {{$user_info->name}} {{$user_info->family}}</h2>
                     </div>
 
