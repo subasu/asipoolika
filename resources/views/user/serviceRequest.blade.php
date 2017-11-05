@@ -66,7 +66,7 @@
                                 {{--<th>کد کالا</th>--}}
                                 <th>عنوان خدمت</th>
                                 <th>تعداد / مقدار</th>
-                                <th>توضیحات</th>
+                                <th style="border-right: 1px solid #d6d6c2">توضیحات</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -78,7 +78,7 @@
                                     <input id="service_count" class="form-control req" name="product_count"
                                            placeholder="" required="required" type="number" min="0">
                                 </td>
-                                <td class="col-md-8">
+                                <td class="col-md-8" style="border-right: 1px solid #d6d6c2">
                                     <input id="service_details" class="form-control" name="service_details"
                                            placeholder="" required="required" type="text" >
                                 </td>
@@ -124,7 +124,7 @@
                                     <th class="col-md-2">عنوان کالا</th>
                                     <th class="col-md-1">تعداد / مقدار</th>
                                     <th class="col-md-4">توضیحات</th>
-                                    <th class="col-md-1">حذف</th>
+                                    <th class="col-md-1" style="border-right: 1px solid #d6d6c2">حذف</th>
                                 </tr>
                                 </thead>
                                 <tbody id="table-row">
@@ -206,7 +206,7 @@
                                 //      unit_count_each_record(select_id)
                                 //+'</select>'+
                                 //'</td>'+
-                            '<td>'+
+                            '<td style="border-right: 1px solid #d6d6c2">'+
                             '<a type="button" class="btn btn-danger remove_row" data-toggle="tooltip" title="حذف" style="font-size:18px;">'+
                             '<span class="fa fa-trash"></span>'+
                             '</a>'+

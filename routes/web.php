@@ -333,6 +333,23 @@ Route::group(['prefix'=>'systemManager'],function() {
 Route::get('unit_signature','SystemManagerController@unit_user_list');
 Route::get('price','IndexController@ajaxPrice');
 
+
+
+Route::group(['prefix'=>'special'],function() {
+    // Product Request Management
+//        Route::get('/productRequestManagement','SupplyController@productRequestManagement');
+    Route::get('/productRequest',[
+        'uses'=>'SpecialController@productRequestManagement',
+        'middleware' => 'roles',
+        'roles'=>['special']
+    ]);
+
+    Route::post('unitsUpdate', 'SpecialController@unitsUpdate');
+    Route::post('usersSupervisor', 'SpecialController@usersSupervisor');
+});
+
+
+
 Route::get('/home', 'HomeController@index');
 
 Route::get('/f', function () {
