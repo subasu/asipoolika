@@ -182,9 +182,7 @@
                             confirmButtonText: "بستن"
                         });
                     }
-
                 }
-
             })
     });
 
@@ -300,12 +298,6 @@
             var price = rate * count;
             $(this).parents('tr').find('.price').val(formatNumber(price));
         });
-
-//
-//
-//$('.icode').on('change', function() {
-//    $(this).parents('tr').find('.description').val($(this).val());
-//});
 
     </script>
 @endsection

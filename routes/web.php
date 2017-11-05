@@ -337,20 +337,20 @@ Route::get('price','IndexController@ajaxPrice');
 
 Route::group(['prefix'=>'special'],function() {
     // Product Request Management
-//        Route::get('/productRequestManagement','SupplyController@productRequestManagement');
     Route::get('/productRequest',[
-        'uses'=>'SpecialController@productRequestManagement',
+        'uses'=>'SpecialController@productRequestGet',
         'middleware' => 'roles',
         'roles'=>['special']
     ]);
 
-    Route::post('unitsUpdate', 'SpecialController@unitsUpdate');
+    Route::post('productRequest', 'SpecialController@productRequest');
     Route::post('usersSupervisor', 'SpecialController@usersSupervisor');
 });
 
 
 
-Route::get('/home', 'HomeController@index');
+Route::get('/units', 'SpecialController@unitsGet');
+Route::get('/receiver', 'SpecialController@receiverGet');
 
 Route::get('/f', function () {
     return view('forms.productRequestForm');
