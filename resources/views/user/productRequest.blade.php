@@ -1,11 +1,42 @@
 @extends('layouts.adminLayout')
 @section('content')
+        <!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" style="text-align: right;direction: rtl;font-size: larger">
+            <div class="modal-header">
+                <button type="button" class="close pull-left" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-question-circle"></i> راهنمای ثبت درخواست کالا</h4>
+            </div>
+            <div class="modal-body" style="text-align: justify">
+                <p>مراحل کار : </p>
+                <ol>
+                    <li>درخواست کالای مورد نظر خود را در فرم شماره  وارد کنید و دکمه به لیست اضافه شود را بزنید</li>
+                    <li>در قسمت درخواست نهایی میتوانید درخواست های خود را قبل از ویرایش نهایی ویرایش یا حذف کنید</li>
+                    <li>با ثبت نهایی درخواست این درخواست برای واحد تدارکات ارسال میشود و میتوانید از طریق منوی پیگیری درخواست کالا ، وضعیت مرحله به مرحله درخواست خود را ببینید</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary col-md-12" data-dismiss="modal">متوجه شدم</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
     <input type="hidden" value="{{$user_id=\Illuminate\Support\Facades\Auth::user()->id}}">
     <div class="page-title">
         <div class="title_right">
             <h3>
                 درخواست خرید کالا
             </h3>
+        </div>
+        <div class="title_left">
+            <button type="button" class="btn btn-sample">
+                <i class="fa fa-question-circle" style="font-size: 25px;" data-toggle="modal" data-target="#myModal" title="راهنمای استفاده" data-placement="right"></i>
+            </button>
         </div>
     </div>
     <div class="clearfix"></div>

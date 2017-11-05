@@ -1,27 +1,27 @@
 @extends('layouts.adminLayout')
 @section('content')
 
-        <!-- Modal -->
-<div id="commentModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" style="direction: ltr; font-size: 20px;">رد درخواست</h4>
+    <div id="productRequestManagementModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="text-align: right;direction: rtl;font-size: larger">
+                <div class="modal-header">
+                    <button type="button" class="close pull-left" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-question-circle"></i> راهنمای مدیریت درخواست های تازه ثبت شده</h4>
+                </div>
+                <div class="modal-body" style="text-align: justify">
+                    <p>مراحل کار : </p>
+                    <ol>
+                        <li>روی دکمه مشاهده جزئیات کلیک کنید و ردیف های مربوط به هر درخواست را مشاهده کنید</li>
+                    </ol>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary col-md-12" data-dismiss="modal">متوجه شدم</button>
+                </div>
             </div>
-            <div class="modal-body" style="direction: rtl;text-align:right;">
-                <label for="comment" style="direction: rtl; font-size: 20px;">لطفا دلیل رد درخواست را بطور کامل تایپ کنید.</label>
-                <textarea style="" class="form-control" id="comment" name="comment"></textarea>
-            </div>
-            <div class="modal-footer  col-md-12">
-                <button style="margin-left:40%; width: 30%;font-size: 20px;" type="button" class="btn btn-primary" id="sub" data-dismiss="modal">ثبت</button>
-            </div>
-        </div>
-        <input type="hidden" id="token" value="{{ csrf_token() }}">
-    </div>
-</div>
 
+        </div>
+    </div>
 
 <div class="clearfix"></div>
 <div class="row">
@@ -29,11 +29,17 @@
         <div class="x_panel">
             <div class="x_title">
                 @if($pageName=='productRequestManagement')
-                    <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت  درخواست های سرویس تازه درج شده</h2>
+                    <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت  درخواست های سرویس تازه درج شده
+                        <button type="button" class="btn btn-sample">
+                            <i class="fa fa-question-circle" style="font-size: 20px;" data-toggle="modal" data-target="#productRequestManagementModal" title="راهنمای استفاده" data-placement="right"></i>
+                        </button>
+                    </h2>
                 @elseif($pageName=='refusedProductRequestManagement')
-                    <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های سرویس رد شده</h2>
+                    <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های سرویس رد شده
+                    </h2>
                 @elseif($pageName=='acceptProductRequestManagement')
-                    <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های سرویس در حال پیگیری</h2>
+                    <h2  style="color:#009900;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های سرویس در حال پیگیری
+                    </h2>
                 @elseif($pageName=='confirmProductRequest')
                     <h2  style="color:#cc0099;direction: rtl"><i class="fa fa-check"></i> مدیریت درخواست های تایید شده</h2>
                 @endif
