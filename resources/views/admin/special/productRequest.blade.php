@@ -59,6 +59,10 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-3 col-sm-5 col-xs-12 pull-right">
+                                <label for="unit_user"><span class="required" style="font-size: 20px;color: red;">*</span> تاریخ ثبت درخواست</label>
+                                <input type="text" name="" id="" class="form-control">
+                            </div>
                             {{--<div class="col-md-3 col-sm-5 col-xs-12 pull-right">--}}
                             {{--<label for="receiver_id"><span class="required" style="font-size: 20px;color: red;">*</span> تحویل گیرنده :</label>--}}
                             {{--<select class="form-control" name="receiver_id" style="color: black" id="receiver_id">--}}
