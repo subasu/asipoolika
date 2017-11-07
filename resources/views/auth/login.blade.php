@@ -4,11 +4,11 @@
           action="{{ url('/login') }}" autocomplete="off">
         {{ csrf_field() }}
         <p class="title">صفحه ی ورود</p>
-        <input type="text" placeholder="نام کاربری" id="email" autofocus name="email" value="{{ old('email') }}" class=""/>
+        <input type="text" placeholder="نام کاربری" id="username" autofocus name="username" value="{{ old('username') }}" class=""/>
         <i class="fa fa-user"></i>
-        @if ($errors->has('email'))
+        @if ($errors->has('username'))
             <span class="help-block">
-                <strong>{{ $errors->first('email') }}</strong>
+                <strong>{{ $errors->first('username') }}</strong>
             </span>
         @endif
         <input type="password" name="password" id="password" placeholder="رمزعبور"

@@ -28,7 +28,7 @@
                         <tr>
                             <th style="text-align: center">ردیف</th>
                             <th style="text-align: center">نام و نام خانوادگی</th>
-                            <th style="text-align: center">ایمیل</th>
+                            <th style="text-align: center">نام کاربری</th>
                             <th style="text-align: center">موبایل</th>
                             <th style="text-align: center">واحد</th>
                             <th style="text-align: center">سرپرست</th>
@@ -47,7 +47,7 @@
                             <tr class="unit">
                                 <td>{{++$i}}</td>
                                 <td>{{$val->title. ' '.$val->name.' '.$val->family}}</td>
-                                <td>{{$val->email}} </td>
+                                <td>@if($val->username!=null){{$val->username}} @endif</td>
                                 <td>{{$val->cellphone}} </td>
                                 <td>{{$val->unit->title}}</td>
                                 <td>{{$val->user->title.' '.$val->user->name .' '.$val->user->family }}</td>

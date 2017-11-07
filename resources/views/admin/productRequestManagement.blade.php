@@ -1,6 +1,26 @@
 @extends('layouts.adminLayout')
 @section('content')
+    <div id="productRequestManagementModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="text-align: right;direction: rtl;font-size: larger">
+                <div class="modal-header">
+                    <button type="button" class="close pull-left" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-question-circle"></i> راهنمای مدیریت درخواست های تازه ثبت شده</h4>
+                </div>
+                <div class="modal-body" style="text-align: justify">
+                    <p>مراحل کار : </p>
+                    <ol>
+                        <li>روی دکمه مشاهده جزئیات کلیک کنید و ردیف های مربوط به هر درخواست را مشاهده کنید</li>
+                    </ol>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary col-md-12" data-dismiss="modal">متوجه شدم</button>
+                </div>
+            </div>
 
+        </div>
+    </div>
         <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog" style="direction: rtl;text-align: right">
     <div class="modal-dialog">
@@ -57,7 +77,11 @@
                 <div class="x_panel">
                     <div class="x_title">
                         @if($pageName=='productRequestManagement')
-                            <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت درخواست های کالا تازه ثبت شده</h2>
+                            <h2 style="color:#005ce6;direction: rtl"><i class="fa fa-plus-square-o"></i> مدیریت درخواست های کالا تازه ثبت شده
+                                <button type="button" class="btn btn-sample">
+                                    <i class="fa fa-question-circle" style="font-size: 20px;" data-toggle="modal" data-target="#productRequestManagementModal" title="راهنمای استفاده" data-placement="right"></i>
+                                </button>
+                            </h2>
                         @elseif($pageName=='refusedProductRequestManagement')
                             <h2  style="color:#e60000;direction: rtl"><i class="fa fa-ban"></i> مدیریت درخواست های کالای رد شده</h2>
                         @elseif($pageName=='acceptProductRequestManagement')

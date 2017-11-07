@@ -60,7 +60,8 @@ class RequestController extends Controller
                     'count' => $request->product_count[$i],
                     'unit_count' => $request->unit_count_each[$i],
                     'step' => 1,
-                    'request_id' => $request_id
+                    'request_id' => $request_id,
+                    'created_at' => Carbon::now(new \DateTimeZone('Asia/Tehran'))
                 ]);
                 $i++;
                 $record_count--;
@@ -84,6 +85,7 @@ class RequestController extends Controller
             $request->request_record_count_accept = RequestRecord::where([['request_id', $request->id], ['refuse_user_id', null], ['step', '>', 1], ['active', 1]])->count();
             //inactive records
             $request->request_record_count_refused = RequestRecord::where([['request_id', $request->id], ['refuse_user_id', '!=', null]])->count();
+
         }
         return view('user.requestManagement', compact('pageTitle', 'pageName', 'requests'));
     }

@@ -22,6 +22,29 @@
     </div>
 </div>
 
+
+<div id="requestRecordModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" style="text-align: right;direction: rtl;font-size: larger">
+            <div class="modal-header">
+                <button type="button" class="close pull-left" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-question-circle"></i> راهنمای بررسی ردیف های درخواست</h4>
+            </div>
+            <div class="modal-body" style="text-align: justify">
+                <p>مراحل کار : </p>
+                <ol>
+                    <li>تایید درخواست : این ردیف از درخواست به مرحله بعدی برای دریافت امضا ارسال میشود.</li>
+                    <li>رد کردن : میتوانید دلیلی برای رد کردن درخواست خود بنویسید تا درخواست کننده آن را بداند .</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary col-md-12" data-dismiss="modal">متوجه شدم</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 <div class="clearfix"></div>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -31,9 +54,15 @@
                     <input type="hidden" value="{{$requestRecords[0]->id}}" name="request_id">
                     <input type="hidden" value="{{$user->unit->title}}" content="{{$user->is_supervisor}}" name="user_unit_title" id="user_unit_title">
                     @if($requestRecords[0]->request->request_type_id==3)
-                        <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست کالای شماره :  {{$requestRecords[0]->request_id}} | ثبت شده توسط :   {{$requestRecords[0]->request->user->name}} {{$requestRecords[0]->request->user->family}} از واحد {{$requestRecords[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$requestRecords->count()}} رکورد</span></h2>
+                        <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست کالای شماره :  {{$requestRecords[0]->request_id}} | ثبت شده توسط :   {{$requestRecords[0]->request->user->name}} {{$requestRecords[0]->request->user->family}} از واحد {{$requestRecords[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$requestRecords->count()}} رکورد</span>
+
+                        </h2>
                     @elseif($requestRecords[0]->request->request_type_id==2)
-                        <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست خدمت شماره : {{$requestRecords[0]->request_id}} | ثبت شده توسط :   {{$requestRecords[0]->request->user->name}} {{$requestRecords[0]->request->user->family}} از واحد {{$requestRecords[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$requestRecords->count()}} رکورد</span></h2>
+                        <h2><i class="fa fa-list"></i> لیست رکوردهای درخواست خدمت شماره : {{$requestRecords[0]->request_id}} | ثبت شده توسط :   {{$requestRecords[0]->request->user->name}} {{$requestRecords[0]->request->user->family}} از واحد {{$requestRecords[0]->request->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردها : {{$requestRecords->count()}} رکورد</span>
+                            <button type="button" class="btn btn-sample">
+                                <i class="fa fa-question-circle" style="font-size: 20px;" data-toggle="modal" data-target="#requestRecordModal" title="راهنمای استفاده" data-placement="right"></i>
+                            </button>
+                        </h2>
                     @endif
                 @endif
                 {{--<h2>لیست رکوردهای درخواست کالای شماره : {{$requestRecords[0]->request_id}}</h2>--}}
@@ -69,8 +98,8 @@
                             <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">
                             {{--<input type="hidden" class="" value="2000" name="count[]">--}}
                             @if($user->unit->title=='تدارکات' and $user->is_supervisor==1)
-                                <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
-                                <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
+                                <td><input type="text" class="form-control rate"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="rate"  name="rate[]"/></td>
+                                <td><input type="text" class="form-control price" readonly id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
                             @else
                                 <td>{{number_format($requestRecord->rate)}} تومان</td>
                                 <td>{{number_format($requestRecord->price)}} تومان</td>

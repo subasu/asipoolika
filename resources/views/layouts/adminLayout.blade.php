@@ -85,7 +85,7 @@
                              class="img-circle profile_img">
                     </div>
                     <div class="profile_info" style="text-align: left">
-                        <span>@if($user_info->is_supervisor==1)@if($user_info->unit_id!=4) مدیر @endif @endif{{$user->unit->description}}</span><br>
+                        <span>@if($user_info->is_supervisor==1)@if($user_info->unit_id!=4) مدیر  @else کارمند@endif @endif{{$user->unit->description}}</span><br>
                         <h2>{{$user_info->title}} {{$user_info->name}} {{$user_info->family}}</h2>
                     </div>
 
@@ -120,6 +120,12 @@
                                 </li>
                             @endif
                             @if($user->is_supervisor==1 and $user->unit_id!=3)
+                                <li><a><i class="fa fa-list"></i>ثبت درخواست های کاغذی<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li><a href="{{url('/special/productRequest')}}"> ثبت درخواست کالا</a></li>
+                                        <li><a href="{{url('/special/serviceRequest')}}"> ثبت درخواست خدمت</a></li>
+                                    </ul>
+                                </li>
                                 <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="{{url('/admin/productRequestManagement')}}"> درخواست های جدید</a></li>

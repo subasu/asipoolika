@@ -55,7 +55,7 @@
                             </div>
                             <div class="item form-group">
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input id="name" class="form-control col-md-7 col-xs-12" name="name" placeholder=""
+                                    <input id="name" maxlength="20" class="form-control col-md-7 col-xs-12" name="name" placeholder=""
                                            required="required" type="text">
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="name"> نام : <span
@@ -69,7 +69,7 @@
                             </div>
                             <div class="item form-group {{ $errors->has('family') ? ' has-error' : '' }}">
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input id="family" class="form-control col-md-7 col-xs-12" name="family"
+                                    <input id="family" maxlength="20" class="form-control col-md-7 col-xs-12" name="family"
                                            placeholder="" required="required" type="text">
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="family"> نام خانوادگی :
@@ -81,23 +81,37 @@
                                     </span>
                                 @endif
                             </div>
-                            <div class="item form-group {{ $errors->has('email') ? ' has-error' : '' }}">
+                            {{--<div class="item form-group {{ $errors->has('email') ? ' has-error' : '' }}">--}}
+                                {{--<div class="col-md-8 col-sm-6 col-xs-12">--}}
+                                    {{--<input type="email" id="email" name="email" required="required"--}}
+                                           {{--class="form-control col-md-7 col-xs-12">--}}
+                                {{--</div>--}}
+                                {{--<label class="control-label col-md-4 col-sm-4 col-xs-12" for="email"> ایمیل : <span--}}
+                                            {{--class="required star" title="پر کردن این فیلد الزامی است">*</span>--}}
+                                {{--</label>--}}
+                                {{--@if ($errors->has('email'))--}}
+                                    {{--<span class="help-block">--}}
+                                        {{--<strong>{{ $errors->first('email') }}</strong>--}}
+                                    {{--</span>--}}
+                                {{--@endif--}}
+                            {{--</div>--}}
+                            <div class="item form-group {{ $errors->has('username') ? ' has-error' : '' }}">
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input type="email" id="email" name="email" required="required"
-                                           class="form-control col-md-7 col-xs-12">
+                                    <input type="text" maxlength="15" id="username" name="username" required="required"
+                                           class="form-control col-md-7 col-xs-12" placeholder="کد ملی" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                 </div>
-                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="email"> ایمیل : <span
-                                            class="required star" title="پر کردن این فیلد الزامی است">*</span>
+                                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="username">نام کاربری : <span
+                                            class="required star"  title="پر کردن این فیلد الزامی است">*</span>
                                 </label>
-                                @if ($errors->has('email'))
+                                @if ($errors->has('username'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('username') }}</strong>
                                     </span>
                                 @endif
                             </div>
                             <div class="item form-group {{ $errors->has('password') ? ' has-error' : '' }}">
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input id="password" type="password" name="password"
+                                    <input id="password" maxlength="15" type="password" name="password"
                                            class="form-control col-md-7 col-xs-12" required="required">
                                 </div>
                                 <label for="password" class="control-label col-md-4">رمز عبور:
@@ -110,7 +124,7 @@
                             </div>
                             <div class="item form-group">
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input id="password-confirm" type="password" class="form-control col-md-7 col-xs-12"
+                                    <input id="password-confirm" maxlength="15" type="password" class="form-control col-md-7 col-xs-12"
                                            name="password_confirmation" required>
                                 </div>
                                 <label for="password-confirm" class="control-label col-md-4 col-sm-4 col-xs-12"> تکرار
@@ -119,7 +133,7 @@
                             </div>
                             <div class="item form-group {{ $errors->has('cellphone') ? ' has-error' : '' }}">
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input type="tel" id="cellphone" name="cellphone" required="required"
+                                    <input type="tel" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="15" id="cellphone" name="cellphone" required="required"
                                            class="form-control col-md-7 col-xs-12">
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="cellphone">شماره موبایل :
@@ -132,7 +146,7 @@
                             </div>
                             <div class="item form-group {{ $errors->has('internal_phone') ? ' has-error' : '' }}">
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input type="tel" id="	internal_phone" name="internal_phone" required="required"
+                                    <input onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="tel" id="internal_phone" maxlength="15" name="internal_phone" required="required"
                                            class="form-control col-md-7 col-xs-12">
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="internal_phone">تلفن داخلی :</label>
@@ -179,8 +193,8 @@
                             </div>
                             <div class="item form-group">
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <textarea id="description" required="required" name="description"
-                                              class="form-control col-md-7 col-xs-12"></textarea>
+                                    <textarea id="description"  required="required" name="description"
+                                              class="form-control col-md-7 col-xs-12" maxlength="100"></textarea>
                                 </div>
                                 <label class="control-label col-md-4 col-sm-4 col-xs-12" for="description">توضیحات :
                                 </label>
@@ -507,7 +521,7 @@
                         swal({
                             title: "",
                             text: errorsHtml,
-                            type: "info",
+                            type: "error",
                             confirmButtonText: "بستن"
                         });
                     }

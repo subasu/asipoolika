@@ -258,7 +258,7 @@ class SupplyController extends Controller
                         'title'             =>trim($request->title),
                         'name'              =>trim($request->name),
                         'family'            =>trim($request->family),
-                        'email'             =>trim($request->email),
+                        'username'          =>trim($request->username),
                         'password'          =>bcrypt($request->password),
                         'cellphone'         =>trim($request->cellphone),
                         'internal_phone'    =>trim($request->internal_phone),
@@ -299,7 +299,7 @@ class SupplyController extends Controller
                     'title'             =>trim($request->title),
                     'name'              =>trim($request->name),
                     'family'            =>trim($request->family),
-                    'email'             =>trim($request->email),
+                    'username'          =>trim($request->username),
                     'password'          =>bcrypt($request->password),
                     'cellphone'         =>trim($request->cellphone),
                     'internal_phone'    =>trim($request->internal_phone),
@@ -321,7 +321,7 @@ class SupplyController extends Controller
                     'title'             =>trim($request->title),
                     'name'              =>trim($request->name),
                     'family'            =>trim($request->family),
-                    'email'             =>trim($request->email),
+                    'username'          =>trim($request->username),
                     'password'          =>bcrypt($request->password),
                     'cellphone'         =>trim($request->cellphone),
                     'internal_phone'    =>trim($request->internal_phone),
@@ -349,7 +349,7 @@ class SupplyController extends Controller
                     'title'             =>trim($request->title),
                     'name'              =>trim($request->name),
                     'family'            =>trim($request->family),
-                    'email'             =>trim($request->email),
+                    'username'          =>trim($request->username),
                     'password'          =>bcrypt($request->password),
                     'cellphone'         =>trim($request->cellphone),
                     'internal_phone'    =>trim($request->internal_phone),
@@ -505,7 +505,7 @@ class SupplyController extends Controller
                 'title' => $request->title,
                 'name' => $request->name,
                 'family' => $request->family,
-                'email' => $request->email,
+//                'email' => $request->email,
                 'cellphone' => $request->cellphone,
                 'internal_phone' => $request->internal_phone,
                 //'unit_id' => $request->unit_id,
@@ -738,6 +738,7 @@ class SupplyController extends Controller
             $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step','>=',$step2],['active',1]])->count();
             //inactive records
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+            $productRequest->date = $this->toPersian($productRequest->created_at);
         }
 //        dd($productRequests);
         return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
