@@ -43,7 +43,6 @@ class SpecialController extends Controller
     {
         return Verta::getGregorian($year, $month, $day);
     }
-
     public function productRequest(Request $request)
     {
         if (!$request->ajax()) {
@@ -105,6 +104,7 @@ class SpecialController extends Controller
             {
                 return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
             }
+
     }
     public function unitsGet(Request $request)
     {
@@ -134,6 +134,7 @@ class SpecialController extends Controller
         if (!$request->ajax()) {
             abort(403);
         }
+
 
         if (preg_match('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#', $request->date2)) {
 
@@ -186,6 +187,7 @@ class SpecialController extends Controller
             {
                 return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
             }
+
     }
 }
 
