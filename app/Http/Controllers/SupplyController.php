@@ -738,6 +738,7 @@ class SupplyController extends Controller
             $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step','>=',$step2],['active',1]])->count();
             //inactive records
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+            $productRequest->date = $this->toPersian($productRequest->created_at);
         }
 //        dd($productRequests);
         return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));

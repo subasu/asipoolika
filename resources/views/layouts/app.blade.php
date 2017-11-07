@@ -21,7 +21,7 @@
 <body>
 <div class="wrapper">
    @yield('content')
-    <footer><a target="blank" href="#">Designed By Artan Group</a></footer>
+    <footer><a target="blank" href="http://www.artansoftware.com">Designed By Artan Group</a></footer>
     </p>
 </div>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

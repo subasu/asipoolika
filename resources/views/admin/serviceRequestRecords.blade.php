@@ -98,8 +98,8 @@
                             <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">
                             {{--<input type="hidden" class="" value="2000" name="count[]">--}}
                             @if($user->unit->title=='تدارکات' and $user->is_supervisor==1)
-                                <td><input type="text" class="form-control rate" id="rate"  name="rate[]"/></td>
-                                <td><input type="text" class="form-control price" id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
+                                <td><input type="text" class="form-control rate"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="rate"  name="rate[]"/></td>
+                                <td><input type="text" class="form-control price" readonly id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
                             @else
                                 <td>{{number_format($requestRecord->rate)}} تومان</td>
                                 <td>{{number_format($requestRecord->price)}} تومان</td>

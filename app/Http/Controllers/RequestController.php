@@ -85,6 +85,7 @@ class RequestController extends Controller
             $request->request_record_count_accept = RequestRecord::where([['request_id', $request->id], ['refuse_user_id', null], ['step', '>', 1], ['active', 1]])->count();
             //inactive records
             $request->request_record_count_refused = RequestRecord::where([['request_id', $request->id], ['refuse_user_id', '!=', null]])->count();
+
         }
         return view('user.requestManagement', compact('pageTitle', 'pageName', 'requests'));
     }

@@ -91,15 +91,15 @@
                                        placeholder="نام کالا مورد نیاز" required="required" type="text"></td>
                             <td class="col-md-1">
                                 <input id="product_count" class="form-control req count" name="product_count"
-                                       placeholder="" required="required" type="number" min="0">
+                                       placeholder="" required="required" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="1000">
                             </td>
                             <td class="col-md-1">
-                                <select id="unit_count" class="form-control req" name="unit_count[]"
+                                <select id="unit_count" class="form-control req" name="unit_count"
                                         required="required">
                                 </select>
                             </td>
-                            <td class="col-md-2"><input type="text" class="form-control rate" id="rate"  name="product_rate[]"/></td>
-                            <td class="col-md-2"><input type="text" class="form-control price" id="price" content="content" name="product_price[]" style="font-size:16px;color:red"/></td>
+                            <td class="col-md-2"><input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control rate" id="rate"  name="product_rate"/></td>
+                            <td class="col-md-2"><input type="text" readonly class="form-control price" id="price" content="content" name="product_price" style="font-size:16px;color:red"/></td>
                             <td class="col-md-4" style="border-right: 1px solid #d6d6c2">
                                 <input id="product_details" class="form-control" name="product_details"
                                        placeholder="" required="required" type="text" >
@@ -184,7 +184,7 @@
                 url: "{{ url('units') }}",
                 type: 'GET',
                 dataType: 'json',
-                data: {unit_id:id,receiver_id:receiver_id},
+                data: {unit_id:id},
                 success: function(response) {
                     var html;
                     html += '<option value="">کاربر را انتخاب کنید</option>';
@@ -230,26 +230,6 @@
             });
         });
 
-        {{--var record_count = 0;--}}
-        {{--function unit_count_each_record(select_id) {--}}
-        {{--$.ajax({--}}
-        {{--url: "{{ url('/unit_count') }}",--}}
-        {{--type: 'GET',--}}
-        {{--dataType: 'json',--}}
-        {{--success: function (response) {--}}
-        {{--var html;--}}
-        {{--$.each(response.unit_counts, function (index, value) {--}}
-        {{--//                   html += '<option value="' + value + '">' +  value['title'] + '</option>';--}}
-        {{--html += '<option value="' + value + '">' + value['title'] + '</option>';--}}
-        {{--});--}}
-        {{--$("#" + select_id).html(html);--}}
-        {{--},--}}
-        {{--error: function (error) {--}}
-        {{--var errors = error.responseJSON;--}}
-        {{--console.log(errors);--}}
-        {{--}--}}
-        {{--});--}}
-        {{--}--}}
     </script>
 
     <script>
@@ -287,11 +267,11 @@
                 var row='<tr id="'+row_id+'">'+
 //                        '<th scope="row">'+count+'</th>'+
                         '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" name="product_title[]" value="'+$('#product_title').val()+'">'+'</td>'+
-                        '<td>'+'<input style="padding-right:5px;" class="required form-control" type="number" name="product_count[]" value="'+$('#product_count').val()+'">'+'</td>'+
+                        '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="1000" name="product_count[]" value="'+$('#product_count').val()+'">'+'</td>'+
                         '<td>'+$.trim($("#unit_count option:selected").text())+'</td>'+
-                        '<input type="text" name="unit_count" value="'+$.trim($("#unit_count option:selected").text())+'">'+
-                        '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" name="product_rate[]" value="'+$('#rate').val()+'">'+'</td>'+
-                        '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" name="product_price[]" value="'+$('#price').val().replace(/,/g , '')+'">'+'</td>'+
+                        '<input type="text" name="unit_count[]" value="'+$.trim($("#unit_count option:selected").text())+'">'+
+                        '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="product_rate[]" value="'+$('#rate').val()+'">'+'</td>'+
+                        '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" readonly name="product_price[]" value="'+$('#price').val().replace(/,/g , '')+'">'+'</td>'+
                         '<td>'+'<select id="'+select_id+'" class="form-control" name="product_receiver[]">'+
                         receivers(select_id)
                         +'</select>'+
@@ -300,7 +280,7 @@
                         '<td class="col-md-4">'+
                         '<input id="product_details" class="form-control" name="product_details[]" placeholder=""  value="'+$('#product_details').val()+'" type="text" >'+'</td>'+
                         '<input type="hidden" value="'+$.trim($("#unit_count option:selected").text())+'" name="unit_count_each[]">'+
-                        '<input type="hidden" value="'+$.trim($("#unit_count option:selected").text())+'" name="unit_count_each[]">'+
+//                        '<input type="hidden" value="'+$.trim($("#unit_count option:selected").text())+'" name="unit_count_each[]">'+
                         '<td style="border-right: 1px solid #d6d6c2">'+
                         '<a type="button" class="btn btn-danger remove_row" data-toggle="tooltip" title="حذف" style="font-size:18px;">'+
                         '<span class="fa fa-trash"></span>'+
@@ -371,7 +351,7 @@
                             if (isConfirm) {
                                 //serialize() send all form input values
                                 var formData = $('#product').serialize();
-//                        console.log(formData);
+                        console.log(formData);
 //                                return false;
                                 $.ajaxSetup({
                                     headers: {
