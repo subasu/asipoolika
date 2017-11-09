@@ -162,11 +162,11 @@ class SpecialController extends Controller
 
                 do {
                     $q = DB::table('request_records')->insert([
-                        'title' => $request->product_title[$i],
-                        'price' => str_replace(',','',$request-> product_price[$i]),
-                        'rate' => $request->product_rate[$i],
-                        'description' => $request->product_details[$i],
-                        'code' => mt_rand(1000, 5000),
+                        'title' => encrypt($request->product_title[$i]),
+                        'price' => encrypt(str_replace(',','',$request-> product_price[$i])),
+                        'rate' => encrypt($request->product_rate[$i]),
+                        'description' => encrypt($request->product_details[$i]),
+                        'code' => encrypt(mt_rand(1000, 5000)),
                         'count' => $request->product_count[$i],
                         'step' => 7,
                         'accept' => 1,

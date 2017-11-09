@@ -88,7 +88,7 @@
                                 <td style="direction: rtl;text-align: right">
                                     <ol>
                                         @foreach($request->requestRecord as $item)
-                                            <li>{{$item->title}}</li>
+                                            <li>{{decrypt($item->title)}}</li>
                                         @endforeach
                                     </ol>
                                 </td>
@@ -110,7 +110,7 @@
                                 <td style="direction: rtl;text-align: right">
                                     <ol>
                                         @foreach($request->requestRecord as $item)
-                                            <li>{{$item->title}}</li>
+                                            <li>{{decrypt($item->title)}}</li>
                                         @endforeach
                                     </ol>
                                 </td>

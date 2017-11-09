@@ -121,7 +121,7 @@ class RequestController extends Controller
                     'title' => encrypt($request->service_title[$i]),
                     'description' => encrypt($request->service_details[$i]),
                     'count' => $request->service_count[$i],
-                    'code' => mt_rand(1000, 5000),
+                    'code' => encrypt(mt_rand(1000, 5000)),
                     'step' => 1,
                     'request_id' => $request_id,
                     'created_at' => Carbon::now(new \DateTimeZone('Asia/Tehran'))
@@ -146,6 +146,7 @@ class RequestController extends Controller
             $request->request_record_count_accept = RequestRecord::where([['request_id', $request->id], ['refuse_user_id', null], ['step', '>', 1], ['active', 1]])->count();
             //inactive records
             $request->request_record_count_refused = RequestRecord::where([['request_id', $request->id], ['refuse_user_id', '!=', null]])->count();
+
         }
         return view('user.requestManagement', compact('pageTitle', 'pageName', 'requests'));
     }
