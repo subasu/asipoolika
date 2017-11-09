@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="col-md-3 col-sm-5 col-xs-12 pull-right">
                                     <label for="unit_user"><span class="required" style="font-size: 20px;color: red;">*</span> تاریخ ثبت درخواست</label>
-                                    <input type="text" name="" id="" class="form-control">
+                                    <input type="text" name="date1" id="date1" class="form-control">
                                 </div>
                                 {{--<div class="col-md-3 col-sm-5 col-xs-12 pull-right">--}}
                                 {{--<label for="receiver_id"><span class="required" style="font-size: 20px;color: red;">*</span> تحویل گیرنده :</label>--}}
@@ -90,15 +90,15 @@
                                 {{--placeholder="" required="required" type="text">--}}
                                 {{--</td>--}}
                                 <td class="col-md-2">
-                                    <input id="product_title" class="form-control req" name="product_title"
+                                    <input id="product_title" class="form-control " name="product_title"
                                            placeholder="نام کالا مورد نیاز" required="required" type="text"></td>
                                 <td class="col-md-1">
-                                    <input id="product_count" class="form-control req count" name="product_count"
+                                    <input id="product_count" class="form-control  count" name="product_count"
                                            placeholder="" required="required" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="1000">
                                 </td>
 
                                 <td class="col-md-2"><input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control rate" id="rate"  name="product_rate"/></td>
-                                <td class="col-md-2"><input type="text" readonly class="form-control price" id="price" content="content" name="product_price" style="font-size:16px;color:red"/></td>
+                                <td class="col-md-2"><input type="text" readonly class="form-control pri" id="price" content="content" name="product_price" style="font-size:16px;color:red"/></td>
                                 <td class="col-md-4" style="border-right: 1px solid #d6d6c2">
                                     <input id="product_details" class="form-control" name="product_details"
                                            placeholder="" required="required" type="text" >
@@ -138,6 +138,7 @@
                             <input type="hidden" value="0" name="record_count" id="record_count">
                             <input type="hidden" value="" name="supplier_id2" id="supplier_id2">
                             <input type="hidden" value="" name="unit_id2" id="unit_id2">
+                            <input type="hidden" value="" name="date2" id="date2">
                             {{--request owner id : --}}
                             <input type="hidden" value="" name="user_id2" id="user_id2">
 
@@ -171,7 +172,12 @@
                 {{--! end tables --}}
             </div>
         </div>
-
+        <script src="{{URL::asset('public/js/persianDatepicker.js')}}"></script>
+        <script>
+            $(function () {
+                $('#date1').persianDatepicker();
+            })
+        </script>
         <script>
             $('#unit_id').change(function() {
                 var $this = $(this);
@@ -246,6 +252,7 @@
                 var select_id='select'+count;
                 var product_title = $('#product_title').val();
                 var product_count = $('#product_count').val();
+                var rate          = $('#rate').val();
 
                 if(product_title == '' || product_title == null)
                 {
@@ -260,16 +267,22 @@
                     $('#product_count').css('border-color','red');
                     return false;
                 }
-                else if(product_title != '' && product_title!= null && product_count!= '' && product_count!= null)
+                else if(rate == '' || rate == null)
+                {
+                    $('#rate').focus();
+                    $('#rate').css('border-color','red');
+                    return false;
+                }
+                else if(product_title != '' && product_title!= null && product_count!= '' && product_count!= null && rate != null && rate != '')
                 {
                     var row='<tr id="'+row_id+'">'+
 //                        '<th scope="row">'+count+'</th>'+
-                            '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" name="product_title[]" value="'+$('#product_title').val()+'">'+'</td>'+
-                            '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="1000" name="product_count[]" value="'+$('#product_count').val()+'">'+'</td>'+
+                            '<td>'+'<input style="padding-right:5px;" class="needed form-control" type="text" name="product_title[]" value="'+$('#product_title').val()+'">'+'</td>'+
+                            '<td>'+'<input style="padding-right:5px;" class="needed form-control count" type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" maxlength="1000" name="product_count[]" value="'+$('#product_count').val()+'">'+'</td>'+
 //                            '<td>'+$.trim($("#unit_count option:selected").text())+'</td>'+
 //                            '<input type="text" name="unit_count[]" value="'+$.trim($("#unit_count option:selected").text())+'">'+
-                            '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="product_rate[]" value="'+$('#rate').val()+'">'+'</td>'+
-                            '<td>'+'<input style="padding-right:5px;" class="required form-control" type="text" readonly name="product_price[]" value="'+$('#price').val().replace(/,/g , '')+'">'+'</td>'+
+                            '<td>'+'<input style="padding-right:5px;" class="needed form-control rate" type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="product_rate[]" value="'+$('#rate').val()+'">'+'</td>'+
+                            '<td>'+'<input style="padding-right:5px;" class="form-control pri" type="text" readonly name="product_price[]" value="'+$('#price').val().replace(/,/g , '')+'">'+'</td>'+
                             '<td>'+'<select id="'+select_id+'" class="form-control" name="product_receiver[]">'+
                             receivers2(select_id)
                             +'</select>'+
@@ -328,100 +341,146 @@
             }
         </script>
         <script>
-            $('#save_request').click(function () {
-                var table = document.getElementById("table-row");
-                var rows = table.getElementsByTagName("tr");
-                if (rows.length) {
-                    swal({
-                                title: "توجه کنید!",
-                                text: "آیا از ثبت درخواست مطمئن هستید؟",
-                                type: "",
-                                showCancelButton: true,
-                                confirmButtonColor: "	#5cb85c",
-                                cancelButtonText: "خیر ، منصرف شدم",
-                                confirmButtonText: "بله ثبت شود",
-                                closeOnConfirm: false,
-                                closeOnCancel: false
-                            },
-                            function (isConfirm) {
-                                if (isConfirm) {
-                                    //serialize() send all form input values
-                                    var formData = $('#product').serialize();
-                                    console.log(formData);
-//                                return false;
-                                    $.ajaxSetup({
-                                        headers: {
-                                            'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                                        }
-                                    });
-                                    $.ajax({
-                                        url: "{{ url('special/serviceRequest') }}",
-                                        type: 'POST',
-                                        dataType: 'json',
-                                        data: formData,
-                                        success: function (response) {
-                                            swal
-                                            ({
-                                                title: 'درخواست ثبت شد',
-                                                text:'درخواست به لیست درخواست های شما اضافه شد',
-                                                type:'success',
-                                                confirmButtonText: "بستن"
-                                            });
-                                            //rayat: refresh page after showing alert
-                                            setTimeout (myTimer, 1500);
-                                            function myTimer() {
-                                                location.reload()
-                                            }
-                                            //rayat: refresh page after showing alert END ...
-                                        },
-                                        error: function (error) {
-                                            if (error.status === 422) {
-                                                $errors = error.responseJSON; //this will get the errors response data.
-                                                //show them somewhere in the markup
-                                                //e.g
-                                                var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
-//
-                                                $.each($errors, function (key, value) {
-                                                    errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
-                                                });
-                                                errorsHtml += '</ul></div>';
-                                                $('fieldset').append(errorsHtml);
-                                                swal
-                                                ({
-                                                    title: 'خطاهای زیر را برطرف کنید !',
-                                                    text: '',
-                                                    type:'error',
-                                                    confirmButtonText: "بستن"
-                                                });
-                                            } else if (error.status === 500) {
-                                                swal
-                                                ({
-                                                    title: 'لطفا با بخش پشتیبانی تماس بگیرید',
-                                                    text: 'خطایی رخ داده است',
-                                                    type:'error',
-                                                    confirmButtonText: "بستن"
-                                                });
-                                                console.log(error);
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    swal
-                                    ({
-                                        title: 'منصرف شدید',
-                                        text: 'درخواست ثبت نشد',
-                                        type:'error',
-                                        confirmButtonText: "بستن"
-                                    });
-                                }
-                            });
+            $(document).on('click','#save_request',function () {
+                var date1 = $('#date1').val();
+                if(date1 == '' || date1 == null)
+                {
+                    $('#date1').focus();
+                    $('#date1').css('border-color','red');
+                    return false;
                 }else
-                    swal({
-                        title: "توجه کنید!",
-                        text: "شما هنوز درخواستی ثبت نکرده اید",
-                        type: "",
-                        confirmButtonText: "بستن"
-                    });
+                    {
+                        $('#date2').val(date1);
+                        var table = document.getElementById("table-row");
+                        var rows = table.getElementsByTagName("tr");
+                        if (rows.length) {
+                            swal({
+                                    title: "توجه کنید!",
+                                    text: "آیا از ثبت درخواست مطمئن هستید؟",
+                                    type: "",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "	#5cb85c",
+                                    cancelButtonText: "خیر ، منصرف شدم",
+                                    confirmButtonText: "بله ثبت شود",
+                                    closeOnConfirm: false,
+                                    closeOnCancel: false
+                                },
+                                function (isConfirm) {
+                                    if (isConfirm) {
+                                        //serialize() send all form input values
+                                        var formData = $('#product').serialize();
+                                        console.log(formData);
+//                                return false;
+                                        $.ajaxSetup({
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                                            }
+                                        });
+                                        $.ajax({
+                                            url: "{{ url('special/serviceRequest') }}",
+                                            type: 'POST',
+                                            dataType: 'json',
+                                            data: formData,
+                                            beforeSend:function () {
+                                                var counter = 0;
+                                                $(".needed").each(function() {
+                                                    if ($(this).val() === "") {
+                                                        $(this).css("border-color" , "red");
+                                                        counter++;
+                                                    }
+                                                });
+                                                if(counter > 0){
+                                                    swal
+                                                    ({
+                                                        title: '',
+                                                        text: 'تعدادی از فیلدهای فرم خالی است.لطفا فیلدها را پر نمایید سپس ثبت نهایی را بزنید',
+                                                        type:'warning',
+                                                        confirmButtonText: "بستن"
+                                                    });
+                                                    return false;
+                                                }
+                                            },
+                                            success: function (response) {
+                                                console.log(response);
+                                                var resLen = response.length;//rayat
+                                                console.log(resLen);
+                                                if(resLen == 52)//rayat
+                                                {
+                                                    swal({
+                                                        title: "",
+                                                        text: response,
+                                                        type: "warning",
+                                                        confirmButtonText: "بستن"
+                                                    });
+                                                    return false;//rayat
+                                                }else
+                                                    {
+                                                        swal
+                                                        ({
+                                                            title: 'درخواست ثبت شد',
+                                                            text:'درخواست به لیست درخواست های شما اضافه شد',
+                                                            type:'success',
+                                                            confirmButtonText: "بستن"
+                                                        });
+                                                        //rayat: refresh page after showing alert
+                                                        setTimeout (myTimer, 1500);
+                                                        function myTimer() {
+                                                            location.reload(true);
+                                                        }
+                                                    }
+
+                                                //rayat: refresh page after showing alert END ...
+                                            },
+                                            error: function (error) {
+                                                if (error.status === 422) {
+                                                    $errors = error.responseJSON; //this will get the errors response data.
+                                                    //show them somewhere in the markup
+                                                    //e.g
+                                                    var errorsHtml = '<div id="alert_div" class="alert alert-danger col-md-12 col-sm-12 col-xs-12" style="text-align:right;padding-right:10%;margin-bottom:-4%" role="alert"><ul>';
+//
+                                                    $.each($errors, function (key, value) {
+                                                        errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                                                    });
+                                                    errorsHtml += '</ul></div>';
+                                                    $('fieldset').append(errorsHtml);
+                                                    swal
+                                                    ({
+                                                        title: 'خطاهای زیر را برطرف کنید !',
+                                                        text: '',
+                                                        type:'error',
+                                                        confirmButtonText: "بستن"
+                                                    });
+                                                } else if (error.status === 500) {
+                                                    swal
+                                                    ({
+                                                        title: 'لطفا با بخش پشتیبانی تماس بگیرید',
+                                                        text: 'خطایی رخ داده است',
+                                                        type:'error',
+                                                        confirmButtonText: "بستن"
+                                                    });
+                                                    console.log(error);
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        swal
+                                        ({
+                                            title: 'منصرف شدید',
+                                            text: 'درخواست ثبت نشد',
+                                            type:'error',
+                                            confirmButtonText: "بستن"
+                                        });
+                                    }
+                                });
+                        }else
+                            swal({
+                                title: "توجه کنید!",
+                                text: "شما هنوز درخواستی ثبت نکرده اید",
+                                type: "",
+                                confirmButtonText: "بستن"
+                            });
+                    }
+
             });
         </script>
         <script>
@@ -430,11 +489,21 @@
             }
         </script>
         <script>
-            $('.rate').on('keyup', function() {
+            $(document).on('keyup','.rate', function() {
                 var rate=$(this).parents('tr').find('.rate').val();
                 var count=$(this).parents('tr').find('.count').val();
                 var price = rate * count;
-                $(this).parents('tr').find('.price').val(formatNumber(price));
+                $(this).parents('tr').find('.pri').val(formatNumber(price));
+                price = price.replace(/,/g , '');
+            });
+
+        </script>
+        <script>
+            $(document).on('keyup','.count', function() {
+                var rate=$(this).parents('tr').find('.count').val();
+                var count=$(this).parents('tr').find('.rate').val();
+                var price = rate * count;
+                $(this).parents('tr').find('.pri').val(formatNumber(price));
                 price = price.replace(/,/g , '');
             });
 

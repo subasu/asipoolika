@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Unit;
 use App\User;
 use Carbon\Carbon;
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -37,55 +38,73 @@ class SpecialController extends Controller
         }
         return response()->json(compact('receivers'));
     }
+
+    public function jalaliToGregorian($year, $month, $day)
+    {
+        return Verta::getGregorian($year, $month, $day);
+    }
     public function productRequest(Request $request)
     {
         if (!$request->ajax()) {
             abort(403);
         }
 //        return response()->json($request->all());
+        if(preg_match('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#', $request->date2)) {
 
-        $record_count = $request->record_count;
-
-        //it has some records at least one record
+            $record_count = $request->record_count;
+            $date2 = trim($request->date2);
+            if ($date1 = explode('/', $date2)) {
+                $year = $date1[0];
+                $month = $date1[1];
+                $day = $date1[2];
+                $gDate1 = $this->jalaliToGregorian($year, $month, $day);
+            }
+            $gDate1 = $gDate1[0] . '-' . $gDate1[1] . '-' . $gDate1[2];
+            //it has some records at least one record
 //        return response()->json($record_count);
-        if ($record_count != 0) {
-            $request_id = DB::table('requests')->insertGetId([
-                'request_type_id' => 3,
-                'user_id' =>$request->user_id2,
-                'unit_id' =>$request->unit_id2,
-                'supplier_id'=>$request->supplier_id2,
-                'active'=>1,
-                'created_at' => Carbon::now(new \DateTimeZone('Asia/Tehran'))
-            ]);
-            $i = 0;
+            if ($record_count != 0) {
+                $request_id = DB::table('requests')->insertGetId([
+                    'request_type_id' => 3,
+                    'user_id' => $request->user_id2,
+                    'unit_id' => $request->unit_id2,
+                    'supplier_id' => $request->supplier_id2,
+                    'active' => 1,
+                    'created_at' => $gDate1
+                ]);
+                $i = 0;
 //            return response()->json($request->product_receiver[$i]);
 
-            do {
-                if($request->product_receiver[$i]==9)
-                    $step=9;
-                else $step=7;
-                $q = DB::table('request_records')->insert([
-                    'title' => $request->product_title[$i],
-                    'price'=> $request->product_price[$i],
-                    'rate'=> $request->product_rate[$i],
-                    'description' => $request->product_details[$i],
-                    'code' => mt_rand(1000, 5000),
-                    'count' => $request->product_count[$i],
-                    'unit_count' => $request->unit_count_each[$i],
-                    'step' =>$step,
-                    'accept'=>1,
-                    'receiver_id'=>$request->product_receiver[$i],
-                    'request_id' => $request_id,
-                    'active'=>1,
-                    'created_at' => Carbon::now(new \DateTimeZone('Asia/Tehran'))
-                ]);
-                $i++;
-                $record_count--;
-            } while ($record_count >= 1);
+                do {
+                    if ($request->product_receiver[$i] == 9)
+                        $step = 9;
+                    else $step = 7;
+                    $q = DB::table('request_records')->insert([
+                        'title' => $request->product_title[$i],
+                        'price' => str_replace(',','',$request-> product_price[$i]),
+                        'rate' => $request->product_rate[$i],
+                        'description' => $request->product_details[$i],
+                        'code' => mt_rand(1000, 5000),
+                        'count' => $request->product_count[$i],
+                        'unit_count' => $request->unit_count_each[$i],
+                        'step' => $step,
+                        'accept' => 1,
+                        'receiver_id' => $request->product_receiver[$i],
+                        'request_id' => $request_id,
+                        'active' => 1,
+                        'created_at' => $gDate1
+                    ]);
+                    $i++;
+                    $record_count--;
+                } while ($record_count >= 1);
 
-            return response()->json($q);
-        } else
-            return response()->json('is zero');
+                return response()->json($q);
+            } else
+                return response()->json('is zero');
+        }else
+            {
+                return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
+            }
+
     }
     public function unitsGet(Request $request)
     {
@@ -116,43 +135,59 @@ class SpecialController extends Controller
             abort(403);
         }
 
-        $record_count = $request->record_count;
 
-        //it has some records at least one record
+        if (preg_match('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#', $request->date2)) {
+
+            $record_count = $request->record_count;
+            $date2 = trim($request->date2);
+            if ($date1 = explode('/', $date2)) {
+                $year = $date1[0];
+                $month = $date1[1];
+                $day = $date1[2];
+                $gDate1 = $this->jalaliToGregorian($year, $month, $day);
+            }
+            $gDate1 = $gDate1[0] . '-' . $gDate1[1] . '-' . $gDate1[2];
+            //it has some records at least one record
 //        return response()->json($record_count);
-        if ($record_count != 0) {
-            $request_id = DB::table('requests')->insertGetId([
-                'request_type_id' => 2,
-                'user_id' =>$request->user_id2,
-                'unit_id' =>$request->unit_id2,
-                'supplier_id'=>$request->supplier_id2,
-                'active'=>1,
-                'created_at' => Carbon::now(new \DateTimeZone('Asia/Tehran'))
-            ]);
-            $i = 0;
-
-            do {
-                $q = DB::table('request_records')->insert([
-                    'title' => $request->product_title[$i],
-                    'price'=> $request->product_price[$i],
-                    'rate'=> $request->product_rate[$i],
-                    'description' => $request->product_details[$i],
-                    'code' => mt_rand(1000, 5000),
-                    'count' => $request->product_count[$i],
-                    'step' =>7,
-                    'accept'=>1,
-                    'receiver_id'=>$request->product_receiver[$i],
-                    'request_id' => $request_id,
-                    'active'=>1,
-                    'created_at' => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+            if ($record_count != 0) {
+                $request_id = DB::table('requests')->insertGetId([
+                    'request_type_id' => 2,
+                    'user_id' => $request->user_id2,
+                    'unit_id' => $request->unit_id2,
+                    'supplier_id' => $request->supplier_id2,
+                    'active' => 1,
+                    'created_at' => $gDate1
                 ]);
-                $i++;
-                $record_count--;
-            } while ($record_count >= 1);
+                $i = 0;
 
-            return response()->json($q);
-        } else
-            return response()->json('is zero');
+                do {
+                    $q = DB::table('request_records')->insert([
+                        'title' => $request->product_title[$i],
+                        'price' => str_replace(',','',$request-> product_price[$i]),
+                        'rate' => $request->product_rate[$i],
+                        'description' => $request->product_details[$i],
+                        'code' => mt_rand(1000, 5000),
+                        'count' => $request->product_count[$i],
+                        'step' => 7,
+                        'accept' => 1,
+                        'receiver_id' => $request->product_receiver[$i],
+                        'request_id' => $request_id,
+                        'active' => 1,
+                        'created_at' => $gDate1
+                    ]);
+                    $i++;
+                    $record_count--;
+                } while ($record_count >= 1);
+
+                return response()->json($q);
+            } else
+                return response()->json('is zero');
+
+        }else
+            {
+                return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
+            }
+
     }
 }
 
