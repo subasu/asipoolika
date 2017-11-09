@@ -780,7 +780,6 @@ class SupplyController extends Controller
         $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',$step]])->get();
         foreach($requestRecords as $requestRecord)
         {
-
 //decrypt
             if(!empty($requestRecord->title))
                 $requestRecord->title=decrypt($requestRecord->title);

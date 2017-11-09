@@ -97,7 +97,7 @@
                             <input type="hidden" value="{{$requestRecord->rate}}" id="record_rate" class="record_rate" name="">
 
                             <td class="gray1">{{number_format($requestRecord->price)}} تومان</td>
-                            <td class="gray1"><input type="text" class="form-control new_price required" id="new_price" content="content" name="new_price[]" style="font-size:16px;color:red"/></td>
+                            <td class="gray1"><input readonly type="text" class="form-control new_price required" id="new_price" content="content" name="new_price[]" style="font-size:16px;color:red"/></td>
                             <input type="hidden" value="{{$requestRecord->price}}" id="record_price" class="record_price" name="">
                             <input type="hidden" value="" id="new_price2" class="new_price2" name="new_price2[]">
 

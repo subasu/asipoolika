@@ -31,7 +31,7 @@
                             <th style="text-align: center ;">نرخ</th>
                             <th style="text-align: center ;">قیمت</th>
                             <th style="text-align: center ;">تامین کننده</th>
-                            <th class="col-md-3" style="text-align: center ;">عملیات</th>
+                            <th class="col-md-3" style="text-align: center ;border-right: 1px solid #d6d6c2;">عملیات</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -46,7 +46,7 @@
                                 <th style="text-align: center">{{$r}}</th>
                                 <td style="text-align: center">{{$certificateRecord->id}}</td>
                                 @if($certificateRecord->request_record_id!=null)
-                                    <td>{{$certificateRecord->RequestRecord->title}}</td>
+                                    <td>{{decrypt($certificateRecord->RequestRecord->title)}}</td>
                                 @else <td></td>
                                 @endif
                                 <td id="count" content="{{$certificateRecord->count}}">{{$certificateRecord->count}} {{$certificateRecord->unit_count}}</td>
@@ -54,8 +54,8 @@
                                 {{--<input type="hidden" class="" value="2000" name="count[]">--}}
                                 <td>{{number_format($certificateRecord->rate)}} تومان</td>
                                 <td>{{number_format($certificateRecord->price)}} تومان</td>
-                                <td>{{$certificateRecord->certificate->shop_comp}}</td>
-                                <td>
+                                <td>{{decrypt($certificateRecord->certificate->shop_comp)}}</td>
+                                <td style="border-right: 1px solid #d6d6c2;">
                                     @if($certificateRecord->certificate->request->request_type_id==3)
                                     <button id="acceptProductRequest" content="{{$certificateRecord->certificate_id}}" name="{{$certificateRecord->id}}" type="button" class="btn btn-success col-md-12" >تایید</button>
                                     @else
