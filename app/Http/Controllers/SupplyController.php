@@ -730,7 +730,7 @@ class SupplyController extends Controller
         }
         $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
 
-        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
+        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
 
         foreach($productRequests as $productRequest)
         {
