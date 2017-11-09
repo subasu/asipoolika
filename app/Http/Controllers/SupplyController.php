@@ -780,9 +780,20 @@ class SupplyController extends Controller
         $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',$step]])->get();
         foreach($requestRecords as $requestRecord)
         {
-            $requestRecord->title= decrypt($requestRecord->title);
-            $requestRecord->description= decrypt($requestRecord->description);
-            $requestRecord->unit_count= decrypt($requestRecord->unit_count);
+
+//decrypt
+            if(!empty($requestRecord->title))
+                $requestRecord->title=decrypt($requestRecord->title);
+            if(!empty($requestRecord->description))
+                $requestRecord->description=decrypt($requestRecord->description);
+            if(!empty($requestRecord->unit_count))
+                $requestRecord->unit_count=decrypt($requestRecord->unit_count);
+            if(!empty($requestRecord->price))
+                $requestRecord->price=decrypt($requestRecord->price);
+            if(!empty($requestRecord->rate))
+                $requestRecord->rate=decrypt($requestRecord->rate);
+            if(!empty($requestRecord->why_not))
+                $requestRecord->why_not=decrypt($requestRecord->why_not);
         }
         return view ('admin.productRequestRecords',compact('pageTitle','requestRecords','user'));
     }
@@ -892,7 +903,19 @@ class SupplyController extends Controller
         $requestRecords=$requestRecords->merge($requestRecords2);
         foreach($requestRecords as $requestRecord)
         {
-            $requestRecord->title=decrypt($requestRecord->title);
+            //decrypt
+            if(!empty($requestRecord->title))
+                $requestRecord->title=decrypt($requestRecord->title);
+            if(!empty($requestRecord->description))
+                $requestRecord->description=decrypt($requestRecord->description);
+            if(!empty($requestRecord->unit_count))
+                $requestRecord->unit_count=decrypt($requestRecord->unit_count);
+            if($requestRecord->price!=0)
+                $requestRecord->price=decrypt($requestRecord->price);
+            if($requestRecord->rate!=0)
+                $requestRecord->rate=decrypt($requestRecord->rate);
+            if(!empty($requestRecord->why_not))
+                $requestRecord->why_not=decrypt($requestRecord->why_not);
         }
 
         return view ('admin.serviceRequestRecords',compact('pageTitle','requestRecords','user'));
@@ -1222,8 +1245,6 @@ class SupplyController extends Controller
             $item->has_certificate_count=$has_certificate_count;
             $item->refuse_count=$refuse_count;
 
-
-        }
         foreach($request_records as $requestRecord)
         {
             //decrypt
@@ -1239,6 +1260,8 @@ class SupplyController extends Controller
                 $requestRecord->rate=decrypt($requestRecord->rate);
             if(!empty($requestRecord->why_not))
                 $requestRecord->why_not=decrypt($requestRecord->why_not);
+        } //
+
         }
 //        dd($request);
         return view('admin.confirmedRequest',compact('pageTitle','pageName','request'));
