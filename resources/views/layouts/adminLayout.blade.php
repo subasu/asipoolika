@@ -119,7 +119,7 @@
                                 <li><a href="{{url('/admin/issueBillManagement')}}"><i class="fa fa-credit-card"></i> صدور قبض انبار</a>
                                 </li>
                             @endif
-                            @if($user->is_supervisor==1 and $user->unit_id!=3)
+                            @if($user->is_supervisor==1 and $user->unit_id==6)
                                 <li><a><i class="fa fa-list"></i>ثبت درخواست های کاغذی<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="{{url('/special/productRequest')}}"> ثبت درخواست کالا</a></li>

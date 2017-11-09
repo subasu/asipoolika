@@ -2088,6 +2088,8 @@ class SupplyController extends Controller
             foreach($requests as $request)
             {
                 $request->records=RequestRecord::where('request_id',$request->id)->get();
+//decrypt
+
             }
             return view('admin.issueBillManagement',compact('pageTitle','pageName','requests'));
         }
