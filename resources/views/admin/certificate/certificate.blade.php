@@ -88,12 +88,12 @@
                             <input type="hidden" value="{{$requestRecord->title}}" id="record_title" class="record_title" name="">
 
                             <td class="gray3" id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
-                            <td class="gray3" ><input type="text" class="form-control new_count required" id="new_count"  name="new_count[]"/></td>
+                            <td class="gray3" ><input onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="text" class="form-control new_count required" id="new_count"  name="new_count[]"/></td>
                             <input type="hidden" class="record_count2" value="{{$requestRecord->count}}" name="count">
                             <input type="hidden" class="unit_count" value="{{$requestRecord->unit_count}}" name="unit_count[]">
 
                             <td class="gray2">{{number_format($requestRecord->rate)}} تومان</td>
-                            <td class="gray2"><input type="text" class="form-control new_rate required" id="new_rate"  name="new_rate[]"/></td>
+                            <td class="gray2"><input onkeypress="return event.charCode >= 48 && event.charCode <= 57" type="text" class="form-control new_rate required" id="new_rate"  name="new_rate[]"/></td>
                             <input type="hidden" value="{{$requestRecord->rate}}" id="record_rate" class="record_rate" name="">
 
                             <td class="gray1">{{number_format($requestRecord->price)}} تومان</td>

@@ -1354,6 +1354,20 @@ class SupplyController extends Controller
             $sum = 0;
             foreach ($productRequestRecords as $productRequestRecord) {
                 $sum += $productRequestRecord->rate * $productRequestRecord->count;
+//decrypt
+                if(!empty($productRequestRecord->title))
+                    $productRequestRecord->title=decrypt($productRequestRecord->title);
+                if(!empty($productRequestRecord->description))
+                    $productRequestRecord->description=decrypt($productRequestRecord->description);
+                if(!empty($productRequestRecord->unit_count))
+                    $productRequestRecord->unit_count=decrypt($productRequestRecord->unit_count);
+                if(!empty($productRequestRecord->price))
+                    $productRequestRecord->price=decrypt($productRequestRecord->price);
+                if(!empty($productRequestRecord->rate))
+                    $productRequestRecord->rate=decrypt($productRequestRecord->rate);
+                if(!empty($productRequestRecord->why_not))
+                    $productRequestRecord->why_not=decrypt($productRequestRecord->why_not);
+
             }
             return view('admin.certificate.productRequestForm', compact('pageTitle', 'productRequestRecords', 'sum', 'storageSupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'storageSupervisorFullName', 'originalJobSupervisorFullName', 'bossFullName', 'creditSupervisorFullName', 'financeSupervisorFullName'));
       //  }
@@ -2087,7 +2101,6 @@ class SupplyController extends Controller
             foreach($requests as $request)
             {
                 $request->records=RequestRecord::where('request_id',$request->id)->get();
-//decrypt
 
             }
             return view('admin.issueBillManagement',compact('pageTitle','pageName','requests'));

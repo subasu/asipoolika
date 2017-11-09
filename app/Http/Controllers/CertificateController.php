@@ -121,6 +121,7 @@ class CertificateController extends Controller
                     'unit_count'        =>  encrypt($unitCountArray[$i]),
                     'certificate_id'    => $certificate_id,
                     'receiver_id'       => $request->receiverId,
+                    'created_at'        =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
                 ]);
                 DB::table('request_records')->where('id',$recordIdArray[$i])->update([
                     'step'=>8,
@@ -155,7 +156,7 @@ class CertificateController extends Controller
             $certificate_id=DB::table('certificates')->insertGetId([
                 'request_id'          => $request->requestId,
                 'user_id'             => Auth::user()->id,
-                'shop_comp'           => $request->shop_comp,
+                'shop_comp'           => encrypt($request->shop_comp),
                 'certificate_type_id' => $request->certificateType,
                 'active'=>1,
                 'created_at'          => Carbon::now(new \DateTimeZone('Asia/Tehran'))
@@ -166,14 +167,15 @@ class CertificateController extends Controller
                 $q=DB::table('certificate_records')->insert([
 
                     'request_record_id' => $recordIdArray[$i],
-                    'price'             => $newPriceArray[$i],
-                    'rate'              => $newRateArray[$i],
+                    'price'             => encrypt($newPriceArray[$i]),
+                    'rate'              => encrypt($newRateArray[$i]),
                     'count'             => $newCountArray[$i],
-                    'unit_count'        => $unitCountArray[$i],
+                    'unit_count'        => encrypt($unitCountArray[$i]),
                     'certificate_id'    => $certificate_id,
                     'receiver_id'       => $receiver_id[0],
                     'active'            =>1,
-                    'step'              =>5
+                    'step'              =>5,
+                    'created_at'        =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
                 ]);
                 DB::table('request_records')->where('id',$recordIdArray[$i])->update([
                     'receiver_id'=>$receiver_id[0],
