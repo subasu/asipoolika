@@ -502,8 +502,6 @@ class CertificateController extends Controller
                 $certificateRecord->price=decrypt($certificateRecord->price);
             if(!empty($certificateRecord->rate))
                 $certificateRecord->rate=decrypt($certificateRecord->rate);
-            if(!empty($certificateRecord->why_not))
-                $certificateRecord->why_not=decrypt($certificateRecord->why_not);
         }
 
 //        $certificate_records=CertificateRecord::where([['certificate_id',$id],['step',$step]])->get();

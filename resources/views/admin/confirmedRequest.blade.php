@@ -30,7 +30,7 @@
             <div class="x_panel">
                 <div class="x_title">
                     @if($pageName=='confirmedRequestDetails')
-                        <h2><i class="fa fa-list"></i> جزئیات درخواست شماره : {{$request[0]->id}} | ثبت شده توسط :   {{$request[0]->user->name}} {{$request[0]->user->family}} از واحد {{$request[0]->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردهای فعال : {{$request[0]->recquest_records->count()}} رکورد</span></h2>
+                        <h2><i class="fa fa-list"></i> جزئیات درخواست شماره : {{$request[0]->id}} | ثبت شده توسط :   {{$request[0]->user->name}} {{$request[0]->user->family}} از واحد {{$request[0]->user->unit->title}} | <span style="color: tomato;font-weight: bold">تعداد رکوردهای فعال : {{$request[0]->request_records->count()}} رکورد</span></h2>
                     @endif
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link" data-toggle="tooltip" title="جمع کردن"><i class="fa fa-chevron-up"></i></a>
@@ -73,7 +73,7 @@
                                 {{ csrf_field() }}
                                 <input type="hidden" id="token" name="csrf-token" value="{{ csrf_token() }}">
                                 <tr>
-                                    <th colspan="5" style="text-align:right"><i class="fa fa-list"></i> رکوردهای درخواست</th>
+                                    <th colspan="6" style="text-align:right"><i class="fa fa-list"></i> رکوردهای درخواست</th>
                                 </tr>
                                 <tr>
                                     <th style="text-align: center;">شناسه</th>
@@ -81,14 +81,20 @@
                                     <th style="text-align: center;">مقدار</th>
                                     <th style="text-align: center;">نرخ</th>
                                     <th style="text-align: center;border-right: 1px solid #d6d6c2">قیمت</th>
+                                    <th style="text-align: center;border-right: 1px solid #d6d6c2">وضعیت</th>
                                 </tr>
-                                @foreach($request[0]->recquest_records as $record)
+                                @foreach($request[0]->request_records as $record)
                                     <tr>
                                         <td>{{$record->id}}</td>
                                         <td class="col-md-2">{{$record->title}}</td>
                                         <td>{{$record->count}} {{$record->unit_count}}</td>
                                         <td>{{$record->rate}} تومان</td>
-                                        <td style="border-right: 1px solid #d6d6c2">{{$record->price}} تومان</td>
+                                        <td>{{$record->price}} تومان</td>
+                                        <td style="border-right: 1px solid #d6d6c2">
+                                            @if($record->step==8) دارای گواهی
+                                            @elseif($record->step==9) تحویل انبار
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -107,10 +113,11 @@
                             @else
                                 <a  class="btn btn-success disabled col-md-12 pull-right">ابلاغ شده</a>
                             @endif
+
                             <a href="{{url('admin/showCertificates/'.$request[0]->id)}}"
                                class="btn btn-warning col-md-12 pull-right
-                                             @if($request[0]->hasCertificate==0) disabled
-                                                @elseif($request[0]->hasCertificate==1)
+                                 @if($request[0]->has_certificate_count==0) disabled
+                                    @elseif($request[0]->has_certificate_count==1)
                                @if($request[0]->certificate->active==0) disabled
                                                        @endif
                                @endif">گواهی ها</a>

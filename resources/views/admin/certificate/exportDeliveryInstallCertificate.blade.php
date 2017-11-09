@@ -127,7 +127,7 @@
         <tbody>
         @foreach($certificateRecords as $certificateRecord)
         <tr>
-            <td class="col-md-4" colspan="2">{{$certificateRecord->requestRecord->title}}</td>
+            <td class="col-md-4" colspan="2">{{decrypt($certificateRecord->requestRecord->title)}}</td>
             <td class="col-md-2">{{$certificateRecord->count}}</td>
             <td class="col-md-3">{{number_format($certificateRecord->price)}}</td>
             <input type="hidden" id="requestId" value="{{$certificateRecord->certificate->request_id}}">

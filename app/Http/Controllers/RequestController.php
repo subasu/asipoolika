@@ -56,7 +56,7 @@ class RequestController extends Controller
                 $q = DB::table('request_records')->insert([
                     'title' => encrypt($request->product_title[$i]),
                     'description' => encrypt($request->product_details[$i]),
-                    'code' => mt_rand(1000, 5000),
+                    'code' =>encrypt(mt_rand(1000, 5000)),
                     'count' =>$request->product_count[$i],
                     'unit_count' => encrypt($request->unit_count_each[$i]),
                     'step' => 1,

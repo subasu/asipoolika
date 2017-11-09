@@ -1230,7 +1230,7 @@ class SupplyController extends Controller
         $request_records=RequestRecord::where([['request_id',$id],['active',1]])->get();
         foreach($request as $item)
         {
-            $item->recquest_records=$request_records;
+            $item->request_records=$request_records;
 
             $item->date = $this->toPersian($item->created_at);
 
@@ -1243,6 +1243,7 @@ class SupplyController extends Controller
             $item->accept_count=$accept_count;
             $item->has_certificate_count=$has_certificate_count;
             $item->refuse_count=$refuse_count;
+        }
 
         foreach($request_records as $requestRecord)
         {
@@ -1259,10 +1260,13 @@ class SupplyController extends Controller
                 $requestRecord->rate=decrypt($requestRecord->rate);
             if(!empty($requestRecord->why_not))
                 $requestRecord->why_not=decrypt($requestRecord->why_not);
+
+
+//            if(!empty($requestRecord->code))
+//                $requestRecord->code=decrypt($requestRecord->code);
         } //
 
-        }
-//        dd($request);
+
         return view('admin.confirmedRequest',compact('pageTitle','pageName','request'));
     }
 
@@ -1367,7 +1371,8 @@ class SupplyController extends Controller
                     $productRequestRecord->rate=decrypt($productRequestRecord->rate);
                 if(!empty($productRequestRecord->why_not))
                     $productRequestRecord->why_not=decrypt($productRequestRecord->why_not);
-
+                if(!empty($productRequestRecord->code))
+                    $productRequestRecord->code=decrypt($productRequestRecord->code);
             }
             return view('admin.certificate.productRequestForm', compact('pageTitle', 'productRequestRecords', 'sum', 'storageSupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'storageSupervisorFullName', 'originalJobSupervisorFullName', 'bossFullName', 'creditSupervisorFullName', 'financeSupervisorFullName'));
       //  }
@@ -1510,10 +1515,13 @@ class SupplyController extends Controller
                 $certificateId = 0;
                 foreach ($certificates as $certificate)
                 {
-                    $shopComp       .= $certificate->shop_comp;
+                    $shopComp       .= decrypt($certificate->shop_comp);
                     $requestId      += $certificate->request_id;
                     $date           .= $this->toPersian($certificate->created_at->toDateString());
                     $certificateId  += $certificate->id;
+
+//                    if(!empty($certificate->shop_comp))
+//                        $certificate->shop_comp=decrypt($certificate->shop_comp);
                 }
                 //$certificateId        = Certificate::where('request_id',$id)->pluck('id');
                 $unitId               = Request2::where('id',$requestId)->value('unit_id');
@@ -1534,7 +1542,13 @@ class SupplyController extends Controller
                         $receiverFamily .= $certificateRecord->user->family;
                         $supplierId     += $certificateRecord->certificate->request->supplier_id;
                     }
-
+                    //decrypt
+                    if(!empty($certificateRecord->unit_count))
+                        $certificateRecord->unit_count=decrypt($certificateRecord->unit_count);
+                    if(!empty($certificateRecord->price))
+                        $certificateRecord->price=decrypt($certificateRecord->price);
+                    if(!empty($certificateRecord->rate))
+                        $certificateRecord->rate=decrypt($certificateRecord->rate);
                 }
 
                 $receiverSignature = Signature::where('user_id',$receiverId)->value('signature');
@@ -1883,6 +1897,12 @@ class SupplyController extends Controller
     {
         $pageTitle    = 'لیست گواهی ها';
         $certificates = Certificate::where('request_id',$id)->get();
+        foreach($certificates as $certificate)
+        {
+//decrypt
+            if(!empty($certificate->shop_comp))
+                $certificate->shop_comp=decrypt($certificate->shop_comp);
+        }
         return view('admin.certificate.showCertificates',compact('certificates','pageTitle'));
     }
    
