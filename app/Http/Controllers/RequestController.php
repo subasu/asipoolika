@@ -54,11 +54,11 @@ class RequestController extends Controller
             $i = 0;
             do {
                 $q = DB::table('request_records')->insert([
-                    'title' => $request->product_title[$i],
-                    'description' => $request->product_details[$i],
+                    'title' => encrypt($request->product_title[$i]),
+                    'description' => encrypt($request->product_details[$i]),
                     'code' => mt_rand(1000, 5000),
-                    'count' => $request->product_count[$i],
-                    'unit_count' => $request->unit_count_each[$i],
+                    'count' =>$request->product_count[$i],
+                    'unit_count' => encrypt($request->unit_count_each[$i]),
                     'step' => 1,
                     'request_id' => $request_id,
                     'created_at' => Carbon::now(new \DateTimeZone('Asia/Tehran'))
@@ -118,12 +118,13 @@ class RequestController extends Controller
             $i = 0;
             do {
                 $q = DB::table('request_records')->insert([
-                    'title' => $request->service_title[$i],
-                    'description' => $request->service_details[$i],
+                    'title' => encrypt($request->service_title[$i]),
+                    'description' => encrypt($request->service_details[$i]),
                     'count' => $request->service_count[$i],
                     'code' => mt_rand(1000, 5000),
                     'step' => 1,
-                    'request_id' => $request_id
+                    'request_id' => $request_id,
+                    'created_at' => Carbon::now(new \DateTimeZone('Asia/Tehran'))
                 ]);
                 $i++;
                 $record_count--;
@@ -230,15 +231,22 @@ class RequestController extends Controller
 
             $requestRecord->status = $step;
 
+            //decrypt
+            if(!empty($requestRecord->title))
+                $requestRecord->title=decrypt($requestRecord->title);
+            if(!empty($requestRecord->description))
+                $requestRecord->description=decrypt($requestRecord->description);
+            if(!empty($requestRecord->unit_count))
+                $requestRecord->unit_count=decrypt($requestRecord->unit_count);
+            if(!empty($requestRecord->price))
+                $requestRecord->price=decrypt($requestRecord->price);
+            if(!empty($requestRecord->rate))
+                $requestRecord->rate=decrypt($requestRecord->rate);
+            if(!empty($requestRecord->why_not))
+                $requestRecord->why_not=decrypt($requestRecord->why_not);
         }
-
-//        dd($requestRecords[0]->request->user_id);
-//        if($requestRecords[0]->request->user_id==Auth::user()->id)
-//        {
+//        dd($requestRecords);
         return view('user.requestRecords', compact('pageTitle', 'requestRecords'));
-//        }
-//        else
-//            return back();
     }
 
     /* shiri

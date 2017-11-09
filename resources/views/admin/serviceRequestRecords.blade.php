@@ -12,7 +12,7 @@
             <div class="modal-body" style="text-align: right">
                 <label for="why_not" style="font-size: 20px;">دلیل خود برای رد این درخواست را بنویسید تا به اطلاع درخواست کننده برسد</label>
                  <textarea id="why_not" style="text-align: right" maxlength="300" required="required" class="form-control why_not" name="why_not" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="300" data-parsley-minlength-message="شما حداقل باید 20 کاراکتر وارد کنید"
-                           data-parsley-validation-threshold="10"></textarea>
+                           data-parsley-validation-threshold="10">این درخواست را تایید نمی کنم</textarea>
             </div>
             <div class="modal-footer">
                 <button type="button" id="why_not_btn" content=""  name="" class="btn btn-primary col-md-12">ثبت دلیل</button>

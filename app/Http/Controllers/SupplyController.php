@@ -26,8 +26,10 @@ use App\Models\Unit;
 
 use Carbon\Carbon;
 use Hekmatinasser\Verta\Verta;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use phpDocumentor\Reflection\Types\Null_;
@@ -63,8 +65,8 @@ class SupplyController extends Controller
             abort(403);
         }
         $id        = $request->id;
-        $rate      = $request->rate;
-        $price     = $request->price;
+        $rate      = encrypt($request->rate);
+        $price     = encrypt($request->price);
         $requestId = $request->requestId;
         $user=Auth::user();
         switch(trim($user->unit->title))
@@ -162,7 +164,7 @@ class SupplyController extends Controller
         }
         $update=
             DB::table('request_records')->where('id',$request->request_record_id)->update([
-                'why_not'=>$request->whyNot,
+                'why_not'=>encrypt($request->whyNot),
                 'step'=> $step,
                 'refuse_user_id' => $user->id,
                 'active'=>0,
@@ -743,6 +745,7 @@ class SupplyController extends Controller
 //        dd($productRequests);
         return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
+//prr
     public function productRequestRecords($id)
     {
         $pageTitle='رکوردهای درخواست شماره '.$id;
@@ -775,6 +778,12 @@ class SupplyController extends Controller
             default: $step=1;
         }
         $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',$step]])->get();
+        foreach($requestRecords as $requestRecord)
+        {
+            $requestRecord->title= decrypt($requestRecord->title);
+            $requestRecord->description= decrypt($requestRecord->description);
+            $requestRecord->unit_count= decrypt($requestRecord->unit_count);
+        }
         return view ('admin.productRequestRecords',compact('pageTitle','requestRecords','user'));
     }
 //sr2
@@ -881,7 +890,11 @@ class SupplyController extends Controller
             $requestRecord->mine=1;
         }
         $requestRecords=$requestRecords->merge($requestRecords2);
-//dd($requestRecords);
+        foreach($requestRecords as $requestRecord)
+        {
+            $requestRecord->title=decrypt($requestRecord->title);
+        }
+
         return view ('admin.serviceRequestRecords',compact('pageTitle','requestRecords','user'));
     }
 
@@ -1209,8 +1222,25 @@ class SupplyController extends Controller
             $item->has_certificate_count=$has_certificate_count;
             $item->refuse_count=$refuse_count;
 
+
         }
-//        dd($request[0]);
+        foreach($request_records as $requestRecord)
+        {
+            //decrypt
+            if(!empty($requestRecord->title))
+                $requestRecord->title=decrypt($requestRecord->title);
+            if(!empty($requestRecord->description))
+                $requestRecord->description=decrypt($requestRecord->description);
+            if(!empty($requestRecord->unit_count))
+                $requestRecord->unit_count=decrypt($requestRecord->unit_count);
+            if(!empty($requestRecord->price))
+                $requestRecord->price=decrypt($requestRecord->price);
+            if(!empty($requestRecord->rate))
+                $requestRecord->rate=decrypt($requestRecord->rate);
+            if(!empty($requestRecord->why_not))
+                $requestRecord->why_not=decrypt($requestRecord->why_not);
+        }
+//        dd($request);
         return view('admin.confirmedRequest',compact('pageTitle','pageName','request'));
     }
 
@@ -1727,8 +1757,8 @@ class SupplyController extends Controller
             abort(403);
         }
         $id        = $request->id;
-        $rate      = $request->rate;
-        $price     = $request->price;
+        $rate      = encrypt($request->rate);
+        $price     = encrypt($request->price);
         $requestId = $request->requestId;
         $mine=$request->mine;
         $user=Auth::user();
