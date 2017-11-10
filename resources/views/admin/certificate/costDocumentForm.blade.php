@@ -360,14 +360,14 @@
         @foreach($costDocumentsRecords as $costDocumentsRecord)
 
             <tr>
-                <td colspan="1" class="col-md-1">{{$costDocumentsRecord->code}}</td>
-                <td colspan="3" class="col-md-3">{{$costDocumentsRecord->description}}</td>
-                <td colspan="2" class="col-md-2">{{$costDocumentsRecord->moein_office}}</td>
-                <td colspan="2" class="col-md-2">{{number_format($costDocumentsRecord->general_price)}}</td>
-                <td colspan="1" class="col-md-1">@if($costDocumentsRecord->deduction > 0){{number_format($costDocumentsRecord->deduction)}}@endif  @if($costDocumentsRecord->deduction == 0){{$costDocumentsRecord->deduction}}@endif</td>
-                <td colspan="1" class="col-md-1">@if($costDocumentsRecord->deduction > 0){{number_format($costDocumentsRecord->payed_price)}}@endif  @if($costDocumentsRecord->payed_price == 0){{$costDocumentsRecord->payed_price}}@endif</td>
-                <td colspan="1" class="col-md-1">{{$costDocumentsRecord->page}}</td>
-                <td colspan="1" class="col-md-1">{{$costDocumentsRecord->row}}</td>
+                <td colspan="1" class="col-md-1">{{decrypt($costDocumentsRecord->code)}}</td>
+                <td colspan="3" class="col-md-3">{{decrypt($costDocumentsRecord->description)}}</td>
+                <td colspan="2" class="col-md-2">{{decrypt($costDocumentsRecord->moein_office)}}</td>
+                <td colspan="2" class="col-md-2">{{number_format(decrypt($costDocumentsRecord->general_price))}}</td>
+                <td colspan="1" class="col-md-1">@if(decrypt($costDocumentsRecord->deduction) > 0){{number_format(decrypt($costDocumentsRecord->deduction))}}@endif  @if(decrypt($costDocumentsRecord->deduction) == 0){{decrypt($costDocumentsRecord->deduction)}}@endif</td>
+                <td colspan="1" class="col-md-1">@if(decrypt($costDocumentsRecord->deduction) > 0){{number_format(decrypt($costDocumentsRecord->payed_price))}}@endif  @if(decrypt($costDocumentsRecord->payed_price) == 0){{decrypt($costDocumentsRecord->payed_price)}}@endif</td>
+                <td colspan="1" class="col-md-1">{{decrypt($costDocumentsRecord->page)}}</td>
+                <td colspan="1" class="col-md-1">{{decrypt($costDocumentsRecord->row)}}</td>
                 <input type="hidden" id="costDocumentId" value="{{$costDocumentsRecord->cost_document_id}}">
             </tr>
         @endforeach
