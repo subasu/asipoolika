@@ -48,14 +48,14 @@
                             </thead>
                             <tbody>
                             <tr id="oldRow">
-                                <td ><input type='number' min="0"  id="code"  class='form-control'  ></td>
+                                <td ><input type='text' onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="0"  id="code"  class='form-control'  ></td>
                                 <td class="col-md-3"><input type='text'      id="description"  class='form-control'  ></td>
-                                <td ><input type='number'   id="moeinOffice" min="0" class='form-control'   ></td>
-                                <td ><input type='number'   id="generalPrice" min="0" class='form-control'   ></td>
-                                <td ><input type='number'   id="deduction" min="0" class='form-control'   ></td>
-                                <td ><input type='number'   id="payedPrice" min="0" class='form-control' ></td>
-                                <td ><input type='number'   id="page" min="0" class='form-control'   ></td>
-                                <td ><input type='number'   id="row" min="0" class='form-control'   ></td>
+                                <td ><input type='text' onkeypress="return event.charCode >= 48 && event.charCode <= 57"  id="moeinOffice" min="0" class='form-control'   ></td>
+                                <td ><input type='text' onkeypress="return event.charCode >= 48 && event.charCode <= 57"  id="generalPrice" min="0" class='form-control'   ></td>
+                                <td ><input type='text' onkeypress="return event.charCode >= 48 && event.charCode <= 57"  id="deduction" min="0" class='form-control'   ></td>
+                                <td ><input type='text' onkeypress="return event.charCode >= 48 && event.charCode <= 57"  id="payedPrice" min="0" class='form-control' ></td>
+                                <td ><input type='text' onkeypress="return event.charCode >= 48 && event.charCode <= 57"  id="page" min="0" class='form-control'   ></td>
+                                <td ><input type='text' onkeypress="return event.charCode >= 48 && event.charCode <= 57"  id="row" min="0" class='form-control'   ></td>
                             </tr>
                             </tbody>
                         </table>
