@@ -40,10 +40,10 @@
                                         {{$bill->id}}
                                     </td>
                                     <td>
-                                        فاکتور شماره: {{$bill->factor_number}}
+                                        فاکتور شماره: {{decrypt($bill->factor_number)}}
                                     </td>
                                     <td style="border-right: 1px solid #e0e0d1">
-                                        {{number_format($bill->final_price)}}
+                                        {{number_format(decrypt($bill->final_price))}}
                                     </td>
 
                                 </tr>

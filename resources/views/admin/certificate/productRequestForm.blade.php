@@ -70,10 +70,10 @@
             <tr>
                 <td>{{ ++$i }}</td>
                 <td>{{$productRequestRecord->code}}</td>
-                <td>{{$productRequestRecord->title}}</td>
-                <td>{{$productRequestRecord->unit_count}}</td>
+                <td>{{decrypt($productRequestRecord->title)}}</td>
+                <td>{{decrypt($productRequestRecord->unit_count)}}</td>
                 <td>{{$productRequestRecord->count}}</td>
-                <td>{{number_format($productRequestRecord->rate)}}</td>
+                <td>{{number_format(decrypt($productRequestRecord->rate))}}</td>
                 <td>{{number_format($productRequestRecord->rate * $productRequestRecord->count)}}</td>
                 <input type="hidden" id="requestId" value="{{$productRequestRecord->request_id}}">
             </tr>

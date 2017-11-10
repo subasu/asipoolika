@@ -333,7 +333,33 @@ Route::group(['prefix'=>'systemManager'],function() {
 Route::get('unit_signature','SystemManagerController@unit_user_list');
 Route::get('price','IndexController@ajaxPrice');
 
-Route::get('/home', 'HomeController@index');
+
+
+Route::group(['prefix'=>'special'],function() {
+    // Product Request Management
+    Route::get('/productRequest',[
+        'uses'=>'SpecialController@productRequestGet',
+        'middleware' => 'roles',
+        'roles'=>['special']
+    ]);
+    Route::get('/serviceRequest',[
+        'uses'=>'SpecialController@serviceRequestGet',
+        'middleware' => 'roles',
+        'roles'=>['special']
+    ]);
+
+    Route::post('productRequest', 'SpecialController@productRequest');
+    Route::post('serviceRequest', 'SpecialController@serviceRequest');
+    Route::post('usersSupervisor', 'SpecialController@usersSupervisor');
+});
+
+
+
+Route::get('/units', 'SpecialController@unitsGet');
+//for product unit users+store user
+Route::get('/receiver', 'SpecialController@receiverGet');
+//for service only the unit users
+Route::get('/receiver2', 'SpecialController@receiverGet2');
 
 Route::get('/f', function () {
     return view('forms.productRequestForm');

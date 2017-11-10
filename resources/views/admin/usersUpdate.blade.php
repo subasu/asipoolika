@@ -80,20 +80,20 @@
                                     </span>
                                     @endif
                                 </div>
-                                <div class="item form-group {{ $errors->has('email') ? ' has-error' : '' }}">
-                                    <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <input type="email" id="email" name="email" required="required"
-                                               value="{{$val->email}}" class="form-control col-md-7 col-xs-12">
-                                    </div>
-                                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="email"> ایمیل <span
-                                                class="required star" title="پر کردن این فیلد الزامی است">*</span>
-                                    </label>
-                                    @if ($errors->has('email'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
+                                {{--<div class="item form-group {{ $errors->has('email') ? ' has-error' : '' }}">--}}
+                                    {{--<div class="col-md-8 col-sm-8 col-xs-12">--}}
+                                        {{--<input type="email" id="email" name="email" required="required"--}}
+                                               {{--value="{{$val->email}}" class="form-control col-md-7 col-xs-12">--}}
+                                    {{--</div>--}}
+                                    {{--<label class="control-label col-md-4 col-sm-4 col-xs-12" for="email"> ایمیل <span--}}
+                                                {{--class="required star" title="پر کردن این فیلد الزامی است">*</span>--}}
+                                    {{--</label>--}}
+                                    {{--@if ($errors->has('email'))--}}
+                                        {{--<span class="help-block">--}}
+                                        {{--<strong>{{ $errors->first('email') }}</strong>--}}
+                                    {{--</span>--}}
+                                    {{--@endif--}}
+                                {{--</div>--}}
                                 <div class="item form-group {{ $errors->has('cellphone') ? ' has-error' : '' }}">
                                     <div class="col-md-8 col-sm-8 col-xs-12">
                                         <input type="tel" id="cellphone" name="cellphone" required="required"
@@ -101,7 +101,7 @@
                                     </div>
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12" for="cellphone">شماره
                                         موبایل
-                                        <span class="required star" title="پر کردن این فیلد الزامی است">*</span></label>
+
                                     @if ($errors->has('cellphone'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('cellphone') }}</strong>
@@ -116,7 +116,6 @@
                                     </div>
                                     <label class="control-label col-md-4 col-sm-4 col-xs-12" for="internal_phone">تلفن
                                         داخلی
-                                        <span class="required star" title="پر کردن این فیلد الزامی است">*</span></label>
                                     @if ($errors->has('internal_phone'))
                                         <span class="help-block">
                                         <strong>{{ $errors->first('internal_phone') }}</strong>

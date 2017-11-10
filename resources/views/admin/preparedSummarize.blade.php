@@ -68,10 +68,10 @@
                                     {{$factor->id}}
                                 </td>
                                 <td>
-                                    فاکتور شماره : {{$factor->factor_number}}
+                                    فاکتور شماره : {{decrypt($factor->factor_number)}}
                                 </td>
                                 <td style="border-right: 1px solid #e0e0d1">
-                                    {{number_format($factor->final_price)}}
+                                    {{number_format(decrypt($factor->final_price))}}
                                 </td>
                             </tr>
                         @endforeach

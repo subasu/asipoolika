@@ -26,8 +26,10 @@ use App\Models\Unit;
 
 use Carbon\Carbon;
 use Hekmatinasser\Verta\Verta;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use phpDocumentor\Reflection\Types\Null_;
@@ -63,8 +65,8 @@ class SupplyController extends Controller
             abort(403);
         }
         $id        = $request->id;
-        $rate      = $request->rate;
-        $price     = $request->price;
+        $rate      = encrypt($request->rate);
+        $price     = encrypt($request->price);
         $requestId = $request->requestId;
         $user=Auth::user();
         switch(trim($user->unit->title))
@@ -162,7 +164,7 @@ class SupplyController extends Controller
         }
         $update=
             DB::table('request_records')->where('id',$request->request_record_id)->update([
-                'why_not'=>$request->whyNot,
+                'why_not'=>encrypt($request->whyNot),
                 'step'=> $step,
                 'refuse_user_id' => $user->id,
                 'active'=>0,
@@ -258,7 +260,7 @@ class SupplyController extends Controller
                         'title'             =>trim($request->title),
                         'name'              =>trim($request->name),
                         'family'            =>trim($request->family),
-                        'email'             =>trim($request->email),
+                        'username'          =>trim($request->username),
                         'password'          =>bcrypt($request->password),
                         'cellphone'         =>trim($request->cellphone),
                         'internal_phone'    =>trim($request->internal_phone),
@@ -299,7 +301,7 @@ class SupplyController extends Controller
                     'title'             =>trim($request->title),
                     'name'              =>trim($request->name),
                     'family'            =>trim($request->family),
-                    'email'             =>trim($request->email),
+                    'username'          =>trim($request->username),
                     'password'          =>bcrypt($request->password),
                     'cellphone'         =>trim($request->cellphone),
                     'internal_phone'    =>trim($request->internal_phone),
@@ -321,7 +323,7 @@ class SupplyController extends Controller
                     'title'             =>trim($request->title),
                     'name'              =>trim($request->name),
                     'family'            =>trim($request->family),
-                    'email'             =>trim($request->email),
+                    'username'          =>trim($request->username),
                     'password'          =>bcrypt($request->password),
                     'cellphone'         =>trim($request->cellphone),
                     'internal_phone'    =>trim($request->internal_phone),
@@ -349,7 +351,7 @@ class SupplyController extends Controller
                     'title'             =>trim($request->title),
                     'name'              =>trim($request->name),
                     'family'            =>trim($request->family),
-                    'email'             =>trim($request->email),
+                    'username'          =>trim($request->username),
                     'password'          =>bcrypt($request->password),
                     'cellphone'         =>trim($request->cellphone),
                     'internal_phone'    =>trim($request->internal_phone),
@@ -505,7 +507,7 @@ class SupplyController extends Controller
                 'title' => $request->title,
                 'name' => $request->name,
                 'family' => $request->family,
-                'email' => $request->email,
+//                'email' => $request->email,
                 'cellphone' => $request->cellphone,
                 'internal_phone' => $request->internal_phone,
                 //'unit_id' => $request->unit_id,
@@ -589,7 +591,7 @@ class SupplyController extends Controller
                             //dd($path);
                             $image = file_get_contents($path);
                             File::delete($path);
-                            $fileName = base64_encode($image);
+                            $fileName = encrypt(base64_encode($image));
                             $q =  DB::table('workers')->insert
                             ([
                                 'card' => $fileName,
@@ -738,10 +740,12 @@ class SupplyController extends Controller
             $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step','>=',$step2],['active',1]])->count();
             //inactive records
             $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+            $productRequest->date = $this->toPersian($productRequest->created_at);
         }
 //        dd($productRequests);
         return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
     }
+//prr
     public function productRequestRecords($id)
     {
         $pageTitle='رکوردهای درخواست شماره '.$id;
@@ -774,6 +778,12 @@ class SupplyController extends Controller
             default: $step=1;
         }
         $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',$step]])->get();
+        foreach($requestRecords as $requestRecord)
+        {
+            $requestRecord->title= decrypt($requestRecord->title);
+            $requestRecord->description= decrypt($requestRecord->description);
+            $requestRecord->unit_count= decrypt($requestRecord->unit_count);
+        }
         return view ('admin.productRequestRecords',compact('pageTitle','requestRecords','user'));
     }
 //sr2
@@ -880,7 +890,11 @@ class SupplyController extends Controller
             $requestRecord->mine=1;
         }
         $requestRecords=$requestRecords->merge($requestRecords2);
-//dd($requestRecords);
+        foreach($requestRecords as $requestRecord)
+        {
+            $requestRecord->title=decrypt($requestRecord->title);
+        }
+
         return view ('admin.serviceRequestRecords',compact('pageTitle','requestRecords','user'));
     }
 
@@ -1058,7 +1072,7 @@ class SupplyController extends Controller
         $pageTitle = 'نمایش تصویر کارت کارگری';
         $cards = Workers::where('id',$id)->get();
         foreach ($cards as $card) {
-            $card->card = 'data:image/jpeg;base64,'.$card->card;
+            $card->card = 'data:image/jpeg;base64,'.decrypt($card->card);
         }
         //dd($cards);
         return view('admin.showWorkerCard',compact('cards','pageTitle'));
@@ -1208,8 +1222,25 @@ class SupplyController extends Controller
             $item->has_certificate_count=$has_certificate_count;
             $item->refuse_count=$refuse_count;
 
+
         }
-//        dd($request[0]);
+        foreach($request_records as $requestRecord)
+        {
+            //decrypt
+            if(!empty($requestRecord->title))
+                $requestRecord->title=decrypt($requestRecord->title);
+            if(!empty($requestRecord->description))
+                $requestRecord->description=decrypt($requestRecord->description);
+            if(!empty($requestRecord->unit_count))
+                $requestRecord->unit_count=decrypt($requestRecord->unit_count);
+            if(!empty($requestRecord->price))
+                $requestRecord->price=decrypt($requestRecord->price);
+            if(!empty($requestRecord->rate))
+                $requestRecord->rate=decrypt($requestRecord->rate);
+            if(!empty($requestRecord->why_not))
+                $requestRecord->why_not=decrypt($requestRecord->why_not);
+        }
+//        dd($request);
         return view('admin.confirmedRequest',compact('pageTitle','pageName','request'));
     }
 
@@ -1236,7 +1267,7 @@ class SupplyController extends Controller
             }
             $storageSupervisorFullName = $storageSupervisorName . chr(10) . $storageSupervisorFamily;
             $storageSupervisorSignature = Signature::where('user_id', $storageSupervisorId)->value('signature');
-            $storageSupervisorSignature = 'data:image/png;base64,' . $storageSupervisorSignature;
+            $storageSupervisorSignature = 'data:image/png;base64,' . decrypt($storageSupervisorSignature);
 
 
             $originalJobId = Unit::where('title', 'امور عمومی')->value('id');
@@ -1251,7 +1282,7 @@ class SupplyController extends Controller
             }
             $originalJobSupervisorFullName = $originalJobSupervisorName . chr(10) . $originalJobSupervisorFamily;
             $originalJobSupervisorSignature = Signature::where('user_id', $originalJobSupervisorId)->value('signature');
-            $originalJobSupervisorSignature = 'data:image/png;base64,' . $originalJobSupervisorSignature;
+            $originalJobSupervisorSignature = 'data:image/png;base64,' . decrypt($originalJobSupervisorSignature);
 
             $bossUnitId = Unit::where('title', 'ریاست')->value('id');
             $bossInfo = User::where([['unit_id', $bossUnitId], ['is_supervisor', 1]])->get();
@@ -1265,7 +1296,7 @@ class SupplyController extends Controller
             }
             $bossFullName = $bossName . chr(10) . $bossFamily;
             $bossSignature = Signature::where('user_id', $bossId)->value('signature');
-            $bossSignature = 'data:image/png;base64,' . $bossSignature;
+            $bossSignature = 'data:image/png;base64,' . decrypt($bossSignature);
 
 
             $creditUnitId = Unit::where('title', 'اعتبار')->value('id');
@@ -1280,7 +1311,7 @@ class SupplyController extends Controller
             }
             $creditSupervisorFullName = $creditSupervisorName . chr(10) . $creditSupervisorFamily;
             $creditSupervisorSignature = Signature::where('user_id', $creditSupervisorId)->value('signature');
-            $creditSupervisorSignature = 'data:image/png;base64,' . $creditSupervisorSignature;
+            $creditSupervisorSignature = 'data:image/png;base64,' . decrypt($creditSupervisorSignature);
 
             $financeUnitId = Unit::where('title', 'امور مالی')->value('id');
             $financeSupervisorInfo = User::where([['unit_id', $financeUnitId], ['is_supervisor', 1]])->get();
@@ -1294,7 +1325,7 @@ class SupplyController extends Controller
             }
             $financeSupervisorFullName = $financeSupervisorName . chr(10) . $financeSupervisorFamily;
             $financeSupervisorSignature = Signature::where('user_id', $financeSupervisorId)->value('signature');
-            $financeSupervisorSignature = 'data:image/png;base64,' . $financeSupervisorSignature;
+            $financeSupervisorSignature = 'data:image/png;base64,' . decrypt($financeSupervisorSignature);
 
             $pageTitle = 'نسخه چاپی گواهی';
             $productRequestRecords = RequestRecord::where([['request_id', $id], ['accept', 1]])->get();
@@ -1302,6 +1333,7 @@ class SupplyController extends Controller
             foreach ($productRequestRecords as $productRequestRecord) {
                 $sum += $productRequestRecord->rate * $productRequestRecord->count;
             }
+
             return view('admin.certificate.productRequestForm', compact('pageTitle', 'productRequestRecords', 'sum', 'storageSupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'storageSupervisorFullName', 'originalJobSupervisorFullName', 'bossFullName', 'creditSupervisorFullName', 'financeSupervisorFullName'));
       //  }
     }
@@ -1329,7 +1361,7 @@ class SupplyController extends Controller
                 $supplySupervisorFamily .= $supplySupervisorInf->family;
             }
             $supplySupervisorSignature = Signature::where('user_id', $supplySupervisorId)->value('signature');
-            $supplySupervisorSignature = 'data:image/png;base64,' . $supplySupervisorSignature;
+            $supplySupervisorSignature = 'data:image/png;base64,' . decrypt($supplySupervisorSignature);
             $supplySupervisorFullName = $supplySupervisorName . chr(10) . $supplySupervisorFamily;
 
 
@@ -1345,7 +1377,7 @@ class SupplyController extends Controller
             }
             $bossFullName = $bossName . chr(10) . $bossFamily;
             $bossSignature = Signature::where('user_id', $bossId)->value('signature');
-            $bossSignature = 'data:image/png;base64,' . $bossSignature;
+            $bossSignature = 'data:image/png;base64,' . decrypt($bossSignature);
 
             $creditUnitId = Unit::where('title', 'اعتبار')->value('id');
             $creditSupervisorInfo = User::where([['unit_id', $creditUnitId], ['is_supervisor', 1]])->get();
@@ -1359,7 +1391,7 @@ class SupplyController extends Controller
             }
             $creditSupervisorFullName = $creditSupervisorName . chr(10) . $creditSupervisorFamily;
             $creditSupervisorSignature = Signature::where('user_id', $creditSupervisorId)->value('signature');
-            $creditSupervisorSignature = 'data:image/png;base64,' . $creditSupervisorSignature;
+            $creditSupervisorSignature = 'data:image/png;base64,' . decrypt($creditSupervisorSignature);
 
             $financeUnitId = Unit::where('title', 'امور مالی')->value('id');
             $financeSupervisorInfo = User::where([['unit_id', $financeUnitId], ['is_supervisor', 1]])->get();
@@ -1373,7 +1405,7 @@ class SupplyController extends Controller
             }
             $financeSupervisorFullName = $financeSupervisorName . chr(10) . $financeSupervisorFamily;
             $financeSupervisorSignature = Signature::where('user_id', $financeSupervisorId)->value('signature');
-            $financeSupervisorSignature = 'data:image/png;base64,' . $financeSupervisorSignature;
+            $financeSupervisorSignature = 'data:image/png;base64,' . decrypt($financeSupervisorSignature);
 
             $pageTitle = 'نسخه چاپی گواهی';
             $productRequestRecords = RequestRecord::where([['request_id', $id], ['accept', 1]])->get();
@@ -1403,7 +1435,7 @@ class SupplyController extends Controller
             }
             $unitSupervisorFullName = $unitSupervisorName . chr(10) . $unitSupervisorFamily;
             $unitSupervisorSignature = Signature::where('user_id', $unitSupervisorId)->value('signature');
-            $unitSupervisorSignature = 'data:image/png;base64,' . $unitSupervisorSignature;
+            $unitSupervisorSignature = 'data:image/png;base64,' . decrypt($unitSupervisorSignature);
             return view('admin.certificate.serviceRequestForm', compact('productRequestRecords', 'pageTitle', 'sum', 'unitName', 'requestNumber', 'date', 'supplySupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'creditSupervisorFullName', 'financeSupervisorFullName', 'bossFullName', 'supplySupervisorFullName', 'unitSupervisorName', 'unitSupervisorFullName', 'unitSupervisorSignature'));
       //  }
     }
@@ -1433,7 +1465,7 @@ class SupplyController extends Controller
                 }
                 $bossFullName = $bossName .chr(10).$bossFamily;
                 $bossSignature = Signature::where('user_id',$bossId)->value('signature');
-                $bossSignature = 'data:image/png;base64,'.$bossSignature;
+                $bossSignature = 'data:image/png;base64,'.decrypt($bossSignature);
 
 
                 $certificates = Certificate::where('id',$id)->get();
@@ -1471,7 +1503,7 @@ class SupplyController extends Controller
                 }
 
                 $receiverSignature = Signature::where('user_id',$receiverId)->value('signature');
-                $receiverSignature = 'data:image/png;base64,'.$receiverSignature;
+                $receiverSignature = 'data:image/png;base64,'.decrypt($receiverSignature);
                 $receiverFullName = $receiverName .chr(10).$receiverFamily;
 
 
@@ -1479,7 +1511,7 @@ class SupplyController extends Controller
                 $supplierFamily = User::where('id',$supplierId)->value('family');
                 $supplierFullName = $supplierName .chr(10).$supplierFamily;
                 $supplierSignature = Signature::where('user_id',$supplierId)->value('signature');
-                $supplierSignature = 'data:image/png;base64,'.$supplierSignature;
+                $supplierSignature = 'data:image/png;base64,'.decrypt($supplierSignature);
 
                 $unitSupervisorInfo = User::where([['unit_id',$unitId],['is_supervisor',1]])->get();
                 $unitSupervisorId = 0;
@@ -1493,7 +1525,7 @@ class SupplyController extends Controller
                 }
                 $unitSupervisorFullName = $unitSupervisorName .chr(10).$unitSupervisorFamily;
                 $unitSupervisorSignature = Signature::where('user_id',$unitSupervisorId)->value('signature');
-                $unitSupervisorSignature = 'data:image/png;base64,'.$unitSupervisorSignature;
+                $unitSupervisorSignature = 'data:image/png;base64,'.decrypt($unitSupervisorSignature);
                 return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitleInstall','pageTitleUse','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
           //  }
     }
@@ -1726,8 +1758,8 @@ class SupplyController extends Controller
             abort(403);
         }
         $id        = $request->id;
-        $rate      = $request->rate;
-        $price     = $request->price;
+        $rate      = encrypt($request->rate);
+        $price     = encrypt($request->price);
         $requestId = $request->requestId;
         $mine=$request->mine;
         $user=Auth::user();
@@ -1843,7 +1875,7 @@ class SupplyController extends Controller
                 $supplySupervisorFamily .= $supplySupervisorInf->family;
             }
             $supplySupervisorSignature = Signature::where('user_id', $supplySupervisorId)->value('signature');
-            $supplySupervisorSignature = 'data:image/png;base64,' . $supplySupervisorSignature;
+            $supplySupervisorSignature = 'data:image/png;base64,' . decrypt($supplySupervisorSignature);
             $supplySupervisorFullName = $supplySupervisorName . chr(10) . $supplySupervisorFamily;
 
             $bossUnitId = Unit::where('title', 'ریاست')->value('id');
@@ -1858,7 +1890,7 @@ class SupplyController extends Controller
             }
             $bossFullName = $bossName . chr(10) . $bossFamily;
             $bossSignature = Signature::where('user_id', $bossId)->value('signature');
-            $bossSignature = 'data:image/png;base64,' . $bossSignature;
+            $bossSignature = 'data:image/png;base64,' . decrypt($bossSignature);
 
 
             $certificates = Certificate::where('id', $id)->get();
@@ -1890,7 +1922,7 @@ class SupplyController extends Controller
 
             }
             $receiverSignature = Signature::where('user_id', $receiverId)->value('signature');
-            $receiverSignature = 'data:image/png;base64,' . $receiverSignature;
+            $receiverSignature = 'data:image/png;base64,' . decrypt($receiverSignature);
             $receiverFullName = $receiverName . chr(10) . $receiverFamily;
 
             $unitSupervisorInfo = User::where([['unit_id', $unitId], ['is_supervisor', 1]])->get();
@@ -1904,7 +1936,7 @@ class SupplyController extends Controller
             }
             $unitSupervisorFullName = $unitSupervisorName . chr(10) . $unitSupervisorFamily;
             $unitSupervisorSignature = Signature::where('user_id', $unitSupervisorId)->value('signature');
-            $unitSupervisorSignature = 'data:image/png;base64,' . $unitSupervisorSignature;
+            $unitSupervisorSignature = 'data:image/png;base64,' . decrypt($unitSupervisorSignature);
             return view('admin.certificate.serviceDeliveryForm', compact('supplySupervisorFullName', 'bossFullName', 'bossSignature', 'supplySupervisorSignature', 'unitSupervisorFullName', 'unitSupervisorSignature', 'certificateRecords', 'shopComp', 'requestId', 'pageTitle', 'unitName', 'receiverFullName', 'sum', 'receiverSignature', 'requestId'));
       //  }
     }
@@ -1938,7 +1970,7 @@ class SupplyController extends Controller
                 $supplierFamily = User::where('id',$supplierId)->value('family');
                 $supplierFullName = $supplierName .chr(10).$supplierFamily;
                 $supplierSignature = Signature::where('user_id',$supplierId)->value('signature');
-                $supplierSignature = 'data:image/png;base64,' . $supplierSignature;
+                $supplierSignature = 'data:image/png;base64,' . decrypt($supplierSignature);
                 return view ('admin.certificate.factorsForm',compact('pageTitle','bills','sum','supplierFullName','supplierSignature'));
         //    }
 
@@ -1958,9 +1990,9 @@ class SupplyController extends Controller
             $costDocumentsRecords = CostDocumentsRecord::where('cost_document_id',$oldCostDocumentsId)->get();
             foreach ($costDocumentsRecords as $costDocumentsRecord)
             {
-                $sumGeneralPrice += $costDocumentsRecord->general_price;
-                $sumDeduction    += $costDocumentsRecord->deduction;
-                $sumPayedPrice   += $costDocumentsRecord->payed_price;
+                $sumGeneralPrice += decrypt($costDocumentsRecord->general_price);
+                $sumDeduction    += decrypt($costDocumentsRecord->deduction);
+                $sumPayedPrice   += decrypt($costDocumentsRecord->payed_price);
             }
             return view('admin.certificate.costDocumentForm',compact('costDocumentsRecords','pageTitle','sumDeduction','sumPayedPrice','sumGeneralPrice'));
         }else
@@ -2000,14 +2032,14 @@ class SupplyController extends Controller
                                 $costDocumentRecords = DB::table('cost_document_records')->insert
                                 ([
                                     'cost_document_id' => $costDocumentId,
-                                    'code'             => trim($request->code[$i]),
-                                    'description'      => trim($request->description[$i]),
-                                    'moein_office'     => trim($request->moeinOffice[$i]),
-                                    'general_price'    => trim($request->generalPrice[$i]),
-                                    'deduction'        => trim($request->deduction[$i]),
-                                    'payed_price'      => trim($request->payedPrice[$i]),
-                                    'page'             => trim($request->page[$i]),
-                                    'row'              => trim($request->row[$i]),
+                                    'code'             => trim(encrypt($request->code[$i])),
+                                    'description'      => trim(encrypt($request->description[$i])),
+                                    'moein_office'     => trim(encrypt($request->moeinOffice[$i])),
+                                    'general_price'    => trim(encrypt($request->generalPrice[$i])),
+                                    'deduction'        => trim(encrypt($request->deduction[$i])),
+                                    'payed_price'      => trim(encrypt($request->payedPrice[$i])),
+                                    'page'             => trim(encrypt($request->page[$i])),
+                                    'row'              => trim(encrypt($request->row[$i])),
                                     'created_at'       => Carbon::now(new \DateTimeZone('Asia/Tehran'))
 
                                 ]);
@@ -2084,10 +2116,10 @@ class SupplyController extends Controller
                     ([
                         'src'           => $src,
                         'date'          => $gDate1,
-                        'factor_number' => trim($request->factorNumber),
+                        'factor_number' => trim(encrypt($request->factorNumber)),
                         'user_id'       => Auth::user()->id,
                         'request_id'    => $request->requestId,
-                        'final_price'   => $request->newFinalPrice,
+                        'final_price'   => encrypt($request->newFinalPrice),
                         'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
                     ]);
                     if($factorId)
@@ -2143,8 +2175,8 @@ class SupplyController extends Controller
                             $query = DB::table('bills')->insert
                             ([
 
-                                'final_price'            => str_replace(',','',$request->totalPrice[$i]),
-                                'factor_number'          => $request->description[$i],
+                                'final_price'            => encrypt(str_replace(',','',$request->totalPrice[$i])),
+                                'factor_number'          => encrypt($request->description[$i]),
                                 'user_id'                => Auth::user()->id,
                                 'request_id'             => $request->requestId,
                                 'created_at'             => Carbon::now(new \DateTimeZone('Asia/Tehran'))
@@ -2289,7 +2321,7 @@ class SupplyController extends Controller
                     $warehouseId = DB::table('warehouse')->insertGetId
                     ([
                         'src'           => $src,
-                        'factor_number' => trim($request->factorNumber),
+                        'factor_number' => trim(encrypt($request->factorNumber)),
                         'user_id'       => Auth::user()->id,
                         'request_id'    => $request->requestId,
                         'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))

@@ -56,8 +56,8 @@
                 @foreach($bills as $bill)
                 <tr class=" padding-formTable">
                     <th class="col-md-1">{{ ++$i }}</th>
-                    <th class="col-md-6">فاکتور شماره : {{$bill->factor_number}}</th>
-                    <th class="col-md-5">{{number_format($bill->final_price)}}</th>
+                    <th class="col-md-6">فاکتور شماره : {{decrypt($bill->factor_number)}}</th>
+                    <th class="col-md-5">{{number_format(decrypt($bill->final_price))}}</th>
                     <input type="hidden" id="requestId" value="{{$bill->request_id}}">
                  </tr>
                 @endforeach

@@ -1,11 +1,41 @@
 @extends('layouts.adminLayout')
 @section('content')
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" style="text-align: right;direction: rtl;font-size: larger">
+                <div class="modal-header">
+                    <button type="button" class="close pull-left" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><i class="fa fa-question-circle"></i> راهنمای ثبت درخواست خدمت</h4>
+                </div>
+                <div class="modal-body" style="text-align: justify">
+                    <p>مراحل کار : </p>
+                    <ol>
+                        <li>درخواست خدمت مورد نظر خود را در فرم شماره  وارد کنید و دکمه به لیست اضافه شود را بزنید</li>
+                        <li>در قسمت درخواست نهایی میتوانید درخواست های خود را قبل از ویرایش نهایی ویرایش یا حذف کنید</li>
+                        <li>با ثبت نهایی درخواست این درخواست برای واحد تدارکات ارسال میشود و میتوانید از طریق منوی پیگیری درخواست خدمت ، وضعیت مرحله به مرحله درخواست خود را ببینید</li>
+                    </ol>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary col-md-12" data-dismiss="modal">متوجه شدم</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
     <input type="hidden" value="{{$user_id=\Illuminate\Support\Facades\Auth::user()->id}}">
     <div class="page-title">
         <div class="title_right">
             <h3>
 درخواست خرید خدمت
             </h3>
+        </div>
+        <div class="title_left">
+            <button type="button" class="btn btn-sample">
+                <i class="fa fa-question-circle" style="font-size: 25px;" data-toggle="modal" data-target="#myModal" title="راهنمای استفاده" data-placement="right"></i>
+            </button>
         </div>
     </div>
     <div class="clearfix"></div>
@@ -36,7 +66,7 @@
                                 {{--<th>کد کالا</th>--}}
                                 <th>عنوان خدمت</th>
                                 <th>تعداد / مقدار</th>
-                                <th>توضیحات</th>
+                                <th style="border-right: 1px solid #d6d6c2">توضیحات</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -48,7 +78,7 @@
                                     <input id="service_count" class="form-control req" name="product_count"
                                            placeholder="" required="required" type="number" min="0">
                                 </td>
-                                <td class="col-md-8">
+                                <td class="col-md-8" style="border-right: 1px solid #d6d6c2">
                                     <input id="service_details" class="form-control" name="service_details"
                                            placeholder="" required="required" type="text" >
                                 </td>
@@ -94,7 +124,7 @@
                                     <th class="col-md-2">عنوان کالا</th>
                                     <th class="col-md-1">تعداد / مقدار</th>
                                     <th class="col-md-4">توضیحات</th>
-                                    <th class="col-md-1">حذف</th>
+                                    <th class="col-md-1" style="border-right: 1px solid #d6d6c2">حذف</th>
                                 </tr>
                                 </thead>
                                 <tbody id="table-row">
@@ -176,7 +206,7 @@
                                 //      unit_count_each_record(select_id)
                                 //+'</select>'+
                                 //'</td>'+
-                            '<td>'+
+                            '<td style="border-right: 1px solid #d6d6c2">'+
                             '<a type="button" class="btn btn-danger remove_row" data-toggle="tooltip" title="حذف" style="font-size:18px;">'+
                             '<span class="fa fa-trash"></span>'+
                             '</a>'+

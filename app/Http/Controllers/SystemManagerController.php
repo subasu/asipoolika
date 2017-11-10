@@ -78,7 +78,7 @@ class SystemManagerController extends Controller
                         $query = DB::table('signatures')->insert
                         ([
                             'forced'     => $request->forced,
-                            'signature'  => $fileName,
+                            'signature'  => encrypt($fileName),
                             'user_id'    => $request->userId,
                             'unit_id'    => $request->unitId,
                             'created_at'  =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
@@ -112,7 +112,7 @@ class SystemManagerController extends Controller
         $signatures = Signature::where('id',$id)->get();
         foreach ($signatures as $signature)
         {
-            $signature->signature = 'data:image/jpeg;base64,'.$signature->signature;
+            $signature->signature = 'data:image/jpeg;base64,'.decrypt($signature->signature);
         }
         return view('system_manager.showSignature',compact('signatures','pageTitle'));
     }

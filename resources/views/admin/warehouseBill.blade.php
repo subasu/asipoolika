@@ -79,7 +79,7 @@
                                         <lable style="font-size: 18px;color:white"><i class="fa fa-list"></i> لیست ردیف های تایید شده ی این درخواست : </lable>
                                         <ol>
                                             @foreach($records as $record)
-                                                <li style="font-size:16px;">{{$record->title}}</li>
+                                                <li style="font-size:16px;">{{decrypt($record->title)}}</li>
                                             @endforeach
                                         </ol>
                                     </div>
