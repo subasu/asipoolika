@@ -569,9 +569,9 @@ class SupplyController extends Controller
                 $extension = $request->image->getClientOriginalExtension();
                 $fileSize  = $request->image->getClientSize();
                 //  dd($fileSize);
-                if($fileSize < 150000)
+                if($fileSize < 200000)
                 {
-                    if($extension == 'png' || $extension == 'PNG')
+                    if($extension == 'jpg' || $extension == 'JPG')
                     {
                         $jDate = $request->date;
                         if ($date = explode('/', $jDate)) {
@@ -581,33 +581,27 @@ class SupplyController extends Controller
                         }
                         $gDate = $this->jalaliToGregorian($year, $month, $day);
                         $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
-                        $now = new Carbon();
-                        $now = $now->toDateString();
-                        if($gDate1 >= $now)
+
+                        $file = $request->image;
+                        $file->move(public_path(), $request->image->getClientOriginalName());
+                        $path = public_path() . '\\' . $request->image->getClientOriginalName();
+                        //dd($path);
+                        $image = file_get_contents($path);
+                        File::delete($path);
+                        $fileName = encrypt(base64_encode($image));
+                        $q =  DB::table('workers')->insert
+                        ([
+                            'card' => $fileName,
+                            'user_id' => Auth::user()->id,
+                            'date' => $gDate1,
+                            'name' => $request->name,
+                            'family' => $request->family
+                        ]);
+                        if($q)
                         {
-                            $file = $request->image;
-                            $file->move(public_path(), $request->image->getClientOriginalName());
-                            $path = public_path() . '\\' . $request->image->getClientOriginalName();
-                            //dd($path);
-                            $image = file_get_contents($path);
-                            File::delete($path);
-                            $fileName = encrypt(base64_encode($image));
-                            $q =  DB::table('workers')->insert
-                            ([
-                                'card' => $fileName,
-                                'user_id' => Auth::user()->id,
-                                'date' => $gDate1,
-                                'name' => $request->name,
-                                'family' => $request->family
-                            ]);
-                            if($q)
-                            {
-                                return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
-                            }
-                        }else
-                        {
-                            return response('تاریخ وارد شده گذشته است');
+                            return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
                         }
+
                     }
                     else
                     {
@@ -627,7 +621,6 @@ class SupplyController extends Controller
             return response('لطفا تاریخ را بطور صحیح وارد نمایید، مثلا : 1396/05/01');
         }
     }
-
 
     public function jalaliToGregorian($year, $month, $day)
     {
