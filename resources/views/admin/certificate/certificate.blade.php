@@ -84,21 +84,21 @@
                             </td>
                             <td>{{$row}}</td>
                             <?php $row++; ?>
-                            <td>{{$requestRecord->title}}</td>
-                            <input type="hidden" value="{{$requestRecord->title}}" id="record_title" class="record_title" name="">
+                            <td>{{decrypt($requestRecord->title)}}</td>
+                            <input type="hidden" value="{{decrypt($requestRecord->title)}}" id="record_title" class="record_title" name="">
 
-                            <td class="gray3" id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
+                            <td class="gray3" id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{decrypt($requestRecord->unit_count)}}</td>
                             <td class="gray3" ><input type="text" class="form-control new_count required" id="new_count"  name="new_count[]"/></td>
                             <input type="hidden" class="record_count2" value="{{$requestRecord->count}}" name="count">
-                            <input type="hidden" class="unit_count" value="{{$requestRecord->unit_count}}" name="unit_count[]">
+                            <input type="hidden" class="unit_count" value="{{decrypt($requestRecord->unit_count)}}" name="unit_count[]">
 
-                            <td class="gray2">{{number_format($requestRecord->rate)}} تومان</td>
+                            <td class="gray2">{{number_format(decrypt($requestRecord->rate))}} تومان</td>
                             <td class="gray2"><input type="text" class="form-control new_rate required" id="new_rate"  name="new_rate[]"/></td>
-                            <input type="hidden" value="{{$requestRecord->rate}}" id="record_rate" class="record_rate" name="">
+                            <input type="hidden" value="{{decrypt($requestRecord->rate)}}" id="record_rate" class="record_rate" name="">
 
-                            <td class="gray1">{{number_format($requestRecord->price)}} تومان</td>
+                            <td class="gray1">{{number_format(decrypt($requestRecord->price))}} تومان</td>
                             <td class="gray1"><input type="text" class="form-control new_price required" readonly id="new_price" content="content" name="new_price[]" style="font-size:16px;color:red"/></td>
-                            <input type="hidden" value="{{$requestRecord->price}}" id="record_price" class="record_price" name="">
+                            <input type="hidden" value="{{decrypt($requestRecord->price)}}" id="record_price" class="record_price" name="">
                             <input type="hidden" value="" id="new_price2" class="new_price2" name="new_price2[]">
 
                         </tr>

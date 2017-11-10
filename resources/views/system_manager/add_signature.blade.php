@@ -23,7 +23,7 @@
                         </div>
                         <div class="x_content">
                             <br/>
-                            <form class="form-horizontal form-label-right input_mask" enctype="multipart/form-data" id="dealForm" style="direction: rtl;">
+                            <form style="direction: rtl;text-align: right" class="form-horizontal form-label-right input_mask" enctype="multipart/form-data" id="dealForm" style="direction: rtl;">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="dealTypeName" id="dealTypeName" value="">
                                 <input type="hidden" name="dealTypeEn" id="dealTypeEn" value="">
@@ -40,23 +40,23 @@
                                 </label>
                                 {{--<div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback pull-right">--}}
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
-                                    <select class="col-md-10 col-xs-12" id="unit_signature" name="unit_id">
+                                    <label style="font-size:16px;" class="control-label col-md-12 col-sm-4 col-xs-12 padding-right-1px" for="unit_id"><span style="color:red">*</span> واحد :
+                                    </label>
+                                    <select class="form-control col-md-10 col-xs-12 " id="unit_signature" name="unit_id">
                                         <option readonly>انتخاب واحد</option>
                                         @foreach($units as $unit)
                                             <option name="unit_id" value="{{$unit->id}}">{{$unit->title}}</option>
                                         @endforeach
                                     </select>
-                                    <label class="control-label col-md-2 col-sm-4 col-xs-12 padding-right-1px" for="unit_id"> واحد :
-                                        {{--<span class="required star" title="پر کردن این فیلد الزامی است">*</span--}}
-                                    </label>
+
                                 </div>
                                 {{--</div>--}}
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                                    <select class="col-md-10 col-xs-12" id="user_signature" name="users">
-                                    </select>
-                                    <label class="padding-right-1px control-label col-md-2 col-sm-4 col-xs-12" for="unit_id"> کاربر :
-                                        {{--<span class="required star" title="پر کردن این فیلد الزامی است">*</span--}}
+                                    <label style="font-size:16px;" class="padding-right-1px control-label col-md-12 col-sm-4 col-xs-12 " for="unit_id"><span style="color:red">*</span> کاربر :
                                     </label>
+                                    <select class="form-control col-md-10 col-xs-12" id="user_signature" name="users">
+                                    </select>
+
 
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback pull-right">

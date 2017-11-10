@@ -1525,7 +1525,6 @@ class SupplyController extends Controller
                 $receiverFamily .= $certificateRecord->user->family;
                 $supplierId     += $certificateRecord->certificate->request->supplier_id;
             }
-
         }
 
         $receiverSignature = Signature::where('user_id',$receiverId)->value('signature');
