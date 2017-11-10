@@ -135,7 +135,7 @@
                                     <a title="این درخواست دارای خلاصه تنظیمی میباشد ، و در انتظار تایید کارپرداز میباشد" data-toggle=""  class="btn btn-default col-md-12  pull-right">بخوانید</a>
                                 @endif
                                 @if($request[0]->bills[0]->active == 1 && $request[0]->bills[0]->status == 1)
-                                    <a href="{{url('admin/printFactors/'.$request[0]->id)}}" target="_blank"  class="btn btn-default col-md-12  pull-right">چاپ خلاصه تنظیمی<i class="fa fa-print"></i></a>
+                                    <a href="{{url('admin/printFactors/'.$request[0]->id)}}" target="_blank"  class="btn btn-default col-md-12  pull-right">چاپ خلاصه تنظیمی <i class="fa fa-print"></i></a>
                                 @endif
                                 @if( $request[0]->supplier_id != null && $request[0]->bills[0]->active == 0)
                                     <a href="{{url('admin/issueBill/'.$request[0]->id)}}"  class="btn btn-default  col-md-12  pull-right" > آپلود فاکتور </a>
