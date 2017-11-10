@@ -1872,7 +1872,7 @@ class SupplyController extends Controller
     public function showCertificates($id)
     {
         $pageTitle    = 'لیست گواهی ها';
-        $certificates = Certificate::where('request_id',$id)->get();
+        $certificates = Certificate::where([['request_id',$id],['active',1]])->get();
         foreach($certificates as $certificate)
         {
 //decrypt
