@@ -1358,8 +1358,23 @@ class SupplyController extends Controller
         $sum = 0;
         foreach ($productRequestRecords as $productRequestRecord) {
             $sum += $productRequestRecord->rate * $productRequestRecord->count;
+            //decrypt
+            if(!empty($productRequestRecord->title))
+                $productRequestRecord->title=decrypt($productRequestRecord->title);
+            if(!empty($productRequestRecord->description))
+                $productRequestRecord->description=decrypt($productRequestRecord->description);
+            if(!empty($productRequestRecord->unit_count))
+                $productRequestRecord->unit_count=decrypt($productRequestRecord->unit_count);
+            if(!empty($productRequestRecord->price))
+                $productRequestRecord->price=decrypt($productRequestRecord->price);
+            if(!empty($productRequestRecord->code))
+                $productRequestRecord->code=decrypt($productRequestRecord->code);
+            if(!empty($productRequestRecord->rate))
+                $productRequestRecord->rate=decrypt($productRequestRecord->rate);
+            if(!empty($productRequestRecord->why_not))
+                $productRequestRecord->why_not=decrypt($productRequestRecord->why_not);
         }
-
+//dd($productRequestRecords);
         return view('admin.certificate.productRequestForm', compact('pageTitle', 'productRequestRecords', 'sum', 'storageSupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'storageSupervisorFullName', 'originalJobSupervisorFullName', 'bossFullName', 'creditSupervisorFullName', 'financeSupervisorFullName'));
         //  }
     }
@@ -1501,7 +1516,7 @@ class SupplyController extends Controller
         $certificateId = 0;
         foreach ($certificates as $certificate)
         {
-            $shopComp       .= $certificate->shop_comp;
+            $shopComp       .= decrypt($certificate->shop_comp);
             $requestId      += $certificate->request_id;
             $date           .= $this->toPersian($certificate->created_at->toDateString());
             $certificateId  += $certificate->id;
@@ -1525,6 +1540,7 @@ class SupplyController extends Controller
                 $receiverFamily .= $certificateRecord->user->family;
                 $supplierId     += $certificateRecord->certificate->request->supplier_id;
             }
+
         }
 
         $receiverSignature = Signature::where('user_id',$receiverId)->value('signature');
@@ -1536,7 +1552,7 @@ class SupplyController extends Controller
         $supplierFamily = User::where('id',$supplierId)->value('family');
         $supplierFullName = $supplierName .chr(10).$supplierFamily;
         $supplierSignature = Signature::where('user_id',$supplierId)->value('signature');
-        $supplierSignature = 'data:image/png;base64,'.$supplierSignature;
+        $supplierSignature = 'data:image/png;base64,'.decrypt($supplierSignature);
 
         $unitSupervisorInfo = User::where([['unit_id',$unitId],['is_supervisor',1]])->get();
         $unitSupervisorId = 0;
@@ -2212,8 +2228,8 @@ class SupplyController extends Controller
                             $query = DB::table('bills')->insert
                             ([
 
-                                'final_price'            => str_replace(',','',$request->totalPrice[$i]),
-                                'factor_number'          => $request->description[$i],
+                                'final_price'            => encrypt(str_replace(',','',$request->totalPrice[$i])),
+                                'factor_number'          => encrypt($request->description[$i]),
                                 'user_id'                => Auth::user()->id,
                                 'request_id'             => $request->requestId,
                                 'created_at'             => Carbon::now(new \DateTimeZone('Asia/Tehran'))

@@ -80,6 +80,7 @@ class CertificateController extends Controller
                $requestRecord->description=decrypt($requestRecord->description);
            if(!empty($requestRecord->unit_count))
                $requestRecord->unit_count=decrypt($requestRecord->unit_count);
+
            if(!empty($requestRecord->price))
                $requestRecord->price=decrypt($requestRecord->price);
            if(!empty($requestRecord->rate))
