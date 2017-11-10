@@ -36,7 +36,7 @@
                     </div>
                 </form>
                 <div class="x_content">
-                    <table style="direction:rtl;text-align: center" id="example"
+                    <table style="direction:rtl;text-align: center;font-size: 17px;" id="example"
                            class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <input type="hidden" id="token" value="{{ csrf_token() }}">
                         <thead>
