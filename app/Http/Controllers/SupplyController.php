@@ -1455,13 +1455,28 @@ class SupplyController extends Controller
         $unitId = 0;
         $requestNumber = 0;
         $date = '';
+
         foreach ($productRequestRecords as $productRequestRecord) {
+//            $productRequestRecord->rate=decrypt($productRequestRecord->rate);
+            if(!empty($productRequestRecord->title))
+                $productRequestRecord->title=decrypt($productRequestRecord->title);
+            if(!empty($productRequestRecord->description))
+                $productRequestRecord->description=decrypt($productRequestRecord->description);
+            if(!empty($productRequestRecord->unit_count))
+                $productRequestRecord->unit_count=decrypt($productRequestRecord->unit_count);
+            if(!empty($productRequestRecord->price))
+                $productRequestRecord->price=decrypt($productRequestRecord->price);
+            if(!empty($productRequestRecord->rate))
+                $productRequestRecord->rate=decrypt($productRequestRecord->rate);
+            if(!empty($productRequestRecord->why_not))
+                $productRequestRecord->why_not=decrypt($productRequestRecord->why_not);
             $sum += $productRequestRecord->rate * $productRequestRecord->count;
             if ($unitName == '' && $requestNumber == 0 && $date == '' && $unitId == 0) {
                 $unitName .= $productRequestRecord->request->unit->title;
                 $requestNumber += $productRequestRecord->id;
                 $date .= $this->toPersian($productRequestRecord->request->created_at->toDateString());
                 $unitId += $productRequestRecord->request->unit_id;
+
 
             }
         }
@@ -1524,6 +1539,13 @@ class SupplyController extends Controller
         //$certificateId        = Certificate::where('request_id',$id)->pluck('id');
         $unitId               = Request2::where('id',$requestId)->value('unit_id');
         $certificateRecords = CertificateRecord::where('certificate_id',$id)->get();
+        foreach($certificateRecords as $certificateRecord)
+        {
+            $certificateRecord->price=decrypt($certificateRecord->price);
+            $certificateRecord->rate=decrypt($certificateRecord->rate);
+            $certificateRecord->unit_count=decrypt($certificateRecord->unit_count);
+        }
+//        dd($certificateRecords);
         $unitName = Unit::where('id',$unitId)->value('title');
         $sum = 0;
         $receiverId = 0;
@@ -2158,29 +2180,25 @@ class SupplyController extends Controller
                 $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
                 $now = new Carbon();
                 $now = $now->toDateString();
-                if($gDate1 >= $now)
+
+                $factorId = DB::table('bills')->insertGetId
+                ([
+                    'src'           => $src,
+                    'date'          => $gDate1,
+                    'factor_number' => trim(encrypt($request->factorNumber)),
+                    'user_id'       => Auth::user()->id,
+                    'request_id'    => $request->requestId,
+                    'final_price'   => encrypt($request->newFinalPrice),
+                    'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                ]);
+                if($factorId)
                 {
-                    $factorId = DB::table('bills')->insertGetId
-                    ([
-                        'src'           => $src,
-                        'date'          => $gDate1,
-                        'factor_number' => trim(encrypt($request->factorNumber)),
-                        'user_id'       => Auth::user()->id,
-                        'request_id'    => $request->requestId,
-                        'final_price'   => encrypt($request->newFinalPrice),
-                        'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
-                    ]);
-                    if($factorId)
-                    {
-                        return response('فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید');
-                    }else
-                    {
-                        return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
-                    }
+                    return response('فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید');
                 }else
                 {
-                    return response('تاریخ وارد شده گذشته است');
+                    return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
                 }
+
 
             }else
             {

@@ -193,6 +193,7 @@
                                         @endif
                                     @endforeach
                                 @elseif($pageName=='confirmProductRequest')
+                                    @if(!empty($productRequests[0]))
                                     @if($productRequests[0]->request_type_id==3)
                                     <a href="{{url('admin/confirmProductRequestManagement')}}" class="btn btn-danger col-md-12">بروزرسانی درخواست ها</a>
                                     @elseif($productRequests[0]->request_type_id==2)
@@ -234,8 +235,9 @@
                                         </td>
                                     </tr>
                                         @endif
+
                                     @endforeach
-                                {{--@endif--}}
+                                @endif
                                 @endif
                             </tbody>
                         </table>
