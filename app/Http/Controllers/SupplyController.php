@@ -2182,6 +2182,11 @@ class SupplyController extends Controller
     {
         $pageTitle = 'ثبت خلاصه تنظیمی';
         $factors = DB::table('bills')->where('request_id',$id)->get();
+        foreach($factors as $factor)
+        {
+            $factor->factor_number=decrypt($factor->factor_number);
+            $factor->final_price=decrypt($factor->final_price);
+        }
         return view('admin.preparedSummarize',compact('pageTitle','factors'));
     }
 //

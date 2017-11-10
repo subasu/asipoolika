@@ -491,6 +491,11 @@ class RequestController extends Controller
     {
         $pageTitle = 'جزییات خلاصه تنظیمی';
         $bills     = DB::table('bills')->where([['request_id',$id],['status',0]])->get();
+//        dd($bills);
+        foreach ($bills as $bill) {
+            $bill->factor_number=decrypt($bill->factor_number);
+            $bill->final_price=decrypt($bill->final_price);
+        }
         return  view ('user.showFactorDetails',compact('pageTitle','bills'));
     }
 
