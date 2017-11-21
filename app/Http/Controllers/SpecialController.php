@@ -101,9 +101,9 @@ class SpecialController extends Controller
             } else
                 return response()->json('is zero');
         }else
-            {
-                return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
-            }
+        {
+            return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
+        }
 
     }
     public function unitsGet(Request $request)
@@ -184,9 +184,9 @@ class SpecialController extends Controller
                 return response()->json('is zero');
 
         }else
-            {
-                return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
-            }
+        {
+            return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
+        }
 
     }
 }

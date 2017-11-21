@@ -274,38 +274,38 @@ class RequestController extends Controller
     public function sendTicket(SendTicketValidation $request)
     {
 
-            $receiverId = Unit::where('title', $request->unit)->value('supervisor_id');
-            $unitId = Unit::where('title', $request->unit)->value('id');
-            $now = new Carbon();
-            $date = $now->toDateString();
-            $time = $now->toTimeString();
-            $ticketId = DB::table('tickets')->insertGetId
+        $receiverId = Unit::where('title', $request->unit)->value('supervisor_id');
+        $unitId = Unit::where('title', $request->unit)->value('id');
+        $now = new Carbon();
+        $date = $now->toDateString();
+        $time = $now->toTimeString();
+        $ticketId = DB::table('tickets')->insertGetId
+        ([
+            'title' => $request->title,
+            'description' => $request->description,
+            'date' => $date,
+            'time' => $time,
+            'sender_user_id' => Auth::user()->id,
+            'unit_id' => $unitId,
+            'receiver_user_id' => $receiverId
+        ]);
+        if ($ticketId) {
+
+            $query = DB::table('ticket_messages')->insert
             ([
-                'title' => $request->title,
-                'description' => $request->description,
+                'ticket_id' => $ticketId,
+                'user_id' => Auth::user()->id,
+                'content' => $request->description,
                 'date' => $date,
-                'time' => $time,
-                'sender_user_id' => Auth::user()->id,
-                'unit_id' => $unitId,
-                'receiver_user_id' => $receiverId
+                'time' => $time
             ]);
-            if ($ticketId) {
-
-                $query = DB::table('ticket_messages')->insert
-                ([
-                    'ticket_id' => $ticketId,
-                    'user_id' => Auth::user()->id,
-                    'content' => $request->description,
-                    'date' => $date,
-                    'time' => $time
-                ]);
-                if ($query) {
-                    return response('اطلاعات شما با موفقیت ثبت گردید');
-                }
-
-            } else {
-                return response('خطایی در ثبت اطلاعات رخ داده است،لطفا با واححد پشتیبانی تماس بگیرید');
+            if ($query) {
+                return response('اطلاعات شما با موفقیت ثبت گردید');
             }
+
+        } else {
+            return response('خطایی در ثبت اطلاعات رخ داده است،لطفا با واححد پشتیبانی تماس بگیرید');
+        }
     }
 
     //shiri : below function is to return all tickets to the view to check the status
@@ -390,9 +390,9 @@ class RequestController extends Controller
             // dd($data);
             return response()->json(compact('data'));
         }else
-            {
-                return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
-            }
+        {
+            return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
+        }
 
     }
 
@@ -466,14 +466,14 @@ class RequestController extends Controller
                 $supplierId = Auth::user()->id;
                 $requests = Request2::where('supplier_id', $supplierId)->get();
                 return view('user.dailyWorks', compact('requests', 'pageTitle'));
-            break;
+                break;
             case 'factors':
                 $pageTitle = 'امور مربوط به فاکتور ها';
                 $supplierId = Auth::user()->id;
                 $requestsId = DB::table('bills')->where([['active',1],['status',0]])->pluck('request_id');
                 $request2   = Request2::whereIn('id',$requestsId)->where('supplier_id', $supplierId)->get();
                 return view('user.dailyWorks', compact('request2', 'pageTitle'));
-            break;
+                break;
         }
 
     }
@@ -505,24 +505,24 @@ class RequestController extends Controller
         {
             abort(403);
         }else
+        {
+            $check = DB::table('bills')->where('request_id',$request->requestId)->pluck('status')->toArray();
+            if(in_array(0,$check))
             {
-                $check = DB::table('bills')->where('request_id',$request->requestId)->pluck('status')->toArray();
-                if(in_array(0,$check))
+                $update = DB::table('bills')->where('request_id',$request->requestId)->update(['status' => 1]);
+                if($update)
                 {
-                    $update = DB::table('bills')->where('request_id',$request->requestId)->update(['status' => 1]);
-                    if($update)
-                    {
-                        return response ('خلاصه تنظیمی مربوط به درخواست مربوطه تایید گردید');
-                    }else
-                    {
-                        return response('خطایی رخ داده است ، تماس با بخش پشتیبانی');
-                    }
+                    return response ('خلاصه تنظیمی مربوط به درخواست مربوطه تایید گردید');
                 }else
-                    {
-                        return response('فاکتور ها قبلا تایید شده اند ، لطفا درخواست مجدد نفرمایید');
-                    }
-
+                {
+                    return response('خطایی رخ داده است ، تماس با بخش پشتیبانی');
+                }
+            }else
+            {
+                return response('فاکتور ها قبلا تایید شده اند ، لطفا درخواست مجدد نفرمایید');
             }
+
+        }
     }
 
     public function changePassword()
@@ -566,9 +566,9 @@ class RequestController extends Controller
                         return response('رمز و تکرار رمز با یکدیگر یکسان نیست');
                     }
                 }else
-                    {
-                        return response('رمز قبلی صحیح نیست');
-                    }
+                {
+                    return response('رمز قبلی صحیح نیست');
+                }
             } else {
                 return redirect('/logout');
             }

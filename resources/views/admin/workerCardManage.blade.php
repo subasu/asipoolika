@@ -91,19 +91,7 @@
                 var date2=$('#date2').val();
                 var token=$('#token').val();
                 var name =$('#adminName').text();
-               // alert(name);
-                var patt = new RegExp('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#');
-//                if(patt.test(date1))
-//                {
-//                    alert ('valid');
-//                    return false;
-//                }else
-//                    {
-//                        alert('not valid');
-//                        return false;
-//                    }
-//            alert(date1);
-//            alert(date2);
+
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
