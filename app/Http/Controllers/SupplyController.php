@@ -1385,6 +1385,7 @@ class SupplyController extends Controller
 //        }
 //        else
 //            {
+
         $supplyId = Unit::where('title', 'تدارکات')->value('id');
         $supplySupervisorInfo = User::where([['unit_id', $supplyId], ['is_supervisor', 1]])->get();
         $supplySupervisorId = 0;
@@ -1419,11 +1420,13 @@ class SupplyController extends Controller
         $creditSupervisorId = 0;
         $creditSupervisorName = '';
         $creditSupervisorFamily = '';
+
         foreach ($creditSupervisorInfo as $creditSupervisorInf) {
             $creditSupervisorId += $creditSupervisorInf->id;
             $creditSupervisorName .= $creditSupervisorInf->name;
             $creditSupervisorFamily .= $creditSupervisorInf->family;
         }
+
         $creditSupervisorFullName = $creditSupervisorName . chr(10) . $creditSupervisorFamily;
         $creditSupervisorSignature = Signature::where('user_id', $creditSupervisorId)->value('signature');
         $creditSupervisorSignature = 'data:image/png;base64,' . decrypt($creditSupervisorSignature);
