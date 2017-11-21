@@ -19,7 +19,7 @@
 
 
                 <a href="{{url('admin/usersCreate')}}" id="user-send" type="button" class="col-md-2 btn btn-primary" style="font-weight: bold;"><i class="fa fa-user-plus"></i>                    افزودن کاربر جدید                </a>
-
+                <div class="pull-right" style="direction: rtl"><i class="fa fa-square" style="font-size: 35px;color:#ffff80;"></i> مدیران واحد</div>
                 <div class="x_content">
                     <table style="direction:rtl;text-align: center" id="example"
                            class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
@@ -35,7 +35,7 @@
                             <th style="text-align: center">غیرفعال/ فعال</th>
 
                             <th style="text-align: center">سطح دسترسی</th>
-                            <th style="text-align: center">ویرایش</th>
+                            <th style="text-align: center;border-right: 1px solid #d6d6c2">ویرایش</th>
 
                         </tr>
                         </thead>
@@ -45,7 +45,7 @@
                         @foreach($data as $val)
 {{--                            @if($val->unit_id!=3)--}}
                             <tr class="unit">
-                                <td>{{++$i}}</td>
+                                <td style="font-size:18px;@if($val->is_supervisor==1) background-color:#ffff80 @endif">{{++$i}}</td>
                                 <td>{{$val->title. ' '.$val->name.' '.$val->family}}</td>
                                 <td>@if($val->username!=null){{$val->username}} @endif</td>
                                 <td>{{$val->cellphone}} </td>
@@ -63,9 +63,8 @@
                                 <td id="{{$val->id}}">
                                     <a class="btn btn-primary" href="{{url('systemManager/access_level/'.$val->id)}}">تعیین سطح دسترسی</a>
                                 </td>
-                                <td id="{{$val->id}}">
-                                    <a class="btn btn-info" href="{{url('admin/usersUpdate'.'/'.$val->id)}}">ویرایش</a></td>
-
+                                <td style="border-right: 1px solid #d6d6c2" id="{{$val->id}}">
+                                    <a class="btn btn-info" href="{{url('admin/usersUpdate'.'/'.$val->id)}}">ویرایش</a>
                                 </td>
                             </tr>
                             {{--@endif--}}

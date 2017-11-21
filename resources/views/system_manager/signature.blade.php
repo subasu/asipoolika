@@ -33,7 +33,7 @@
                                 <th style="text-align: center" class="col-md-2">نوع امضاء</th>
                                 {{--<th style="text-align: center">تصویر</th>--}}
                                 {{--<th style="text-align: center">تصویر کاربری</th>--}}
-                                <th class="col-md-1" style="text-align: center">عملیات</th>
+                                <th class="col-md-1" style="text-align: center;border-right: 1px solid #d6d6c2">عملیات</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -49,7 +49,7 @@
                                         <span class="label label-info col-md-12">اختیاری</span>
                                         @endif
                                     </td>
-                                    <td>
+                                    <td style="border-right: 1px solid #d6d6c2">
                                         <a href="{{URL::asset('systemManager/showSignature')}}/{{$signature->id}}" target="_blank" type="button"
                                            class="btn btn-round btn-default" data-toggle="tooltip" title="نمایش امضا">
                                             <span class="fa fa-search"></span>

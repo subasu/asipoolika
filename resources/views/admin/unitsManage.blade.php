@@ -30,7 +30,7 @@
                             <th style="text-align: center">تلفن</th>
                             <th style="text-align: center">توضیحات</th>
                             <th style="text-align: center">غیرفعال/ فعال</th>
-                            <th style="text-align: center">ویرایش</th>
+                            <th style="text-align: center;border-right: 1px solid #d6d6c2">ویرایش</th>
                         </tr>
                         </thead>
 
@@ -52,7 +52,7 @@
                                         @else <span class="label label-warning" style="font-weight: lighter;font-size:13px;">غیر قابل تغییر</span>
                                     @endif
                                 </td>
-                                <td id="{{$val->id}}">
+                                <td style="border-right: 1px solid #d6d6c2" id="{{$val->id}}">
                                     @if($val->main==0)
                                     <a class="btn btn-info"
                                        href="{{url('admin/unitsUpdate'.'/'.$val->id)}}">ویرایش</a>

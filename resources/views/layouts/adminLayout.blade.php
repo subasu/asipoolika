@@ -244,7 +244,8 @@
                                 </ul>
                             </li>
                             @endif
-                            @if(($user->is_supervisor==1 or $user->is_supervisor==0) and $user->unit_id!=3)
+{{--                            @if(($user->is_supervisor==1 or $user->is_supervisor==0) and $user->unit_id!=3)--}}
+
                             <li><a><i class="fa fa-newspaper-o"></i> مدیریت گواهی ها<span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
                                     <li><a href="{{url('admin/productCertificatesManagement')}}"> تایید گواهی های کالا<span></span></a>
@@ -255,7 +256,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            @endif
+
                             @if( ($user->is_supervisor == 1 and $user->unit_id !=3) and ($user->is_supervisor == 1 and $user->unit_id !=6 ) or $user->is_supervisor == 0 )
                                 <li><a><i class="fa fa-envelope-open-o"></i>ارسال تیکت<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
