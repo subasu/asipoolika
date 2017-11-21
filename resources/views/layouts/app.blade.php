@@ -21,7 +21,11 @@
 <body>
 <div class="wrapper">
    @yield('content')
+<<<<<<< HEAD
     <footer><a style="font-size:20px;" target="blank" href="http://www.artansoftware.ir">طراحی شده توسط گروه فنی مهندسی آرتان</a></footer>
+=======
+    <footer><a target="blank" href="http://www.artansoftware.com">Designed By Artan Group</a></footer>
+>>>>>>> 6b1f09f35b8b7ee4ef8f191c1bfd76c2f8b84916
     </p>
 </div>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>

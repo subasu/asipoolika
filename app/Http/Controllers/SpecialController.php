@@ -48,7 +48,11 @@ class SpecialController extends Controller
         if (!$request->ajax()) {
             abort(403);
         }
+<<<<<<< HEAD
 
+=======
+//        return response()->json($request->all());
+>>>>>>> 6b1f09f35b8b7ee4ef8f191c1bfd76c2f8b84916
         if(preg_match('#^([0-9]?[0-9]?[0-9]{2}[ /.](0?[1-9]|1[012])[ /.](0?[1-9]|[12][0-9]|3[01]))*$#', $request->date2)) {
 
             $record_count = $request->record_count;
@@ -79,6 +83,7 @@ class SpecialController extends Controller
                         $step = 9;
                     else $step = 7;
                     $q = DB::table('request_records')->insert([
+<<<<<<< HEAD
                         'title' => encrypt($request->product_title[$i]),
                         'price' => encrypt(str_replace(',','',$request-> product_price[$i])),
                         'rate' =>  encrypt($request->product_rate[$i]),
@@ -86,6 +91,15 @@ class SpecialController extends Controller
                         'code' => mt_rand(1000, 5000),
                         'count' => $request->product_count[$i],
                         'unit_count' =>  encrypt($request->unit_count_each[$i]),
+=======
+                        'title' => $request->product_title[$i],
+                        'price' => str_replace(',','',$request-> product_price[$i]),
+                        'rate' => $request->product_rate[$i],
+                        'description' => $request->product_details[$i],
+                        'code' => mt_rand(1000, 5000),
+                        'count' => $request->product_count[$i],
+                        'unit_count' => $request->unit_count_each[$i],
+>>>>>>> 6b1f09f35b8b7ee4ef8f191c1bfd76c2f8b84916
                         'step' => $step,
                         'accept' => 1,
                         'receiver_id' => $request->product_receiver[$i],
@@ -162,11 +176,19 @@ class SpecialController extends Controller
 
                 do {
                     $q = DB::table('request_records')->insert([
+<<<<<<< HEAD
                         'title' => encrypt($request->product_title[$i]),
                         'price' => encrypt(str_replace(',','',$request-> product_price[$i])),
                         'rate' => encrypt($request->product_rate[$i]),
                         'description' => encrypt($request->product_details[$i]),
                         'code' => encrypt(mt_rand(1000, 5000)),
+=======
+                        'title' => $request->product_title[$i],
+                        'price' => str_replace(',','',$request-> product_price[$i]),
+                        'rate' => $request->product_rate[$i],
+                        'description' => $request->product_details[$i],
+                        'code' => mt_rand(1000, 5000),
+>>>>>>> 6b1f09f35b8b7ee4ef8f191c1bfd76c2f8b84916
                         'count' => $request->product_count[$i],
                         'step' => 7,
                         'accept' => 1,

@@ -74,7 +74,7 @@
                 <td>{{decrypt($productRequestRecord->unit_count)}}</td>
                 <td>{{$productRequestRecord->count}}</td>
                 <td>{{number_format(decrypt($productRequestRecord->rate))}}</td>
-                <td>{{number_format($productRequestRecord->rate * $productRequestRecord->count)}}</td>
+                <td>{{number_format(decrypt($productRequestRecord->rate) * $productRequestRecord->count)}}</td>
                 <input type="hidden" id="requestId" value="{{$productRequestRecord->request_id}}">
             </tr>
         @endforeach

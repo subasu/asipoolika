@@ -38,7 +38,7 @@
         })
     </script>
 
-{{--@if(!empty($productRequestRecords))--}}
+@if(!empty($productRequestRecords))
 <body id="body">
 <div style="padding:1% 0.5%">
     <h5 style="text-align: center;padding: 0;">دانشگاه علوم پزشکی و خدمات درمانی استان اصفهان</h5>
@@ -76,7 +76,7 @@
         </tr>
         </thead>
         <tbody>
-         {{--dynamic tr start--}}
+         dynamic tr start
          <?php $i=0; ?>
          @foreach($productRequestRecords as $productRequestRecord)
             <tr>
@@ -88,7 +88,7 @@
                 <input type="hidden" id="requestId" value="{{$productRequestRecord->request_id}}">
             </tr>
           @endforeach
-             {{--dynamic tr end--}}
+             dynamic tr end
             <tr>
                 <td colspan="11" class="col-md-10" > <span style="margin-right: 82%;">جمع</span> </td>
                 <td colspan="2" class="col-md-2">{{number_format($sum)}}</td>
@@ -116,7 +116,7 @@
         <button   style="width: 20%; font-size: 150%; margin-top: 2%;" id="print">چاپ</button>
         <i class="fa-print"></i>
     </div>
-</div>
+    </div>
 
 </body>
 {{--@endif--}}

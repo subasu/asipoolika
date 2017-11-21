@@ -51,7 +51,7 @@
                             </div>
 
                             <div class="">
-                                <lable style="font-size: 120%;">توضیحات : حجم فایل کارت کارگری نباید بیش از 150 کیلو بایت باشد ، پسوند فایل کارت کارگری باید از نوع png باشد.</lable>
+                                <lable style="font-size: 120%;">توضیحات : حجم فایل کارت کارگری نباید بیش از 200 کیلو بایت باشد ، پسوند فایل کارت کارگری باید از نوع jpg باشد.</lable>
                                     <div class="input-group image-preview col-md-12" style="padding:0px 10px !important;">
                                         <input type="text" class="form-control image-preview-filename" disabled="disabled">
                                         <!-- don't give a name === doesn't send on POST/GET -->
