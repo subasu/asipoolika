@@ -115,10 +115,10 @@
                             @endif
                             {{--//End system manager menu <br>--}}
                             {{--//Admin menu--}}
-                            @if($user->is_supervisor==1 and $user->unit_id==9)
-                                <li><a href="{{url('/admin/issueBillManagement')}}"><i class="fa fa-credit-card"></i> صدور قبض انبار</a>
-                                </li>
-                            @endif
+                            {{--@if($user->is_supervisor==1 and $user->unit_id==9)--}}
+                                {{--<li><a href="{{url('/admin/issueBillManagement')}}"><i class="fa fa-credit-card"></i> صدور قبض انبار</a>--}}
+                                {{--</li>--}}
+                            {{--@endif--}}
                             @if($user->is_supervisor==1 and $user->unit_id==6)
                                 <li><a><i class="fa fa-list"></i>ثبت درخواست های کاغذی<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">

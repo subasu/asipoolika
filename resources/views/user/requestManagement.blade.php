@@ -50,7 +50,7 @@
                     @if(!empty($pageName))
                         <thead>
                         <tr>
-                            <th style="text-align: center ;">ردیف</th>
+                            {{--<th style="text-align: center ;">ردیف</th>--}}
                             <th style="text-align: center ;">شناسه</th>
                             {{--<th style="text-align: center ;">نام واحد</th>--}}
                             {{--<th style="text-align: center ;">درخواست دهنده</th>--}}
@@ -58,7 +58,7 @@
                                 <th class="col-md-2" style="text-align: center ;">در انتظار بررسی</th>
                                 <th class="col-md-2" style="text-align: center ;">درحال پیگیری</th>
                                 <th class="col-md-2" style="text-align: center ;">رد شده</th>
-                                <th class="col-md-2" style="text-align: center ;">خلاصه</th>
+                                <th class="col-md-3" style="text-align: center ;">خلاصه</th>
                                 <th class="col-md-2" style="text-align: center ;">وضعیت</th>
                                 <th class="col-md-1" style="text-align: center ;border-right: 1px solid #e0e0d1">جزئیات بیشتر</th>
                             @elseif($pageName=='myServiceRequests')
@@ -80,7 +80,7 @@
                         @foreach($requests as $request)
                             <?php $i++; ?>
                             <tr>
-                                <td class="col-md-1">{{$i}}</td>
+                                {{--<td class="col-md-1">{{$i}}</td>--}}
                                 <td class="col-md-1">{{$request->id}}</td>
                                 <td class="info col-md-2">{{$request->request_record_count}}</td>
                                 <td class="success col-md-2">{{$request->request_record_count_accept}}</td>

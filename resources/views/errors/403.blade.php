@@ -52,7 +52,8 @@
                     <br>
                     <h2><a href="{{url('/login')}}" style="color: white">بازگشت</a>
                     </h2>
-                    <a href="{{url('/logout')}}" class="btn btn-danger">خروج</a>
+                    <a href="{{url('/logout')}}" class="btn btn-danger col-md-2 col-md-offset-5">خروج</a>
+                    <label style="font-size: 20px;margin-top:20px;color:brown" class="label label-warning col-md-6 col-md-offset-3">با مدیر انفورماتیک تماس بگیرید تا سطح دسترسی مربوطه را به شما بدهد</label>
                 </div>
             </div>
         </div>
