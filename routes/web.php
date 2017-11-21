@@ -319,11 +319,11 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('units', 'SupplyController@unitsGet');
         Route::get('units', 'SupplyController@unitsGet');
         Route::post('changeUnitStatus/{id}', 'SupplyController@changeUnitStatus');
-        Route::get('unitsUpdate/{id}', 'SupplyController@unitsUpdateShow');
+//        Route::get('unitsUpdate/{id}', 'SupplyController@unitsUpdateShow');
         Route::get('/unitsUpdate/{id}',[
             'uses'=>'SupplyController@unitsUpdateShow',
             'middleware' => 'roles',
-            'roles'=>['supplierManager']
+            'roles'=>['systemManager']
         ]);
         Route::post('unitsUpdate', 'SupplyController@unitsUpdate');
         Route::post('usersSupervisor', 'SupplyController@usersSupervisor');
