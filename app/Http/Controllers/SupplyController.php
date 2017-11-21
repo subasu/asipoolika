@@ -585,7 +585,8 @@ class SupplyController extends Controller
 
                         $file = $request->image;
                         $file->move(public_path(), $request->image->getClientOriginalName());
-                        $path = public_path() . '\\' . $request->image->getClientOriginalName();
+//                        $path = public_path() . '\\' . $request->image->getClientOriginalName();
+                        $path = public_path() . '/' . $request->image->getClientOriginalName();
                         //dd($path);
                         $image = file_get_contents($path);
                         File::delete($path);

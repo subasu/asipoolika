@@ -70,7 +70,8 @@ class SystemManagerController extends Controller
                     {
                         $file = $request->file;
                         $file->move(public_path(), $request->file->getClientOriginalName());
-                        $path = public_path() . '\\' . $request->file->getClientOriginalName();
+//                        $path = public_path() . '\\' . $request->file->getClientOriginalName();
+                        $path = public_path() . '/' . $request->file->getClientOriginalName();
                         $file = file_get_contents($path);
                         File::delete($path);
                         $fileName = base64_encode($file);
