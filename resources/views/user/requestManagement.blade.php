@@ -89,10 +89,14 @@
                                     <ol>
                                         @foreach($request->requestRecord as $item)
 <<<<<<< HEAD
+<<<<<<< HEAD
                                             <li>{{decrypt($item->title)}}</li>
 =======
                                             <li>{{$item->title}}</li>
 >>>>>>> 6b1f09f35b8b7ee4ef8f191c1bfd76c2f8b84916
+=======
+                                            <li>{{decrypt($item->title)}}</li>
+>>>>>>> cf993fe6cc4c3ceeeec0356703cd1e914d71e7be
                                         @endforeach
                                     </ol>
                                 </td>
@@ -115,10 +119,14 @@
                                     <ol>
                                         @foreach($request->requestRecord as $item)
 <<<<<<< HEAD
+<<<<<<< HEAD
                                             <li>{{decrypt($item->title)}}</li>
 =======
                                             <li>{{$item->title}}</li>
 >>>>>>> 6b1f09f35b8b7ee4ef8f191c1bfd76c2f8b84916
+=======
+                                            <li>{{decrypt($item->title)}}</li>
+>>>>>>> cf993fe6cc4c3ceeeec0356703cd1e914d71e7be
                                         @endforeach
                                     </ol>
                                 </td>

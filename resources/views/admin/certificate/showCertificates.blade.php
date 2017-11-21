@@ -31,19 +31,21 @@
                             <th style="text-align: center">ردیف</th>
                             <th style="text-align: center">نام صادر کننده گواهی</th>
                             <th style="text-align: center">نام فروشگاه</th>
-                            <th style="text-align: center">چاپ گواهی صادر شده</th>
+                            <th style="text-align: center;border-right: 1px solid #d6d6c2;">چاپ گواهی صادر شده</th>
                         </tr>
                         </thead>
 
                         <tbody>
                         <?php $i = 0 ?>
                         @foreach($certificates as $certificate)
+                            @if($certificate->certificate_type_id!=4)
                             <tr class="unit">
                                 <td>{{++$i}}</td>
                                 <td>{{$certificate->user->name .chr(10). $certificate->user->family}}</td>
                                 <td>{{$certificate->shop_comp}}</td>
 
-                                <td>
+                                <td style="border-right: 1px solid #d6d6c2;">
+
                                     @if($certificate->request->request_type_id == 3)
                                         @if($certificate->certificate_type_id == 1)
                                             <a target="_blank" class="btn btn-info" href="{{url('admin/exportDeliveryInstallCertificate'.'/'.$certificate->id)}}">چاپ گواهی تحویل و نصب</a>
@@ -57,6 +59,7 @@
                                     @endif
                                 </td>
                             </tr>
+                            @endif
                         @endforeach
 
                         </tbody>

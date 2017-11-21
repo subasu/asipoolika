@@ -43,7 +43,7 @@
                                     <td class="col-md-5" style="text-align:right;font-size: 18px;">
                                         <?php $i=1; ?>
                                         @foreach($request->records as $item)
-                                            {{$i.' . '.$item->title}} |
+                                            {{$i.' . '.decrypt($item->title)}} |
                                             <?php $i++; ?>
                                         @endforeach
                                     </td>

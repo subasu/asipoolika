@@ -75,13 +75,19 @@
         <br>
         <h4 class="col-md-1 text-right" dir="rtl" style="margin-right: 2%;">نام کارپرداز :   {{$supplierFullName}}</h4>
         <h4 class="col-md-1 text-left" dir="rtl" style="margin-left: 10%; margin-top: -1.75%;"> امضاء کار پرداز: </h4>
-        <img src="{{$supplierSignature}}" style="width: 100px; height: 100px;">
+        @if($supplierSignature == null) امضا ثبت نشده@else
+            <img src="{{$supplierSignature}}" style="width: 100px; height: 100px;">
+        @endif
 
     </div>
 
     <div align="center">
+        @if($supplierSignature == null)
+            <h3 style="background-color: red; width:60%; margin-top:5%; font-size: 210%; color: white;">بدلیل اینکه  امضا کار پرداز ثبت نشده است لذا امکان چاپ درخواست وجود ندارد ، لطفا امضای کارپرداز را ثبت نمائید سپس درخواست خود را بدهید</h3>
+        @else
         <button   style="width: 20%; font-size: 150%; margin-top: 2%;" id="print">چاپ</button>
         <i class="fa-print"></i>
+        @endif
     </div>
     </body>
 {{--@endif--}}

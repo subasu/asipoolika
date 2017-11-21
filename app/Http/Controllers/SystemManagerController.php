@@ -63,7 +63,7 @@ class SystemManagerController extends Controller
             {
                 $extension = $request->file->getClientOriginalExtension();
                 $fileSize  = $request->file->getClientSize();
-              //  dd($fileSize);
+                //  dd($fileSize);
                 if($fileSize < 150000)
                 {
                     if($extension == 'png' || $extension == 'PNG')
@@ -92,16 +92,16 @@ class SystemManagerController extends Controller
                         return response('پسوند فایل امضا نامعتبر است');
                     }
                 }else
-                    {
-                        return response('حجم فایل امضا بیش از حد مجاز است');
-                    }
+                {
+                    return response('حجم فایل امضا بیش از حد مجاز است');
+                }
 
 
             }
         }else
-            {
-                return response('امضای مدیر این واحد قبلا ثبت شده است');
-            }
+        {
+            return response('امضای مدیر این واحد قبلا ثبت شده است');
+        }
 
     }
 

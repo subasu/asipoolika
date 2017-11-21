@@ -244,6 +244,7 @@ class SupplyController extends Controller
 
     public function newUserCreate(UserCreateValidation $request,$id)
     {
+       // dd($request->unitId);
         switch ($id)
         {
             case 1:
@@ -276,9 +277,9 @@ class SupplyController extends Controller
                         {
                             $updateHimSelf = User::where('id',$userId)->update(['supervisor_id' => $userId]);
                         }else
-                            {
-                                $updateHimSelf = User::where('id',$userId)->update(['supervisor_id' => $supervisorId]);
-                            }
+                        {
+                            $updateHimSelf = User::where('id',$userId)->update(['supervisor_id' => $supervisorId]);
+                        }
                         $updateUser  = User::where([['is_supervisor',0],['unit_id',$request->unitId]])->update(['supervisor_id' => $userId]);
                         $updateUsers = User::where('id',$unitSupervisorId)->update(['supervisor_id' => $userId]);
                         $updateUnit  = Unit::where('id',$request->unitId)->update(['supervisor_id' => $userId]);
@@ -329,6 +330,7 @@ class SupplyController extends Controller
                     'internal_phone'    =>trim($request->internal_phone),
                     'description'       =>trim($request->description),
                     'unit_id'           =>$request->unitId,
+                    'is_supervisor'     =>1,
                     'supervisor_id'     =>$supervisorId,
                     'created_at'        =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
 
@@ -364,18 +366,17 @@ class SupplyController extends Controller
                 ]);
                 if($userId)
                 {
-                    $users = User::where([['is_supervisor',0],['unit_id',$request->unitId],['supervisor_id',$supervisorId]])->get();
-                    if(count($users)>0)
-                    {
-                        $usersWithNewManager = User::where([['is_supervisor',0],['unit_id',$request->unitId],['supervisor_id',$supervisorId]])->update(['supervisor_id' => $userId]);
-                        $unitUpdate          = Unit::where('id',$request->unitId)->update(['supervisor_id' => $userId]);
-                        if($usersWithNewManager && $unitUpdate)
+                        $unitUpdate   = Unit::where('id',$request->unitId)->update(['supervisor_id' => $userId]);
+                        if($unitUpdate)
                         {
                             return response('کاربر جدید درج شد');
                         }
-                    }
+                    }else
+                        {
+                            return response('خطا در ثبت اطلاعات');
+                        }
 
-                }
+
         }
 
     }
@@ -581,33 +582,27 @@ class SupplyController extends Controller
                         }
                         $gDate = $this->jalaliToGregorian($year, $month, $day);
                         $gDate1 = $gDate[0] . '-' . $gDate[1] . '-' . $gDate[2];
-                        $now = new Carbon();
-                        $now = $now->toDateString();
-                        if($gDate1 >= $now)
+
+                        $file = $request->image;
+                        $file->move(public_path(), $request->image->getClientOriginalName());
+                        $path = public_path() . '\\' . $request->image->getClientOriginalName();
+                        //dd($path);
+                        $image = file_get_contents($path);
+                        File::delete($path);
+                        $fileName = encrypt(base64_encode($image));
+                        $q =  DB::table('workers')->insert
+                        ([
+                            'card' => $fileName,
+                            'user_id' => Auth::user()->id,
+                            'date' => $gDate1,
+                            'name' => $request->name,
+                            'family' => $request->family
+                        ]);
+                        if($q)
                         {
-                            $file = $request->image;
-                            $file->move(public_path(), $request->image->getClientOriginalName());
-                            $path = public_path() . '\\' . $request->image->getClientOriginalName();
-                            //dd($path);
-                            $image = file_get_contents($path);
-                            File::delete($path);
-                            $fileName = encrypt(base64_encode($image));
-                            $q =  DB::table('workers')->insert
-                            ([
-                                'card' => $fileName,
-                                'user_id' => Auth::user()->id,
-                                'date' => $gDate1,
-                                'name' => $request->name,
-                                'family' => $request->family
-                            ]);
-                            if($q)
-                            {
-                                return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
-                            }
-                        }else
-                            {
-                              return response('تاریخ وارد شده گذشته است');
-                            }
+                            return response('کارت کارگری مورد نظر شما با موفقیت ثبت گردید');
+                        }
+
                     }
                     else
                     {
@@ -623,11 +618,10 @@ class SupplyController extends Controller
                 return response('لطفا فایل عکس کارگری خود را انتخاب نمایید ، سپس درخواست خود را وارد نمایید');
             }
         }else
-            {
-                return response('لطفا تاریخ را بطور صحیح وارد نمایید، مثلا : 1396/05/01');
-            }
+        {
+            return response('لطفا تاریخ را بطور صحیح وارد نمایید، مثلا : 1396/05/01');
+        }
     }
-
 
     public function jalaliToGregorian($year, $month, $day)
     {
@@ -675,9 +669,9 @@ class SupplyController extends Controller
             }
             return response()->json(compact('data'));
         }else
-            {
-                return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
-            }
+        {
+            return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
+        }
 
     }
 
@@ -730,7 +724,7 @@ class SupplyController extends Controller
         }
         $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
 
-        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->get();
+        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
 
         foreach($productRequests as $productRequest)
         {
@@ -780,9 +774,19 @@ class SupplyController extends Controller
         $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',$step]])->get();
         foreach($requestRecords as $requestRecord)
         {
-            $requestRecord->title= decrypt($requestRecord->title);
-            $requestRecord->description= decrypt($requestRecord->description);
-            $requestRecord->unit_count= decrypt($requestRecord->unit_count);
+//decrypt
+            if(!empty($requestRecord->title))
+                $requestRecord->title=decrypt($requestRecord->title);
+            if(!empty($requestRecord->description))
+                $requestRecord->description=decrypt($requestRecord->description);
+            if(!empty($requestRecord->unit_count))
+                $requestRecord->unit_count=decrypt($requestRecord->unit_count);
+            if(!empty($requestRecord->price))
+                $requestRecord->price=decrypt($requestRecord->price);
+            if(!empty($requestRecord->rate))
+                $requestRecord->rate=decrypt($requestRecord->rate);
+            if(!empty($requestRecord->why_not))
+                $requestRecord->why_not=decrypt($requestRecord->why_not);
         }
         return view ('admin.productRequestRecords',compact('pageTitle','requestRecords','user'));
     }
@@ -892,7 +896,19 @@ class SupplyController extends Controller
         $requestRecords=$requestRecords->merge($requestRecords2);
         foreach($requestRecords as $requestRecord)
         {
-            $requestRecord->title=decrypt($requestRecord->title);
+            //decrypt
+            if(!empty($requestRecord->title))
+                $requestRecord->title=decrypt($requestRecord->title);
+            if(!empty($requestRecord->description))
+                $requestRecord->description=decrypt($requestRecord->description);
+            if(!empty($requestRecord->unit_count))
+                $requestRecord->unit_count=decrypt($requestRecord->unit_count);
+            if($requestRecord->price!=0)
+                $requestRecord->price=decrypt($requestRecord->price);
+            if($requestRecord->rate!=0)
+                $requestRecord->rate=decrypt($requestRecord->rate);
+            if(!empty($requestRecord->why_not))
+                $requestRecord->why_not=decrypt($requestRecord->why_not);
         }
 
         return view ('admin.serviceRequestRecords',compact('pageTitle','requestRecords','user'));
@@ -1124,9 +1140,9 @@ class SupplyController extends Controller
                 return response('قبلا به این پیام پاسخ داده اید،لطفا درخواست مجدد نفرمائید');
             }
         }else
-            {
-                return response('با توجه به اینکه این تیکت بسته شده است ، امکان ارسال پیام وجود ندارد ');
-            }
+        {
+            return response('با توجه به اینکه این تیکت بسته شده است ، امکان ارسال پیام وجود ندارد ');
+        }
 
 
     }
@@ -1206,9 +1222,10 @@ class SupplyController extends Controller
         $pageName='confirmedRequestDetails';
         $request=Request2::where([['id',$id],['active',1]])->get();
         $request_records=RequestRecord::where([['request_id',$id],['active',1]])->get();
+
         foreach($request as $item)
         {
-            $item->recquest_records=$request_records;
+            $item->request_records=$request_records;
 
             $item->date = $this->toPersian($item->created_at);
 
@@ -1221,9 +1238,8 @@ class SupplyController extends Controller
             $item->accept_count=$accept_count;
             $item->has_certificate_count=$has_certificate_count;
             $item->refuse_count=$refuse_count;
-
-
         }
+//dd($request);
         foreach($request_records as $requestRecord)
         {
             //decrypt
@@ -1239,8 +1255,13 @@ class SupplyController extends Controller
                 $requestRecord->rate=decrypt($requestRecord->rate);
             if(!empty($requestRecord->why_not))
                 $requestRecord->why_not=decrypt($requestRecord->why_not);
-        }
-//        dd($request);
+
+
+//            if(!empty($requestRecord->code))
+//                $requestRecord->code=decrypt($requestRecord->code);
+        } //
+
+
         return view('admin.confirmedRequest',compact('pageTitle','pageName','request'));
     }
 
@@ -1255,92 +1276,128 @@ class SupplyController extends Controller
 //            return view('admin.certificate.productRequestForm',compact('formContents','pageTitle'));
 //        }
 //        else {
-            $storageId = Unit::where('title', 'انبار')->value('id');
-            $storageSupervisorInfo = User::where([['unit_id', $storageId], ['is_supervisor', 1]])->get();
-            $storageSupervisorId = 0;
-            $storageSupervisorName = '';
-            $storageSupervisorFamily = '';
-            foreach ($storageSupervisorInfo as $storageSupervisorInf) {
-                $storageSupervisorId += $storageSupervisorInf->id;
-                $storageSupervisorName .= $storageSupervisorInf->name;
-                $storageSupervisorFamily .= $storageSupervisorInf->family;
-            }
-            $storageSupervisorFullName = $storageSupervisorName . chr(10) . $storageSupervisorFamily;
-            $storageSupervisorSignature = Signature::where('user_id', $storageSupervisorId)->value('signature');
+        $storageId = Unit::where('title', 'انبار')->value('id');
+        $storageSupervisorInfo = User::where([['unit_id', $storageId], ['is_supervisor', 1]])->get();
+        $storageSupervisorId = 0;
+        $storageSupervisorName = '';
+        $storageSupervisorFamily = '';
+        foreach ($storageSupervisorInfo as $storageSupervisorInf) {
+            $storageSupervisorId += $storageSupervisorInf->id;
+            $storageSupervisorName .= $storageSupervisorInf->name;
+            $storageSupervisorFamily .= $storageSupervisorInf->family;
+        }
+        $storageSupervisorFullName = $storageSupervisorName . chr(10) . $storageSupervisorFamily;
+        $storageSupervisorSignature = Signature::where('user_id', $storageSupervisorId)->value('signature');
+        if($storageSupervisorSignature != null)
+        {
             $storageSupervisorSignature = 'data:image/png;base64,' . decrypt($storageSupervisorSignature);
+        }
 
 
-            $originalJobId = Unit::where('title', 'امور عمومی')->value('id');
-            $originalJobSupervisorInfo = User::where([['unit_id', $originalJobId], ['is_supervisor', 1]])->get();
-            $originalJobSupervisorId = 0;
-            $originalJobSupervisorName = '';
-            $originalJobSupervisorFamily = '';
-            foreach ($originalJobSupervisorInfo as $originalJobSupervisorInf) {
-                $originalJobSupervisorId += $originalJobSupervisorInf->id;
-                $originalJobSupervisorName .= $originalJobSupervisorInf->name;
-                $originalJobSupervisorFamily .= $originalJobSupervisorInf->family;
-            }
-            $originalJobSupervisorFullName = $originalJobSupervisorName . chr(10) . $originalJobSupervisorFamily;
-            $originalJobSupervisorSignature = Signature::where('user_id', $originalJobSupervisorId)->value('signature');
+
+        $originalJobId = Unit::where('title', 'امور عمومی')->value('id');
+        $originalJobSupervisorInfo = User::where([['unit_id', $originalJobId], ['is_supervisor', 1]])->get();
+        $originalJobSupervisorId = 0;
+        $originalJobSupervisorName = '';
+        $originalJobSupervisorFamily = '';
+        foreach ($originalJobSupervisorInfo as $originalJobSupervisorInf) {
+            $originalJobSupervisorId += $originalJobSupervisorInf->id;
+            $originalJobSupervisorName .= $originalJobSupervisorInf->name;
+            $originalJobSupervisorFamily .= $originalJobSupervisorInf->family;
+        }
+        $originalJobSupervisorFullName = $originalJobSupervisorName . chr(10) . $originalJobSupervisorFamily;
+        $originalJobSupervisorSignature = Signature::where('user_id', $originalJobSupervisorId)->value('signature');
+        if($originalJobSupervisorSignature != null)
+        {
             $originalJobSupervisorSignature = 'data:image/png;base64,' . decrypt($originalJobSupervisorSignature);
+        }
 
-            $bossUnitId = Unit::where('title', 'ریاست')->value('id');
-            $bossInfo = User::where([['unit_id', $bossUnitId], ['is_supervisor', 1]])->get();
-            $bossId = 0;
-            $bossName = '';
-            $bossFamily = '';
-            foreach ($bossInfo as $bossInf) {
-                $bossId += $bossInf->id;
-                $bossName .= $bossInf->name;
-                $bossFamily .= $bossInf->family;
-            }
-            $bossFullName = $bossName . chr(10) . $bossFamily;
-            $bossSignature = Signature::where('user_id', $bossId)->value('signature');
+
+        $bossUnitId = Unit::where('title', 'ریاست')->value('id');
+        $bossInfo = User::where([['unit_id', $bossUnitId], ['is_supervisor', 1]])->get();
+        $bossId = 0;
+        $bossName = '';
+        $bossFamily = '';
+        foreach ($bossInfo as $bossInf) {
+            $bossId += $bossInf->id;
+            $bossName .= $bossInf->name;
+            $bossFamily .= $bossInf->family;
+        }
+        $bossFullName = $bossName . chr(10) . $bossFamily;
+        $bossSignature = Signature::where('user_id', $bossId)->value('signature');
+        if($bossSignature != null)
+        {
             $bossSignature = 'data:image/png;base64,' . decrypt($bossSignature);
+        }
 
 
-            $creditUnitId = Unit::where('title', 'اعتبار')->value('id');
-            $creditSupervisorInfo = User::where([['unit_id', $creditUnitId], ['is_supervisor', 1]])->get();
-            $creditSupervisorId = 0;
-            $creditSupervisorName = '';
-            $creditSupervisorFamily = '';
-            foreach ($creditSupervisorInfo as $creditSupervisorInf) {
-                $creditSupervisorId += $creditSupervisorInf->id;
-                $creditSupervisorName .= $creditSupervisorInf->name;
-                $creditSupervisorFamily .= $creditSupervisorInf->family;
-            }
-            $creditSupervisorFullName = $creditSupervisorName . chr(10) . $creditSupervisorFamily;
-            $creditSupervisorSignature = Signature::where('user_id', $creditSupervisorId)->value('signature');
+
+        $creditUnitId = Unit::where('title', 'اعتبار')->value('id');
+        $creditSupervisorInfo = User::where([['unit_id', $creditUnitId], ['is_supervisor', 1]])->get();
+        $creditSupervisorId = 0;
+        $creditSupervisorName = '';
+        $creditSupervisorFamily = '';
+        foreach ($creditSupervisorInfo as $creditSupervisorInf) {
+            $creditSupervisorId += $creditSupervisorInf->id;
+            $creditSupervisorName .= $creditSupervisorInf->name;
+            $creditSupervisorFamily .= $creditSupervisorInf->family;
+        }
+        $creditSupervisorFullName = $creditSupervisorName . chr(10) . $creditSupervisorFamily;
+        $creditSupervisorSignature = Signature::where('user_id', $creditSupervisorId)->value('signature');
+        if($creditSupervisorSignature != null)
+        {
             $creditSupervisorSignature = 'data:image/png;base64,' . decrypt($creditSupervisorSignature);
+        }
 
-            $financeUnitId = Unit::where('title', 'امور مالی')->value('id');
-            $financeSupervisorInfo = User::where([['unit_id', $financeUnitId], ['is_supervisor', 1]])->get();
-            $financeSupervisorId = 0;
-            $financeSupervisorName = '';
-            $financeSupervisorFamily = '';
-            foreach ($financeSupervisorInfo as $financeSupervisorInf) {
-                $financeSupervisorId = $financeSupervisorInf->id;
-                $financeSupervisorName = $financeSupervisorInf->name;
-                $financeSupervisorFamily = $financeSupervisorInf->family;
-            }
-            $financeSupervisorFullName = $financeSupervisorName . chr(10) . $financeSupervisorFamily;
-            $financeSupervisorSignature = Signature::where('user_id', $financeSupervisorId)->value('signature');
+
+        $financeUnitId = Unit::where('title', 'امور مالی')->value('id');
+        $financeSupervisorInfo = User::where([['unit_id', $financeUnitId], ['is_supervisor', 1]])->get();
+        $financeSupervisorId = 0;
+        $financeSupervisorName = '';
+        $financeSupervisorFamily = '';
+        foreach ($financeSupervisorInfo as $financeSupervisorInf) {
+            $financeSupervisorId = $financeSupervisorInf->id;
+            $financeSupervisorName = $financeSupervisorInf->name;
+            $financeSupervisorFamily = $financeSupervisorInf->family;
+        }
+        $financeSupervisorFullName = $financeSupervisorName . chr(10) . $financeSupervisorFamily;
+        $financeSupervisorSignature = Signature::where('user_id', $financeSupervisorId)->value('signature');
+        if($financeSupervisorSignature != null )
+        {
             $financeSupervisorSignature = 'data:image/png;base64,' . decrypt($financeSupervisorSignature);
+        }
 
-            $pageTitle = 'نسخه چاپی گواهی';
-            $productRequestRecords = RequestRecord::where([['request_id', $id], ['accept', 1]])->get();
-            $sum = 0;
-            foreach ($productRequestRecords as $productRequestRecord) {
-                $sum += $productRequestRecord->rate * $productRequestRecord->count;
-            }
 
-            return view('admin.certificate.productRequestForm', compact('pageTitle', 'productRequestRecords', 'sum', 'storageSupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'storageSupervisorFullName', 'originalJobSupervisorFullName', 'bossFullName', 'creditSupervisorFullName', 'financeSupervisorFullName'));
-      //  }
+        $pageTitle = 'نسخه چاپی گواهی';
+        $productRequestRecords = RequestRecord::where([['request_id', $id], ['accept', 1]])->get();
+        $sum = 0;
+        foreach ($productRequestRecords as $productRequestRecord) {
+            $sum += decrypt($productRequestRecord->rate) * $productRequestRecord->count;
+            //dd($sum);
+            if(!empty($productRequestRecord->title))
+                $productRequestRecord->title=decrypt($productRequestRecord->title);
+            if(!empty($productRequestRecord->description))
+                $productRequestRecord->description=decrypt($productRequestRecord->description);
+            if(!empty($productRequestRecord->unit_count))
+                $productRequestRecord->unit_count=decrypt($productRequestRecord->unit_count);
+            if(!empty($productRequestRecord->price))
+                $productRequestRecord->price=decrypt($productRequestRecord->price);
+            if(!empty($productRequestRecord->code))
+                $productRequestRecord->code=decrypt($productRequestRecord->code);
+            if(!empty($productRequestRecord->rate))
+                $productRequestRecord->rate=decrypt($productRequestRecord->rate);
+            if(!empty($productRequestRecord->why_not))
+                $productRequestRecord->why_not=decrypt($productRequestRecord->why_not);
+        }
+//dd($productRequestRecords);
+        return view('admin.certificate.productRequestForm', compact('pageTitle', 'productRequestRecords', 'sum', 'storageSupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'storageSupervisorFullName', 'originalJobSupervisorFullName', 'bossFullName', 'creditSupervisorFullName', 'financeSupervisorFullName'));
+        //  }
     }
 
     //shiri : below function is related to print service_request_form
     public function printServiceRequest($id)
     {
+        //dd('hello');
 //        $formExistence = Request2::where('id',$id)->value('request_form_id');
 //        if($formExistence != 0)
 //        {
@@ -1350,96 +1407,128 @@ class SupplyController extends Controller
 //        }
 //        else
 //            {
-            $supplyId = Unit::where('title', 'تدارکات')->value('id');
-            $supplySupervisorInfo = User::where([['unit_id', $supplyId], ['is_supervisor', 1]])->get();
-            $supplySupervisorId = 0;
-            $supplySupervisorName = '';
-            $supplySupervisorFamily = '';
-            foreach ($supplySupervisorInfo as $supplySupervisorInf) {
-                $supplySupervisorId += $supplySupervisorInf->id;
-                $supplySupervisorName .= $supplySupervisorInf->name;
-                $supplySupervisorFamily .= $supplySupervisorInf->family;
-            }
-           // dd($supplySupervisorId);
-            $supplySupervisorSignature = Signature::where('user_id', $supplySupervisorId)->value('signature');
-            //dd($supplySupervisorSignature);
-           // $supplySupervisorSignature = 'data:image/png;base64,' . decrypt($supplySupervisorSignature);
+
+        $supplyId = Unit::where('title', 'تدارکات')->value('id');
+        $supplySupervisorInfo = User::where([['unit_id', $supplyId], ['is_supervisor', 1]])->get();
+        $supplySupervisorId = 0;
+        $supplySupervisorName = '';
+        $supplySupervisorFamily = '';
+        foreach ($supplySupervisorInfo as $supplySupervisorInf) {
+            $supplySupervisorId += $supplySupervisorInf->id;
+            $supplySupervisorName .= $supplySupervisorInf->name;
+            $supplySupervisorFamily .= $supplySupervisorInf->family;
+        }
+        $supplySupervisorSignature = Signature::where('user_id', $supplySupervisorId)->value('signature');
+        if($supplySupervisorSignature != null)
+        {
+            $supplySupervisorSignature = 'data:image/png;base64,' . decrypt($supplySupervisorSignature);
+        }
             $supplySupervisorFullName = $supplySupervisorName . chr(10) . $supplySupervisorFamily;
 
 
-            $bossUnitId = Unit::where('title', 'ریاست')->value('id');
-            $bossInfo = User::where([['unit_id', $bossUnitId], ['is_supervisor', 1]])->get();
-            $bossId = 0;
-            $bossName = '';
-            $bossFamily = '';
-            foreach ($bossInfo as $bossInf) {
-                $bossId += $bossInf->id;
-                $bossName .= $bossInf->name;
-                $bossFamily .= $bossInf->family;
-            }
-            $bossFullName = $bossName . chr(10) . $bossFamily;
-            $bossSignature = Signature::where('user_id', $bossId)->value('signature');
-           // $bossSignature = 'data:image/png;base64,' . decrypt($bossSignature);
+        $bossUnitId = Unit::where('title', 'ریاست')->value('id');
+        $bossInfo = User::where([['unit_id', $bossUnitId], ['is_supervisor', 1]])->get();
+        $bossId = 0;
+        $bossName = '';
+        $bossFamily = '';
+        foreach ($bossInfo as $bossInf) {
+            $bossId += $bossInf->id;
+            $bossName .= $bossInf->name;
+            $bossFamily .= $bossInf->family;
+        }
+        $bossFullName = $bossName . chr(10) . $bossFamily;
+        $bossSignature = Signature::where('user_id', $bossId)->value('signature');
+        if($bossSignature != null)
+        {
+            $bossSignature = 'data:image/png;base64,' . decrypt($bossSignature);
+        }
 
-            $creditUnitId = Unit::where('title', 'اعتبار')->value('id');
-            $creditSupervisorInfo = User::where([['unit_id', $creditUnitId], ['is_supervisor', 1]])->get();
-            $creditSupervisorId = 0;
-            $creditSupervisorName = '';
-            $creditSupervisorFamily = '';
-            foreach ($creditSupervisorInfo as $creditSupervisorInf) {
-                $creditSupervisorId += $creditSupervisorInf->id;
-                $creditSupervisorName .= $creditSupervisorInf->name;
-                $creditSupervisorFamily .= $creditSupervisorInf->family;
-            }
-            $creditSupervisorFullName = $creditSupervisorName . chr(10) . $creditSupervisorFamily;
-            $creditSupervisorSignature = Signature::where('user_id', $creditSupervisorId)->value('signature');
-           // $creditSupervisorSignature = 'data:image/png;base64,' . decrypt($creditSupervisorSignature);
+        $creditUnitId = Unit::where('title', 'اعتبار')->value('id');
+        $creditSupervisorInfo = User::where([['unit_id', $creditUnitId], ['is_supervisor', 1]])->get();
+        $creditSupervisorId = 0;
+        $creditSupervisorName = '';
+        $creditSupervisorFamily = '';
 
-            $financeUnitId = Unit::where('title', 'امور مالی')->value('id');
-            $financeSupervisorInfo = User::where([['unit_id', $financeUnitId], ['is_supervisor', 1]])->get();
-            $financeSupervisorId = 0;
-            $financeSupervisorName = '';
-            $financeSupervisorFamily = '';
-            foreach ($financeSupervisorInfo as $financeSupervisorInf) {
-                $financeSupervisorId = $financeSupervisorInf->id;
-                $financeSupervisorName = $financeSupervisorInf->name;
-                $financeSupervisorFamily = $financeSupervisorInf->family;
-            }
-            $financeSupervisorFullName = $financeSupervisorName . chr(10) . $financeSupervisorFamily;
-            $financeSupervisorSignature = Signature::where('user_id', $financeSupervisorId)->value('signature');
-           // $financeSupervisorSignature = 'data:image/png;base64,' . decrypt($financeSupervisorSignature);
+        foreach ($creditSupervisorInfo as $creditSupervisorInf) {
+            $creditSupervisorId += $creditSupervisorInf->id;
+            $creditSupervisorName .= $creditSupervisorInf->name;
+            $creditSupervisorFamily .= $creditSupervisorInf->family;
+        }
 
-            $pageTitle = 'نسخه چاپی گواهی';
-            $productRequestRecords = RequestRecord::where([['request_id', $id], ['accept', 1]])->get();
-            $sum = 0;
-            $unitName = '';
-            $unitId = 0;
-            $requestNumber = 0;
-            $date = '';
-            foreach ($productRequestRecords as $productRequestRecord) {
-             //   $sum += $productRequestRecord->rate * $productRequestRecord->count;
-                if ($unitName == '' && $requestNumber == 0 && $date == '' && $unitId == 0) {
-                    $unitName .= $productRequestRecord->request->unit->title;
-                    $requestNumber += $productRequestRecord->id;
-                    $date .= $this->toPersian($productRequestRecord->request->created_at->toDateString());
-                    $unitId += $productRequestRecord->request->unit_id;
+        $creditSupervisorFullName = $creditSupervisorName . chr(10) . $creditSupervisorFamily;
+        $creditSupervisorSignature = Signature::where('user_id', $creditSupervisorId)->value('signature');
+        if($creditSupervisorSignature != null)
+        {
+            $creditSupervisorSignature = 'data:image/png;base64,' . decrypt($creditSupervisorSignature);
+        }
 
-                }
+        $financeUnitId = Unit::where('title', 'امور مالی')->value('id');
+        $financeSupervisorInfo = User::where([['unit_id', $financeUnitId], ['is_supervisor', 1]])->get();
+        $financeSupervisorId = 0;
+        $financeSupervisorName = '';
+        $financeSupervisorFamily = '';
+        foreach ($financeSupervisorInfo as $financeSupervisorInf) {
+            $financeSupervisorId = $financeSupervisorInf->id;
+            $financeSupervisorName = $financeSupervisorInf->name;
+            $financeSupervisorFamily = $financeSupervisorInf->family;
+        }
+        $financeSupervisorFullName = $financeSupervisorName . chr(10) . $financeSupervisorFamily;
+        $financeSupervisorSignature = Signature::where('user_id', $financeSupervisorId)->value('signature');
+        if($financeSupervisorSignature != null)
+        {
+            $financeSupervisorSignature = 'data:image/png;base64,' . decrypt($financeSupervisorSignature);
+        }
+
+
+        $pageTitle = 'نسخه چاپی گواهی';
+        $productRequestRecords = RequestRecord::where([['request_id', $id], ['accept', 1]])->get();
+        $sum = 0;
+        $unitName = '';
+        $unitId = 0;
+        $requestNumber = 0;
+        $date = '';
+        foreach ($productRequestRecords as $productRequestRecord) {
+//            $productRequestRecord->rate=decrypt($productRequestRecord->rate);
+            if(!empty($productRequestRecord->title))
+                $productRequestRecord->title=decrypt($productRequestRecord->title);
+            if(!empty($productRequestRecord->description))
+                $productRequestRecord->description=decrypt($productRequestRecord->description);
+            if(!empty($productRequestRecord->unit_count))
+                $productRequestRecord->unit_count=decrypt($productRequestRecord->unit_count);
+            if(!empty($productRequestRecord->price))
+                $productRequestRecord->price=decrypt($productRequestRecord->price);
+            if(!empty($productRequestRecord->rate))
+                $productRequestRecord->rate=decrypt($productRequestRecord->rate);
+            if(!empty($productRequestRecord->why_not))
+                $productRequestRecord->why_not=decrypt($productRequestRecord->why_not);
+            $sum += $productRequestRecord->rate * $productRequestRecord->count;
+            //dd($sum);
+            if ($unitName == '' && $requestNumber == 0 && $date == '' && $unitId == 0) {
+                $unitName .= $productRequestRecord->request->unit->title;
+                $requestNumber += $productRequestRecord->id;
+                $date .= $this->toPersian($productRequestRecord->request->created_at->toDateString());
+                $unitId += $productRequestRecord->request->unit_id;
+
             }
-            $unitSupervisorInfo = User::where([['unit_id', $unitId], ['is_supervisor', 1]])->get();
-            $unitSupervisorId = 0;
-            $unitSupervisorName = '';
-            $unitSupervisorFamily = '';
-            foreach ($unitSupervisorInfo as $unitSupervisorInf) {
-                $unitSupervisorId += $unitSupervisorInf->id;
-                $unitSupervisorName .= $unitSupervisorInf->name;
-                $unitSupervisorFamily .= $unitSupervisorInf->family;
-            }
-            $unitSupervisorFullName = $unitSupervisorName . chr(10) . $unitSupervisorFamily;
-            $unitSupervisorSignature = Signature::where('user_id', $unitSupervisorId)->value('signature');
-           // $unitSupervisorSignature = 'data:image/png;base64,' . decrypt($unitSupervisorSignature);
-            return view('admin.certificate.serviceRequestForm', compact('productRequestRecords', 'pageTitle', 'sum', 'unitName', 'requestNumber', 'date', 'supplySupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'creditSupervisorFullName', 'financeSupervisorFullName', 'bossFullName', 'supplySupervisorFullName', 'unitSupervisorName', 'unitSupervisorFullName', 'unitSupervisorSignature'));
-      //  }
+        }
+
+        $unitSupervisorInfo = User::where([['unit_id', $unitId], ['is_supervisor', 1]])->get();
+        $unitSupervisorId = 0;
+        $unitSupervisorName = '';
+        $unitSupervisorFamily = '';
+        foreach ($unitSupervisorInfo as $unitSupervisorInf) {
+            $unitSupervisorId += $unitSupervisorInf->id;
+            $unitSupervisorName .= $unitSupervisorInf->name;
+            $unitSupervisorFamily .= $unitSupervisorInf->family;
+        }
+        $unitSupervisorFullName = $unitSupervisorName . chr(10) . $unitSupervisorFamily;
+        $unitSupervisorSignature = Signature::where('user_id', $unitSupervisorId)->value('signature');
+        if($unitSupervisorSignature != null)
+        {
+            $unitSupervisorSignature = 'data:image/png;base64,' . decrypt($unitSupervisorSignature);
+        }
+        return view('admin.certificate.serviceRequestForm', compact('productRequestRecords', 'pageTitle', 'sum', 'unitName', 'requestNumber', 'date', 'supplySupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'creditSupervisorFullName', 'financeSupervisorFullName', 'bossFullName', 'supplySupervisorFullName', 'unitSupervisorName', 'unitSupervisorFullName', 'unitSupervisorSignature'));
+        //  }
     }
 
     //shiri : below function is related to export delivery and install certificate
@@ -1454,87 +1543,94 @@ class SupplyController extends Controller
 //        }
 //        else
 //            {
-                $bossUnitId = Unit::where('title','ریاست')->value('id');
-                $bossInfo = User::where([['unit_id',$bossUnitId],['is_supervisor',1]])->get();
-                $bossId = 0;
-                $bossName = '';
-                $bossFamily = '';
-                foreach ($bossInfo as $bossInf)
-                {
-                    $bossId += $bossInf->id;
-                    $bossName .= $bossInf->name;
-                    $bossFamily .= $bossInf->family;
-                }
-                $bossFullName = $bossName .chr(10).$bossFamily;
-                $bossSignature = Signature::where('user_id',$bossId)->value('signature');
-                $bossSignature = 'data:image/png;base64,'.decrypt($bossSignature);
+        $bossUnitId = Unit::where('title','ریاست')->value('id');
+        $bossInfo = User::where([['unit_id',$bossUnitId],['is_supervisor',1]])->get();
+        $bossId = 0;
+        $bossName = '';
+        $bossFamily = '';
+        foreach ($bossInfo as $bossInf)
+        {
+            $bossId += $bossInf->id;
+            $bossName .= $bossInf->name;
+            $bossFamily .= $bossInf->family;
+        }
+        $bossFullName = $bossName .chr(10).$bossFamily;
+        $bossSignature = Signature::where('user_id',$bossId)->value('signature');
+        $bossSignature = 'data:image/png;base64,'.decrypt($bossSignature);
 
 
-                $certificates = Certificate::where('id',$id)->get();
-                $shopComp  = '';
-                $requestId = 0;
-                $date      = '';
-                $certificateId = 0;
-                foreach ($certificates as $certificate)
-                {
-                    $shopComp       .= $certificate->shop_comp;
-                    $requestId      += $certificate->request_id;
-                    $date           .= $this->toPersian($certificate->created_at->toDateString());
-                    $certificateId  += $certificate->id;
-                }
-                //$certificateId        = Certificate::where('request_id',$id)->pluck('id');
-                $unitId               = Request2::where('id',$requestId)->value('unit_id');
-                $certificateRecords = CertificateRecord::where('certificate_id',$id)->get();
-                $unitName = Unit::where('id',$unitId)->value('title');
-                $sum = 0;
-                $receiverId = 0;
-                $receiverName   = '';
-                $receiverFamily = '';
-                $supplierId     = 0;
-                foreach ($certificateRecords as $certificateRecord)
-                {
-                    $sum += $certificateRecord->count * $certificateRecord->rate;
-                    if($receiverName == '' && $receiverFamily == '')
-                    {
-                        $receiverId     += $certificateRecord->user->id;
-                        $receiverName   .= $certificateRecord->user->name;
-                        $receiverFamily .= $certificateRecord->user->family;
-                        $supplierId     += $certificateRecord->certificate->request->supplier_id;
-                    }
+        $certificates = Certificate::where('id',$id)->get();
+        $shopComp  = '';
+        $requestId = 0;
+        $date      = '';
+        $certificateId = 0;
+        foreach ($certificates as $certificate)
+        {
+            $shopComp       .= decrypt($certificate->shop_comp);
+            $requestId      += $certificate->request_id;
+            $date           .= $this->toPersian($certificate->created_at->toDateString());
+            $certificateId  += $certificate->id;
+        }
+        //$certificateId        = Certificate::where('request_id',$id)->pluck('id');
+        $unitId               = Request2::where('id',$requestId)->value('unit_id');
+        $certificateRecords = CertificateRecord::where('certificate_id',$id)->get();
+        foreach($certificateRecords as $certificateRecord)
+        {
+            $certificateRecord->price=decrypt($certificateRecord->price);
+            $certificateRecord->rate=decrypt($certificateRecord->rate);
+            $certificateRecord->unit_count=decrypt($certificateRecord->unit_count);
+        }
+//        dd($certificateRecords);
+        $unitName = Unit::where('id',$unitId)->value('title');
+        $sum = 0;
+        $receiverId = 0;
+        $receiverName   = '';
+        $receiverFamily = '';
+        $supplierId     = 0;
+        foreach ($certificateRecords as $certificateRecord)
+        {
+            $sum += $certificateRecord->count * $certificateRecord->rate;
+            if($receiverName == '' && $receiverFamily == '')
+            {
+                $receiverId     += $certificateRecord->user->id;
+                $receiverName   .= $certificateRecord->user->name;
+                $receiverFamily .= $certificateRecord->user->family;
+                $supplierId     += $certificateRecord->certificate->request->supplier_id;
+            }
 
-                }
+        }
 
-                $receiverSignature = Signature::where('user_id',$receiverId)->value('signature');
-                $receiverSignature = 'data:image/png;base64,'.decrypt($receiverSignature);
-                $receiverFullName = $receiverName .chr(10).$receiverFamily;
+        $receiverSignature = Signature::where('user_id',$receiverId)->value('signature');
+        $receiverSignature = 'data:image/png;base64,'.decrypt($receiverSignature);
+        $receiverFullName = $receiverName .chr(10).$receiverFamily;
 
 
-                $supplierName = User::where('id',$supplierId)->value('name');
-                $supplierFamily = User::where('id',$supplierId)->value('family');
-                $supplierFullName = $supplierName .chr(10).$supplierFamily;
-                $supplierSignature = Signature::where('user_id',$supplierId)->value('signature');
-                $supplierSignature = 'data:image/png;base64,'.decrypt($supplierSignature);
+        $supplierName = User::where('id',$supplierId)->value('name');
+        $supplierFamily = User::where('id',$supplierId)->value('family');
+        $supplierFullName = $supplierName .chr(10).$supplierFamily;
+        $supplierSignature = Signature::where('user_id',$supplierId)->value('signature');
+        $supplierSignature = 'data:image/png;base64,'.decrypt($supplierSignature);
 
-                $unitSupervisorInfo = User::where([['unit_id',$unitId],['is_supervisor',1]])->get();
-                $unitSupervisorId = 0;
-                $unitSupervisorName = '';
-                $unitSupervisorFamily = '';
-                foreach ($unitSupervisorInfo as $unitSupervisorInf)
-                {
-                    $unitSupervisorId     +=$unitSupervisorInf->id;
-                    $unitSupervisorName   .= $unitSupervisorInf->name;
-                    $unitSupervisorFamily .= $unitSupervisorInf->family;
-                }
-                $unitSupervisorFullName = $unitSupervisorName .chr(10).$unitSupervisorFamily;
-                $unitSupervisorSignature = Signature::where('user_id',$unitSupervisorId)->value('signature');
-                $unitSupervisorSignature = 'data:image/png;base64,'.decrypt($unitSupervisorSignature);
-                return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitleInstall','pageTitleUse','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
-          //  }
+        $unitSupervisorInfo = User::where([['unit_id',$unitId],['is_supervisor',1]])->get();
+        $unitSupervisorId = 0;
+        $unitSupervisorName = '';
+        $unitSupervisorFamily = '';
+        foreach ($unitSupervisorInfo as $unitSupervisorInf)
+        {
+            $unitSupervisorId     +=$unitSupervisorInf->id;
+            $unitSupervisorName   .= $unitSupervisorInf->name;
+            $unitSupervisorFamily .= $unitSupervisorInf->family;
+        }
+        $unitSupervisorFullName = $unitSupervisorName .chr(10).$unitSupervisorFamily;
+        $unitSupervisorSignature = Signature::where('user_id',$unitSupervisorId)->value('signature');
+        $unitSupervisorSignature = 'data:image/png;base64,'.decrypt($unitSupervisorSignature);
+        return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitleInstall','pageTitleUse','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
+        //  }
     }
 
 
     //shiri : below function is related to save forms
-   public function formSave(Request $request,$id)
+    public function formSave(Request $request,$id)
     {
 
         $userId = Auth::user()->id;
@@ -1554,27 +1650,27 @@ class SupplyController extends Controller
                         return response('لطفا برای چاپ فرم کلیک نمایید');
                     }
                 }else
+                {
+                    $newFactorFormId = DB::table('forms')->insertGetId
+                    ([
+                        'title'       => 'فرم خلاصه تنظیمی',
+                        'request_id'  => $request->requestId,
+                        'print_count' =>  1
+                    ]);
+                    if($newFactorFormId > 0)
                     {
-                        $newFactorFormId = DB::table('forms')->insertGetId
+                        $factorFormId = Request2::where('id',$request->requestId)->update(['factor_form_id' => $newFactorFormId]);
+                        $formPrintId = DB::table('print_form')->insertGetId
                         ([
-                            'title'       => 'فرم خلاصه تنظیمی',
-                            'request_id'  => $request->requestId,
-                            'print_count' =>  1
-                        ]);
-                        if($newFactorFormId > 0)
-                        {
-                            $factorFormId = Request2::where('id',$request->requestId)->update(['factor_form_id' => $newFactorFormId]);
-                            $formPrintId = DB::table('print_form')->insertGetId
-                            ([
 
-                                'form_id'    => $newFactorFormId,
-                                'printed_by' => $userId,
-                            ]);
-                            if ($factorFormId && $formPrintId) {
-                                return response('لطفا برای چاپ فرم کلیک نمایید');
-                            }
+                            'form_id'    => $newFactorFormId,
+                            'printed_by' => $userId,
+                        ]);
+                        if ($factorFormId && $formPrintId) {
+                            return response('لطفا برای چاپ فرم کلیک نمایید');
                         }
                     }
+                }
                 break;
 
             case 2:
@@ -1583,37 +1679,37 @@ class SupplyController extends Controller
                 {
                     $update = Form::where('id',$oldRequestFormId)->increment('print_count');
                     $formPrintId = DB::table('print_form')->insertGetId
-                        ([
+                    ([
 
-                            'form_id'    => $oldRequestFormId,
-                            'printed_by' => $userId,
-                        ]);
-                        if ($update && $formPrintId) {
-                            return response('لطفا برای چاپ فرم کلیک نمایید');
-                        }
+                        'form_id'    => $oldRequestFormId,
+                        'printed_by' => $userId,
+                    ]);
+                    if ($update && $formPrintId) {
+                        return response('لطفا برای چاپ فرم کلیک نمایید');
+                    }
 
                 }else
+                {
+                    $newRequestFormId = DB::table('forms')->insertGetId
+                    ([
+                        'title'       => 'فرم درخواست',
+                        'request_id'  => $request->requestId,
+                        'print_count' =>  1
+                    ]);
+                    if($newRequestFormId > 0)
                     {
-                        $newRequestFormId = DB::table('forms')->insertGetId
+                        $requestFormId = Request2::where('id',$request->requestId)->update(['request_form_id' => $newRequestFormId]);
+                        $formPrintId = DB::table('print_form')->insertGetId
                         ([
-                            'title'       => 'فرم درخواست',
-                            'request_id'  => $request->requestId,
-                            'print_count' =>  1
-                        ]);
-                        if($newRequestFormId > 0)
-                        {
-                            $requestFormId = Request2::where('id',$request->requestId)->update(['request_form_id' => $newRequestFormId]);
-                            $formPrintId = DB::table('print_form')->insertGetId
-                            ([
 
-                                'form_id'    => $newRequestFormId,
-                                'printed_by' => $userId,
-                            ]);
-                            if ($requestFormId && $formPrintId) {
-                                return response('لطفا برای چاپ فرم کلیک نمایید');
-                            }
+                            'form_id'    => $newRequestFormId,
+                            'printed_by' => $userId,
+                        ]);
+                        if ($requestFormId && $formPrintId) {
+                            return response('لطفا برای چاپ فرم کلیک نمایید');
                         }
                     }
+                }
                 break;
             case 3:
                 $oldFormId = Form::where('certificate_id', $request->certificateId)->value('id');
@@ -1716,9 +1812,9 @@ class SupplyController extends Controller
             $refuse_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null],['active',0]])->count();
             if($all_count==($accept_count+$refuse_count))
             {
-                    $q=DB::table('requests')->where('id',$productRequest->id)->update([
-                        'active'=>1
-                    ]);
+                $q=DB::table('requests')->where('id',$productRequest->id)->update([
+                    'active'=>1
+                ]);
 //                $productRequest->msg='Yes';
 
             }
@@ -1743,9 +1839,9 @@ class SupplyController extends Controller
                 $finished_c_count=CertificateRecord::where([['certificate_id',$certificate->id],['step',5]])->count();
                 if($all_c_count==$finished_c_count)
                 {
-                        $q=Certificate::where('id',$certificate->id)->update([
-                            'active'=>1
-                        ]);
+                    $q=Certificate::where('id',$certificate->id)->update([
+                        'active'=>1
+                    ]);
                 }
             }
         }
@@ -1849,11 +1945,17 @@ class SupplyController extends Controller
     public function showCertificates($id)
     {
         $pageTitle    = 'لیست گواهی ها';
-        $certificates = Certificate::where('request_id',$id)->get();
+        $certificates = Certificate::where([['request_id',$id],['active',1]])->get();
+        foreach($certificates as $certificate)
+        {
+//decrypt
+            if(!empty($certificate->shop_comp))
+                $certificate->shop_comp=decrypt($certificate->shop_comp);
+        }
         return view('admin.certificate.showCertificates',compact('certificates','pageTitle'));
     }
-   
-  //
+
+    //
     public function printServiceDeliveryForm($id)
     {
         //dd($id);
@@ -1866,83 +1968,83 @@ class SupplyController extends Controller
 //        }
 //        else {
 
-            $supplyId = Unit::where('title', 'تدارکات')->value('id');
-            $supplySupervisorInfo = User::where([['unit_id', $supplyId], ['is_supervisor', 1]])->get();
-            $supplySupervisorId = 0;
-            $supplySupervisorName = '';
-            $supplySupervisorFamily = '';
-            foreach ($supplySupervisorInfo as $supplySupervisorInf) {
-                $supplySupervisorId += $supplySupervisorInf->id;
-                $supplySupervisorName .= $supplySupervisorInf->name;
-                $supplySupervisorFamily .= $supplySupervisorInf->family;
+        $supplyId = Unit::where('title', 'تدارکات')->value('id');
+        $supplySupervisorInfo = User::where([['unit_id', $supplyId], ['is_supervisor', 1]])->get();
+        $supplySupervisorId = 0;
+        $supplySupervisorName = '';
+        $supplySupervisorFamily = '';
+        foreach ($supplySupervisorInfo as $supplySupervisorInf) {
+            $supplySupervisorId += $supplySupervisorInf->id;
+            $supplySupervisorName .= $supplySupervisorInf->name;
+            $supplySupervisorFamily .= $supplySupervisorInf->family;
+        }
+        $supplySupervisorSignature = Signature::where('user_id', $supplySupervisorId)->value('signature');
+        $supplySupervisorSignature = 'data:image/png;base64,' . decrypt($supplySupervisorSignature);
+        $supplySupervisorFullName = $supplySupervisorName . chr(10) . $supplySupervisorFamily;
+
+        $bossUnitId = Unit::where('title', 'ریاست')->value('id');
+        $bossInfo = User::where([['unit_id', $bossUnitId], ['is_supervisor', 1]])->get();
+        $bossId = 0;
+        $bossName = '';
+        $bossFamily = '';
+        foreach ($bossInfo as $bossInf) {
+            $bossId += $bossInf->id;
+            $bossName .= $bossInf->name;
+            $bossFamily .= $bossInf->family;
+        }
+        $bossFullName = $bossName . chr(10) . $bossFamily;
+        $bossSignature = Signature::where('user_id', $bossId)->value('signature');
+        $bossSignature = 'data:image/png;base64,' . decrypt($bossSignature);
+
+
+        $certificates = Certificate::where('id', $id)->get();
+        $shopComp = '';
+        $requestId = 0;
+
+        foreach ($certificates as $certificate) {
+            $shopComp .= $certificate->shop_comp;
+            $requestId += $certificate->request_id;
+
+        }
+        $pageTitle = 'صدور گواهی تحویل و نصب';
+        $unitId = Request2::where('id', $requestId)->value('unit_id');
+        $certificateRecords = CertificateRecord::where('certificate_id', $id)->get();
+        $unitName = Unit::where('id', $unitId)->value('title');
+        $sum = 0;
+        $receiverId = 0;
+        $receiverName = '';
+        $receiverFamily = '';
+        $requestId = 0;
+        foreach ($certificateRecords as $certificateRecord) {
+            $sum += $certificateRecord->count * $certificateRecord->rate;
+            if ($receiverName == '' && $receiverFamily == '') {
+                $receiverId += $certificateRecord->user->id;
+                $receiverName .= $certificateRecord->user->name;
+                $receiverFamily .= $certificateRecord->user->family;
+                $requestId += $certificateRecord->certificate->request_id;
             }
-            $supplySupervisorSignature = Signature::where('user_id', $supplySupervisorId)->value('signature');
-            $supplySupervisorSignature = 'data:image/png;base64,' . decrypt($supplySupervisorSignature);
-            $supplySupervisorFullName = $supplySupervisorName . chr(10) . $supplySupervisorFamily;
 
-            $bossUnitId = Unit::where('title', 'ریاست')->value('id');
-            $bossInfo = User::where([['unit_id', $bossUnitId], ['is_supervisor', 1]])->get();
-            $bossId = 0;
-            $bossName = '';
-            $bossFamily = '';
-            foreach ($bossInfo as $bossInf) {
-                $bossId += $bossInf->id;
-                $bossName .= $bossInf->name;
-                $bossFamily .= $bossInf->family;
-            }
-            $bossFullName = $bossName . chr(10) . $bossFamily;
-            $bossSignature = Signature::where('user_id', $bossId)->value('signature');
-            $bossSignature = 'data:image/png;base64,' . decrypt($bossSignature);
+        }
+        $receiverSignature = Signature::where('user_id', $receiverId)->value('signature');
+        $receiverSignature = 'data:image/png;base64,' . decrypt($receiverSignature);
+        $receiverFullName = $receiverName . chr(10) . $receiverFamily;
 
-
-            $certificates = Certificate::where('id', $id)->get();
-            $shopComp = '';
-            $requestId = 0;
-
-            foreach ($certificates as $certificate) {
-                $shopComp .= $certificate->shop_comp;
-                $requestId += $certificate->request_id;
-
-            }
-            $pageTitle = 'صدور گواهی تحویل و نصب';
-            $unitId = Request2::where('id', $requestId)->value('unit_id');
-            $certificateRecords = CertificateRecord::where('certificate_id', $id)->get();
-            $unitName = Unit::where('id', $unitId)->value('title');
-            $sum = 0;
-            $receiverId = 0;
-            $receiverName = '';
-            $receiverFamily = '';
-            $requestId = 0;
-            foreach ($certificateRecords as $certificateRecord) {
-                $sum += $certificateRecord->count * $certificateRecord->rate;
-                if ($receiverName == '' && $receiverFamily == '') {
-                    $receiverId += $certificateRecord->user->id;
-                    $receiverName .= $certificateRecord->user->name;
-                    $receiverFamily .= $certificateRecord->user->family;
-                    $requestId += $certificateRecord->certificate->request_id;
-                }
-
-            }
-            $receiverSignature = Signature::where('user_id', $receiverId)->value('signature');
-            $receiverSignature = 'data:image/png;base64,' . decrypt($receiverSignature);
-            $receiverFullName = $receiverName . chr(10) . $receiverFamily;
-
-            $unitSupervisorInfo = User::where([['unit_id', $unitId], ['is_supervisor', 1]])->get();
-            $unitSupervisorId = 0;
-            $unitSupervisorName = '';
-            $unitSupervisorFamily = '';
-            foreach ($unitSupervisorInfo as $unitSupervisorInf) {
-                $unitSupervisorId += $unitSupervisorInf->id;
-                $unitSupervisorName .= $unitSupervisorInf->name;
-                $unitSupervisorFamily .= $unitSupervisorInf->family;
-            }
-            $unitSupervisorFullName = $unitSupervisorName . chr(10) . $unitSupervisorFamily;
-            $unitSupervisorSignature = Signature::where('user_id', $unitSupervisorId)->value('signature');
-            $unitSupervisorSignature = 'data:image/png;base64,' . decrypt($unitSupervisorSignature);
-            return view('admin.certificate.serviceDeliveryForm', compact('supplySupervisorFullName', 'bossFullName', 'bossSignature', 'supplySupervisorSignature', 'unitSupervisorFullName', 'unitSupervisorSignature', 'certificateRecords', 'shopComp', 'requestId', 'pageTitle', 'unitName', 'receiverFullName', 'sum', 'receiverSignature', 'requestId'));
-      //  }
+        $unitSupervisorInfo = User::where([['unit_id', $unitId], ['is_supervisor', 1]])->get();
+        $unitSupervisorId = 0;
+        $unitSupervisorName = '';
+        $unitSupervisorFamily = '';
+        foreach ($unitSupervisorInfo as $unitSupervisorInf) {
+            $unitSupervisorId += $unitSupervisorInf->id;
+            $unitSupervisorName .= $unitSupervisorInf->name;
+            $unitSupervisorFamily .= $unitSupervisorInf->family;
+        }
+        $unitSupervisorFullName = $unitSupervisorName . chr(10) . $unitSupervisorFamily;
+        $unitSupervisorSignature = Signature::where('user_id', $unitSupervisorId)->value('signature');
+        $unitSupervisorSignature = 'data:image/png;base64,' . decrypt($unitSupervisorSignature);
+        return view('admin.certificate.serviceDeliveryForm', compact('supplySupervisorFullName', 'bossFullName', 'bossSignature', 'supplySupervisorSignature', 'unitSupervisorFullName', 'unitSupervisorSignature', 'certificateRecords', 'shopComp', 'requestId', 'pageTitle', 'unitName', 'receiverFullName', 'sum', 'receiverSignature', 'requestId'));
+        //  }
     }
-  
+
     //shiri : below function is related to print summary of requests
     public function printFactors($id)
     {
@@ -1955,25 +2057,29 @@ class SupplyController extends Controller
 //        }
 //        else
 //            {
-                $pageTitle = 'چاپ خلاصه تنظیمی';
-                $bills = Bill::where('request_id',$id)->get();
-                $sum = 0;
-                $supplierId = 0;
-                foreach ($bills as $bill)
-                {
-                    $sum += decrypt($bill->final_price);
-                    if($supplierId == 0)
-                    {
-                        $supplierId += $bill->request->supplier_id;
-                    }
+        $pageTitle = 'چاپ خلاصه تنظیمی';
+        $bills = Bill::where('request_id',$id)->get();
+        $sum = 0;
+        $supplierId = 0;
+        foreach ($bills as $bill)
+        {
+            $sum += decrypt($bill->final_price);
+            if($supplierId == 0)
+            {
+                $supplierId += $bill->request->supplier_id;
+            }
 
-                }
-                $supplierName = User::where('id',$supplierId)->value('name');
-                $supplierFamily = User::where('id',$supplierId)->value('family');
-                $supplierFullName = $supplierName .chr(10).$supplierFamily;
-                $supplierSignature = Signature::where('user_id',$supplierId)->value('signature');
-                $supplierSignature = 'data:image/png;base64,' . decrypt($supplierSignature);
-                return view ('admin.certificate.factorsForm',compact('pageTitle','bills','sum','supplierFullName','supplierSignature'));
+        }
+        $supplierName = User::where('id',$supplierId)->value('name');
+        $supplierFamily = User::where('id',$supplierId)->value('family');
+        $supplierFullName = $supplierName .chr(10).$supplierFamily;
+        $supplierSignature = Signature::where('user_id',$supplierId)->value('signature');
+        if($supplierSignature != null)
+        {
+            $supplierSignature = 'data:image/png;base64,' . decrypt($supplierSignature);
+        }
+//        dd(count($supplierSignature));
+        return view ('admin.certificate.factorsForm',compact('pageTitle','bills','sum','supplierFullName','supplierSignature'));
         //    }
 
     }
@@ -1998,9 +2104,9 @@ class SupplyController extends Controller
             }
             return view('admin.certificate.costDocumentForm',compact('costDocumentsRecords','pageTitle','sumDeduction','sumPayedPrice','sumGeneralPrice'));
         }else
-            {
-                return view('admin.costDocumentRegister',compact('id','pageTitle'));
-            }
+        {
+            return view('admin.costDocumentRegister',compact('id','pageTitle'));
+        }
 
     }
 
@@ -2012,50 +2118,50 @@ class SupplyController extends Controller
         {
             return response('سند هزینه این درخواست قبلا ثبت ثبت گردیده است');
         }else
+        {
+            $recordCount = $request->recordCount;
+            if($recordCount == "")
             {
-                $recordCount = $request->recordCount;
-                if($recordCount == "")
-                {
-                    return response('محتویات سند خالی است ، لطفا سند را پر نمایید سپس درخواست مجدد بدهید.');
-                }
-                else
-                    {
-                        $costDocumentId = DB::table('cost_documents')->insertGetId
-                        ([
-                               'request_id'  => $request->requestId,
-                             //  'content'     => $request->bodyContent,
-                               'created_at'  => Carbon::now(new \DateTimeZone('Asia/Tehran'))
-                        ]);
-                        if($costDocumentId)
-                        {
-                            $i = 0;
-                            while( $i < $recordCount )
-                            {
-                                $costDocumentRecords = DB::table('cost_document_records')->insert
-                                ([
-                                    'cost_document_id' => $costDocumentId,
-                                    'code'             => trim(encrypt($request->code[$i])),
-                                    'description'      => trim(encrypt($request->description[$i])),
-                                    'moein_office'     => trim(encrypt($request->moeinOffice[$i])),
-                                    'general_price'    => trim(encrypt($request->generalPrice[$i])),
-                                    'deduction'        => trim(encrypt($request->deduction[$i])),
-                                    'payed_price'      => trim(encrypt($request->payedPrice[$i])),
-                                    'page'             => trim(encrypt($request->page[$i])),
-                                    'row'              => trim(encrypt($request->row[$i])),
-                                    'created_at'       => Carbon::now(new \DateTimeZone('Asia/Tehran'))
-
-                                ]);
-                                $i++;
-
-                            }
-                        }
-
-                        if($costDocumentRecords)
-                        {
-                            return response('اطلاعات با موفقیت ثبت شد');
-                        }
-                    }
+                return response('محتویات سند خالی است ، لطفا سند را پر نمایید سپس درخواست مجدد بدهید.');
             }
+            else
+            {
+                $costDocumentId = DB::table('cost_documents')->insertGetId
+                ([
+                    'request_id'  => $request->requestId,
+                    //  'content'     => $request->bodyContent,
+                    'created_at'  => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                ]);
+                if($costDocumentId)
+                {
+                    $i = 0;
+                    while( $i < $recordCount )
+                    {
+                        $costDocumentRecords = DB::table('cost_document_records')->insert
+                        ([
+                            'cost_document_id' => $costDocumentId,
+                            'code'             => trim(encrypt($request->code[$i])),
+                            'description'      => trim(encrypt($request->description[$i])),
+                            'moein_office'     => trim(encrypt($request->moeinOffice[$i])),
+                            'general_price'    => trim(encrypt($request->generalPrice[$i])),
+                            'deduction'        => trim(encrypt($request->deduction[$i])),
+                            'payed_price'      => trim(encrypt($request->payedPrice[$i])),
+                            'page'             => trim(encrypt($request->page[$i])),
+                            'row'              => trim(encrypt($request->row[$i])),
+                            'created_at'       => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+
+                        ]);
+                        $i++;
+
+                    }
+                }
+
+                if($costDocumentRecords)
+                {
+                    return response('اطلاعات با موفقیت ثبت شد');
+                }
+            }
+        }
     }
 
     public function issueBillManagementGet()
@@ -2068,19 +2174,20 @@ class SupplyController extends Controller
             foreach($requests as $request)
             {
                 $request->records=RequestRecord::where('request_id',$request->id)->get();
+
             }
             return view('admin.issueBillManagement',compact('pageTitle','pageName','requests'));
         }
-       else
-           return back();
+        else
+            return back();
     }
     public function issueBillGet($id)
     {
         $pageTitle='صدور فاکتور';
         $pageName='issueBill';
 
-            $records=RequestRecord::where([['request_id',$id],['accept',1]])->get();
-            return view('admin.issueBill',compact('pageTitle','pageName','id','records'));
+        $records=RequestRecord::where([['request_id',$id],['accept',1]])->get();
+        return view('admin.issueBill',compact('pageTitle','pageName','id','records'));
 
     }
 
@@ -2113,23 +2220,23 @@ class SupplyController extends Controller
                 $now = new Carbon();
                 $now = $now->toDateString();
 
-                    $factorId = DB::table('bills')->insertGetId
-                    ([
-                        'src'           => $src,
-                        'date'          => $gDate1,
-                        'factor_number' => trim(encrypt($request->factorNumber)),
-                        'user_id'       => Auth::user()->id,
-                        'request_id'    => $request->requestId,
-                        'final_price'   => encrypt($request->newFinalPrice),
-                        'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
-                    ]);
-                    if($factorId)
-                    {
-                        return response('فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید');
-                    }else
-                    {
-                        return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
-                    }
+                $factorId = DB::table('bills')->insertGetId
+                ([
+                    'src'           => $src,
+                    'date'          => $gDate1,
+                    'factor_number' => trim(encrypt($request->factorNumber)),
+                    'user_id'       => Auth::user()->id,
+                    'request_id'    => $request->requestId,
+                    'final_price'   => encrypt($request->newFinalPrice),
+                    'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                ]);
+                if($factorId)
+                {
+                    return response('فایل فاکتور مورد نظر شما آپلود گردید ، در صورت نیاز میتوانید فاکتورهای دیگر را آپلود کنید');
+                }else
+                {
+                    return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
+                }
 
 
             }else
@@ -2137,9 +2244,9 @@ class SupplyController extends Controller
                 return response('خطا در آپلود فایل فاکتور ، تماس با بخش پشتیبانی');
             }
         }else
-            {
-                return response('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
-            }
+        {
+            return response('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
+        }
 
     }
 
@@ -2148,6 +2255,11 @@ class SupplyController extends Controller
     {
         $pageTitle = 'ثبت خلاصه تنظیمی';
         $factors = DB::table('bills')->where('request_id',$id)->get();
+        foreach($factors as $factor)
+        {
+            $factor->factor_number=decrypt($factor->factor_number);
+            $factor->final_price=decrypt($factor->final_price);
+        }
         return view('admin.preparedSummarize',compact('pageTitle','factors'));
     }
 //
@@ -2159,54 +2271,54 @@ class SupplyController extends Controller
             abort(403);
         }
         else
+        {
+            $check = DB::table('bills')->where('request_id',$request->requestId)->pluck('active')->toArray();
+            if(in_array(0,$check))
             {
-                $check = DB::table('bills')->where('request_id',$request->requestId)->pluck('active')->toArray();
-                if(in_array(0,$check))
+                $recordCount = $request->recordCount;
+                if($recordCount != 0)
                 {
-                    $recordCount = $request->recordCount;
-                    if($recordCount != 0)
+
+                    $i =0;
+                    while($i < $recordCount)
                     {
+                        $query = DB::table('bills')->insert
+                        ([
 
-                        $i =0;
-                        while($i < $recordCount)
+                            'final_price'            => encrypt(str_replace(',','',$request->totalPrice[$i])),
+                            'factor_number'          => encrypt($request->description[$i]),
+                            'user_id'                => Auth::user()->id,
+                            'request_id'             => $request->requestId,
+                            'created_at'             => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                        ]);
+                        $i++;
+                    }
+                    if($query)
+                    {
+                        $update = DB::table('bills')->where('request_id',$request->requestId)->update(['active' => 1]);
+                        if($update)
                         {
-                            $query = DB::table('bills')->insert
-                            ([
-
-                                'final_price'            => encrypt(str_replace(',','',$request->totalPrice[$i])),
-                                'factor_number'          => encrypt($request->description[$i]),
-                                'user_id'                => Auth::user()->id,
-                                'request_id'             => $request->requestId,
-                                'created_at'             => Carbon::now(new \DateTimeZone('Asia/Tehran'))
-                            ]);
-                            $i++;
-                        }
-                        if($query)
-                        {
-                            $update = DB::table('bills')->where('request_id',$request->requestId)->update(['active' => 1]);
-                            if($update)
-                            {
-                                return response('اطلاعات با موفقیت ثبت گردید');
-                            }else
-                            {
-                                return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
-                            }
-
+                            return response('اطلاعات با موفقیت ثبت گردید');
                         }else
                         {
                             return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
                         }
-                    }
-                    else
-                    {
-                        return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
-                    }
-                }else
-                    {
-                        return response('خلاصه تنظیمی قبلا برای این درخواست ثبت گردیده است ، لطفا درخواست مجدد نفرمایید');
-                    }
 
+                    }else
+                    {
+                        return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
+                    }
+                }
+                else
+                {
+                    return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
+                }
+            }else
+            {
+                return response('خلاصه تنظیمی قبلا برای این درخواست ثبت گردیده است ، لطفا درخواست مجدد نفرمایید');
             }
+
+        }
 
     }
 
@@ -2216,24 +2328,24 @@ class SupplyController extends Controller
         {
             abort(403);
         }else
+        {
+            $check  = DB::table('bills')->where('request_id',$request->requestId)->pluck('active')->toArray();
+            if(in_array(0,$check))
             {
-                $check  = DB::table('bills')->where('request_id',$request->requestId)->pluck('active')->toArray();
-                if(in_array(0,$check))
+                $update = DB::table('bills')->where('request_id',$request->requestId)->update(['active' => 1]);
+                if($update)
                 {
-                    $update = DB::table('bills')->where('request_id',$request->requestId)->update(['active' => 1]);
-                    if($update)
-                    {
-                        return response('خلاصه تنظیمی برای این درخواست ثبت گردید');
-                    }else
-                    {
-                        return response('خطایی رخ داده است ، تماس با بخش پشتیبانی');
-                    }
+                    return response('خلاصه تنظیمی برای این درخواست ثبت گردید');
                 }else
-                    {
-                        return response('خلاصه تنظیمی قبلا برای این درخواست ثبت گردیده است ، لطفا درخواست مجدد نفرمایید');
-                    }
-
+                {
+                    return response('خطایی رخ داده است ، تماس با بخش پشتیبانی');
+                }
+            }else
+            {
+                return response('خلاصه تنظیمی قبلا برای این درخواست ثبت گردیده است ، لطفا درخواست مجدد نفرمایید');
             }
+
+        }
 
     }
 
@@ -2257,45 +2369,45 @@ class SupplyController extends Controller
             abort(403);
         }
         else
+        {
+            if($request->hasFile('image'))
             {
+                $extension = $request->image->getClientOriginalExtension();
+                $size      = $request->image->getClientSize();
                 if($request->hasFile('image'))
                 {
-                    $extension = $request->image->getClientOriginalExtension();
-                    $size      = $request->image->getClientSize();
-                    if($request->hasFile('image'))
+                    if ($extension == 'png' || $extension == 'PNG' || $extension == 'jpg' || $extension == 'JPG')
                     {
-                        if ($extension == 'png' || $extension == 'PNG' || $extension == 'jpg' || $extension == 'JPG')
+                        if ($size < 150000)
                         {
-                            if ($size < 150000)
+                            switch ($parameter)
                             {
-                                switch ($parameter)
-                                {
-                                    case 'warehouse':
-                                        return $this->addWarehousePhoto($request);
-                                        break;
+                                case 'warehouse':
+                                    return $this->addWarehousePhoto($request);
+                                    break;
 
-                                    case 'bill' :
-                                        return $this->addBillPhoto($request);
-                                }
+                                case 'bill' :
+                                    return $this->addBillPhoto($request);
                             }
-                            else
-                            {
-                                return response('سایز فایل انتخاب شده بیش از حد مجاز میباشد');
-                            }
-                        }else
+                        }
+                        else
                         {
-                            return response('پسوند فایل انتخاب شده معتبر نیست');
+                            return response('سایز فایل انتخاب شده بیش از حد مجاز میباشد');
                         }
                     }else
                     {
-                        return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
+                        return response('پسوند فایل انتخاب شده معتبر نیست');
                     }
                 }else
-                    {
-                        return response('لطفا فایلی انتخاب نمایید ، سپس درخواست خود را ثبت نمایید');
-                    }
-
+                {
+                    return response('ابتدا فرم مربوطه را پر نمایید ، سپس درخواست خود را ثبت نمایید');
+                }
+            }else
+            {
+                return response('لطفا فایلی انتخاب نمایید ، سپس درخواست خود را ثبت نمایید');
             }
+
+        }
     }
 
     public function addWarehousePhoto($request)
@@ -2306,35 +2418,35 @@ class SupplyController extends Controller
             return response('قبض انبار برای این درخواست قبلا ثبت گردیده است ، لطفا درخواست مجدد نفرمایید');
         }
         else
+        {
+
+            $image = $request->image;
+            $src   = $request->requestId.'-'.str_random(4).$image->getClientOriginalName();
+            $image->move( 'public/dashboard/image/' , $src);
+            $fileExistence = public_path().'public/dashboard/image/'.$src;
+
+            if($fileExistence)
             {
 
-                $image = $request->image;
-                $src   = $request->requestId.'-'.str_random(4).$image->getClientOriginalName();
-                $image->move( 'public/dashboard/image/' , $src);
-                $fileExistence = public_path().'public/dashboard/image/'.$src;
-
-                if($fileExistence)
+                $warehouseId = DB::table('warehouse')->insertGetId
+                ([
+                    'src'           => $src,
+                    'factor_number' => trim(encrypt($request->factorNumber)),
+                    'user_id'       => Auth::user()->id,
+                    'request_id'    => $request->requestId,
+                    'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
+                ]);
+                if($warehouseId)
                 {
-
-                    $warehouseId = DB::table('warehouse')->insertGetId
-                    ([
-                        'src'           => $src,
-                        'factor_number' => trim(encrypt($request->factorNumber)),
-                        'user_id'       => Auth::user()->id,
-                        'request_id'    => $request->requestId,
-                        'created_at'    => Carbon::now(new \DateTimeZone('Asia/Tehran'))
-                    ]);
-                    if($warehouseId)
-                    {
-                        return response('قبض انبار  مورد نظر شما آپلود گردید');
-                    }else
-                    {
-                        return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
-                    }
+                    return response('قبض انبار  مورد نظر شما آپلود گردید');
                 }else
                 {
-                    return response('خطا در آپلود فایل فاکتور ، تماس با بخش پشتیبانی');
+                    return response('خطا در ثبت اطلاعات ، تماس با بخش پشتیبانی');
                 }
+            }else
+            {
+                return response('خطا در آپلود فایل فاکتور ، تماس با بخش پشتیبانی');
+            }
         }
 
     }

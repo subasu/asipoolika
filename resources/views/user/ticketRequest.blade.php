@@ -17,13 +17,13 @@
                 </div>
                 {{-- table --}}
 
-                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-12 col-sm-12 col-xs-12" style="font-size:18px;">
                     <div class="x_content">
-                        <form class="form-horizontal form-label-left" id="unit-send-form" method="POST">
+                        <form class="form-horizontal form-label-left" id="unit-send-form" method="POST" >
                             {{ csrf_field() }}
                             <div class="item form-group">
                                 <div class="col-md-9 col-sm-6 col-xs-12">
-                                    <select class="form-control col-md-7 col-xs-12" style="direction: rtl;" name="units" id="units">
+                                    <select class="form-control col-md-7 col-xs-12" style="direction: rtl;font-size: 15px;" name="units" id="units">
                                         <option value="واحد مربوطه را انتخاب نمایید" class="text-right">واحد مربوطه را انتخاب نمایید</option>
                                             @if(\Illuminate\Support\Facades\Auth::user()->unit->title === 'انفورماتیک' && \Illuminate\Support\Facades\Auth::user()->is_supervisor == 1)
                                                 <option value="تدارکات" class="text-right">تدارکات</option>
@@ -37,7 +37,7 @@
                                     </select>
                                 </div>
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="unit_id"> واحد
-                                    <span class="required" title="پر کردن این فیلد الزامی است">*</span></label>
+                                    <span class="required" style="color:red" title="پر کردن این فیلد الزامی است">*</span></label>
                             </div>
                             <div class="item form-group" {{ $errors->has('title') ? ' has-error' : '' }}>
                                 <div class="col-md-9 col-sm-6 col-xs-12">
@@ -68,7 +68,7 @@
                             <div class="ln_solid"></div>
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <button id="ticketSend" type="button" class="col-md-9 btn btn-primary">ثبت</button>
+                                    <button id="ticketSend" style="font-size: 18px;" type="button" class="col-md-9 btn btn-primary">ثبت</button>
                                     <input type="hidden" id="token" value="{{ csrf_token() }}">
                                 </div>
                             </div>

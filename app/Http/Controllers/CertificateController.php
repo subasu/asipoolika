@@ -61,6 +61,7 @@ class CertificateController extends Controller
 
     public function execute_certificateGet($id)
     {
+
         $pageTitle="صدور گواهی";
         $user=Auth::user();
         $requestRecords=RequestRecord::where([['request_id',$id],['active',1],['step',7]])->get();
@@ -69,7 +70,24 @@ class CertificateController extends Controller
             return redirect('admin/confirmedRequestDetails/'.$id);
         }
         $users=User::where('unit_id',$requestRecords[0]->request->unit_id)->get();
-//        dd($requestRecords[0]->request->request_type_id);
+
+       foreach($requestRecords as $requestRecord)
+       {
+           //decrypt
+           if(!empty($requestRecord->title))
+               $requestRecord->title=decrypt($requestRecord->title);
+           if(!empty($requestRecord->description))
+               $requestRecord->description=decrypt($requestRecord->description);
+           if(!empty($requestRecord->unit_count))
+               $requestRecord->unit_count=decrypt($requestRecord->unit_count);
+
+           if(!empty($requestRecord->price))
+               $requestRecord->price=decrypt($requestRecord->price);
+           if(!empty($requestRecord->rate))
+               $requestRecord->rate=decrypt($requestRecord->rate);
+           if(!empty($requestRecord->why_not))
+               $requestRecord->why_not=decrypt($requestRecord->why_not);
+       }
         return view('admin.certificate.certificate',compact('pageTitle','requestRecords','user','users'));
     }
 
@@ -88,7 +106,7 @@ class CertificateController extends Controller
             $certificate_id=DB::table('certificates')->insertGetId([
                 'request_id'          => $request->requestId,
                 'user_id'             => Auth::user()->id,
-                'shop_comp'           => $request->shop_comp,
+                'shop_comp'           => encrypt($request->shop_comp),
                 'certificate_type_id' => $request->certificateType,
                 'created_at'          => Carbon::now(new \DateTimeZone('Asia/Tehran'))
             ]);
@@ -98,12 +116,13 @@ class CertificateController extends Controller
                 $q=DB::table('certificate_records')->insert([
 
                     'request_record_id' => $recordIdArray[$i],
-                    'price'             => $newPriceArray[$i],
-                    'rate'              => $newRateArray[$i],
+                    'price'             =>  encrypt($newPriceArray[$i]),
+                    'rate'              =>  encrypt($newRateArray[$i]),
                     'count'             => $newCountArray[$i],
-                    'unit_count'        => $unitCountArray[$i],
+                    'unit_count'        =>  encrypt($unitCountArray[$i]),
                     'certificate_id'    => $certificate_id,
                     'receiver_id'       => $request->receiverId,
+                    'created_at'        =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
                 ]);
                 DB::table('request_records')->where('id',$recordIdArray[$i])->update([
                     'step'=>8,
@@ -138,7 +157,7 @@ class CertificateController extends Controller
             $certificate_id=DB::table('certificates')->insertGetId([
                 'request_id'          => $request->requestId,
                 'user_id'             => Auth::user()->id,
-                'shop_comp'           => $request->shop_comp,
+                'shop_comp'           => encrypt($request->shop_comp),
                 'certificate_type_id' => $request->certificateType,
                 'active'=>1,
                 'created_at'          => Carbon::now(new \DateTimeZone('Asia/Tehran'))
@@ -149,14 +168,15 @@ class CertificateController extends Controller
                 $q=DB::table('certificate_records')->insert([
 
                     'request_record_id' => $recordIdArray[$i],
-                    'price'             => $newPriceArray[$i],
-                    'rate'              => $newRateArray[$i],
+                    'price'             => encrypt($newPriceArray[$i]),
+                    'rate'              => encrypt($newRateArray[$i]),
                     'count'             => $newCountArray[$i],
-                    'unit_count'        => $unitCountArray[$i],
+                    'unit_count'        => encrypt($unitCountArray[$i]),
                     'certificate_id'    => $certificate_id,
                     'receiver_id'       => $receiver_id[0],
                     'active'            =>1,
-                    'step'              =>5
+                    'step'              =>5,
+                    'created_at'        =>Carbon::now(new \DateTimeZone('Asia/Tehran'))
                 ]);
                 DB::table('request_records')->where('id',$recordIdArray[$i])->update([
                     'receiver_id'=>$receiver_id[0],
@@ -474,6 +494,17 @@ class CertificateController extends Controller
 //                dd($certificate_records);
                 break;
         }
+        foreach($certificateRecords as $certificateRecord)
+        {
+//decrypt
+            if(!empty($certificateRecord->unit_count))
+                $certificateRecord->unit_count=decrypt($certificateRecord->unit_count);
+            if(!empty($certificateRecord->price))
+                $certificateRecord->price=decrypt($certificateRecord->price);
+            if(!empty($certificateRecord->rate))
+                $certificateRecord->rate=decrypt($certificateRecord->rate);
+        }
+
 //        $certificate_records=CertificateRecord::where([['certificate_id',$id],['step',$step]])->get();
 
        return view('admin.certificate.certificateRecords',compact('pageTitle','certificateRecords','certificates'));
@@ -563,7 +594,19 @@ class CertificateController extends Controller
                 $certificate_records2 = CertificateRecord::where([['step', 1],['certificate_id',$id]])->whereIn('certificate_id', $certificate_id)->get();
 
                 $certificateRecords=$certificateRecords->merge($certificate_records2);
-//                dd($certificate_records);
+                foreach($certificateRecords as $certificateRecord)
+                {
+//decrypt
+                    if(!empty($certificateRecord->unit_count))
+                        $certificateRecord->unit_count=decrypt($certificateRecord->unit_count);
+                    if(!empty($certificateRecord->price))
+                        $certificateRecord->price=decrypt($certificateRecord->price);
+                    if(!empty($certificateRecord->rate))
+                        $certificateRecord->rate=decrypt($certificateRecord->rate);
+                    if(!empty($certificateRecord->why_not))
+                        $certificateRecord->why_not=decrypt($certificateRecord->why_not);
+                }
+
                 break;
         }
 //        $certificate_records=CertificateRecord::where([['certificate_id',$id],['step',$step]])->get();

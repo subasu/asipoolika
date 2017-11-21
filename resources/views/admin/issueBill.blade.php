@@ -54,7 +54,7 @@
                                     <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
                                         <label class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> شماره فاکتور :
                                         </label>
-                                        <input type="number" min="1000" class="form-control" name="factorNumber" id="factorNumber">
+                                        <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1000" class="form-control" name="factorNumber" id="factorNumber">
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12 form-group pull-right">
                                         <label class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> تاریخ :
@@ -64,7 +64,7 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group pull-right">
                                         <label class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> قیمت نهایی :
                                         </label>
-                                        <input type="number" class="form-control" name="finalPrice" id="finalPrice">
+                                        <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" name="finalPrice" id="finalPrice">
                                     </div>
                                     <lable style="font-size: 16px;">توضیحات : حجم فایل امضا نباید بیش از 150 کیلو بایت باشد ، پسوند فایل امضا باید از نوع  png یا jpg باشد.</lable>
                                     <div class="input-group image-preview" style="margin-top: 10px;">

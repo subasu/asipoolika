@@ -363,7 +363,7 @@
                                             type: "info",
                                             confirmButtonText: "بستن"
                                         });
-                                        setTimeout(function(){ window.location.href= 'usersManagement'; }, 1000);
+                                       setTimeout(function(){ window.location.href= 'usersManagement'; }, 1000);
                                     },error : function(error)
                                     {
                                         if (xhr.status === 422) {

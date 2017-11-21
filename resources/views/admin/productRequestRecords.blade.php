@@ -56,7 +56,7 @@
                         <th style="text-align: center ;">نرخ</th>
                         {{--@endif--}}
                         <th style="text-align: center ;">قیمت</th>
-                        <th class="col-md-3" style="text-align: center ;">عملیات</th>
+                        <th class="col-md-3" style="text-align: center ;border-right: 1px solid #d6d6c2;">عملیات</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -78,7 +78,7 @@
                                 <td>{{number_format($requestRecord->rate)}} تومان</td>
                                 <td>{{number_format($requestRecord->price)}} تومان</td>
                                 @endif
-                                <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
+                                <td style="border-right: 1px solid #d6d6c2;"><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>
                                 <input id="acceptRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="تایید" />
                                 <input id="refuseRequest" content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-danger"  required value="رد کردن" /></td>

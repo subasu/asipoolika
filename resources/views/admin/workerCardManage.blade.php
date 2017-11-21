@@ -36,7 +36,7 @@
                     </div>
                 </form>
                 <div class="x_content">
-                    <table style="direction:rtl;text-align: center" id="example"
+                    <table style="direction:rtl;text-align: center;font-size: 17px;" id="example"
                            class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <input type="hidden" id="token" value="{{ csrf_token() }}">
                         <thead>
@@ -45,7 +45,7 @@
                             <th style="text-align: center">نام و نام خانودگی صادر کننده</th>
                             <th style="text-align: center"> نام و نام خانوادگی کارگر</th>
                             <th style="text-align: center">تاریخ درج</th>
-                            <th style="text-align: center">نمایش کارت</th>
+                            <th style="text-align: center;border-right: 1px solid #e0e0d1">نمایش کارت</th>
                         </tr>
                         </thead>
 
@@ -64,7 +64,7 @@
                                 <td>
                                     {{$worker->date}}
                                 </td>
-                                <td class="statusUser" id="">
+                                <td style="border-right: 1px solid #e0e0d1" class="statusUser" id="">
                                     <a class="btn btn-success" href="{{URL::asset('admin/showWorkerCard')}}/{{$worker->id}}">نمایش کارت</a>
                                 </td>
 

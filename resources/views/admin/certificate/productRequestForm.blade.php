@@ -39,7 +39,7 @@
         })
     </script>
 
-{{--@if(!empty($productRequestRecords))--}}
+@if(!empty($productRequestRecords))
 <body id="body">
 
 <div style="padding:1% 2.5%">
@@ -70,11 +70,11 @@
             <tr>
                 <td>{{ ++$i }}</td>
                 <td>{{$productRequestRecord->code}}</td>
-                <td>{{decrypt($productRequestRecord->title)}}</td>
-                <td>{{decrypt($productRequestRecord->unit_count)}}</td>
+                <td>{{$productRequestRecord->title}}</td>
+                <td>{{$productRequestRecord->unit_count}}</td>
                 <td>{{$productRequestRecord->count}}</td>
-                <td>{{number_format(decrypt($productRequestRecord->rate))}}</td>
-                <td>{{number_format(decrypt($productRequestRecord->rate) * $productRequestRecord->count)}}</td>
+                <td>{{number_format($productRequestRecord->rate)}}</td>
+                <td>{{number_format($productRequestRecord->rate) * $productRequestRecord->count}}</td>
                 <input type="hidden" id="requestId" value="{{$productRequestRecord->request_id}}">
             </tr>
         @endforeach
@@ -92,11 +92,11 @@
         <td colspan="2" class="col-md-2"><span>مدیر امور مالی :</span><span>{{ chr(10) }}</span><span>{{$financeSupervisorFullName}}</span></td>
     </tr>
     <tr>
-        <td colspan="1" class="col-md-2"><img style="width: 100px; height: 100px;" src="{{$storageSupervisorSignature}}"></td>
-        <td colspan="1" class="col-md-2"><img style="width: 100px; height: 100px;" src="{{$originalJobSupervisorSignature}}"></td>
-        <td colspan="1" class="col-md-2"><img style="width: 100px; height: 100px;" src="{{$bossSignature}}"></td>
-        <td colspan="2" class="col-md-2"><img style="width: 100px; height: 100px;" src="{{$creditSupervisorSignature}}"></td>
-        <td colspan="2" class="col-md-2"><img style="width: 100px; height: 100px;" src="{{$financeSupervisorSignature}}"></td>
+        <td colspan="1" class="col-md-2">@if(count($storageSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 100px; height: 100px;" src="{{$storageSupervisorSignature}}">@endif</td>
+        <td colspan="1" class="col-md-2">@if(count($originalJobSupervisorSignature) == 0) امضا ثبت نشده @else <img style="width: 100px; height: 100px;" src="{{$originalJobSupervisorSignature}}">@endif</td>
+        <td colspan="1" class="col-md-2">@if(count($bossSignature) == 0) امضا ثبت نشده @else<img style="width: 100px; height: 100px;" src="{{$bossSignature}}">@endif</td>
+        <td colspan="2" class="col-md-2">@if(count($creditSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 100px; height: 100px;" src="{{$creditSupervisorSignature}}">@endif</td>
+        <td colspan="2" class="col-md-2">@if(count($financeSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 100px; height: 100px;" src="{{$financeSupervisorSignature}}">@endif</td>
     </tr>
     </tbody>
 </table>
@@ -104,11 +104,17 @@
 <h4> « این فرم در سه نسخه تنظیم می گردد : نسخه اول حسابداری، نسخه دوم انبار، نسخه سوم تدارکات »</h4>
 </div>
 <div align="center">
-    <button class="glyphicon glyphicon-print" style="width: 20%; font-size: 150%;" id="print">چاپ</button>
+    @if($financeSupervisorSignature == null  || $creditSupervisorSignature== null || $bossSignature == null ||  $originalJobSupervisorSignature == null || $storageSupervisorSignature == null)
+        <h2 style="background-color: red; width:60%; margin: 0 auto;">بدلیل اینکه همه امضاها ثبت نشده است لذا امکان چاپ درخواست وجود ندارد ، لطفا تمامی امضاها را ثبت نمائید سپس درخواست خود را بدهید</h2>
+    @else
+        <button class="glyphicon glyphicon-print" style="width: 20%; font-size: 150%;" id="print" >چاپ</button>
+
+    @endif
+
     <i class="fa-print"></i>
 </div>
 </body>
-{{--@endif--}}
+@endif
 
 {{--@if(!empty($formContents))--}}
     {{--<body id="body">--}}
