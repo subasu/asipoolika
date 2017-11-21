@@ -1221,6 +1221,7 @@ class SupplyController extends Controller
         $pageName='confirmedRequestDetails';
         $request=Request2::where([['id',$id],['active',1]])->get();
         $request_records=RequestRecord::where([['request_id',$id],['active',1]])->get();
+
         foreach($request as $item)
         {
             $item->request_records=$request_records;

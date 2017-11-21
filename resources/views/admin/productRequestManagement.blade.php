@@ -233,6 +233,7 @@
 
                                             <a href="{{url('admin/confirmedRequestDetails/'.$productRequest->id)}}" class="btn btn-primary col-md-12">مشاهده جزئیات</a>
                                         </td>
+{{--                                        {{$productRequest->id}}--}}
                                     </tr>
                                         @endif
 
