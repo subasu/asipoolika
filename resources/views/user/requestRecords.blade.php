@@ -70,8 +70,8 @@
                             <td id="count" content="{{$requestRecord->count}}">{{$requestRecord->count}} {{$requestRecord->unit_count}}</td>
                             <input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">
                             {{--<input type="hidden" class="" value="2000" name="count[]">--}}
-                            <td>{{number_format($requestRecord->rate)}} تومان</td>
-                            <td>{{number_format($requestRecord->price)}} تومان</td>
+                            <td>{{number_format($requestRecord->rate)}} ریال</td>
+                            <td>{{number_format($requestRecord->price)}} ریال</td>
                             <td>{{$requestRecord->description}}</td>
                             <td style="border-right: 1px solid #e0e0d1">@if($requestRecord->refuse==0)
                                 {{$requestRecord->status}}

@@ -88,8 +88,8 @@
                                         <td>{{$record->id}}</td>
                                         <td class="col-md-2">{{$record->title}}</td>
                                         <td>{{$record->count}} {{$record->unit_count}}</td>
-                                        <td>{{number_format($record->rate)}} تومان</td>
-                                        <td>{{number_format($record->price)}} تومان</td>
+                                        <td>{{number_format($record->rate)}} ریال</td>
+                                        <td>{{number_format($record->price)}} ریال</td>
                                         <td style="border-right: 1px solid #d6d6c2">
                                             @if($record->step==8) دارای گواهی
                                             @elseif($record->step==9) تحویل انبار

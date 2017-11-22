@@ -68,7 +68,7 @@
             <th rowspan="2" colspan="1" class="col-md-1">ردیف</th>
             <th rowspan="2" colspan="7" class="col-md-6">خدمت</th>
             <th rowspan="2" colspan="1" class="col-md-1">مقدار / برآورد مقدار</th>
-            <th colspan="4" class="col-md-4">برآورد قیمت - تومان</th>
+            <th colspan="4" class="col-md-4">برآورد قیمت -ریال</th>
         </tr>
         <tr>
             <th colspan="2" class="col-md-2" style="border-top: 0;">نرخ</th>

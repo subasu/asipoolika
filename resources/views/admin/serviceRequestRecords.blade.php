@@ -101,8 +101,8 @@
                                 <td><input type="text" class="form-control rate"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" id="rate"  name="rate[]"/></td>
                                 <td><input type="text" class="form-control price" readonly id="price" content="content" name="price[]" style="font-size:16px;color:red"/></td>
                             @else
-                                <td>{{number_format($requestRecord->rate)}} تومان</td>
-                                <td>{{number_format($requestRecord->price)}} تومان</td>
+                                <td>{{number_format($requestRecord->rate)}} ریال</td>
+                                <td>{{number_format($requestRecord->price)}} ریال</td>
                             @endif
                             <td style="border-right: 1px solid #d6d6c2;"><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>

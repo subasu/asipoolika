@@ -681,7 +681,6 @@ class SupplyController extends Controller
 //pr2
     public function productRequestManagement()
     {
-
         $pageTitle='مدیریت درخواست کالا تازه ثبت شده';
         $pageName='productRequestManagement';
 
@@ -799,8 +798,6 @@ class SupplyController extends Controller
 //sr2
     public function serviceRequestManagement()
     {
-//        $pageTitle='مدیریت درخواست خدمت';
-//        $pageName='serviceRequestManagement';
         $pageTitle='مدیریت درخواست خدمت تازه ثبت شده';
         $pageName='productRequestManagement';
 
@@ -890,6 +887,7 @@ class SupplyController extends Controller
 
     public function serviceRequestRecords($id)
     {
+
         $pageTitle='رکوردهای درخواست شماره '.$id;
         $me=Auth::user();
         $user=Auth::user();
@@ -941,14 +939,13 @@ class SupplyController extends Controller
                     $requestRecord->description=decrypt($requestRecord->description);
                 if(!empty($requestRecord->unit_count))
                     $requestRecord->unit_count=decrypt($requestRecord->unit_count);
-                if($requestRecord->price!=0)
+                if(!empty($requestRecord->price))
                     $requestRecord->price=decrypt($requestRecord->price);
-                if($requestRecord->rate!=0)
+                if(!empty($requestRecord->rate))
                     $requestRecord->rate=decrypt($requestRecord->rate);
                 if(!empty($requestRecord->why_not))
                     $requestRecord->why_not=decrypt($requestRecord->why_not);
             }
-
         }
         else {
 //به عنوان مسئول واحد
@@ -957,23 +954,23 @@ class SupplyController extends Controller
             foreach($requestRecords as $requestRecord)
             {
                 $requestRecord->mine=1;
-            }
-            foreach($requestRecords as $requestRecord)
-            {
                 //decrypt
                 if(!empty($requestRecord->title))
                     $requestRecord->title=decrypt($requestRecord->title);
+                if(!empty($requestRecord->code))
+                    $requestRecord->code=decrypt($requestRecord->code);
                 if(!empty($requestRecord->description))
                     $requestRecord->description=decrypt($requestRecord->description);
                 if(!empty($requestRecord->unit_count))
                     $requestRecord->unit_count=decrypt($requestRecord->unit_count);
-                if($requestRecord->price!=0)
+                if(!empty($requestRecord->price))
                     $requestRecord->price=decrypt($requestRecord->price);
-                if($requestRecord->rate!=0)
+                if(!empty($requestRecord->rate))
                     $requestRecord->rate=decrypt($requestRecord->rate);
                 if(!empty($requestRecord->why_not))
                     $requestRecord->why_not=decrypt($requestRecord->why_not);
             }
+//            dd($requestRecords);
         }
         return view ('admin.serviceRequestRecords',compact('pageTitle','requestRecords','user'));
     }
@@ -1089,56 +1086,60 @@ class SupplyController extends Controller
         $pageTitle='درخواست های در حال پیگیری';
         $pageName='acceptProductRequestManagement';
         $user=Auth::user();
-        switch(trim($user->unit->title))
-        {
-            case 'تدارکات':
-                if($user->is_supervisor==1)
-                {
-                    $step=2;
-                    $step2=1;
-                }
-                //the user is Karpardaz
-                else
-                {
-                    $step=8;
-                    $step2=7;
-                }
-                break;
-            case 'انبار':
-                $step=3;
-                $step2=2;
-                break;
-            case 'اعتبار':
-                $step=4;
-                $step2=3;
-                break;
-            case 'امور عمومی':
-                $step=5;
-                $step2=4;
-                break;
-            case 'ریاست':
-                $step=6;
-                $step2=5;
-                break;
-            case 'امور مالی':
-                $step=7;
-                $step2=6;
-                break;
-            default: $step=2;$step2=1;
+        if($user->unit_id==6 or $user->unit_id==9 or $user->unit_id==8 or $user->unit_id==10 or $user->unit_id==12 or $user->unit_id==4) {
+            switch(trim($user->unit->title))
+            {
+                case 'تدارکات':
+                    if($user->is_supervisor==1)
+                    {
+                        $step=2;
+                        $step2=1;
+                    }
+                    //the user is Karpardaz
+                    else
+                    {
+                        $step=8;
+                        $step2=7;
+                    }
+                    break;
+                case 'انبار':
+                    $step=3;
+                    $step2=2;
+                    break;
+                case 'اعتبار':
+                    $step=4;
+                    $step2=3;
+                    break;
+                case 'امور عمومی':
+                    $step=5;
+                    $step2=4;
+                    break;
+                case 'ریاست':
+                    $step=6;
+                    $step2=5;
+                    break;
+                case 'امور مالی':
+                    $step=7;
+                    $step2=6;
+                    break;
+                default: $step=2;$step2=1;
+            }
+            $requestRecords=RequestRecord::where([['step','>=',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
+            $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
+            foreach($productRequests as $productRequest)
+            {
+                //undecided records
+                $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',$step2]])->count();
+                //in the process records
+                $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step','>=',$step],['active',1]])->count();
+                //inactive records
+                $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+                $productRequest->date = $this->toPersian($productRequest->created_at);
+            }
         }
-        $requestRecords=RequestRecord::where([['step','>=',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
-        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
-        foreach($productRequests as $productRequest)
-        {
-            //undecided records
-            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',$step2]])->count();
-            //in the process records
-            $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step','>=',$step],['active',1]])->count();
-            //inactive records
-            $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
-            $productRequest->date = $this->toPersian($productRequest->created_at);
-        }
-//        dd($productRequests);
+        else
+            return redirect('user/productRequest');
+
         return view ('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
 
     }
@@ -1640,8 +1641,11 @@ class SupplyController extends Controller
         $certificateRecords = CertificateRecord::where('certificate_id',$id)->get();
         foreach($certificateRecords as $certificateRecord)
         {
+            if(!empty($certificateRecord->price))
             $certificateRecord->price=decrypt($certificateRecord->price);
+            if(!empty($certificateRecord->rate))
             $certificateRecord->rate=decrypt($certificateRecord->rate);
+            if(!empty($certificateRecord->unit_count))
             $certificateRecord->unit_count=decrypt($certificateRecord->unit_count);
         }
 //        dd($certificateRecords);

@@ -55,7 +55,7 @@
                                 <th style="text-align: center ;">عنوان درخواست</th>
                                 <th style="text-align: center ;">نام واحد</th>
                                 <th style="text-align: center ;">نام درخواست دهنده</th>
-                                <th style="text-align: center ;">نرخ (به تومان)</th>
+                                <th style="text-align: center ;">نرخ (به ریال)</th>
                                 <th style="text-align: center ;">قیمت</th>
                                 <th style="text-align: center ;">پیگیری درخواست</th>
                                 <th style="text-align: center ;">رد کردن درخواست</th>

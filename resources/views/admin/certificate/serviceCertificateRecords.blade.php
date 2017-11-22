@@ -52,8 +52,8 @@
                             <td id="count" content="{{$certificateRecord->count}}">{{$certificateRecord->count}} {{$certificateRecord->unit_count}}</td>
                             {{--<input type="hidden" class="count" value="{{$requestRecord->count}}" name="count">--}}
                             {{--<input type="hidden" class="" value="2000" name="count[]">--}}
-                            <td>{{number_format($certificateRecord->rate)}} تومان</td>
-                            <td>{{number_format($certificateRecord->price)}} تومان</td>
+                            <td>{{number_format($certificateRecord->rate)}} ریال</td>
+                            <td>{{number_format($certificateRecord->price)}} ریال</td>
                             <td>{{$certificateRecord->certificate->shop_comp}}</td>
                             <td>
                             {{--<button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات--}}

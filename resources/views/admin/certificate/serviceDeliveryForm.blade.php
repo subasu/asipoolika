@@ -67,7 +67,7 @@
             <th class="col-md-1">ردیف</th>
             <th class="col-md-4" colspan="2">شرح</th>
             <th class="col-md-2">تعداد</th>
-            <th class="col-md-2"> مبلغ کل (تومان)</th>
+            <th class="col-md-2"> مبلغ کل به ریال</th>
         </tr>
         </thead>
         <tbody>

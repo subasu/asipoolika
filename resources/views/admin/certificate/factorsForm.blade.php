@@ -50,7 +50,7 @@
             <tr class=" padding-formTable">
                 <th class="col-md-1">ردیف</th>
                 <th class="col-md-6">عنوان</th>
-                <th class="col-md-5">مبلغ به تومان</th>
+                <th class="col-md-5"> مبلغ به ریال</th>
             </tr>
                 <?php $i=0; ?>
                 @foreach($bills as $bill)

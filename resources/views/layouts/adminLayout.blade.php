@@ -116,7 +116,7 @@
                             {{--//End system manager menu <br>--}}
                             {{--//Admin menu--}}
                             {{--@if($user->is_supervisor==1 and $user->unit_id==9)--}}
-                                {{--<li><a href="{{url('/admin/issueBillManagement')}}"><i class="fa fa-credit-card"></i> صدور قبض انبار</a>--}}
+                                {{--<li><a href="{{url('/')}}"><i class="fa fa-credit-card"></i> صدور قبض انبار</a>--}}
                                 {{--</li>--}}
                             {{--@endif--}}
                             @if($user->is_supervisor==1 and $user->unit_id==6)
@@ -127,7 +127,7 @@
                                     </ul>
                                 </li>
                             @endif
-                            @if($user->is_supervisor==1 and $user->unit_id!=3)
+                            @if($user->is_supervisor==1)
                                 @if($user->unit_id==6 or $user->unit_id==9 or $user->unit_id==8 or $user->unit_id==10 or $user->unit_id==12 or $user->unit_id==4)
                                 <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
