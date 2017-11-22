@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Mockery\CountValidator\Exception;
 
 class PriceController extends Controller
 {

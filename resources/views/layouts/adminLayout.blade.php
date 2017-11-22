@@ -479,6 +479,9 @@
 <script src="{{URL::asset('public/dashboard/js/editor/bootstrap-wysiwyg.js')}}"></script>
 <script src="{{URL::asset('public/dashboard/js/editor/external/jquery.hotkeys.js')}}"></script>
 <script src="{{URL::asset('public/dashboard/js/editor/external/google-code-prettify/prettify.js')}}"></script>
+{{--Number to letter--}}
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.js')}}"></script>
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.min.js')}}"></script>
 
 
 <!-- editor -->

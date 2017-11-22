@@ -4,6 +4,10 @@
     <link href="{{ URL::asset('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
     <script>
+        $(document).ready(function(){
+            var number=$('#number1').val();
+            $('#sumToPersian').text(number.toPersian()+' ریال');
+        });
         $(document).on('click','#print',function () {
 
            // var body      = $('#body')[0].innerHTML;
@@ -37,6 +41,8 @@
             });
         })
     </script>
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.js')}}"></script>
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.min.js')}}"></script>
 
 
 {{--@if(!empty($productRequestRecords))--}}
@@ -50,7 +56,7 @@
             <tr class=" padding-formTable">
                 <th class="col-md-1">ردیف</th>
                 <th class="col-md-6">عنوان</th>
-                <th class="col-md-5"> مبلغ به ریال</th>
+                <th class="col-md-5"> مبلغ (به ریال)</th>
             </tr>
                 <?php $i=0; ?>
                 @foreach($bills as $bill)
@@ -66,8 +72,11 @@
             <tr>
                 <th class="col-md-1" style="background-color: lightgray;"></th>
                 <th class="col-md-6">جمع کل</th>
-                    <th class="col-md-5">{{number_format($sum)}}</th>
-
+                    <th class="col-md-5">
+                        {{number_format($sum)}}
+                        <input type="hidden" value="{{$sum}}" id="number1">
+                        <br><lable id="sumToPersian" style="font-size:15px;" class="label label-default"></lable>
+                    </th>
             </tr>
             </tbody>
 

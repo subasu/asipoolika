@@ -987,60 +987,86 @@ class SupplyController extends Controller
                 {
                     $step=2;
                     $step2=1;
+                    $check=1;
                 }
                 else
                 {
                     $step=8;
                     $step2=7;
+                    $check=1;
                 }
                 break;
             case 'اعتبار':
                 $step=3;
                 $step2=2;
+                $check=1;
                 break;
             case 'امور عمومی':
                 $step=4;
                 $step2=3;
+                $check=1;
                 break;
             case 'ریاست':
                 $step=5;
                 $step2=4;
+                $check=1;
                 break;
             case 'امور مالی':
                 $step=7;
                 $step2=6;
+                $check=1;
                 break;
-            default: $step=2;$step2=1;
+            default:
+                $check=0;
         }
-        $requestRecords=RequestRecord::where([['step','>=',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
-        $serviceRequests=Request2::where('request_type_id',2)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
+        if($check==1)
+        {
+            $requestRecords=RequestRecord::where([['step','>=',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
+            $serviceRequests=Request2::where('request_type_id',2)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
 //به عنوان مسئول واحد
-        $service_request_id=Request2::where([['unit_id',$user->unit_id],['request_type_id',2]])->pluck('id');
-        $requestRecords2=RequestRecord::where([['step','>=',6]],['active',1],['refuse_user_id',null])->whereIn('request_id',$service_request_id)->pluck('request_id');
-        $serviceRequests2=Request2::whereIn('id',$requestRecords2)->get();
+            $service_request_id=Request2::where([['unit_id',$user->unit_id],['request_type_id',2]])->pluck('id');
+            $requestRecords2=RequestRecord::where([['step','>=',6]],['active',1],['refuse_user_id',null])->whereIn('request_id',$service_request_id)->pluck('request_id');
+            $serviceRequests2=Request2::whereIn('id',$requestRecords2)->get();
 
-        foreach($serviceRequests2 as $serviceRequest)
-        {
-            //undecided records
-            $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',6]])->count();
-            //in the process records
-            $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',5],['active',1]])->count();
-            //inactive records
-            $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
-            $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
+            foreach($serviceRequests2 as $serviceRequest)
+            {
+                //undecided records
+                $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',6]])->count();
+                //in the process records
+                $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',5],['active',1]])->count();
+                //inactive records
+                $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+                $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
+            }
+
+            $serviceRequests=$serviceRequests->merge($serviceRequests2);
+
+            foreach($serviceRequests as $serviceRequest)
+            {
+                //undecided records
+                $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',$step2]])->count();
+                //in the process records
+                $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',$step],['active',1]])->count();
+                //inactive records
+                $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+                $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
+            }
         }
+        else{
+            $service_request_id=Request2::where([['unit_id',$user->unit_id],['request_type_id',2]])->pluck('id');
+            $requestRecords=RequestRecord::where([['step','>=',6]],['active',1],['refuse_user_id',null])->whereIn('request_id',$service_request_id)->pluck('request_id');
+            $serviceRequests=Request2::whereIn('id',$requestRecords)->get();
 
-        $serviceRequests=$serviceRequests->merge($serviceRequests2);
-
-        foreach($serviceRequests as $serviceRequest)
-        {
-            //undecided records
-            $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',$step2]])->count();
-            //in the process records
-            $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',$step],['active',1]])->count();
-            //inactive records
-            $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
-            $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
+            foreach($serviceRequests as $serviceRequest)
+            {
+                //undecided records
+                $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',6]])->count();
+                //in the process records
+                $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',5],['active',1]])->count();
+                //inactive records
+                $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+                $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
+            }
         }
 //        dd($serviceRequests);
         return view ('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
@@ -1122,7 +1148,8 @@ class SupplyController extends Controller
                     $step=7;
                     $step2=6;
                     break;
-                default: $step=2;$step2=1;
+                default:
+                    $check=0;
             }
             $requestRecords=RequestRecord::where([['step','>=',$step],['active',1],['refuse_user_id',null]])->pluck('request_id');
             $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
