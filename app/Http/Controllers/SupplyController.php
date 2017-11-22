@@ -681,64 +681,69 @@ class SupplyController extends Controller
 //pr2
     public function productRequestManagement()
     {
+
         $pageTitle='مدیریت درخواست کالا تازه ثبت شده';
         $pageName='productRequestManagement';
 
         $me=Auth::user();
-
-        switch(trim($me->unit->title))
+        if($me->unit_id==6 or $me->unit_id==9 or $me->unit_id==8 or $me->unit_id==10 or $me->unit_id==12 or $me->unit_id==4)
         {
-            case 'تدارکات':
+            switch(trim($me->unit->title))
+            {
+                case 'تدارکات':
 //                if($me->is_supervisor==1)
 //                {
-                $step=1;
-                $step2=2;
+                    $step=1;
+                    $step2=2;
 //                }
-                //the user is Karpardaz
+                    //the user is Karpardaz
 //                else
 //                {
 //                    $step=7;
 //                    $step2=8;
 //                }
-                break;
-            case 'انبار':
-                $step=2;
-                $step2=3;
-                break;
-            case 'اعتبار':
-                $step=3;
-                $step2=4;
-                break;
-            case 'امور عمومی':
-                $step=4;
-                $step2=5;
-                break;
-            case 'ریاست':
-                $step=5;
-                $step2=6;
-                break;
-            case 'امور مالی':
-                $step=6;
-                $step2=7;
-                break;
-            default: $step=1;$step2=1;
-        }
-        $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
+                    break;
+                case 'انبار':
+                    $step=2;
+                    $step2=3;
+                    break;
+                case 'اعتبار':
+                    $step=3;
+                    $step2=4;
+                    break;
+                case 'امور عمومی':
+                    $step=4;
+                    $step2=5;
+                    break;
+                case 'ریاست':
+                    $step=5;
+                    $step2=6;
+                    break;
+                case 'امور مالی':
+                    $step=6;
+                    $step2=7;
+                    break;
 
-        $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
+            }
+            $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
 
-        foreach($productRequests as $productRequest)
-        {
-            //undecided records
-            $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',$step]])->count();
-            //in the process records
-            $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step','>=',$step2],['active',1]])->count();
-            //inactive records
-            $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
-            $productRequest->date = $this->toPersian($productRequest->created_at);
-        }
+            $productRequests=Request2::where('request_type_id',3)->whereIn('id',$requestRecords)->orderBy('created_at','desc')->get();
+//dd($productRequests);
+            foreach($productRequests as $productRequest)
+            {
+                //undecided records
+                $productRequest->request_record_count=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step',$step]])->count();
+                //in the process records
+                $productRequest->request_record_count_accept=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id',null],['step','>=',$step2],['active',1]])->count();
+                //inactive records
+                $productRequest->request_record_count_refused=RequestRecord::where([['request_id',$productRequest->id],['refuse_user_id','!=',null]])->count();
+                $productRequest->date = $this->toPersian($productRequest->created_at);
+            }
 //        dd($productRequests);
-        return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
+            return view('admin.productRequestManagement', compact('pageTitle','productRequests','pageName'));
+        }
+        else
+        return redirect('user/productRequest');
     }
 //prr
     public function productRequestRecords($id)
@@ -806,55 +811,80 @@ class SupplyController extends Controller
             case 'تدارکات':
                 $step=1;
                 $step2=2;
+                $check=1;
                 break;
             case 'اعتبار':
                 $step=2;
                 $step2=3;
+                $check=1;
                 break;
             case 'امور عمومی':
                 $step=3;
                 $step2=4;
+                $check=1;
                 break;
             case 'ریاست':
                 $step=4;
                 $step2=5;
+                $check=1;
                 break;
             case 'امور مالی':
                 $step=6;
                 $step2=7;
+                $check=1;
                 break;
-            default:$step=1;$step2=1;
+            default:
+                //it means he/she is the unit user
+                $check=0;
         }
-        $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
-        $serviceRequests=Request2::where('request_type_id',2)->whereIn('id',$requestRecords)->get();
-        //درخواست های من بعنوان مسئول واحد
-        $service_request_id=Request2::where([['unit_id',$me->unit_id],['request_type_id',2]])->pluck('id');
-        $requestRecords2=RequestRecord::where('step',5)->whereIn('request_id',$service_request_id)->pluck('request_id');
-        $serviceRequests2=Request2::whereIn('id',$requestRecords2)->get();
-        foreach($serviceRequests2 as $serviceRequest)
+        if($check==1)
         {
-            //undecided records
-            $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',5]])->count();
-            //in the process records
-            $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',6],['active',1]])->count();
-            //inactive records
-            $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
-            $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
-        }
+            $requestRecords=RequestRecord::where('step',$step)->pluck('request_id');
+            $serviceRequests=Request2::where('request_type_id',2)->whereIn('id',$requestRecords)->get();
+            //درخواست های من بعنوان مسئول واحد
+            //یعنی مرحله پنجم درخواست خدمت که مسئول هر واحد متفاوته
+            $service_request_id=Request2::where([['unit_id',$me->unit_id],['request_type_id',2]])->pluck('id');
+            $requestRecords2=RequestRecord::where('step',5)->whereIn('request_id',$service_request_id)->pluck('request_id');
+            $serviceRequests2=Request2::whereIn('id',$requestRecords2)->get();
+            foreach($serviceRequests2 as $serviceRequest)
+            {
+                //undecided records
+                $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',5]])->count();
+                //in the process records
+                $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',6],['active',1]])->count();
+                //inactive records
+                $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+                $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
+            }
 
-
-        foreach($serviceRequests as $serviceRequest)
-        {
-            //undecided records
-            $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',$step]])->count();
-            //in the process records
-            $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',$step2],['active',1]])->count();
-            //inactive records
-            $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
-            $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
-        }
-        $serviceRequests=$serviceRequests->merge($serviceRequests2);
+            foreach($serviceRequests as $serviceRequest)
+            {
+                //undecided records
+                $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',$step]])->count();
+                //in the process records
+                $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',$step2],['active',1]])->count();
+                //inactive records
+                $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+                $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
+            }
+            $serviceRequests=$serviceRequests->merge($serviceRequests2);
 //        dd($serviceRequests);
+        }
+        else{
+            $service_request_id=Request2::where([['unit_id',$me->unit_id],['request_type_id',2]])->pluck('id');
+            $requestRecords=RequestRecord::where('step',5)->whereIn('request_id',$service_request_id)->pluck('request_id');
+            $serviceRequests=Request2::whereIn('id',$requestRecords)->get();
+            foreach($serviceRequests as $serviceRequest)
+            {
+                //undecided records
+                $serviceRequest->request_record_count=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step',5]])->count();
+                //in the process records
+                $serviceRequest->request_record_count_accept=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id',null],['step','>=',6],['active',1]])->count();
+                //inactive records
+                $serviceRequest->request_record_count_refused=RequestRecord::where([['request_id',$serviceRequest->id],['refuse_user_id','!=',null]])->count();
+                $serviceRequest->date = $this->toPersian($serviceRequest->created_at);
+            }
+        }
         return view('admin.serviceRequestManagement', compact('pageTitle','serviceRequests','pageName'));
     }
 
@@ -867,51 +897,84 @@ class SupplyController extends Controller
         {
             case 'تدارکات':
                 $step=1;
+                $check=1;
                 break;
             case 'اعتبار':
                 $step=2;
+                $check=1;
                 break;
             case 'امور عمومی':
                 $step=3;
+                $check=1;
                 break;
             case 'ریاست':
                 $step=4;
+                $check=1;
                 break;
             case 'امور مالی':
                 $step=6;
+                $check=1;
                 break;
-            default: $step=1;
+            default: $check=0;
         }
-        $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',$step]])->get();
-        foreach($requestRecords as $requestRecord)
+        if($check==1)
         {
-            $requestRecord->mine=0;
-        }
-        //به عنوان مسئول واحد
-        $request_id=Request2::where([['unit_id',$user->unit_id],['id',$id]])->pluck('id');
-        $requestRecords2=RequestRecord::whereIn('request_id',$request_id)->where('step',5)->get();
-        foreach($requestRecords2 as $requestRecord)
-        {
-            $requestRecord->mine=1;
-        }
-        $requestRecords=$requestRecords->merge($requestRecords2);
-        foreach($requestRecords as $requestRecord)
-        {
-            //decrypt
-            if(!empty($requestRecord->title))
-                $requestRecord->title=decrypt($requestRecord->title);
-            if(!empty($requestRecord->description))
-                $requestRecord->description=decrypt($requestRecord->description);
-            if(!empty($requestRecord->unit_count))
-                $requestRecord->unit_count=decrypt($requestRecord->unit_count);
-            if($requestRecord->price!=0)
-                $requestRecord->price=decrypt($requestRecord->price);
-            if($requestRecord->rate!=0)
-                $requestRecord->rate=decrypt($requestRecord->rate);
-            if(!empty($requestRecord->why_not))
-                $requestRecord->why_not=decrypt($requestRecord->why_not);
-        }
+            $requestRecords=RequestRecord::where([['request_id',$id],['refuse_user_id',null],['step',$step]])->get();
+            foreach($requestRecords as $requestRecord)
+            {
+                $requestRecord->mine=0;
+            }
+            //به عنوان مسئول واحد
+            $request_id=Request2::where([['unit_id',$user->unit_id],['id',$id]])->pluck('id');
+            $requestRecords2=RequestRecord::whereIn('request_id',$request_id)->where('step',5)->get();
+            foreach($requestRecords2 as $requestRecord)
+            {
+                $requestRecord->mine=1;
+            }
+            $requestRecords=$requestRecords->merge($requestRecords2);
+            foreach($requestRecords as $requestRecord)
+            {
+                //decrypt
+                if(!empty($requestRecord->title))
+                    $requestRecord->title=decrypt($requestRecord->title);
+                if(!empty($requestRecord->description))
+                    $requestRecord->description=decrypt($requestRecord->description);
+                if(!empty($requestRecord->unit_count))
+                    $requestRecord->unit_count=decrypt($requestRecord->unit_count);
+                if($requestRecord->price!=0)
+                    $requestRecord->price=decrypt($requestRecord->price);
+                if($requestRecord->rate!=0)
+                    $requestRecord->rate=decrypt($requestRecord->rate);
+                if(!empty($requestRecord->why_not))
+                    $requestRecord->why_not=decrypt($requestRecord->why_not);
+            }
 
+        }
+        else {
+//به عنوان مسئول واحد
+            $request_id=Request2::where([['unit_id',$user->unit_id],['id',$id]])->pluck('id');
+            $requestRecords=RequestRecord::whereIn('request_id',$request_id)->where('step',5)->get();
+            foreach($requestRecords as $requestRecord)
+            {
+                $requestRecord->mine=1;
+            }
+            foreach($requestRecords as $requestRecord)
+            {
+                //decrypt
+                if(!empty($requestRecord->title))
+                    $requestRecord->title=decrypt($requestRecord->title);
+                if(!empty($requestRecord->description))
+                    $requestRecord->description=decrypt($requestRecord->description);
+                if(!empty($requestRecord->unit_count))
+                    $requestRecord->unit_count=decrypt($requestRecord->unit_count);
+                if($requestRecord->price!=0)
+                    $requestRecord->price=decrypt($requestRecord->price);
+                if($requestRecord->rate!=0)
+                    $requestRecord->rate=decrypt($requestRecord->rate);
+                if(!empty($requestRecord->why_not))
+                    $requestRecord->why_not=decrypt($requestRecord->why_not);
+            }
+        }
         return view ('admin.serviceRequestRecords',compact('pageTitle','requestRecords','user'));
     }
 

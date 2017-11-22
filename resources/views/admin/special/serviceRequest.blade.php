@@ -91,7 +91,7 @@
                                 {{--</td>--}}
                                 <td class="col-md-2">
                                     <input id="product_title" class="form-control " name="product_title"
-                                           placeholder="نام کالا مورد نیاز" required="required" type="text"></td>
+                                           placeholder="شرح خدمت مورد نیاز" required="required" type="text"></td>
                                 <td class="col-md-1">
                                     <input id="product_count" class="form-control  count" name="product_count"
                                            placeholder="" required="required" type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="1000">

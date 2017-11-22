@@ -594,21 +594,26 @@ class CertificateController extends Controller
                 $certificate_records2 = CertificateRecord::where([['step', 1],['certificate_id',$id]])->whereIn('certificate_id', $certificate_id)->get();
 
                 $certificateRecords=$certificateRecords->merge($certificate_records2);
-                foreach($certificateRecords as $certificateRecord)
+				//dd($certificateRecords);
+               
+                break;
+        }
+		 foreach($certificateRecords as $certificateRecord)
                 {
 //decrypt
                     if(!empty($certificateRecord->unit_count))
                         $certificateRecord->unit_count=decrypt($certificateRecord->unit_count);
+					
                     if(!empty($certificateRecord->price))
                         $certificateRecord->price=decrypt($certificateRecord->price);
+					
                     if(!empty($certificateRecord->rate))
                         $certificateRecord->rate=decrypt($certificateRecord->rate);
+				
                     if(!empty($certificateRecord->why_not))
                         $certificateRecord->why_not=decrypt($certificateRecord->why_not);
+				
                 }
-
-                break;
-        }
 //        $certificate_records=CertificateRecord::where([['certificate_id',$id],['step',$step]])->get();
 //dd($certificateRecords);
         return view('admin.certificate.certificateRecords',compact('pageTitle','certificateRecords','certificates'));

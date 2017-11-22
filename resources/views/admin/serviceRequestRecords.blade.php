@@ -83,7 +83,7 @@
                         <th style="text-align: center ;">مقدار</th>
                         <th style="text-align: center ;">نرخ</th>
                         <th style="text-align: center ;">قیمت</th>
-                        <th class="col-md-3" style="text-align: center ;">عملیات</th>
+                        <th class="col-md-3" style="text-align: center ;border-right: 1px solid #d6d6c2;">عملیات</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -104,7 +104,7 @@
                                 <td>{{number_format($requestRecord->rate)}} تومان</td>
                                 <td>{{number_format($requestRecord->price)}} تومان</td>
                             @endif
-                            <td><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
+                            <td style="border-right: 1px solid #d6d6c2;"><button class="btn btn-link btn-round" data-toggle="tooltip" title="{{$requestRecord->description}}"> توضیحات
                                 </button>
                                 {{--id2: if it's  it means that i am also the unit supervisor of this reqeuest--}}
                                 <input id="acceptRequest" @if($requestRecord->mine==1) id2="1" @else  id2="0" @endif content="{{$requestRecord->id}}" name="{{$requestRecord->request_id}}" type="button" class="btn btn-success" required value="تایید" />

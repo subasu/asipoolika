@@ -57,7 +57,7 @@
                                         <input type="number" min="0" class="form-control" name="factorNumber" id="factorNumber">
                                     </div>
 
-                                    <lable style="font-size: 16px;">توضیحات : حجم فایل امضا نباید بیش از 150 کیلو بایت باشد ، پسوند فایل امضا باید از نوع  png یا jpg باشد.</lable>
+                                    <lable style="font-size: 16px;">توضیحات : حجم فایل قبض انبار نباید بیش از 150 کیلو بایت باشد ، پسوند فایل قبض انبار باید از نوع  png یا jpg باشد.</lable>
                                     <div class="input-group image-preview" style="margin-top: 10px;">
                                         <input type="text" class="form-control image-preview-filename" disabled="disabled">
                                         <!-- don't give a name === doesn't send on POST/GET -->

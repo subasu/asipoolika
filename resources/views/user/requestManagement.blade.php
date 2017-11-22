@@ -88,15 +88,7 @@
                                 <td style="direction: rtl;text-align: right">
                                     <ol>
                                         @foreach($request->requestRecord as $item)
-<<<<<<< HEAD
-<<<<<<< HEAD
                                             <li>{{decrypt($item->title)}}</li>
-=======
-                                            <li>{{$item->title}}</li>
->>>>>>> 6b1f09f35b8b7ee4ef8f191c1bfd76c2f8b84916
-=======
-                                            <li>{{decrypt($item->title)}}</li>
->>>>>>> cf993fe6cc4c3ceeeec0356703cd1e914d71e7be
                                         @endforeach
                                     </ol>
                                 </td>
@@ -110,7 +102,7 @@
                         @foreach($requests as $request)
                             <?php $i++; ?>
                             <tr>
-                                <td class="col-md-1">{{$i}}</td>
+                                {{--<td class="col-md-1">{{$i}}</td>--}}
                                 <td class="col-md-1">{{$request->id}}</td>
                                 <td class="info col-md-2">{{$request->request_record_count}}</td>
                                 <td class="success col-md-2">{{$request->request_record_count_accept}}</td>
@@ -118,15 +110,7 @@
                                 <td style="direction: rtl;text-align: right">
                                     <ol>
                                         @foreach($request->requestRecord as $item)
-<<<<<<< HEAD
-<<<<<<< HEAD
                                             <li>{{decrypt($item->title)}}</li>
-=======
-                                            <li>{{$item->title}}</li>
->>>>>>> 6b1f09f35b8b7ee4ef8f191c1bfd76c2f8b84916
-=======
-                                            <li>{{decrypt($item->title)}}</li>
->>>>>>> cf993fe6cc4c3ceeeec0356703cd1e914d71e7be
                                         @endforeach
                                     </ol>
                                 </td>

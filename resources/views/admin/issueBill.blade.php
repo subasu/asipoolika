@@ -66,7 +66,7 @@
                                         </label>
                                         <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" name="finalPrice" id="finalPrice">
                                     </div>
-                                    <lable style="font-size: 16px;">توضیحات : حجم فایل امضا نباید بیش از 150 کیلو بایت باشد ، پسوند فایل امضا باید از نوع  png یا jpg باشد.</lable>
+                                    <lable style="font-size: 16px;">توضیحات : حجم فایل فاکتور نباید بیش از 150 کیلو بایت باشد ، پسوند فایل فاکتور باید از نوع  png یا jpg باشد.</lable>
                                     <div class="input-group image-preview" style="margin-top: 10px;">
                                         <input type="text" class="form-control image-preview-filename" disabled="disabled">
                                         <!-- don't give a name === doesn't send on POST/GET -->

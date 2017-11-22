@@ -54,7 +54,7 @@
     <h5 dir="rtl" style="text-align: justify;">بدینوسیله گواهی می شود خدمات انجام شده به شرح زیر توسط
         شرکت/
         فروشگاه
-        {{$shopComp}}
+        {{decrypt($shopComp)}}
         جهت واحد
         {{$unitName}}
         به آقای/خانم
@@ -75,9 +75,9 @@
         @foreach($certificateRecords as $certificateRecord)
         <tr>
             <td class="col-md-1">{{ ++$i }}</td>
-            <td class="col-md-4" colspan="2">{{$certificateRecord->requestRecord->title}}</td>
+            <td class="col-md-4" colspan="2">{{decrypt($certificateRecord->requestRecord->title)}}</td>
             <td class="col-md-2">{{$certificateRecord->count}}</td>
-            <td class="col-md-3">{{number_format($certificateRecord->price)}}</td>
+            <td class="col-md-3">{{number_format(decrypt($certificateRecord->price))}}</td>
             <input type="hidden" id="requestId" value="{{$requestId}}">
             <input type="hidden" id="certificateId" value="{{$certificateRecord->certificate_id}}">
         </tr>

@@ -128,6 +128,7 @@
                                 </li>
                             @endif
                             @if($user->is_supervisor==1 and $user->unit_id!=3)
+                                @if($user->unit_id==6 or $user->unit_id==9 or $user->unit_id==8 or $user->unit_id==10 or $user->unit_id==12 or $user->unit_id==4)
                                 <li><a><i class="fa fa-dropbox"></i>مدیریت درخواست کالا<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li><a href="{{url('/admin/productRequestManagement')}}"> درخواست های جدید</a></li>
@@ -140,6 +141,7 @@
                                         @endif
                                     </ul>
                                 </li>
+                                @endif
                                 <li><a><i class="fa fa-edit"></i> مدیریت درخواست خدمت<span
                                                 class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
