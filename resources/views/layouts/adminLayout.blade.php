@@ -28,7 +28,7 @@
       href="{{ URL::asset('public/dashboard/css/maps/jquery-jvectormap-2.0.3.css')}}"/>
 <link href="{{ URL::asset('public/dashboard/css/icheck/flat/green.css')}}" rel="stylesheet"/>
 <link href="{{ URL::asset('public/dashboard/css/floatexamples.css')}}" rel="stylesheet" type="text/css"/>
-
+<link href='http://www.fontonline.ir/css/IranNastaliq.css' rel='stylesheet' type='text/css'>
 <!-- editor -->
 <link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
 <link href="{{URL::asset('public/dashboard/css/editor/external/google-code-prettify/prettify.css')}}"

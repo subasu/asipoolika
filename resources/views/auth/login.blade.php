@@ -1,5 +1,10 @@
 @extends('layouts.app')
 @section('content')
+ <div class="row">
+     <div class="col-md-12" style="color:white;font-size: 40px;margin-bottom: 20px;font-family: IranNastaliq,'IranNastaliq';">
+شبکه بهداشت خمینی شهر
+     </div>
+ </div>
     <form class="login form-horizontal col-md-3 col-sm-7 col-xs-7" role="form" method="POST"
           action="{{ url('/login') }}" autocomplete="off">
         {{ csrf_field() }}
