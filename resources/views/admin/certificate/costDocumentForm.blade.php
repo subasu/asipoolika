@@ -108,6 +108,10 @@
     </script>
 
     <script>
+        $(document).ready(function(){
+            var number=$('#number1').val();
+            $('#sumToPersian').text(number.toPersian()+' ریال');
+        });
         $(document).on('click','#print',function () {
 
             var token          = $('#token').val();
@@ -134,6 +138,8 @@
             });
         })
     </script>
+    <script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.js')}}"></script>
+    <script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.min.js')}}"></script>
     <style>
         h5, h6 {
             padding-top: 0 !important;
@@ -375,7 +381,10 @@
             <td colspan="2" class="col-md-2">مدارک پیوست</td>
             <td colspan="2" class="col-md-2"> ...</td>
             <td colspan="2" class="col-md-2">جمع</td>
-            <td colspan="2" class="col-md-2">{{number_format($sumGeneralPrice)}}</td>
+            <td colspan="2" class="col-md-2">{{number_format($sumGeneralPrice)}}
+                <input type="hidden" value="{{$sumGeneralPrice}}" id="number1">
+                <br><p id="sumToPersian" style="font-size:14px;color:black;"></p>
+            </td>
             <td colspan="1" class="col-md-1">@if($sumDeduction > 0){{number_format($sumDeduction)}}@endif  @if($sumDeduction == 0){{$sumDeduction}}@endif</td>
             <td colspan="1" class="col-md-1">@if($sumPayedPrice > 0){{number_format($sumPayedPrice)}}@endif  @if($sumPayedPrice == 0){{$sumPayedPrice}}@endif</td>
             <td colspan="1" class="col-md-1">-</td>

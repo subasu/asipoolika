@@ -1318,7 +1318,6 @@ class SupplyController extends Controller
         foreach($request as $item)
         {
             $item->request_records=$request_records;
-
             $item->date = $this->toPersian($item->created_at);
 
             $all_count=RequestRecord::where('request_id',$item->id)->count();
@@ -1348,12 +1347,11 @@ class SupplyController extends Controller
             if(!empty($requestRecord->why_not))
                 $requestRecord->why_not=decrypt($requestRecord->why_not);
 
-
 //            if(!empty($requestRecord->code))
 //                $requestRecord->code=decrypt($requestRecord->code);
         } //
 
-
+//dd($request);
         return view('admin.confirmedRequest',compact('pageTitle','pageName','request'));
     }
 
@@ -2202,7 +2200,6 @@ class SupplyController extends Controller
         {
             return view('admin.costDocumentRegister',compact('id','pageTitle'));
         }
-
     }
 
     //

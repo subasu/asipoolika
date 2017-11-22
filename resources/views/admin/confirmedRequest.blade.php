@@ -113,10 +113,10 @@
                             @else
                                 <a  class="btn btn-success disabled col-md-12 pull-right">ابلاغ شده</a>
                             @endif
-
                             <a href="{{url('admin/showCertificates/'.$request[0]->id)}}" class="btn btn-warning col-md-12 pull-right
-                              ">گواهی ها</a>
 
+                              ">گواهی ها</a>
+                            {{--{{count($request[0]->certificate->certificateRecords)}}--}}
                             {{--@if($productRequest->hasCertificate==1)--}}
                             {{--@if($productRequest->certificate->active==1)--}}
                             {{--<a href="{{url('admin/showCertificates/'.$productRequest->id)}}"--}}

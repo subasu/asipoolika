@@ -24,7 +24,7 @@
                     <table style="direction:rtl;text-align: center;font-size: 16px;" id="table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
                         <tr>
-                            <th style="text-align: center ;">ردیف</th>
+                            {{--<th style="text-align: center ;">ردیف</th>--}}
                             <th style="text-align: center ;">شناسه</th>
                             <th style="text-align: center ;">شرح</th>
                             <th style="text-align: center ;">مقدار</th>
@@ -43,7 +43,7 @@
                             <?php $r++; ?>
                             <tr>
                                 <input type="hidden" value="{{$certificateRecord->id}}" class="record_id">
-                                <th style="text-align: center">{{$r}}</th>
+                                {{--<th style="text-align: center">{{$r}}</th>--}}
                                 <td style="text-align: center">{{$certificateRecord->id}}</td>
                                 @if($certificateRecord->request_record_id!=null)
                                     <td>{{decrypt($certificateRecord->RequestRecord->title)}}</td>

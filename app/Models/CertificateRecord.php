@@ -8,7 +8,7 @@ class CertificateRecord extends Model
 {
     public function certificate()
     {
-        return $this->belongsTo('App\Models\Certificate');
+        return $this->belongsTo('App\Models\Certificate','certificate_id');
     }
     public function requestRecord()
     {

@@ -747,7 +747,10 @@ class CertificateController extends Controller
         }
         else $step=0;
 
-
+        if($step==5)
+            Certificate::where('id',$request->certificate_id)->update([
+                'active'=>1
+            ]);
         $q=CertificateRecord::where('id',$request->certificate_record_id)->update([
             'step'=>$step,
             'active'=>1,
