@@ -112,13 +112,13 @@
 
                 {{--</form>--}}
                 <div class="row">
-                    <div class="col-md-12 col-md-offset-3">
+                    <div class="col-md-12 col-md-offset-1">
                             @if($requestRecords[0]->request->request_type_id==3)
-                                <button   id="deliver_store"  content="4" class="btn btn-success col-md-2" >تحویل به انبار</button>
-                                <button   id="use_certificate" content="2" class="btn btn-danger col-md-2" >صدور گواهی تحویل و مصرف</button>
-                                <button   id="install_certificate"  content="1" class="btn btn-primary col-md-2" >صدور گواهی تحویل و نصب</button>
+                                <button   id="deliver_store"  content="4" class="btn btn-success btn-lg col-md-3" >تحویل به انبار</button>
+                                <button   id="use_certificate" content="2" class="btn btn-danger btn-lg col-md-3" >صدور گواهی تحویل و مصرف</button>
+                                <button   id="install_certificate"  content="1" class="btn btn-lg btn-primary col-md-3" >صدور گواهی تحویل و نصب</button>
                             @elseif($requestRecords[0]->request->request_type_id==2)
-                        <button  id="service_certificate"  content="3" class="btn btn-success col-md-4 col-md-offset-1" value="">صدور گواهی انجام خدمت</button>
+                        <button  id="service_certificate"  content="3" class="btn btn-success btn-lg col-md-4 col-md-offset-3" value="">صدور گواهی انجام خدمت</button>
                         @endif
                     </div>
                 </div>

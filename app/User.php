@@ -31,6 +31,7 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Role', 'user_role', 'user_id', 'role_id');
     }
 
+
     //doe's the user have any role?
     public function hasAnyRole($roles)
     {

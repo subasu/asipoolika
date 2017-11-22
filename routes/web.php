@@ -361,40 +361,8 @@ Route::get('/receiver', 'SpecialController@receiverGet');
 //for service only the unit users
 Route::get('/receiver2', 'SpecialController@receiverGet2');
 
-Route::get('/f', function () {
-    return view('forms.productRequestForm');
-});
+//Route::get('/f','IndexController@userList');
 
-Route::get('/form2', function () {
-    return view('user.serviceRequest');
-});
-Route::get('/user', function () {
-    return view('user.userCreate');
-});
-Route::get('/unit', function () {
-    return view('user.unitCreate');
-});
-Route::get('/admin/form1', function () {
-    return view('admin.productRequest');
-});
-Route::get('/admin/form2', function () {
-    return view('admin.serviceRequest');
-});
-Route::get('/admin/form8', function () {
-    return view('admin.serviceCertification');
-});
-Route::get('/admin/form9', function () {
-    return view('admin.productDelivery');
-});
-Route::get('/admin/form6', function () {
-    return view('admin.serviceDelivery');
-});
-Route::get('/admin/form4', function () {
-    return view('admin.ceremonial');
-});
-route::get('/cost', function () {
-    return view('admin.costDocumentForm');
-});
 Route::get('logout',function(){
     Auth::logout();
     return redirect('/login');

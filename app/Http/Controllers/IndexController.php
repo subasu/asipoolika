@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
+    public function userList()
+    {
+        $users = DB::table('users')->select('name', 'family','username','unit_id','is_supervisor')->get();
+        return view('users',compact('users'));
+    }
     //Kianfar : load uni list by ajax
     public function unit_count(Request $request)
     {

@@ -5,6 +5,10 @@
     <link href="{{ url('public/dashboard/css/bootstrap.min.css')}}" rel="stylesheet">
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
     <script>
+        $(document).ready(function(){
+            var number=$('#number1').val();
+            $('#sumToPersian').text(number.toPersian()+' ریال');
+        });
         $(document).on('click','#print',function () {
 
             //var body      = $('#body')[0].innerHTML;
@@ -37,7 +41,8 @@
             });
         })
     </script>
-
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.js')}}"></script>
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.min.js')}}"></script>
 @if(!empty($productRequestRecords))
 <body id="body">
 <div style="padding:1% 0.5%">
@@ -91,7 +96,10 @@
 
             <tr>
                 <td colspan="11" class="col-md-10" > <span style="margin-right: 82%;">جمع</span> </td>
-                <td colspan="2" class="col-md-2">{{number_format($sum)}}</td>
+                <td colspan="2" class="col-md-2">{{number_format($sum)}}
+                    <input type="hidden" value="{{$sum}}" id="number1">
+                    <br><p id="sumToPersian" style="font-size:15px;color:black;"></p>
+                </td>
             </tr>
             <tr>
                 <td colspan="3" class="col-md-2"><span>مسئول واحد:</span><span>{{ chr(10)  }} </span>{{$unitSupervisorFullName}}</td>
@@ -117,8 +125,7 @@
         @if($unitSupervisorSignature == null  || $supplySupervisorSignature== null || $bossSignature == null ||  $creditSupervisorSignature == null || $financeSupervisorSignature == null)
             <h3 style="background-color: red; width:60%; margin-top:35%;">بدلیل اینکه همه امضاها ثبت نشده است لذا امکان چاپ درخواست وجود ندارد ، لطفا تمامی امضاها را ثبت نمائید سپس درخواست خود را بدهید</h3>
         @else
-            <button class="glyphicon glyphicon-print" style="width: 20%; font-size: 150%; margin-top: 5%;" id="print" >چاپ</button>
-
+            <button  style="width: 20%; font-size: 150%; margin-top: 2%;" id="print" >چاپ</button>
         @endif
 </div>
 

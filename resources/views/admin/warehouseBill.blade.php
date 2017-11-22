@@ -52,9 +52,9 @@
                                 </label>
                                 <div class="col-md-12">
                                     <div class="col-md-12 col-sm-12 col-xs-12 form-group pull-right">
-                                        <label class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> شماره فاکتور :
+                                        <label style="font-size: 17px;" class="control-label col-md-5 col-sm-4 col-xs-12 padding-right-1px pull-right" for=""> شماره قبض انبار :
                                         </label>
-                                        <input type="number" min="0" class="form-control" name="factorNumber" id="factorNumber">
+                                        <input type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="0" class="form-control" name="factorNumber" id="factorNumber">
                                     </div>
 
                                     <lable style="font-size: 16px;">توضیحات : حجم فایل قبض انبار نباید بیش از 150 کیلو بایت باشد ، پسوند فایل قبض انبار باید از نوع  png یا jpg باشد.</lable>
@@ -69,7 +69,7 @@
                                             <!-- image-preview-input -->
                                     <div class="btn btn-default image-preview-input">
                                         <span class="glyphicon glyphicon-folder-open"></span>
-                                        <span class="image-preview-input-title">انتخاب تصویر فاکتور</span>
+                                        <span class="image-preview-input-title">انتخاب قبض انبار</span>
                                         <input type="file" id="image" name="image"  />
                                         <!-- rename it -->
                                     </div>
@@ -89,7 +89,7 @@
                                     {{--<button type="submit" name="edit" id="edit" class="btn btn-primary col-md-3 col-sm-3 col-xs-5">ویرایش</button>--}}
 
                                     <button type="button" name="addWarehouseBill" id="addWarehouseBill"
-                                            class="btn btn-success col-md-5 col-sm-3 col-xs-5">  آپلود قبض انبار
+                                            class="btn btn-primary btn-lg col-md-5 col-sm-3 col-xs-5">  آپلود قبض انبار
                                     </button>
 
                                     <input type="hidden" id="requestId" name="requestId" value="{{$id}}">

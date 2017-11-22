@@ -94,11 +94,11 @@
                                     </div>
                                 </div>
                                 {{--<div class="ln_solid"></div>--}}
-                                <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-3 col-sm-offset-3 col-xs-offset-1">
+                                <div class="col-md-12 col-sm-12 col-xs-12 col-md-offset-4 col-sm-offset-3 col-xs-offset-1">
                                     {{--<button type="submit" name="edit" id="edit" class="btn btn-primary col-md-3 col-sm-3 col-xs-5">ویرایش</button>--}}
-                                    <button type="button" id="check" content="{{$id}}" class="btn btn-primary col-md-3 col-sm-3 col-xs-5" >ثبت خلاصه تنظیمی</button>
+                                    {{--<button type="button" id="check" content="{{$id}}" class="btn btn-primary col-md-3 col-sm-3 col-xs-5" >ثبت خلاصه تنظیمی</button>--}}
                                     <button type="button" name="addBill" id="addBill"
-                                            class="btn btn-success col-md-3 col-sm-3 col-xs-5"> آپلود فاکتور
+                                            class="btn btn-success btn-lg col-md-4 col-sm-3 col-xs-5"> آپلود فاکتور
                                     </button>
 
                                     <input type="hidden" id="requestId" name="requestId" value="{{$id}}">

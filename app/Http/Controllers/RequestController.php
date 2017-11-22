@@ -493,9 +493,12 @@ class RequestController extends Controller
         $bills     = DB::table('bills')->where([['request_id',$id],['status',0]])->get();
 //        dd($bills);
         foreach ($bills as $bill) {
+            if(!empty($bill->factor_number))
             $bill->factor_number=decrypt($bill->factor_number);
+            if(!empty($bill->final_price))
             $bill->final_price=decrypt($bill->final_price);
         }
+
         return  view ('user.showFactorDetails',compact('pageTitle','bills'));
     }
 

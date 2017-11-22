@@ -4,6 +4,10 @@
     <link href="{{ url('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
     <script>
+        $(document).ready(function(){
+            var number=$('#number1').val();
+            $('#sumToPersian').text(number.toPersian()+' ریال');
+        });
         $(document).on('click','#print',function () {
 
             //var body = $('#body')[0].innerHTML;
@@ -38,7 +42,8 @@
             });
         })
     </script>
-
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.js')}}"></script>
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.min.js')}}"></script>
 @if(!empty($productRequestRecords))
 <body id="body">
 
@@ -80,8 +85,12 @@
         @endforeach
 
     <tr>
-        <td colspan="6" style="text-align: left; padding-left: 4%;"> جمع</td>
-        <td colspan="6" style="text-align: left; padding-left: 3.5%;">{{number_format($sum)}}</td>
+        <td colspan="6" style="text-align: left;"> جمع
+            <input type="hidden" value="{{$sum}}" id="number1">
+            <br><p id="sumToPersian" style="font-size:14px;color:black;"></p></td>
+        <td colspan="6" style="padding-right: 10px;padding-left: 20px;">{{number_format($sum)}}
+
+        </td>
     </tr>
 
     <tr>

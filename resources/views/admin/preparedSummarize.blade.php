@@ -100,12 +100,12 @@
                             @endif
                             <input type="hidden" id="recordCount" name="recordCount" value="0">
                         </table>
-                        <input type="button" id="reg" value="ثبت ردیف های جدید" class="btn btn-success" style="margin-left:43% ; display: none; width: 16%;">
+                        <input type="button" id="reg" value="ثبت ردیف های جدید" class="btn btn-success btn-lg" style="margin-left:43% ; display: none; width: 16%;">
                     </form>
                     <input type="hidden" id="token" value="{{ csrf_token() }}">
-                    <input type="button" id="finish" value="ثبت خلاصه تنظیمی" class="btn btn-success col-md-2 margin-2percent  col-md-offset-3">
-                    <input type="button" id="guide" value="راهنمای استفاده از صفحه" class="btn btn-info col-md-2 margin-2percent">
-                    <input type="button" id="addRow" value="اضافه کردن ردیف" class="btn btn-primary col-md-2 margin-2percent">
+                    <input type="button" id="finish" value="ثبت خلاصه تنظیمی" class="btn btn-success btn-lg col-md-2 margin-2percent  col-md-offset-3">
+                    <input type="button" id="guide" value="راهنمای استفاده از صفحه" class="btn btn-info btn-lg col-md-2 margin-2percent">
+                    <input type="button" id="addRow" value="اضافه کردن ردیف" class="btn btn-primary btn-lg col-md-2 margin-2percent">
                 </div>
             </div>
         </div>
