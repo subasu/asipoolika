@@ -219,7 +219,8 @@
                                                     @endif
                                                         </li>
                                                     <li>گواهی :
-                                                    @if($productRequest->certificate!=null) <span style="color:#006600;font-weight: bold">دارد</span>
+
+                                                    @if($productRequest->hasCertificate==1) <span style="color:#006600;font-weight: bold">دارد</span>
                                                         @else <span style="color:red">ندارد</span>
                                                         @endif
                                                     </li>

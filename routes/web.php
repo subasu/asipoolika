@@ -208,7 +208,12 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('/serviceRequestRecords/{id}','SupplyController@serviceRequestRecords');
         Route::get('/acceptServiceRequestManagement','SupplyController@acceptServiceRequestManagementGet');
         Route::post('acceptServiceRequest','SupplyController@acceptServiceRequest');
-        Route::get('/confirmServiceRequestManagement','SupplyController@confirmServiceRequestManagementGet');
+//        Route::get('/confirmServiceRequestManagement','SupplyController@confirmServiceRequestManagementGet');
+        Route::get('/confirmServiceRequestManagement',[
+            'uses'=>'SupplyController@confirmServiceRequestManagementGet',
+            'middleware' => 'roles',
+            'roles'=>['supplierManager']
+        ]);
         //End Service Request Management
 
         //shiri

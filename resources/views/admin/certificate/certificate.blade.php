@@ -724,7 +724,6 @@ $(document).on('click','#service_certificate',function()
         }
         else
         {
-
             swal({
                     title: "آیا از ثبت درخواست مطمئن هستید؟",
                     text: "",

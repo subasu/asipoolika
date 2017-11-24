@@ -3,7 +3,13 @@
     <link href="{{ URL::asset('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
     <link href="{{ url('public/dashboard/css/bootstrap.min.css')}}" rel="stylesheet">
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.js')}}"></script>
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.min.js')}}"></script>
     <script>
+        $(document).ready(function(){
+            var number=$('#number1').val();
+            $('#sumToPersian').text(number.toPersian()+' ریال');
+        });
         $(document).on('click','#print',function () {
 
            // var body      = $('#body')[0].innerHTML;
@@ -83,7 +89,10 @@
         </tr>
         @endforeach
         <tr>
-            <td class="col-md-4" colspan="3">جمع کل به حروف</td>
+            <td class="col-md-4" colspan="3">جمع کل به حروف :
+                <input type="hidden" value="{{$sum}}" id="number1">
+                <lable id="sumToPersian"></lable></td>
+            </td>
             <td class="col-md-2">جمع کل</td>
             <td class="col-md-3">{{number_format($sum)}}</td>
         </tr>

@@ -61,7 +61,6 @@ class CertificateController extends Controller
 
     public function execute_certificateGet($id)
     {
-
         $pageTitle="صدور گواهی";
         $user=Auth::user();
         $requestRecords=RequestRecord::where([['request_id',$id],['active',1],['step',7]])->get();
@@ -828,6 +827,7 @@ class CertificateController extends Controller
 //                $certificate_id = CertificateRecord::where('step', 5)->pluck('certificate_id');
                 $certificate_id = CertificateRecord::where('step','>',4)->pluck('certificate_id');
                 $certificates = Certificate::whereIn('id', $certificate_id)->where('certificate_type_id','!=',4)->orderBy('created_at','desc')->get();
+
                 break;
             case 'unit_supervisor':
                 //bring certificates as a unit supervisor
@@ -843,9 +843,16 @@ class CertificateController extends Controller
 //                $certificate_records = CertificateRecord::where('step', 2)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
                 $certificate_records = CertificateRecord::where('step','>', 1)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
                 $certificates2 = Certificate::whereIn('id', $certificate_records)->where('certificate_type_id','!=',4)->orderBy('created_at','desc')->get();
-                $certificates=$certificates->merge($certificates2);
 
-//                dd($certificates);
+                //bring certificates as supply manager
+                $request_id = RequestRecord::pluck('request_id');
+                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                $certificate_records = CertificateRecord::where('step','>', 4)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
+                $certificates3 = Certificate::whereIn('id', $certificate_records)->where('certificate_type_id','!=',4)->orderBy('created_at','desc')->get();
+
+                $certificates=$certificates->merge($certificates2);
+                $certificates=$certificates->merge($certificates3);
+
                 break;
         }
         foreach($certificates as $certificate)

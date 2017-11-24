@@ -10,9 +10,14 @@
     @endif
     <link href="{{ URL::asset('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.js')}}"></script>
+<script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.min.js')}}"></script>
     <script>
+        $(document).ready(function(){
+            var number=$('#number1').val();
+            $('#sumToPersian').text(number.toPersian()+' ریال');
+        });
         $(document).on('click','#print',function () {
-
             var body      = $('#body')[0].innerHTML;
             //var token     = $('#token').val();
             var requestId = $('#requestId').val();
@@ -26,7 +31,6 @@
             });
             $.ajax
             ({
-
                url  : "{{url('admin/formSave')}}/{{3}}",
                type : "post",
                context :{'button':button,'body':body},
@@ -44,7 +48,7 @@
                 }
 
             });
-        })
+        });
 //        function printData(){
 //            var printContents = $('#body')[0].innerHTML;
 //            w = window.open();
@@ -84,11 +88,11 @@
 
     @if(!empty($certificateRecords[0]))
         @if($certificateRecords[0]->certificate->certificate_type_id == 1)
-            <h3 class="text-center">« صورت جلسه تحویل کالا و نصب »</h3>
+            <h3 class="text-center">« صورت جلسه تحویل و نصب »</h3>
             <input type="hidden" id="title" value="گواهی تحویل و نصب کالا">
         @endif
         @if($certificateRecords[0]->certificate->certificate_type_id == 2)
-            <h3 class="text-center">« صورت جلسه تحویل کالا و مصرف »</h3>
+            <h3 class="text-center">« صورت جلسه تحویل و مصرف »</h3>
                 <input type="hidden" id="title" value="گواهی تحویل و مصرف کالا">
         @endif
         <br>
@@ -135,9 +139,12 @@
         </tr>
         @endforeach
         <tr>
-            <td class="col-md-4" colspan="2">جمع کل به حروف</td>
+            <td class="col-md-4" colspan="2">جمع کل به حروف :
+                <input type="hidden" value="{{$sum}}" id="number1">
+                <lable id="sumToPersian"  class="label label-default"></lable></td>
             <td class="col-md-2">جمع کل به عدد</td>
             <td class="col-md-3">{{number_format($sum)}}</td>
+
         </tr>
         <tr>
             <th class="col-md-2">تحویل گیرنده:   {{$receiverFullName}}</th>
