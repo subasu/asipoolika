@@ -135,7 +135,7 @@
                                         @if($user->is_supervisor==1)
                                             <li><a href="{{url('/admin/acceptProductRequestManagement')}}">بررسی شده</a></li>
                                             {{--                                    <li><a href="{{url('/admin/refusedProductRequestManagement')}}"> رد شده ها</a></li>--}}
-                                            @if($user->is_supervisor==1 and ($user->unit_id==6 or $user->unit_id==9))
+                                            @if($user->is_supervisor==1 and $user->unit_id==6)
                                                 <li><a href="{{url('/admin/confirmProductRequestManagement')}}">تایید شده</a></li>
                                             @endif
                                         @endif

@@ -108,7 +108,7 @@
             <th class="col-md-3">رئیس واحد:  {{$bossFullName}}</th>
         </tr>
         <tr>
-            <td class="col-md-3" colspan="">@if(strlen($receiverSignature) > 25)<img style="height: 80px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
+            <td class="col-md-3" colspan="">@if(strlen($receiverSignature) > 25)<img style="width: 80px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
             <td class="col-md-3"><img style="width: 80px;" src="{{$unitSupervisorSignature}}"></td>
             <td class="col-md-3"><img style="width: 80px;" src="{{$supplySupervisorSignature}}"></td>
             <td class="col-md-3"><img style="width: 80px;" src="{{$bossSignature}}"></td>

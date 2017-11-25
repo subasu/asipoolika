@@ -161,7 +161,6 @@
                             @if($request[0]->request_type_id == 3 && count($request[0]->warehouse) < 1 )
                                 <a href="{{url('admin/warehouseBill/'.$request[0]->id)}}"  class="btn btn-danger  col-md-12  pull-right" >آپلود قبض انبار</a>
                             @endif
-
                             <a href="{{url('admin/costDocumentForm/'.$request[0]->id)}}" class="btn btn-primary col-md-12 pull-right">سند هزینه</a>
                         @endif
                         </div>

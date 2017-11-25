@@ -1259,8 +1259,6 @@ class SupplyController extends Controller
 
     public function confirmProductRequestManagementGet()
     {
-        if(Auth::user()->unit_id!=6 and Auth::user()->unit_id!=9)
-            return redirect()->back();
         $pageTitle="مدیریت درخواست ها";
         $pageName='confirmProductRequest';
         $productRequests=Request2::where('request_type_id',3)->orderBy('created_at','desc')->get();
@@ -1276,7 +1274,6 @@ class SupplyController extends Controller
                     'active'=>1
                 ]);
             }
-
 
             $productRequest->all_count=$all_count;
             $productRequest->accept_count=$accept_count;
@@ -1667,6 +1664,7 @@ class SupplyController extends Controller
 //            {
         //چک میکنه اگه تمام رکوردهای گواهی تایید شده هستند صفحه چاپ را نمایش میدهد.
         $all_count=CertificateRecord::where('certificate_id',$id)->count();
+
         $accept_count=CertificateRecord::where([['certificate_id',$id],['step',5]])->count();
         if($all_count!=$accept_count)
             return redirect('admin/showCertificates/'.$id);
@@ -2107,9 +2105,11 @@ class SupplyController extends Controller
 //        else {
 //چک میکنه اگه تمام رکوردهای گواهی تایید شده هستند صفحه چاپ را نمایش میدهد.
         $all_count=CertificateRecord::where('certificate_id',$id)->count();
-        $accept_count=CertificateRecord::where([['certificate_id',$id],['step',5]])->count();
+        $accept_count=CertificateRecord::where([['certificate_id',$id],['step',5],['active',1]])->count();
+//        return $all_count.' / '.$accept_count;
         if($all_count!=$accept_count)
-            return redirect('admin/showCertificates/'.$id);
+            return redirect()->back();
+
 
         $supplyId = Unit::where('title', 'تدارکات')->value('id');
         $supplySupervisorInfo = User::where([['unit_id', $supplyId], ['is_supervisor', 1]])->get();

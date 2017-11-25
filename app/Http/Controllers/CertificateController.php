@@ -830,6 +830,7 @@ class CertificateController extends Controller
 
                 break;
             case 'unit_supervisor':
+
                 //bring certificates as a unit supervisor
                 $request_id = Request2::where('unit_id', $user->unit_id)->pluck('id');
                 $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
@@ -843,16 +844,16 @@ class CertificateController extends Controller
 //                $certificate_records = CertificateRecord::where('step', 2)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
                 $certificate_records = CertificateRecord::where('step','>', 1)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
                 $certificates2 = Certificate::whereIn('id', $certificate_records)->where('certificate_type_id','!=',4)->orderBy('created_at','desc')->get();
-
-                //bring certificates as supply manager
-                $request_id = RequestRecord::pluck('request_id');
-                $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
-                $certificate_records = CertificateRecord::where('step','>', 4)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
-                $certificates3 = Certificate::whereIn('id', $certificate_records)->where('certificate_type_id','!=',4)->orderBy('created_at','desc')->get();
-
                 $certificates=$certificates->merge($certificates2);
-                $certificates=$certificates->merge($certificates3);
-
+                if($user->unit_id==6)
+                {
+                    //bring certificates as supply manager
+                    $request_id = RequestRecord::pluck('request_id');
+                    $certificate_id = Certificate::whereIn('request_id', $request_id)->pluck('id');
+                    $certificate_records = CertificateRecord::where('step','>', 4)->whereIn('certificate_id', $certificate_id)->pluck('certificate_id');
+                    $certificates3 = Certificate::whereIn('id', $certificate_records)->where('certificate_type_id','!=',4)->orderBy('created_at','desc')->get();
+                    $certificates=$certificates->merge($certificates3);
+                }
                 break;
         }
         foreach($certificates as $certificate)
