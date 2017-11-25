@@ -23,9 +23,8 @@
 <div class="wrapper">
    @yield('content')
 
-    <footer><a style="font-size:20px;" target="blank" href="http://www.artansoftware.ir">طراحی شده توسط گروه فنی مهندسی آرتان</a></footer>
+    {{--<footer><a style="font-size:20px;" target="blank" href="http://www.artansoftware.ir">طراحی شده توسط گروه فنی مهندسی آرتان</a></footer>--}}
 
-    </p>
 </div>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 {{--<script  src="{{URL::asset('public/login/js/index.js')}}"></script>--}}
