@@ -2120,7 +2120,7 @@ class SupplyController extends Controller
         $receiverFamily = '';
         $requestId = 0;
         foreach ($certificateRecords as $certificateRecord) {
-            $sum += $certificateRecord->count * $certificateRecord->rate;
+            $sum += $certificateRecord->count * decrypt($certificateRecord->rate);
             if ($receiverName == '' && $receiverFamily == '') {
                 $receiverId += $certificateRecord->user->id;
                 $receiverName .= $certificateRecord->user->name;

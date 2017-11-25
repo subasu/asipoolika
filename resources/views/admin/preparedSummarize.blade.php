@@ -144,7 +144,7 @@
                 $('#change').append
                 (
                     "<tr>"+
-                    "<td><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57' class='form-control required' name='description[]' id='description'></td>"+
+                    "<td><input type='text'  class='form-control required' name='description[]' id='description'></td>"+
                     "<td><input type='text' class='form-control required' name='totalPrice[]'  id='totalPrice'></td>"+
                     "<td style='border-right: 1px solid #e0e0d1;'><a  class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
                     "</tr>"
