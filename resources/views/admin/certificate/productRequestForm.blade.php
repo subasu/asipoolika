@@ -42,17 +42,19 @@
             });
         })
     </script>
+<link href="{{ URL::asset('public/dashboard/css/bootstrap.min.css')}}" rel="stylesheet">
 <script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.js')}}"></script>
 <script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.min.js')}}"></script>
 @if(!empty($productRequestRecords))
 <body id="body">
+<div style="padding:1% 2%">
+    <h5 style="text-align: center;padding: 0;">دانشگاه علوم پزشکی و خدمات بهداشتی درمانی استان اصفهان</h5>
+<input type="hidden" value="{{$user=\Illuminate\Support\Facades\Auth::user()}}">
+<h6 style="text-align: center">نام واحد : {{$user->unit->organization->description}}</h6>
 
-<div style="padding:1% 2.5%">
-    <h4>نام واحد</h4>
-    <h3 style="text-align: right;">« 2 » فرم شماره </h3>
-    <h3 style="margin-bottom: 10px;"> « درخواست خرید کالا »</h3>
-<table style="direction:rtl;text-align: center;font-size: 15px;" cellpadding="0" cellspacing="0" class="formTable" width="100%">
-
+    <h4 style="text-align: right;">« 2 » فرم شماره </h4>
+    <h4 style="margin-bottom: 10px;"> « درخواست خرید کالا »</h4>
+    <table style="font-size: 10px;" cellpadding="0" cellspacing="0" class="formTable text-center width100 col-md-12 col-sm-12 col-xs-12" dir="rtl" >
     <thead>
     <tr style="border-bottom: 0;">
         <th rowspan="2">ردیف</th>
@@ -61,7 +63,7 @@
         <th colspan="2">برآورد قیمت - ریال</th>
     </tr>
     <tr >
-        <th style="border-top: 0;">کد کالا</th>
+        <th style="border-top: 0;" >کد کالا</th>
         <th style="border-top: 0;">عنوان کالا</th>
         <th style="border-top: 0;">واحد سنجش</th>
         <th style="border-top: 0;">نرخ</th>
@@ -79,44 +81,44 @@
                 <td>{{$productRequestRecord->unit_count}}</td>
                 <td>{{$productRequestRecord->count}}</td>
                 <td>{{number_format($productRequestRecord->rate)}}</td>
-                <td>{{number_format($productRequestRecord->rate) * $productRequestRecord->count}}</td>
+                <td>{{number_format(($productRequestRecord->rate) * $productRequestRecord->count)}}</td>
                 <input type="hidden" id="requestId" value="{{$productRequestRecord->request_id}}">
             </tr>
         @endforeach
 
     <tr>
-        <td colspan="6" style="text-align: left;"> جمع
+        <td colspan="6" style="text-align: left;">جمع :
             <input type="hidden" value="{{$sum}}" id="number1">
-            <br><p id="sumToPersian" style="font-size:14px;color:black;"></p></td>
+          <label id="sumToPersian" ></label></td>
         <td colspan="6" style="padding-right: 10px;padding-left: 20px;">{{number_format($sum)}}
 
         </td>
     </tr>
 
-    <tr>
-        <td colspan="1" class="col-md-2"><span>مسئول انبار :</span><span>{{ chr(10) }}</span><span>{{$storageSupervisorFullName}}</span></td>
-        <td colspan="1" class="col-md-2"><span>رئیس امور عمومی :</span><span>{{ chr(10) }}</span><span>{{$originalJobSupervisorFullName}}</span></td>
-        <td colspan="1" class="col-md-2"><span>مدیر / رئیس :</span><span>{{ chr(10) }}</span><span>{{$bossFullName}}</span></td>
-        <td colspan="2" class="col-md-2"><span>مسئول اعتبار :</span><span>{{ chr(10) }}</span><span>{{$creditSupervisorFullName}}</span></td>
-        <td colspan="2" class="col-md-2"><span>مدیر امور مالی :</span><span>{{ chr(10) }}</span><span>{{$financeSupervisorFullName}}</span></td>
+    <tr style="font-size: 10px">
+        <td colspan="1" class="col-md-2" style="line-height: 15px;padding:5px 2px 5px 2px"><span>مسئول انبار :</span><span>{{ chr(10) }}</span><span>{{$storageSupervisorFullName}}</span></td>
+        <td colspan="1" class="col-md-2" style="line-height: 15px;"><span>رئیس امور عمومی :</span><span>{{ chr(10) }}</span><span>{{$originalJobSupervisorFullName}}</span></td>
+        <td colspan="1" class="col-md-2" style="line-height: 15px;"><span>مدیر / رئیس :</span><span>{{ chr(10) }}</span><span>{{$bossFullName}}</span></td>
+        <td colspan="2" class="col-md-2" style="line-height: 15px;"><span>مسئول اعتبار :</span><span>{{ chr(10) }}</span><span>{{$creditSupervisorFullName}}</span></td>
+        <td colspan="2" class="col-md-2" style="line-height: 15px;"><span>مدیر امور مالی :</span><span>{{ chr(10) }}</span><span>{{$financeSupervisorFullName}}</span></td>
     </tr>
     <tr>
-        <td colspan="1" class="col-md-2">@if(count($storageSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 80px;"  src="{{$storageSupervisorSignature}}">@endif</td>
+        <td colspan="1" class="col-md-2">@if(count($storageSupervisorSignature) == 0) امضا ثبت نشده @else <img style="width: 80px;"  src="{{$storageSupervisorSignature}}">@endif</td>
         <td colspan="1" class="col-md-2">@if(count($originalJobSupervisorSignature) == 0) امضا ثبت نشده @else <img style="width: 80px;"  src="{{$originalJobSupervisorSignature}}">@endif</td>
         <td colspan="1" class="col-md-2">@if(count($bossSignature) == 0) امضا ثبت نشده @else<img style="width: 80px;"  src="{{$bossSignature}}">@endif</td>
-        <td colspan="2" class="col-md-2">@if(count($creditSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 80px;"  src="{{$creditSupervisorSignature}}">@endif</td>
-        <td colspan="2" class="col-md-2">@if(count($financeSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 80px;"  src="{{$financeSupervisorSignature}}">@endif</td>
+        <td colspan="2" class="col-md-2">@if(count($creditSupervisorSignature) == 0) امضا ثبت نشده @else <img style="width: 80px;"  src="{{$creditSupervisorSignature}}">@endif</td>
+        <td colspan="2" class="col-md-2">@if(count($financeSupervisorSignature) == 0) امضا ثبت نشده @else <img style="width: 80px;"  src="{{$financeSupervisorSignature}}">@endif</td>
     </tr>
     </tbody>
 </table>
 
-<h4 style="margin-top: 10px;"> « این فرم در سه نسخه تنظیم می گردد : نسخه اول حسابداری، نسخه دوم انبار، نسخه سوم تدارکات »</h4>
+<h5 style="margin-top: 10px;"> « این فرم در سه نسخه تنظیم می گردد : نسخه اول حسابداری، نسخه دوم انبار، نسخه سوم تدارکات »</h5>
 </div>
 <div align="center">
     @if($financeSupervisorSignature == null  || $creditSupervisorSignature== null || $bossSignature == null ||  $originalJobSupervisorSignature == null || $storageSupervisorSignature == null)
         <h2 style="background-color: red; width:60%; margin: 0 auto;">بدلیل اینکه همه امضاها ثبت نشده است لذا امکان چاپ درخواست وجود ندارد ، لطفا تمامی امضاها را ثبت نمائید سپس درخواست خود را بدهید</h2>
     @else
-        <button class="glyphicon glyphicon-print" style="width: 20%; font-size: 150%;" id="print" >چاپ</button>
+        <button  style="width: 20%; font-size: 150%;" id="print" >چاپ</button>
 
     @endif
 

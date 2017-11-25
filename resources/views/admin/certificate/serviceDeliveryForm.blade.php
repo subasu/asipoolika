@@ -1,7 +1,7 @@
 @extends('layouts.formLayout')
     <title>{{$pageTitle}}</title>
     <link href="{{ URL::asset('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
-    <link href="{{ url('public/dashboard/css/bootstrap.min.css')}}" rel="stylesheet">
+<link href="{{ URL::asset('public/dashboard/css/bootstrap.min.css')}}" rel="stylesheet">
     <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
 <script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.js')}}"></script>
 <script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.min.js')}}"></script>
@@ -49,22 +49,23 @@
 <body id="body">
 <input type="hidden" id="token" value="{{ csrf_token() }}">
 <div style="padding:1% 2.5%">
-    <h4 class="text-center">
-        دانشگاه علوم پزشکی و خدمات بهداشتی و درمانی استان اصفهان
-    </h4>
-    <h4> نام واحد : {{$unitName}}  </h4>
+    <h5 class="text-center;" style="font-weight: bold;margin-bottom: 10px;">
+        دانشگاه علوم پزشکی و خدمات بهداشتی درمانی استان اصفهان
+    </h5>
+    <input type="hidden" value="{{$user=\Illuminate\Support\Facades\Auth::user()}}">
+    <h6 style="text-align: center">نام واحد : {{$user->unit->organization->description}}</h6>
     <h4 style="float: right;">« 8 » فرم شماره</h4>
-    <h4 style="float: left;display: inline;"> شماره ثبت: {{$requestId}} </h4>
+    <h4 style="float: left;display: inline;">شماره ثبت : {{$requestId}} </h4>
     <br>
     <h4 class="text-center">« گواهی انجام خدمات »</h4>
-    <h5 dir="rtl" style="text-align: justify;">بدینوسیله گواهی می شود خدمات انجام شده به شرح زیر توسط
+    <h5 dir="rtl" style="text-align: justify;">بدینوسیله گواهی می شود خدمات انجام شده توسط
         شرکت/
         فروشگاه
-        {{decrypt($shopComp)}}
-        جهت واحد
-        {{$unitName}}
+    <span style="font-weight: bold">{{decrypt($shopComp)}}</span>
+        واحد
+  <span style="font-weight: bold">{{$unitName}}</span>
         به آقای/خانم
-        {{$receiverFullName}}
+  <span style="font-weight: bold">{{$receiverFullName}}</span>
         تحویل گردید و پرداخت بلامانع است.</h5>
     <br>
     <table class="formTable col-md-12 width100 border-right" dir="rtl" style="font-size:14px;">
@@ -73,7 +74,7 @@
             <th class="col-md-1">ردیف</th>
             <th class="col-md-4" colspan="2">شرح</th>
             <th class="col-md-2">تعداد</th>
-            <th class="col-md-2"> مبلغ کل به ریال</th>
+            <th class="col-md-2"> مبلغ کل (ریال)</th>
         </tr>
         </thead>
         <tbody>
@@ -107,7 +108,7 @@
             <th class="col-md-3">رئیس واحد:  {{$bossFullName}}</th>
         </tr>
         <tr>
-            <td class="col-md-3" colspan="">@if(strlen($receiverSignature) > 25)<img style="height: 100px; width: 100px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
+            <td class="col-md-3" colspan="">@if(strlen($receiverSignature) > 25)<img style="height: 80px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
             <td class="col-md-3"><img style="width: 80px;" src="{{$unitSupervisorSignature}}"></td>
             <td class="col-md-3"><img style="width: 80px;" src="{{$supplySupervisorSignature}}"></td>
             <td class="col-md-3"><img style="width: 80px;" src="{{$bossSignature}}"></td>

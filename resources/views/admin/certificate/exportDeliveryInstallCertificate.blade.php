@@ -8,8 +8,10 @@
             <title>{{$pageTitleUse}}</title>
         @endif
     @endif
-    <link href="{{ URL::asset('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
-    <script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
+
+<link href="{{ URL::asset('public/dashboard/css/custom-forms.css')}}" rel="stylesheet">
+<link href="{{ URL::asset('public/dashboard/css/bootstrap.min.css')}}" rel="stylesheet">
+<script src="{{URL::asset('public/js/jquery_v3.1.1.js')}}"></script>
 <script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.js')}}"></script>
 <script src="{{URL::asset('public/dashboard/numberToLetter/num2persian.min.js')}}"></script>
     <script>
@@ -63,110 +65,107 @@
 //        }
 
     </script>
-
+<style>
+    *{font-size: 12px;}
+</style>
 {{--@if(!empty($certificateRecords))--}}
     <body id="body">
     <input type="hidden" id="token" value="{{ csrf_token() }}">
     <div style="padding:1% 2.5%">
-        <h3 class="text-center">
-            دانشگاه علوم پزشکی و خدمات بهداشتی و درمانی استان اصفهان
-        </h3><br>
-        <div class="row">
-            <div class="container">
-                <table class="col-md-12 " dir="rtl">
-                    <tr class="col-md-12">
-                        <th class="remove-border col-md-6 ">تاریخ :</th>
-                        <th class="remove-border col-md-6 ">{{$date}}</th>
-                    </tr>
-                    <tr>
-                        <th class="remove-border col-md-6 ">شماره :</th>
-                        <th class="remove-border col-md-6 ">{{$certificateId}}</th>
-                    </tr>
-                </table>
-            </div>
+        <h4 class="text-center">
+            دانشگاه علوم پزشکی و خدمات بهداشتی درمانی استان اصفهان
+        </h4>
+        <input type="hidden" value="{{$user=\Illuminate\Support\Facades\Auth::user()}}">
+        <h6 style="text-align: center">نام واحد : {{$user->unit->organization->description}}</h6>
+        <div class="row" style="text-align: left">
+                <div class="col-md-3  push-left">
+                    <div class="row">
+                        <div class="remove-border col-md-6">تاریخ : {{$date}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="remove-border col-md-6 ">شماره : {{$certificateId}}</div>
+                    </div>
+                </div>
         </div>
 
     @if(!empty($certificateRecords[0]))
         @if($certificateRecords[0]->certificate->certificate_type_id == 1)
-            <h3 class="text-center">« صورت جلسه تحویل و نصب »</h3>
+            <h4 class="text-center">« صورتجلسه تحویل و نصب »</h4>
             <input type="hidden" id="title" value="گواهی تحویل و نصب کالا">
         @endif
         @if($certificateRecords[0]->certificate->certificate_type_id == 2)
-            <h3 class="text-center">« صورت جلسه تحویل و مصرف »</h3>
+            <h4 class="text-center">« صورتجلسه تحویل و مصرف »</h4>
                 <input type="hidden" id="title" value="گواهی تحویل و مصرف کالا">
         @endif
         <br>
         @if($certificateRecords[0]->certificate->certificate_type_id == 1)
-            <h4 dir="rtl" style="text-align: justify;">بدینوسیله گواهی می شود خدمات انجام شده به شرح زیر توسط
+                <h4 dir="rtl" style="text-align: justify;font-size:12px;">بدینوسیله گواهی می شود خدمات انجام شده توسط
                 شرکت/
                 فروشگاه
-                {{$shopComp}}
-                جهت واحد
-                {{$unitName}}
+    <span style="font-weight: bold">{{$shopComp}}</span>
+                واحد
+    <span style="font-weight: bold">{{$unitName}}</span>
                 به آقای/خانم
-                {{$receiverName .chr(10). $receiverFamily}}
+ <span style="font-weight: bold">{{$receiverName .chr(10). $receiverFamily}}</span>
                 تحویل گردید و پرداخت شده است.</h4>
         @endif
         @if($certificateRecords[0]->certificate->certificate_type_id == 2)
-            <h4 dir="rtl" style="text-align: justify;">بدینوسیله گواهی می شود خدمات انجام شده به شرح زیر توسط
+                <h4 dir="rtl" style="text-align: justify;font-size:12px;">بدینوسیله گواهی می شود خدمات انجام شده توسط
                 شرکت/
                 فروشگاه
-                {{$shopComp}}
-                جهت واحد
-                {{$unitName}}
+                <span style="font-weight: bold">{{$shopComp}}</span>
+                واحد
+                <span style="font-weight: bold">{{$unitName}}</span>
                 به آقای/خانم
-                {{$receiverName .chr(10). $receiverFamily}}
+                <span style="font-weight: bold">{{$receiverName .chr(10). $receiverFamily}}</span>
                 تحویل گردید و پرداخت بلامانع است.</h4>
         @endif
     @endif
     <br>
-    <table class="formTable col-md-12 width100 border-right" dir="rtl" style="font-size: 14px;">
-        <thead>
-        <tr class=" padding-formTable">
-            <th class="col-md-4" colspan="2">عنوان</th>
-            <th class="col-md-2">تعداد</th>
-            <th class="col-md-3"> مبلغ کل (ریال)</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach($certificateRecords as $certificateRecord)
-        <tr>
-            <td class="col-md-4" colspan="2">{{decrypt($certificateRecord->requestRecord->title)}}</td>
-            <td class="col-md-2">{{$certificateRecord->count}}</td>
-            <td class="col-md-3">{{number_format($certificateRecord->price)}}</td>
-            <input type="hidden" id="requestId" value="{{$certificateRecord->certificate->request_id}}">
-            <input type="hidden" id="certificateId" value="{{$certificateRecord->certificate_id}}">
-        </tr>
-        @endforeach
-        <tr>
-            <td class="col-md-4" colspan="2">جمع کل به حروف :
-                <input type="hidden" value="{{$sum}}" id="number1">
-                <lable id="sumToPersian"  class="label label-default"></lable></td>
-            <td class="col-md-2">جمع کل به عدد</td>
-            <td class="col-md-3">{{number_format($sum)}}</td>
+         <table class="formTable text-center width100 col-md-12 col-sm-12 col-xs-12" dir="rtl" style="font-size:12px;">
+             <thead>
+             <tr class="">
+                 <th class="col-md-2" colspan="2">عنوان</th>
+                 <th class="col-md-2">تعداد</th>
+                 <th class="col-md-2"> مبلغ کل (ریال)</th>
+             </tr>
+             </thead>
+             <tbody>
+             @foreach($certificateRecords as $certificateRecord)
+                 <tr>
+                     <td class="col-md-2" colspan="2">{{decrypt($certificateRecord->requestRecord->title)}}</td>
+                     <td class="col-md-2">{{$certificateRecord->count}}</td>
+                     <td class="col-md-2">{{number_format($certificateRecord->price)}}</td>
+                     <input type="hidden" id="requestId" value="{{$certificateRecord->certificate->request_id}}">
+                     <input type="hidden" id="certificateId" value="{{$certificateRecord->certificate_id}}">
+                 </tr>
+             @endforeach
+             <tr>
+                 <td class="col-md-4" colspan="2">جمع کل به حروف :
+                     <input type="hidden" value="{{$sum}}" id="number1">
+                     <lable id="sumToPersian" ></lable></td>
+                 <td class="col-md-2">جمع کل به عدد</td>
+                 <td class="col-md-3">{{number_format($sum)}}</td>
 
-        </tr>
-        <tr>
-            <th class="col-md-2">تحویل گیرنده:   {{$receiverFullName}}</th>
-            <th class="col-md-2"> مسئول واحد : {{$unitSupervisorFullName}} </th>
-            <th class="col-md-2">کارپرداز :{{$supplierFullName}}</th>
-            <th class="col-md-2">  رئیس واحد : {{$bossFullName}} </th>
-        </tr>
-        <tr>
-            <td class="col-md-2">@if(strlen($receiverSignature) > 25)<img style="height: 80px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
-            <td class="col-md-2"><img style="height: 80px;" src="{{$unitSupervisorSignature}}"></td>
-            <td class="col-md-2">@if(strlen($supplierSignature) > 25)<img style="height: 80px;" src="{{$supplierSignature}}"> @endif @if(strlen($supplierSignature) < 25)امضا ندارد @endif</td>
-            <td class="col-md-2"><img style="height: 80px;" src="{{$bossSignature}}"></td>
-        </tr>
-        </tbody>
+             </tr>
+             <tr style="font-size:12px;font-weight: lighter;">
+                 <th class="col-md-2" style="line-height: 15px;padding:5px 2px 5px 2px">تحویل گیرنده : {{$receiverFullName}}</th>
+                 <th class="col-md-2" style="line-height: 15px;"> مسئول واحد : {{$unitSupervisorFullName}} </th>
+                 <th class="col-md-2" style="line-height: 15px;">کارپرداز : {{$supplierFullName}}</th>
+                 <th class="col-md-2" style="line-height: 15px;">  رئیس واحد : {{$bossFullName}} </th>
+             </tr>
+             <tr >
+                 <td class="col-md-2">@if(strlen($receiverSignature) > 25)<img style="height: 80px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
+                 <td class="col-md-2"><img style="height: 80px;" src="{{$unitSupervisorSignature}}"></td>
+                 <td class="col-md-2">@if(strlen($supplierSignature) > 25)<img style="height: 80px;" src="{{$supplierSignature}}"> @endif @if(strlen($supplierSignature) < 25)امضا ندارد @endif</td>
+                 <td class="col-md-2"><img style="height: 80px;" src="{{$bossSignature}}"></td>
+             </tr>
+             </tbody>
 
-
-
-
-        </table>
-        <br><br><br>
+         </table>
+        <br><br>
         <div align="center">
-            <button  class="glyphicon glyphicon-print" style="width: 20%; font-size: 150%;" id="print">چاپ</button>
+            <button style="width: 20%; font-size: 150%;margin-top:10px;" id="print">چاپ</button>
             <i class="fa-print"></i>
         </div>
     </div>

@@ -17,6 +17,10 @@ class Organization extends Model
 
     public function unit()
     {
-        return $this->hasMany('App\Models\Unit');
+        return $this->belongsToMany('App\Models\Unit');
+    }
+    public function user()
+    {
+        return $this->hasMany('App\User');
     }
 }

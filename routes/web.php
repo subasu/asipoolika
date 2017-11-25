@@ -160,13 +160,13 @@ Route::group(['prefix'=>'systemManager'],function() {
         Route::get('/confirmProductRequestManagement',[
             'uses'=>'SupplyController@confirmProductRequestManagementGet',
             'middleware' => 'roles',
-            'roles'=>['supplierManager']
+            'roles'=>['supplierManager','unitManager']
         ]);
 
         Route::get('/confirmedRequestDetails/{id}',[
             'uses'=>'SupplyController@confirmedRequestDetails',
             'middleware' => 'roles',
-            'roles'=>['supplierManager']
+            'roles'=>['supplierManager','unitManager']
         ]);
 
 
