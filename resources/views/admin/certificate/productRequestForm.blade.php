@@ -49,9 +49,9 @@
 
 <div style="padding:1% 2.5%">
     <h4>نام واحد</h4>
-    <h3 style="text-align: right;">فرم شماره 2</h3>
-    <h4> « درخواست خرید کالا »</h4>
-<table style="direction:rtl;text-align: center" cellpadding="0" cellspacing="0" class="formTable" width="100%">
+    <h3 style="text-align: right;">« 2 » فرم شماره </h3>
+    <h3 style="margin-bottom: 10px;"> « درخواست خرید کالا »</h3>
+<table style="direction:rtl;text-align: center;font-size: 15px;" cellpadding="0" cellspacing="0" class="formTable" width="100%">
 
     <thead>
     <tr style="border-bottom: 0;">
@@ -101,16 +101,16 @@
         <td colspan="2" class="col-md-2"><span>مدیر امور مالی :</span><span>{{ chr(10) }}</span><span>{{$financeSupervisorFullName}}</span></td>
     </tr>
     <tr>
-        <td colspan="1" class="col-md-2">@if(count($storageSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 100px; height: 100px;" src="{{$storageSupervisorSignature}}">@endif</td>
-        <td colspan="1" class="col-md-2">@if(count($originalJobSupervisorSignature) == 0) امضا ثبت نشده @else <img style="width: 100px; height: 100px;" src="{{$originalJobSupervisorSignature}}">@endif</td>
-        <td colspan="1" class="col-md-2">@if(count($bossSignature) == 0) امضا ثبت نشده @else<img style="width: 100px; height: 100px;" src="{{$bossSignature}}">@endif</td>
-        <td colspan="2" class="col-md-2">@if(count($creditSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 100px; height: 100px;" src="{{$creditSupervisorSignature}}">@endif</td>
-        <td colspan="2" class="col-md-2">@if(count($financeSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 100px; height: 100px;" src="{{$financeSupervisorSignature}}">@endif</td>
+        <td colspan="1" class="col-md-2">@if(count($storageSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 80px;"  src="{{$storageSupervisorSignature}}">@endif</td>
+        <td colspan="1" class="col-md-2">@if(count($originalJobSupervisorSignature) == 0) امضا ثبت نشده @else <img style="width: 80px;"  src="{{$originalJobSupervisorSignature}}">@endif</td>
+        <td colspan="1" class="col-md-2">@if(count($bossSignature) == 0) امضا ثبت نشده @else<img style="width: 80px;"  src="{{$bossSignature}}">@endif</td>
+        <td colspan="2" class="col-md-2">@if(count($creditSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 80px;"  src="{{$creditSupervisorSignature}}">@endif</td>
+        <td colspan="2" class="col-md-2">@if(count($financeSupervisorSignature) == 0) امضا ثبت نشده @else<img style="width: 80px;"  src="{{$financeSupervisorSignature}}">@endif</td>
     </tr>
     </tbody>
 </table>
 
-<h4> « این فرم در سه نسخه تنظیم می گردد : نسخه اول حسابداری، نسخه دوم انبار، نسخه سوم تدارکات »</h4>
+<h4 style="margin-top: 10px;"> « این فرم در سه نسخه تنظیم می گردد : نسخه اول حسابداری، نسخه دوم انبار، نسخه سوم تدارکات »</h4>
 </div>
 <div align="center">
     @if($financeSupervisorSignature == null  || $creditSupervisorSignature== null || $bossSignature == null ||  $originalJobSupervisorSignature == null || $storageSupervisorSignature == null)

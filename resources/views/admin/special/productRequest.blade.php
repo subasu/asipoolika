@@ -157,7 +157,7 @@
                                 <th class="col-md-1">واحد سنجش</th>
                                 <th class="col-md-1" style="text-align: center ;">نرخ</th>
                                 <th class="col-md-1" style="text-align: center ;">قیمت</th>
-                                <th class="col-md-2">تحویل گیرنده</th>
+                                {{--<th class="col-md-2">تحویل گیرنده</th>--}}
                                 <th class="col-md-1">توضیحات</th>
                                 <th class="col-md-1" style="border-right: 1px solid #d6d6c2">حذف</th>
                             </tr>
@@ -204,12 +204,12 @@
                     });
                     $("#unit_user").html(html);
 
-                    var html2;
-                    html2 += '<option value="">تحویل گیرنده را انتخاب کنید</option>';
-                    $.each(response.receiver_id, function (index, value) {
-                        html2 += '<option value="' + value['id'] + '">' + value['name'] + ' ' + value['family'] +' ( '+value['unit_name']+' ) '+ '</option>';
-                    });
-                    $("#receiver_id").html(html2);
+//                    var html2;
+//                    html2 += '<option value="">تحویل گیرنده را انتخاب کنید</option>';
+//                    $.each(response.receiver_id, function (index, value) {
+//                        html2 += '<option value="' + value['id'] + '">' + value['name'] + ' ' + value['family'] +' ( '+value['unit_name']+' ) '+ '</option>';
+//                    });
+//                    $("#receiver_id").html(html2);
 
                 },
                 error: function(error) {
@@ -289,11 +289,10 @@
                         '<input type="text" name="unit_count[]" value="'+$.trim($("#unit_count option:selected").text())+'">'+
                         '<td>'+'<input style="padding-right:5px;" class="needed form-control rate" type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="product_rate[]" value="'+$('#rate').val()+'">'+'</td>'+
                         '<td>'+'<input style="padding-right:5px;" class="required form-control pri" type="text" readonly name="product_price[]" value="'+$('#price').val().replace(/,/g , '')+'">'+'</td>'+
-                        '<td>'+'<select id="'+select_id+'" class="form-control" name="product_receiver[]">'+
-                        receivers(select_id)
-                        +'</select>'+
-                        '</td>'+
-                        '</td>'+
+//                        '<td>'+'<select id="'+select_id+'" class="form-control" name="product_receiver[]">'+
+//                        receivers(select_id)
+//                        +'</select>'+
+//                        '</td>'+
                         '<td class="col-md-4">'+
                         '<input id="product_details" class="form-control" name="product_details[]" placeholder=""  value="'+$('#product_details').val()+'" type="text" >'+'</td>'+
                         '<input type="hidden" value="'+$.trim($("#unit_count option:selected").text())+'" name="unit_count_each[]">'+

@@ -120,7 +120,7 @@
         @endif
     @endif
     <br>
-    <table class="formTable col-md-12 width100 border-right" dir="rtl">
+    <table class="formTable col-md-12 width100 border-right" dir="rtl" style="font-size: 14px;">
         <thead>
         <tr class=" padding-formTable">
             <th class="col-md-4" colspan="2">عنوان</th>
@@ -153,10 +153,10 @@
             <th class="col-md-2">  رئیس واحد : {{$bossFullName}} </th>
         </tr>
         <tr>
-            <td class="col-md-2">@if(strlen($receiverSignature) > 25)<img style="height: 100px; width: 100px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
-            <td class="col-md-2"><img style="height: 100px; width: 100px;" src="{{$unitSupervisorSignature}}"></td>
-            <td class="col-md-2">@if(strlen($supplierSignature) > 25)<img style="height: 100px; width: 100px;" src="{{$supplierSignature}}"> @endif @if(strlen($supplierSignature) < 25)امضا ندارد @endif</td>
-            <td class="col-md-2"><img style="height: 100px; width: 100px;" src="{{$bossSignature}}"></td>
+            <td class="col-md-2">@if(strlen($receiverSignature) > 25)<img style="height: 80px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
+            <td class="col-md-2"><img style="height: 80px;" src="{{$unitSupervisorSignature}}"></td>
+            <td class="col-md-2">@if(strlen($supplierSignature) > 25)<img style="height: 80px;" src="{{$supplierSignature}}"> @endif @if(strlen($supplierSignature) < 25)امضا ندارد @endif</td>
+            <td class="col-md-2"><img style="height: 80px;" src="{{$bossSignature}}"></td>
         </tr>
         </tbody>
 

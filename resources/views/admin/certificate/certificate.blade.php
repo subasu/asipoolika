@@ -60,7 +60,7 @@
                     <thead>
                     <tr>
                         <th class="col-md-1" style="text-align: center ;">انتخاب</th>
-                        <th class="col-md-1" style="text-align: center ;">ردیف</th>
+                        <th class="col-md-1" style="text-align: center ;">شناسه</th>
                         <th class="col-md-1" style="text-align: center ;">شرح</th>
                         <th style="text-align: center ;">مقدار</th>
                         <th style="text-align: center ;">مقدار واقعی</th>
@@ -82,7 +82,7 @@
                             <td style="text-align: center">
                                <input type="checkbox" id="record_ch" value="{{$requestRecord->id}}" class="record_ch" name="record">  {{--{{$requestRecord->id}}--}}
                             </td>
-                            <td>{{$row}}</td>
+                            <td>{{$requestRecord->id}}</td>
                             <?php $row++; ?>
                             <td>{{$requestRecord->title}}</td>
                             <input type="hidden" value="{{$requestRecord->title}}" id="record_title" class="record_title" name="">

@@ -53,7 +53,7 @@
         دانشگاه علوم پزشکی و خدمات بهداشتی و درمانی استان اصفهان
     </h4>
     <h4> نام واحد : {{$unitName}}  </h4>
-    <h4 style="float: right;">فرم شماره 8</h4>
+    <h4 style="float: right;">« 8 » فرم شماره</h4>
     <h4 style="float: left;display: inline;"> شماره ثبت: {{$requestId}} </h4>
     <br>
     <h4 class="text-center">« گواهی انجام خدمات »</h4>
@@ -67,7 +67,7 @@
         {{$receiverFullName}}
         تحویل گردید و پرداخت بلامانع است.</h5>
     <br>
-    <table class="formTable col-md-12 width100 border-right" dir="rtl">
+    <table class="formTable col-md-12 width100 border-right" dir="rtl" style="font-size:14px;">
         <thead>
         <tr class=" padding-formTable">
             <th class="col-md-1">ردیف</th>
@@ -99,7 +99,7 @@
         </tbody>
 
     </table>
-    <table class="formTable col-md-12 width100 border-right " dir="rtl">
+    <table class="formTable col-md-12 width100 border-right;" dir="rtl" style="font-size:14px;">
         <tr>
             <th class="col-md-3" colspan=""> دریافت کننده خدمات : {{$receiverFullName}} </th>
             <th class="col-md-3">مسئول واحد :  {{$unitSupervisorFullName}}</th>
@@ -108,9 +108,9 @@
         </tr>
         <tr>
             <td class="col-md-3" colspan="">@if(strlen($receiverSignature) > 25)<img style="height: 100px; width: 100px;" src="{{$receiverSignature}}"> @endif @if(strlen($receiverSignature) < 25) امضا ندارد  @endif</td>
-            <td class="col-md-3"><img style="width: 100px; height: 100px;" src="{{$unitSupervisorSignature}}"></td>
-            <td class="col-md-3"><img style="width: 100px; height: 100px;" src="{{$supplySupervisorSignature}}"></td>
-            <td class="col-md-3"><img style="width: 100px; height: 100px;" src="{{$bossSignature}}"></td>
+            <td class="col-md-3"><img style="width: 80px;" src="{{$unitSupervisorSignature}}"></td>
+            <td class="col-md-3"><img style="width: 80px;" src="{{$supplySupervisorSignature}}"></td>
+            <td class="col-md-3"><img style="width: 80px;" src="{{$bossSignature}}"></td>
         </tr>
     </table>
     <br><br><br>

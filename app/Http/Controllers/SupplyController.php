@@ -1329,6 +1329,13 @@ class SupplyController extends Controller
             $item->accept_count=$accept_count;
             $item->has_certificate_count=$has_certificate_count;
             $item->refuse_count=$refuse_count;
+
+            $certificate_has=Certificate::where('request_id',$item->id)->get();
+//            dd($certificate_has);
+            if(empty($certificate_has[0]))
+                $item->hasCertificate=0;
+            else
+                $item->hasCertificate=1;
         }
 //dd($request);
         foreach($request_records as $requestRecord)

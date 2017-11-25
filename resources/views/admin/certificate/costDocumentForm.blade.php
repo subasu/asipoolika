@@ -21,14 +21,14 @@
             $('.change tr:first').after
             (
                 "<tr>"+
-                "<td colspan='1' class='col-md-1'><input type='number'   style='width: 70px !important; border-color: #0e0e0e;' class='form-control required'  name='code[]'></td>"+
+                "<td colspan='1' class='col-md-1'><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'   style='width: 70px !important; border-color: #0e0e0e;' class='form-control required'  name='code[]'></td>"+
                 "<td colspan='3' class='col-md-3'><input type='text'     style='width: 100px; border-color: #0e0e0e;' class='form-control required'  name='description[]' ></td>"+
-                "<td colspan='2' class='col-md-2'><input type='number'   style='width: 65px !important; border-color: #0e0e0e;' class='form-control required'  name='moeinOffice[]' ></td>"+
-                "<td colspan='2' class='col-md-2'><input type='number'  style='width: 90px !important; border-color: #0e0e0e;' class='form-control required'  name='generalPrice[]' ></td>"+
-                "<td colspan='1' class='col-md-1'><input type='number'  style='width: 90px !important; border-color: #0e0e0e;' class='form-control required'  name='deduction[]' ></td>"+
-                "<td colspan='1' class='col-md-1'><input type='number'  style='width: 90px !important; border-color: #0e0e0e;' class='form-control required'  name='payedPrice[]'></td>"+
-                "<td colspan='1' class='col-md-1'><input type='number'   style='width: 65px !important; border-color: #0e0e0e;' class='form-control required'  name='page[]' ></td>"+
-                "<td colspan='1' class='col-md-1'><input type='number'   style='width: 65px !important; border-color: #0e0e0e;' class='form-control required'  name='row[]' ></td>"+
+                "<td colspan='2' class='col-md-2'><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'   style='width: 65px !important; border-color: #0e0e0e;' class='form-control required'  name='moeinOffice[]' ></td>"+
+                "<td colspan='2' class='col-md-2'><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'  style='width: 90px !important; border-color: #0e0e0e;' class='form-control required'  name='generalPrice[]' ></td>"+
+                "<td colspan='1' class='col-md-1'><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'  style='width: 90px !important; border-color: #0e0e0e;' class='form-control required'  name='deduction[]' ></td>"+
+                "<td colspan='1' class='col-md-1'><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'  style='width: 90px !important; border-color: #0e0e0e;' class='form-control required'  name='payedPrice[]'></td>"+
+                "<td colspan='1' class='col-md-1'><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'   style='width: 65px !important; border-color: #0e0e0e;' class='form-control required'  name='page[]' ></td>"+
+                "<td colspan='1' class='col-md-1'><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'   style='width: 65px !important; border-color: #0e0e0e;' class='form-control required'  name='row[]' ></td>"+
                 "<td colspan='1' class='col-md-1'><a class='glyphicon glyphicon-remove-sign' data-toggle='tooltip' title='حذف' style='font-size:18px;'></td>"+
                 "</tr>"
 
@@ -165,7 +165,7 @@
             <h6 style="text-align: right;padding: 0;">بخش هزینه...................................</h6>
             <h6 style="text-align: right;padding: 0;">شماره سند ...................................</h6>
             <h6 style="text-align: right;padding: 0;">تاریخ ..............................................</h6>
-            <h6 style="text-align: right;padding: 0;">شماره روزانه .................................</h6>
+            <h6 style="text-align: right;padding: 0;">شماره روزنامه .................................</h6>
         </td>
         <td class="" style="width: 36%;">
             <h5 style="text-align: center;padding: 0;">
@@ -194,8 +194,8 @@
     <table cellpadding="0" cellspacing="0" class="formTable col-md-12 text-center width100" dir="rtl">
         <thead >
         <tr style="border-bottom: 0 solid #000;padding: 0px;margin:0px;">
-            <th colspan="6" class="col-md-6 text-right" >اسم گیرنده وجه :</th>
-            <th colspan="7" class="col-md-6 text-right">نشانی کامل :</th>
+            <th colspan="6" class="col-md-6 text-right" style="font-size:16px;">اسم گیرنده وجه :</th>
+            <th colspan="7" class="col-md-6 text-right"  style="font-size:16px;">نشانی کامل :</th>
         </tr>
         <tr>
             <th colspan="1" rowspan="2" class="col-md-1"  style="padding: 0px !important;" >کد هزینه</th>
@@ -248,19 +248,19 @@
             <td colspan="6" class="col-md-6 text-justify">
                 <h6 class="text-justify"><b>تأمین اعتبار:
                     </b>
-                    در تاریخ .... مبلغ ... ریال از محل کد شماره .... برابر مقررات مالی و تأمین اعتبار شده است.
+                    در تاریخ ...................... مبلغ ....................... ریال از محل کد شماره ......................... برابر مقررات مالی و تأمین اعتبار شده است.
                 </h6>
                 <h6><b>
-                    اعتبارات
+                        اعتبارات
                     </b></h6>
             </td>
             <td colspan="7" class="col-md-6">
-                <h6 class="text-justify"><b>رسیدگی و نظارت مالی:
+                <h6 class="text-justify"><b>رسیدگی و نظارت مالی :
                     </b>
-                    این سند هزینه یا مدارک پیوست و ارقام مندرج در آن برابر مقررات مالی سازمان رسیدگی گردید، پرداخت ان
+                    این سند هزینه با مدارک پیوست و ارقام مندرج در آن برابر مقررات مالی سازمان رسیدگی گردید، پرداخت آن
                     بلامانع است. </h6>
                 <h6><b>
-                    رسیدگی
+                        رسیدگی
                     </b></h6>
             </td>
         </tr>
@@ -282,11 +282,11 @@
             </td>
         </tr>
         <tr style="border-top: 1px solid #000 !important;">
-            <td colspan="13" class="col-md-12 text-justify">
-                <h6 class="text-justify"><b>گواهی و رسید گیرنده پول :
-                    </b>
-                    مبلغ ( بحروف ) ............................ ریال طی چک / نقداََ ...... دریافت گردیده است.
-                </h6>
+
+            <h6 class="text-justify"><b>گواهی و رسید گیرنده پول :
+                </b>
+                مبلغ ( بحروف ) ............................ ریال طی چک / نقداََ .................................. دریافت گردیده است.
+            </h6>
                 <p class="text-left" style="font-weight:bolder;">
                     امضاء
                 </p></td>
@@ -314,7 +314,7 @@
             <h6 style="text-align: right;padding: 0;">بخش هزینه...................................</h6>
             <h6 style="text-align: right;padding: 0;">شماره سند ...................................</h6>
             <h6 style="text-align: right;padding: 0;">تاریخ ..............................................</h6>
-            <h6 style="text-align: right;padding: 0;">شماره روزانه .................................</h6>
+            <h6 style="text-align: right;padding: 0;">شماره روزنامه .................................</h6>
         </td>
         <td class="" style="width: 36%;">
             <h5 style="text-align: center;padding: 0;">
@@ -340,7 +340,7 @@
 <div style="padding:1% 0.5%">
 
     <form id="myForm">
-        <table cellpadding="0" cellspacing="0" class="formTable col-md-12 text-center width100" dir="rtl">
+        <table  cellpadding="0" cellspacing="0" class="formTable col-md-12 text-center width100" dir="rtl">
             <thead >
             <tr style="border-bottom: 0 solid #000;padding: 0px;margin:0px;">
                 <th colspan="6" class="col-md-6 text-right" >اسم گیرنده وجه :</th>
@@ -383,7 +383,8 @@
             <td colspan="2" class="col-md-2">جمع</td>
             <td colspan="2" class="col-md-2">{{number_format($sumGeneralPrice)}}
                 <input type="hidden" value="{{$sumGeneralPrice}}" id="number1">
-                <br><p id="sumToPersian" style="font-size:14px;color:black;"></p>
+                <br><p id="sumToPersian" style="font-size:13px;color:black;"></p>
+                <br><p id="sumToPersian" style="font-size:13px;color:black;"></p>
             </td>
             <td colspan="1" class="col-md-1">@if($sumDeduction > 0){{number_format($sumDeduction)}}@endif  @if($sumDeduction == 0){{$sumDeduction}}@endif</td>
             <td colspan="1" class="col-md-1">@if($sumPayedPrice > 0){{number_format($sumPayedPrice)}}@endif  @if($sumPayedPrice == 0){{$sumPayedPrice}}@endif</td>
@@ -395,7 +396,7 @@
             <td colspan="6" class="col-md-6 text-justify">
                 <h6 class="text-justify"><b>تأمین اعتبار:
                     </b>
-                    در تاریخ .... مبلغ ... ریال از محل کد شماره .... برابر مقررات مالی و تأمین اعتبار شده است.
+                    در تاریخ .................... مبلغ ............................ ریال از محل کد شماره ..................... برابر مقررات مالی و تأمین اعتبار شده است.
                 </h6>
                 <h6><b>
                         اعتبارات
@@ -414,7 +415,7 @@
         <tr>
             <td colspan="13" class="col-md-12 text-justify">
                 <h6 class="text-justify">
-                    اینجانب ... تنظیم کننده سند گواهی می نمایم که سند هزینه بموجب اناد و مدارک پیوست برابر مقررات مالی
+                    اینجانب ............................ تنظیم کننده سند گواهی می نمایم که این سند هزینه بموجب اسناد و مدارک پیوست برابر مقررات مالی
                     سازمان تنظیم گردیده و قبلا وجهی بابت این هزینه پرداخت نشده است. </h6>
                 <b class="col-md-4 text-rigth pull-right ">
                     تنظیم اسناد
@@ -432,7 +433,7 @@
             <td colspan="13" class="col-md-12 text-justify">
                 <h6 class="text-justify"><b>گواهی و رسید گیرنده پول :
                     </b>
-                    مبلغ ( بحروف ) ............................ ریال طی چک / نقداََ ...... دریافت گردیده است.
+                    مبلغ ( بحروف ) ............................ ریال طی چک / نقداََ ................................................ دریافت گردیده است.
                 </h6>
                 <p class="text-left" style="font-weight:bolder;">
                     امضاء
