@@ -547,12 +547,9 @@ class RequestController extends Controller
 
         if (!$request->ajax()) {
             abort(403);
-        } else {
-
+        }
+        else {
             if (Auth::user()->id == $request->userId) {
-
-
-
                 if(Auth::attempt(['password' => $request->oldPassword]))
                 {
                     if ($request->password == $request->confirmPassword) {
