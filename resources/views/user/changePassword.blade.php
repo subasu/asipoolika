@@ -142,7 +142,7 @@
                             confirmButtonText: "بستن"
                         });
                         setTimeout(function () {
-                            window.location.reload(true);
+                            window.location.href ='../logout';
                         },3000);
                     }else
                         {

@@ -552,14 +552,15 @@ class RequestController extends Controller
             if (Auth::user()->id == $request->userId) {
 
 
-
-                if(Auth::attempt(['password' => $request->oldPassword]))
+                $oldPassword = User::where([['id',Auth::user()->id],['active',1]])->value('password');
+                if(Hash::check($request->oldPassword , $oldPassword))
                 {
                     if ($request->password == $request->confirmPassword) {
                         $q = DB::table('users')->where('id', $request->userId)
                             ->update(['password' => bcrypt($request->password)]);
                         if ($q) {
                             //$n=1;
+                            Auth::logout();
                             return response('رمز عبور شما تغییر یافت');
                         } else {
                             //$n=2;
