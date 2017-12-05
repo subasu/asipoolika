@@ -51,11 +51,11 @@
     <div style="padding:1% 2.5%">
         <h4 class="text-center">
             خلاصه ی تنظیمی فاکتور های خریداری شده جهت شبکه بهداشت و درمان خمینی شهر </h4><br>
-        <table class="formTable col-md-12 width100 border-right" dir="rtl">
+        <table class="formTable col-md-12 width100 border-right" dir="rtl" style="font-size: 12px;">
             <thead>
             <tr class=" padding-formTable">
                 <th class="col-md-1">ردیف</th>
-                <th class="col-md-6">عنوان</th>
+                <th class="col-md-6">شرح</th>
                 <th class="col-md-5"> مبلغ (به ریال)</th>
             </tr>
                 <?php $i=0; ?>

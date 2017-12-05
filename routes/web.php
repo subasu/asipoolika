@@ -353,6 +353,12 @@ Route::group(['prefix'=>'special'],function() {
         'roles'=>['special']
     ]);
 
+    Route::get('/activeCertificates/{id}',[
+        'uses'=>'SpecialController@activeCertificatesGet',
+        'middleware' => 'roles',
+        'roles'=>['special']
+    ]);
+
     Route::post('productRequest', 'SpecialController@productRequest');
     Route::post('serviceRequest', 'SpecialController@serviceRequest');
     Route::post('usersSupervisor', 'SpecialController@usersSupervisor');

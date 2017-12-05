@@ -547,13 +547,14 @@ class RequestController extends Controller
 
         if (!$request->ajax()) {
             abort(403);
-        } else {
-
+        }
+        else {
             if (Auth::user()->id == $request->userId) {
 
 
                 $oldPassword = User::where([['id',Auth::user()->id],['active',1]])->value('password');
                 if(Hash::check($request->oldPassword , $oldPassword))
+
                 {
                     if ($request->password == $request->confirmPassword) {
                         $q = DB::table('users')->where('id', $request->userId)

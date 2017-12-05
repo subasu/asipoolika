@@ -22,7 +22,8 @@
     </div>
 </div>
 
-
+<?php $user_info=\Illuminate\Support\Facades\Auth::user(); ?>
+<input type="hidden" value="{{$user=\Illuminate\Support\Facades\Auth::user()}}">
 <div class="clearfix"></div>
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -130,7 +131,20 @@
                                     {{--<td class="info col-md-2">{{$certificate->certificate_record_count}}</td>--}}
                                     {{--<td class="success col-md-2">{{$certificate->certificate_record_count_accept}}</td>--}}
 {{--                                    <td><a href="{{url('admin/productCertificateRecords/'.$certificate->id)}}" target="_blank" class="btn btn-info"><i class="fa fa-search"></i> جزئیات بیشتر</a></td>--}}
-                                    <td style="padding-top:13px;border-right: 1px solid #d6d6c2;">@if($certificate->active==1)<span style="font-size: 16px;font-weight: lighter" class="label label-success">پایان یافته</span>@else <span style="font-size: 16px;font-weight: lighter" class="label label-warning">در حال رسیدگی </span>@endif</td>
+                                    <td style="padding-top:13px;border-right: 1px solid #d6d6c2;">
+                                        @if($certificate->active==1)
+                                            <span style="font-size: 16px;font-weight: lighter" class="label label-success">پایان یافته</span>
+                                            @if($user_info->unit_id==9)
+                                                @if($certificate->request->request_type_id==2)
+                                                    <a href="{{url('admin/serviceDeliveryForm/'.$certificate->id)}}" class="btn btn-info bnt-lg" style="margin-top:8px;">نمایش گواهی</a>
+                                                @elseif($certificate->request->request_type_id==3)
+                                                    <a href="{{url('admin/exportDeliveryInstallCertificate/'.$certificate->id)}}" class="btn btn-info bnt-lg" style="margin-top:8px;">نمایش گواهی</a>
+                                                @endif
+                                            @endif
+                                        @else
+                                            <span style="font-size: 16px;font-weight: lighter;margin-bottom: 10px;" class="label label-warning">در حال رسیدگی </span>
+                                        @endif
+                                    </td>
                                 </tr>
                             {{--@endif--}}
                         @endforeach

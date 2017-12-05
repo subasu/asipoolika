@@ -3,7 +3,7 @@
     <style>
         table {font-size:18px;}
     </style>
-
+<input type="hidden" value="{{$me=\Illuminate\Support\Facades\Auth::user()}}">
     <div id="commentModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -44,6 +44,11 @@
                 <div class="x_content">
                     <div class="row">
                         <div class="col-md-10">
+                            @if($request[0]->hasCertificate==1)
+                                <div class="row">
+                                    <a href="{{url('special/activeCertificates/'.$request[0]->id)}}" class="btn btn-primary col-md-12" style="text-align: right;direction: rtl;font-size:20px;margin-bottom:20px;">تایید کلیه گواهی ها و جمع آوری همه ی امضاها بطور اتوماتیک</a><br>
+                                </div>
+                           @endif
                             <div class="well well-sm" style="text-align: right;direction: rtl;font-size:20px;"><i class="fa fa-user"></i> کارپرداز : @if($request[0]->supplier_id!=null) {{$request[0]->supplier->name .chr(10). $request[0]->supplier->family}} @else هنوز به کارپرداز ابلاغ نشده است @endif</div>
                             <table style="direction:rtl;text-align: center;" id="" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                                 <thead>
@@ -52,7 +57,6 @@
                                     <th style="text-align: center ;">نام واحد</th>
                                     <th style="text-align: center ;">درخواست دهنده</th>
                                     <th style="text-align: center ;border-right: 1px solid #d6d6c2">تاریخ ثبت</th>
-
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -101,21 +105,24 @@
                             </table>
                         </div>
                         <div class="col-md-2">
+                            @if($me->unit_id==6)
                             <a href="{{url('admin/certificate/'.$request[0]->id)}}" class="btn btn-primary col-md-12 pull-right @if($request[0]->accept_count==0 or $request[0]->supplier_id==null) disabled @endif"> تحویل</a>
+                            @endif
+                        @if($me->unit_id==6)
                             @if($request[0]->request_type_id == 3)
                                 <a target="_blank" href="{{url('admin/printProductRequest/'.$request[0]->id)}}" class="btn btn-info col-md-12 pull-right"> چاپ درخواست </a>
                             @endif
+                        @endif
                             @if($request[0]->request_type_id == 2)
                                 <a href="{{url('admin/printServiceRequest/'.$request[0]->id)}}" class="btn btn-info col-md-12 pull-right"> چاپ درخواست </a>
                             @endif
+                                @if($me->unit_id==6)
                             @if($request[0]->supplier_id==null)
                                 <a href="{{url('admin/impart/'.$request[0]->id)}}" class="btn btn-danger col-md-12 pull-right"> ابلاغ به کارپرداز</a>
                             @else
                                 <a  class="btn btn-success disabled col-md-12 pull-right">ابلاغ شده</a>
-                            @endif
-                            <a href="{{url('admin/showCertificates/'.$request[0]->id)}}" class="btn btn-warning col-md-12 pull-right
-
-                              ">گواهی ها</a>
+                            @endif @endif
+                            <a href="{{url('admin/showCertificates/'.$request[0]->id)}}" class="btn btn-warning col-md-12 pull-right">گواهی ها</a>
                             {{--{{count($request[0]->certificate->certificateRecords)}}--}}
                             {{--@if($productRequest->hasCertificate==1)--}}
                             {{--@if($productRequest->certificate->active==1)--}}
@@ -123,7 +130,6 @@
                             {{--class="btn btn-warning col-md-5  pull-right">مشاهده  گواهی ها</a>--}}
                             {{--@endif--}}
                             {{--@endif--}}
-
                             @if(!empty($request[0]->bills[0]))
                                 @if(count($request[0]->bills) >= 2 && $request[0]->bills[0]->active == 0 )
                                     <a href="{{url ('admin/preparedSummarize/'.$request[0]->id)}}" data-toggle=""  class="btn btn-info col-md-12  pull-right">ثبت خلاصه تنظیمی</a>
@@ -134,6 +140,7 @@
                                 @if($request[0]->bills[0]->active == 1 && $request[0]->bills[0]->status == 1)
                                     <a href="{{url('admin/printFactors/'.$request[0]->id)}}" target="_blank"  class="btn btn-default col-md-12  pull-right">چاپ خلاصه تنظیمی <i class="fa fa-print"></i></a>
                                 @endif
+
                                 @if( $request[0]->supplier_id != null && $request[0]->bills[0]->active == 0)
                                     <a href="{{url('admin/issueBill/'.$request[0]->id)}}"  class="btn btn-default  col-md-12  pull-right" > آپلود فاکتور </a>
                                 @endif
@@ -141,6 +148,7 @@
                                 {{--<a   class="btn btn-default  col-md-12  pull-right"  disabled="disabled"> آپلود فاکتور </a>--}}
                                 {{--@endif--}}
                             @endif
+                    @if($me->unit_id==6)
                             @if(empty($request[0]->bills[0]))
                                 @if($request[0]->supplier_id != null)
                                     <a href="{{url('admin/issueBill/'.$request[0]->id)}}"  class="btn btn-default  col-md-12  pull-right" > آپلود فاکتور </a>
@@ -149,10 +157,12 @@
                                     <a   class="btn btn-default  col-md-12  pull-right"  disabled="disabled"> آپلود فاکتور </a>
                                 @endif
                             @endif
+
                             @if($request[0]->request_type_id == 3 && count($request[0]->warehouse) < 1 )
                                 <a href="{{url('admin/warehouseBill/'.$request[0]->id)}}"  class="btn btn-danger  col-md-12  pull-right" >آپلود قبض انبار</a>
                             @endif
                             <a href="{{url('admin/costDocumentForm/'.$request[0]->id)}}" class="btn btn-primary col-md-12 pull-right">سند هزینه</a>
+                        @endif
                         </div>
                     </div>
                 </div>

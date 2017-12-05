@@ -194,14 +194,14 @@
                         $('#change').append
                         (
                             "<tr>"+
-                            "<td ><input type='number'  min='0'   value='"+ code +"' class='form-control'   name='code[]'></td>"+
+                            "<td ><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'  min='0'   value='"+ code +"' class='form-control'   name='code[]'></td>"+
                             "<td  class='col-md-3'><input type='text'      value='"+description+"' class='form-control required'  name='description[]' ></td>"+
-                            "<td ><input type='number'  min='0'  value='"+moeinOffice+"' class='form-control'  name='moeinOffice[]' ></td>"+
-                            "<td ><input type='number'  min='0' value='"+generalPrice+"' class='form-control required'  name='generalPrice[]' ></td>"+
-                            "<td ><input type='number'  min='0' value='"+deduction+"' class='form-control'  name='deduction[]' ></td>"+
-                            "<td ><input type='number'  min='0' value='"+payedPrice+"' class='form-control'  name='payedPrice[]'></td>"+
-                            "<td ><input type='number'  min='0' value='"+page+"' class='form-control'  name='page[]' ></td>"+
-                            "<td ><input type='number'  min='0' value='"+row+"'  class='form-control'  name='row[]' ></td>"+
+                            "<td ><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'  min='0'  value='"+moeinOffice+"' class='form-control'  name='moeinOffice[]' ></td>"+
+                            "<td ><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'  min='0' value='"+generalPrice+"' class='form-control required'  name='generalPrice[]' ></td>"+
+                            "<td ><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'  min='0' value='"+deduction+"' class='form-control'  name='deduction[]' ></td>"+
+                            "<td ><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'  min='0' value='"+payedPrice+"' class='form-control'  name='payedPrice[]'></td>"+
+                            "<td ><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'  min='0' value='"+page+"' class='form-control'  name='page[]' ></td>"+
+                            "<td ><input type='text' onkeypress='return event.charCode >= 48 && event.charCode <= 57'  min='0' value='"+row+"'  class='form-control'  name='row[]' ></td>"+
                             "<td ><a type='button' class='btn btn-danger remove_row' data-toggle='tooltip' title='حذف' style='font-size:18px;'><span class='fa fa-trash'></span></a></td>"+
                             "</tr>"
 

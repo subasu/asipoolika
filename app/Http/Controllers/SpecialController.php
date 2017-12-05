@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Certificate;
+use App\Models\CertificateRecord;
 use App\Models\Unit;
 use App\User;
 use Carbon\Carbon;
@@ -88,7 +90,7 @@ class SpecialController extends Controller
                         'unit_count' =>  encrypt($request->unit_count_each[$i]),
                         'step' => $step,
                         'accept' => 1,
-                        'receiver_id' => $request->product_receiver[$i],
+//                        'receiver_id' => $request->product_receiver[$i],
                         'request_id' => $request_id,
                         'active' => 1,
                         'created_at' => $gDate1
@@ -170,7 +172,7 @@ class SpecialController extends Controller
                         'count' => $request->product_count[$i],
                         'step' => 7,
                         'accept' => 1,
-                        'receiver_id' => $request->product_receiver[$i],
+//                        'receiver_id' => $request->product_receiver[$i],
                         'request_id' => $request_id,
                         'active' => 1,
                         'created_at' => $gDate1
@@ -188,6 +190,23 @@ class SpecialController extends Controller
             return response()->json('لطفا تاریخ را بطور صحیح وارد کنید، مثلا : 1396/05/01');
         }
 
+    }
+    public function activeCertificatesGet($id)
+    {
+        Certificate::where('request_id',$id)->update([
+            'active'=>1
+        ]);
+        $certificate_id=Certificate::where('request_id',$id)->pluck('id');
+        if(empty($certificate_id))
+            return redirect()->back();
+        $certificate_records=CertificateRecord::where('certificate_id',$certificate_id)->get();
+        foreach ($certificate_records as $certificate_record) {
+            CertificateRecord::where('id',$certificate_record->id)->update([
+                'active'=>1,
+                'step'=>5
+            ]);
+        }
+        return redirect()->back();
     }
 }
 

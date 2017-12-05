@@ -1275,7 +1275,6 @@ class SupplyController extends Controller
                 ]);
             }
 
-
             $productRequest->all_count=$all_count;
             $productRequest->accept_count=$accept_count;
             $productRequest->has_certificate_count=$has_certificate_count;
@@ -1310,6 +1309,8 @@ class SupplyController extends Controller
 
     public function confirmedRequestDetails($id)
     {
+        if(Auth::user()->unit_id!=6 and Auth::user()->unit_id!=9)
+            return redirect()->back();
         $pageTitle='جزئیات درخواست شماره : '.$id;
         $pageName='confirmedRequestDetails';
         $request=Request2::where([['id',$id],['active',1]])->get();
@@ -1329,6 +1330,13 @@ class SupplyController extends Controller
             $item->accept_count=$accept_count;
             $item->has_certificate_count=$has_certificate_count;
             $item->refuse_count=$refuse_count;
+
+            $certificate_has=Certificate::where('request_id',$item->id)->get();
+//            dd($certificate_has);
+            if(empty($certificate_has[0]))
+                $item->hasCertificate=0;
+            else
+                $item->hasCertificate=1;
         }
 //dd($request);
         foreach($request_records as $requestRecord)
@@ -1371,31 +1379,34 @@ class SupplyController extends Controller
         $storageSupervisorId = 0;
         $storageSupervisorName = '';
         $storageSupervisorFamily = '';
+        $storageSupervisorTitle = '';
         foreach ($storageSupervisorInfo as $storageSupervisorInf) {
             $storageSupervisorId += $storageSupervisorInf->id;
             $storageSupervisorName .= $storageSupervisorInf->name;
             $storageSupervisorFamily .= $storageSupervisorInf->family;
+            $storageSupervisorTitle .= $storageSupervisorInf->title;
         }
-        $storageSupervisorFullName = $storageSupervisorName . chr(10) . $storageSupervisorFamily;
+        $storageSupervisorFullName = $storageSupervisorTitle.chr(10).$storageSupervisorName . chr(10) . $storageSupervisorFamily;
         $storageSupervisorSignature = Signature::where('user_id', $storageSupervisorId)->value('signature');
         if($storageSupervisorSignature != null)
         {
             $storageSupervisorSignature = 'data:image/png;base64,' . decrypt($storageSupervisorSignature);
         }
 
-
-
         $originalJobId = Unit::where('title', 'امور عمومی')->value('id');
         $originalJobSupervisorInfo = User::where([['unit_id', $originalJobId], ['is_supervisor', 1]])->get();
         $originalJobSupervisorId = 0;
         $originalJobSupervisorName = '';
         $originalJobSupervisorFamily = '';
+        $originalJobSupervisorTitle = '';
         foreach ($originalJobSupervisorInfo as $originalJobSupervisorInf) {
             $originalJobSupervisorId += $originalJobSupervisorInf->id;
             $originalJobSupervisorName .= $originalJobSupervisorInf->name;
             $originalJobSupervisorFamily .= $originalJobSupervisorInf->family;
+            $originalJobSupervisorTitle .= $originalJobSupervisorInf->title;
         }
-        $originalJobSupervisorFullName = $originalJobSupervisorName . chr(10) . $originalJobSupervisorFamily;
+
+        $originalJobSupervisorFullName =  $originalJobSupervisorTitle. chr(10) .$originalJobSupervisorName . chr(10) . $originalJobSupervisorFamily;
         $originalJobSupervisorSignature = Signature::where('user_id', $originalJobSupervisorId)->value('signature');
         if($originalJobSupervisorSignature != null)
         {
@@ -1408,31 +1419,33 @@ class SupplyController extends Controller
         $bossId = 0;
         $bossName = '';
         $bossFamily = '';
+        $bossTitle = '';
         foreach ($bossInfo as $bossInf) {
             $bossId += $bossInf->id;
             $bossName .= $bossInf->name;
             $bossFamily .= $bossInf->family;
+            $bossTitle .= $bossInf->title;
         }
-        $bossFullName = $bossName . chr(10) . $bossFamily;
+        $bossFullName = $bossTitle. chr(10) .$bossName . chr(10) . $bossFamily;
         $bossSignature = Signature::where('user_id', $bossId)->value('signature');
         if($bossSignature != null)
         {
             $bossSignature = 'data:image/png;base64,' . decrypt($bossSignature);
         }
 
-
-
         $creditUnitId = Unit::where('title', 'اعتبار')->value('id');
         $creditSupervisorInfo = User::where([['unit_id', $creditUnitId], ['is_supervisor', 1]])->get();
         $creditSupervisorId = 0;
         $creditSupervisorName = '';
         $creditSupervisorFamily = '';
+        $creditSupervisorTitle = '';
         foreach ($creditSupervisorInfo as $creditSupervisorInf) {
             $creditSupervisorId += $creditSupervisorInf->id;
             $creditSupervisorName .= $creditSupervisorInf->name;
             $creditSupervisorFamily .= $creditSupervisorInf->family;
+            $creditSupervisorTitle .= $creditSupervisorInf->title;
         }
-        $creditSupervisorFullName = $creditSupervisorName . chr(10) . $creditSupervisorFamily;
+        $creditSupervisorFullName =  $creditSupervisorTitle. chr(10) . $creditSupervisorName . chr(10) . $creditSupervisorFamily;
         $creditSupervisorSignature = Signature::where('user_id', $creditSupervisorId)->value('signature');
         if($creditSupervisorSignature != null)
         {
@@ -1445,12 +1458,14 @@ class SupplyController extends Controller
         $financeSupervisorId = 0;
         $financeSupervisorName = '';
         $financeSupervisorFamily = '';
+        $financeSupervisorTitle = '';
         foreach ($financeSupervisorInfo as $financeSupervisorInf) {
             $financeSupervisorId = $financeSupervisorInf->id;
             $financeSupervisorName = $financeSupervisorInf->name;
             $financeSupervisorFamily = $financeSupervisorInf->family;
+            $financeSupervisorTitle = $financeSupervisorInf->title;
         }
-        $financeSupervisorFullName = $financeSupervisorName . chr(10) . $financeSupervisorFamily;
+        $financeSupervisorFullName = $financeSupervisorTitle. chr(10) .$financeSupervisorName . chr(10) . $financeSupervisorFamily;
         $financeSupervisorSignature = Signature::where('user_id', $financeSupervisorId)->value('signature');
         if($financeSupervisorSignature != null )
         {
@@ -1503,17 +1518,19 @@ class SupplyController extends Controller
         $supplySupervisorId = 0;
         $supplySupervisorName = '';
         $supplySupervisorFamily = '';
+        $supplySupervisorTitle = '';
         foreach ($supplySupervisorInfo as $supplySupervisorInf) {
             $supplySupervisorId += $supplySupervisorInf->id;
             $supplySupervisorName .= $supplySupervisorInf->name;
             $supplySupervisorFamily .= $supplySupervisorInf->family;
+            $supplySupervisorTitle .= $supplySupervisorInf->title;
         }
         $supplySupervisorSignature = Signature::where('user_id', $supplySupervisorId)->value('signature');
         if($supplySupervisorSignature != null)
         {
             $supplySupervisorSignature = 'data:image/png;base64,' . decrypt($supplySupervisorSignature);
         }
-            $supplySupervisorFullName = $supplySupervisorName . chr(10) . $supplySupervisorFamily;
+            $supplySupervisorFullName = $supplySupervisorTitle. chr(10) .$supplySupervisorName . chr(10) . $supplySupervisorFamily;
 
 
         $bossUnitId = Unit::where('title', 'ریاست')->value('id');
@@ -1521,12 +1538,14 @@ class SupplyController extends Controller
         $bossId = 0;
         $bossName = '';
         $bossFamily = '';
+        $bossTitle = '';
         foreach ($bossInfo as $bossInf) {
             $bossId += $bossInf->id;
             $bossName .= $bossInf->name;
             $bossFamily .= $bossInf->family;
+            $bossTitle .= $bossInf->title;
         }
-        $bossFullName = $bossName . chr(10) . $bossFamily;
+        $bossFullName =$bossTitle. chr(10) . $bossName . chr(10) . $bossFamily;
         $bossSignature = Signature::where('user_id', $bossId)->value('signature');
         if($bossSignature != null)
         {
@@ -1538,14 +1557,16 @@ class SupplyController extends Controller
         $creditSupervisorId = 0;
         $creditSupervisorName = '';
         $creditSupervisorFamily = '';
+        $creditSupervisorTitle = '';
 
         foreach ($creditSupervisorInfo as $creditSupervisorInf) {
             $creditSupervisorId += $creditSupervisorInf->id;
             $creditSupervisorName .= $creditSupervisorInf->name;
             $creditSupervisorFamily .= $creditSupervisorInf->family;
+            $creditSupervisorTitle .= $creditSupervisorInf->title;
         }
 
-        $creditSupervisorFullName = $creditSupervisorName . chr(10) . $creditSupervisorFamily;
+        $creditSupervisorFullName =  $creditSupervisorTitle. chr(10) .$creditSupervisorName . chr(10) . $creditSupervisorFamily;
         $creditSupervisorSignature = Signature::where('user_id', $creditSupervisorId)->value('signature');
         if($creditSupervisorSignature != null)
         {
@@ -1557,18 +1578,19 @@ class SupplyController extends Controller
         $financeSupervisorId = 0;
         $financeSupervisorName = '';
         $financeSupervisorFamily = '';
+        $financeSupervisorTitle = '';
         foreach ($financeSupervisorInfo as $financeSupervisorInf) {
             $financeSupervisorId = $financeSupervisorInf->id;
             $financeSupervisorName = $financeSupervisorInf->name;
             $financeSupervisorFamily = $financeSupervisorInf->family;
+            $financeSupervisorTitle = $financeSupervisorInf->title;
         }
-        $financeSupervisorFullName = $financeSupervisorName . chr(10) . $financeSupervisorFamily;
+        $financeSupervisorFullName = $financeSupervisorTitle. chr(10) .$financeSupervisorName . chr(10) . $financeSupervisorFamily;
         $financeSupervisorSignature = Signature::where('user_id', $financeSupervisorId)->value('signature');
         if($financeSupervisorSignature != null)
         {
             $financeSupervisorSignature = 'data:image/png;base64,' . decrypt($financeSupervisorSignature);
         }
-
 
         $pageTitle = 'نسخه چاپی گواهی';
         $productRequestRecords = RequestRecord::where([['request_id', $id], ['accept', 1]])->get();
@@ -1601,23 +1623,30 @@ class SupplyController extends Controller
 
             }
         }
+    //date of request
+        $request_id=$productRequestRecords[0]->request_id;
+        $request=Request2::where('id',$request_id)->get();
+        $request->date=$this->toPersian($request[0]->created_at->toDateString());
 
         $unitSupervisorInfo = User::where([['unit_id', $unitId], ['is_supervisor', 1]])->get();
         $unitSupervisorId = 0;
         $unitSupervisorName = '';
         $unitSupervisorFamily = '';
+        $unitSupervisorTitle = '';
         foreach ($unitSupervisorInfo as $unitSupervisorInf) {
             $unitSupervisorId += $unitSupervisorInf->id;
             $unitSupervisorName .= $unitSupervisorInf->name;
             $unitSupervisorFamily .= $unitSupervisorInf->family;
+            $unitSupervisorTitle .= $unitSupervisorInf->title;
         }
-        $unitSupervisorFullName = $unitSupervisorName . chr(10) . $unitSupervisorFamily;
+        $unitSupervisorFullName = $unitSupervisorTitle. chr(10) .$unitSupervisorName . chr(10) . $unitSupervisorFamily;
         $unitSupervisorSignature = Signature::where('user_id', $unitSupervisorId)->value('signature');
         if($unitSupervisorSignature != null)
         {
             $unitSupervisorSignature = 'data:image/png;base64,' . decrypt($unitSupervisorSignature);
         }
-        return view('admin.certificate.serviceRequestForm', compact('productRequestRecords', 'pageTitle', 'sum', 'unitName', 'requestNumber', 'date', 'supplySupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'creditSupervisorFullName', 'financeSupervisorFullName', 'bossFullName', 'supplySupervisorFullName', 'unitSupervisorName', 'unitSupervisorFullName', 'unitSupervisorSignature'));
+
+        return view('admin.certificate.serviceRequestForm', compact('request','productRequestRecords', 'pageTitle', 'sum', 'unitName', 'requestNumber', 'date', 'supplySupervisorSignature', 'originalJobSupervisorSignature', 'bossSignature', 'creditSupervisorSignature', 'financeSupervisorSignature', 'creditSupervisorFullName', 'financeSupervisorFullName', 'bossFullName', 'supplySupervisorFullName', 'unitSupervisorName', 'unitSupervisorFullName', 'unitSupervisorSignature'));
         //  }
     }
 
@@ -1635,6 +1664,7 @@ class SupplyController extends Controller
 //            {
         //چک میکنه اگه تمام رکوردهای گواهی تایید شده هستند صفحه چاپ را نمایش میدهد.
         $all_count=CertificateRecord::where('certificate_id',$id)->count();
+
         $accept_count=CertificateRecord::where([['certificate_id',$id],['step',5]])->count();
         if($all_count!=$accept_count)
             return redirect('admin/showCertificates/'.$id);
@@ -1644,13 +1674,15 @@ class SupplyController extends Controller
         $bossId = 0;
         $bossName = '';
         $bossFamily = '';
+        $bossTitle='';
         foreach ($bossInfo as $bossInf)
         {
             $bossId += $bossInf->id;
             $bossName .= $bossInf->name;
             $bossFamily .= $bossInf->family;
+            $bossTitle .= $bossInf->title;
         }
-        $bossFullName = $bossName .chr(10).$bossFamily;
+        $bossFullName = $bossTitle.chr(10).$bossName .chr(10).$bossFamily;
         $bossSignature = Signature::where('user_id',$bossId)->value('signature');
         $bossSignature = 'data:image/png;base64,'.decrypt($bossSignature);
 
@@ -1685,6 +1717,7 @@ class SupplyController extends Controller
         $receiverId = 0;
         $receiverName   = '';
         $receiverFamily = '';
+        $receiverTitle = '';
         $supplierId     = 0;
         foreach ($certificateRecords as $certificateRecord)
         {
@@ -1694,6 +1727,7 @@ class SupplyController extends Controller
                 $receiverId     += $certificateRecord->user->id;
                 $receiverName   .= $certificateRecord->user->name;
                 $receiverFamily .= $certificateRecord->user->family;
+                $receiverTitle .= $certificateRecord->user->title;
                 $supplierId     += $certificateRecord->certificate->request->supplier_id;
             }
 
@@ -1701,12 +1735,13 @@ class SupplyController extends Controller
 
         $receiverSignature = Signature::where('user_id',$receiverId)->value('signature');
         $receiverSignature = 'data:image/png;base64,'.decrypt($receiverSignature);
-        $receiverFullName = $receiverName .chr(10).$receiverFamily;
+        $receiverFullName = $receiverTitle.chr(10).$receiverName .chr(10).$receiverFamily;
 
 
         $supplierName = User::where('id',$supplierId)->value('name');
         $supplierFamily = User::where('id',$supplierId)->value('family');
-        $supplierFullName = $supplierName .chr(10).$supplierFamily;
+        $supplierTitle = User::where('id',$supplierId)->value('title');
+        $supplierFullName = $supplierTitle.chr(10).$supplierName .chr(10).$supplierFamily;
         $supplierSignature = Signature::where('user_id',$supplierId)->value('signature');
         $supplierSignature = 'data:image/png;base64,'.decrypt($supplierSignature);
 
@@ -1714,13 +1749,15 @@ class SupplyController extends Controller
         $unitSupervisorId = 0;
         $unitSupervisorName = '';
         $unitSupervisorFamily = '';
+        $unitSupervisorTitle = '';
         foreach ($unitSupervisorInfo as $unitSupervisorInf)
         {
             $unitSupervisorId     +=$unitSupervisorInf->id;
             $unitSupervisorName   .= $unitSupervisorInf->name;
             $unitSupervisorFamily .= $unitSupervisorInf->family;
+            $unitSupervisorTitle .= $unitSupervisorInf->title;
         }
-        $unitSupervisorFullName = $unitSupervisorName .chr(10).$unitSupervisorFamily;
+        $unitSupervisorFullName = $unitSupervisorTitle.chr(10).$unitSupervisorName .chr(10).$unitSupervisorFamily;
         $unitSupervisorSignature = Signature::where('user_id',$unitSupervisorId)->value('signature');
         $unitSupervisorSignature = 'data:image/png;base64,'.decrypt($unitSupervisorSignature);
         return view('admin.certificate.exportDeliveryInstallCertificate',compact('unitSupervisorSignature','supplierFullName','supplierSignature','unitSupervisorFullName','receiverSignature','receiverFullName','bossSignature','bossFullName','pageTitleInstall','pageTitleUse','certificateRecords' , 'sum','unitSupervisorName','unitSupervisorFamily','shopComp','unitName','receiverName','receiverFamily','certificateId','date'));
@@ -2068,9 +2105,11 @@ class SupplyController extends Controller
 //        else {
 //چک میکنه اگه تمام رکوردهای گواهی تایید شده هستند صفحه چاپ را نمایش میدهد.
         $all_count=CertificateRecord::where('certificate_id',$id)->count();
-        $accept_count=CertificateRecord::where([['certificate_id',$id],['step',5]])->count();
+        $accept_count=CertificateRecord::where([['certificate_id',$id],['step',5],['active',1]])->count();
+//        return $all_count.' / '.$accept_count;
         if($all_count!=$accept_count)
-            return redirect('admin/showCertificates/'.$id);
+            return redirect()->back();
+
 
         $supplyId = Unit::where('title', 'تدارکات')->value('id');
         $supplySupervisorInfo = User::where([['unit_id', $supplyId], ['is_supervisor', 1]])->get();

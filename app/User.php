@@ -82,6 +82,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\User','supervisor_id');
     }
+    public function organization()
+    {
+        return $this->belongsTo('App\Models\Organization');
+    }
 
 //    public function user2()
 //    {
